@@ -1,4 +1,4 @@
-package com.specialization.backend.api;
+package com.donjo.backend.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

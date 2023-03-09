@@ -1,4 +1,4 @@
-package com.specialization.backend.exception;
+package com.donjo.backend.exception;
 
 
 import org.springframework.http.HttpStatus;

@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'com.jejuinn'
+group = 'com.donjo'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -79,10 +79,6 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
-
-	//WebRTC를 위한 dependencies
-	implementation 'org.springframework:spring-websocket:5.2.22.RELEASE'
-	implementation 'org.kurento:kurento-client:6.18.0'
 
 
 

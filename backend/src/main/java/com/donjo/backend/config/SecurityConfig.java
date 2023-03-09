@@ -1,18 +1,22 @@
-package com.specialization.backend.config;
+package com.donjo.backend.config;
 
+import com.donjo.backend.config.jwt.JwtAccessDeniedHandler;
+import com.donjo.backend.config.jwt.JwtAuthenticationEntryPoint;
+import com.donjo.backend.config.jwt.JwtSecurityConfig;
+import com.donjo.backend.config.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity // 기본적인 웹 보안을 활성화하겠다는 의미이다.
 @EnableMethodSecurity

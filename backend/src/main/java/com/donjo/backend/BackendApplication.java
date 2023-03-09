@@ -1,4 +1,4 @@
-package com.specialization.backend;
+package com.donjo.backend;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
