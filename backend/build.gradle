@@ -81,7 +81,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 
 	// https://mvnrepository.com/artifact/org.web3j/core
-	implementation group: 'org.web3j', name: 'core', version: '4.8.4'
+	implementation group: 'org.web3j', name: 'core', version: '4.8.7'
 
 }
 
