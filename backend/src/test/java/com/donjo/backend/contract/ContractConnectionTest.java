@@ -1,4 +1,4 @@
-package com.donjo.backend.api.service.member;
+package com.donjo.backend.contract;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +34,7 @@ import org.web3j.utils.Numeric;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class MemberServiceImplTest {
+class ContractConnectionTest {
     public static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
 
 
