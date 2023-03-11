@@ -39,10 +39,12 @@ const GlobalStyle = createGlobalStyle`
 
   html {
   --color-text: #222222;
-  --color-text-secondary: #999999;
+  --color-text-secondary: #666666;
   --color-primary: #222222;
   --color-background: #FFFFFF;
+  --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;
+
   font-size: 1rem;
 }
 
