@@ -37,19 +37,13 @@ const GlobalStyle = createGlobalStyle`
     src: url(https://fonts.gstatic.com/s/notosanskr/v27/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.119.woff2) format('woff2');
   }
 
-  @font-face {
-    font-family: 'LOTTERIADDAG';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIADDAG.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
   html {
   --color-text: #222222;
   --color-text-secondary: #999999;
   --color-primary: #222222;
   --color-background: #FFFFFF;
-  font-size: 2rem;
+  --color-modal: #F7F7F7;
+  font-size: 1rem;
 }
 
 body {
