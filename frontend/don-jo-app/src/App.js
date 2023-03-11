@@ -11,7 +11,12 @@ window.addEventListener("resize", () => {
 });
 
 const App = () => {
-  return <div>DonJo</div>;
+  return (
+    <div>
+      <GlobalStyle />
+      DonJo
+    </div>
+  );
 };
 
 export default App;
