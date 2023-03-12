@@ -84,9 +84,9 @@ export const PasswordModal = ({ handleSetShowModal }) => {
               </S.KeypadButton>
             );
             return i === 9 ? (
-              <S.KeypadButton />
+              <S.KeypadButton key={i} />
             ) : i === 11 ? (
-              <S.KeypadButton>
+              <S.KeypadButton key={i}>
                 <FiDelete size="28" />
               </S.KeypadButton>
             ) : (
