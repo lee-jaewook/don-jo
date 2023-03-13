@@ -1,7 +1,7 @@
 import * as S from "./style";
 import { FiX } from "react-icons/fi";
 
-export const BasicModal = ({ handleSetShowModal }) => {
+export const BasicModal = ({ handleSetShowModal, children }) => {
   const closeModal = () => {
     handleSetShowModal(false);
   };
@@ -9,12 +9,12 @@ export const BasicModal = ({ handleSetShowModal }) => {
   return (
     <div>
       <S.BackgroundOpacity />
-      <S.BackgroundBlur onClick={() => closeModal()} />
+      <S.BackgroundBlur onClick={closeModal} />
       <S.Modal>
         <S.CloseContainer>
-          <FiX size="26" color="#666666" onClick={() => closeModal()} />
+          <FiX size="26" color="#666666" onClick={closeModal} />
         </S.CloseContainer>
-        <S.Content></S.Content>
+        <S.Content>{children}</S.Content>
       </S.Modal>
     </div>
   );
