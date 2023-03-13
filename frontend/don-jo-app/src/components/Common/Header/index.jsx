@@ -3,9 +3,6 @@ import { ProfileImg } from "../ProfileImg";
 
 export const Header = () => {
   return (
-
-    
-
     <S.HeaderContainer>
       <S.Header>
         <S.Logo />

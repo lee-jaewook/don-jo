@@ -14,7 +14,6 @@ const App = () => {
   return (
     <div>
       <GlobalStyle />
-      DonJo
     </div>
   );
 };
