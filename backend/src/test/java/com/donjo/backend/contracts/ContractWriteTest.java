@@ -35,7 +35,7 @@ class ContractWriteTest {
                 ,BigInteger.valueOf(777096850) // gas price
                 ,BigInteger.valueOf(5000000)); // gas limit
         System.out.println("=====================================================================================");
-        System.out.println(contract.write(BigInteger.valueOf(20)).send());
+        System.out.println(contract.write(BigInteger.valueOf(40)).send());
         System.out.println("=====================================================================================");
         System.out.println(contract.read().send());
     }
