@@ -44,6 +44,7 @@ const GlobalStyle = createGlobalStyle`
   --color-background: #FFFFFF;
   --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;
+  --color-placeholder: #BBBBBB;
 
   font-size: 1rem;
 }
@@ -54,7 +55,49 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-text);
+  background-color: var(--color-background);
 } 
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+*{
+  box-sizing: border-box;
+}
+  
+input, textarea { 
+  -moz-user-select: auto;
+  -webkit-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+  font-family: "RobotoRegular";
+  line-height: 1.172rem;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--color-placeholder);
+}
+  
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+  
+select {
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 `;
 
 export default GlobalStyle;

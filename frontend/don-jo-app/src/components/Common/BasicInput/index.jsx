@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as S from "./style";
 const BasicInput = ({
   type,
   value,
@@ -8,7 +9,7 @@ const BasicInput = ({
   isReadOnly = false,
 }) => {
   return (
-    <input
+    <S.Input
       type={type}
       value={value}
       onChange={handleOnChangeValue}
