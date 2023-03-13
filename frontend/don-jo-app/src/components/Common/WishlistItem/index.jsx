@@ -10,7 +10,6 @@ const WishlistItem = ({
   description,
   collectedAmount,
   totalAmount,
-  thankMsg,
 }) => {
   // wishlist item 수정 모달 관리를 위한 함수
   const handleOpenEditModal = useCallback((e) => {
