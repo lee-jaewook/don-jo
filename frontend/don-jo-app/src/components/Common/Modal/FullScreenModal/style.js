@@ -45,7 +45,7 @@ export const ModalBody = styled.div`
 
 export const ContentCard = styled.div`
   width: 53.75rem;
-  height: 60.1875rem;
+  min-height: 20rem;
 
   background-color: var(--color-modal);
   border-radius: 1.25rem;
