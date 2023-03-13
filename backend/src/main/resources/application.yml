@@ -2,13 +2,13 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
     username: root
-    password: you*#789789
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
@@ -54,12 +54,12 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: don-jo
+      bucket: bucket_name
     region:
       static: ap-northeast-2
     stack:
       auto: false
     credentials:
-      accessKey: AKIAREBD2QI77A32LV6T
-      secretKey: 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
+      accessKey:
+      secretKey:
 
