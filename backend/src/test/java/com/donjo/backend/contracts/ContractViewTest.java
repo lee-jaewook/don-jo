@@ -1,4 +1,4 @@
-package com.donjo.backend.contract;
+package com.donjo.backend.contracts;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
