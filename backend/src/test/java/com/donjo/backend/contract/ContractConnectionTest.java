@@ -4,14 +4,23 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Contract;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.SignatureException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.web3j.tx.Transfer.GAS_LIMIT;
@@ -38,6 +47,21 @@ class ContractConnectionTest {
     }
 
     @Test
-    void testWrite() {
+    void testWrite() throws ExecutionException, InterruptedException {
+        Web3j web3j = Web3j.build(new HttpService(url));
+        Function function = new Function(
+                "store",  // function we're calling
+                Arrays.asList(new Uint256(10)),  // Parameters to pass as Solidity Types
+                Collections.emptyList());
+
+        String encodedFunction = FunctionEncoder.encode(function);
+        Transaction transaction = Transaction.createFunctionCallTransaction(
+                myAddress, BigInteger.valueOf(10000), BigInteger.valueOf(10000), BigInteger.valueOf(100), contractAddress, encodedFunction);
+
+        org.web3j.protocol.core.methods.response.EthSendTransaction transactionResponse =
+                web3j.ethSendTransaction(transaction).sendAsync().get();
+
+        String transactionHash = transactionResponse.getTransactionHash();
+        System.out.println(transactionHash);
     }
 }
