@@ -1,14 +1,25 @@
+import { useState } from "react";
 import * as S from "./style";
+import { FiChevronDown } from "react-icons/fi";
 
-export const SelectBox = () => {
+export const SelectBox = ({ width }) => {
+  const [show, setShow] = useState(false);
+
   return (
-    <S.SelectBox>
-      <S.Label>currentValue</S.Label>
-      <S.SelectOptions>
-        <S.Option>option1</S.Option>
-        <S.Option>option2</S.Option>
-        <S.Option>option3</S.Option>
-      </S.SelectOptions>
+    <S.SelectBox width={width}>
+      <S.Label onClick={() => setShow(!show)}>
+        Guide
+        <S.Icon>
+          <FiChevronDown size="18" color="var(--color-text)" />
+        </S.Icon>
+      </S.Label>
+      {show && (
+        <S.SelectOptions>
+          <S.Option>Guide1</S.Option>
+          <S.Option>Guide2</S.Option>
+          <S.Option>Guide3</S.Option>
+        </S.SelectOptions>
+      )}
     </S.SelectBox>
   );
 };
