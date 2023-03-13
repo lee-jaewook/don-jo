@@ -28,7 +28,6 @@ public class FileController {
         public ResponseEntity<String> upload( @RequestParam String category,
                                               @RequestPart MultipartFile multipartFile) throws IOException {
                 String fileName = s3Upload.uploadFile(multipartFile,category);
-                System.out.println("https://don-jo.s3.ap-northeast-2.amazonaws.com/"+fileName);
                 return ResponseEntity.status(200).body("https://don-jo.s3.ap-northeast-2.amazonaws.com/"+fileName);
             }
 }
