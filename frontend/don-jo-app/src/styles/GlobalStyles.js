@@ -37,19 +37,16 @@ const GlobalStyle = createGlobalStyle`
     src: url(https://fonts.gstatic.com/s/notosanskr/v27/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.119.woff2) format('woff2');
   }
 
-  @font-face {
-    font-family: 'LOTTERIADDAG';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIADDAG.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
   html {
   --color-text: #222222;
-  --color-text-secondary: #999999;
+  --color-text-secondary: #666666;
   --color-primary: #222222;
   --color-background: #FFFFFF;
-  font-size: 2rem;
+  --color-background-secondary: #EAEAEA;
+  --color-modal: #F7F7F7;
+  --color-placeholder: #BBBBBB;
+
+  font-size: 1rem;
 }
 
 body {
@@ -58,7 +55,49 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-text);
+  background-color: var(--color-background);
 } 
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+*{
+  box-sizing: border-box;
+}
+  
+input, textarea { 
+  -moz-user-select: auto;
+  -webkit-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+  font-family: "RobotoRegular";
+  line-height: 1.172rem;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--color-placeholder);
+}
+  
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+  
+select {
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 `;
 
 export default GlobalStyle;
