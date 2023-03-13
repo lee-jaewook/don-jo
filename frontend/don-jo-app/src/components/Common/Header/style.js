@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const HeaderContainer = styled.div`
   width: 100%;
   height: 4rem;
 
@@ -8,9 +8,14 @@ export const Container = styled.div`
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   box-sizing: border-box;
-  padding: 0 1.5rem;
+`;
+
+export const Header = styled.div`
+  display: flex;
+  width: 80rem;
 `;
 
 export const Logo = styled.div`
@@ -18,4 +23,12 @@ export const Logo = styled.div`
   height: 2.5rem;
 
   background-color: var(--color-primary);
+`;
+
+export const GuideSelect = styled.select`
+  margin-left: auto;
+`;
+
+export const ProfileImgContainer = styled.div`
+  margin-left: 1.5rem;
 `;
