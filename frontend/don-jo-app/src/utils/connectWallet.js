@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { setWeb3 } from "../stores/member";
+import { setWeb3 } from "../stores/web3";
 
 export const connectWallet = (dispatch) => {
   // 메타마스크 설치 여부 확인
@@ -50,7 +50,7 @@ export const connectWallet = (dispatch) => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error: ", error);
         alert("MetaMask에 로그인하지 않았습니다.");
       });
   } else {

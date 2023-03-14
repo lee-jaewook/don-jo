@@ -12,6 +12,7 @@ import { connectWallet } from "./utils/connectWallet";
 
 const AppRouter = () => {
   const member = useSelector((state) => state.member);
+  const webState = useSelector((state) => state.web3);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const AppRouter = () => {
 
   // 로그인 여부 체크
   let isLogin = member.isLogin;
-  console.log(member);
+  console.log(webState);
 
   if (!isLogin) {
     return (
