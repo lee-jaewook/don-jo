@@ -18,20 +18,17 @@ export const BackgroundImg = styled.div`
 
 export const Wrapper = styled.div`
   margin-top: 10rem;
-  border: 1px solid blue;
   width: 100%;
   max-width: 80rem;
   position: absolute;
 `;
 
 export const ProfileImgContainer = styled.div`
-  border: 1px solid green;
   width: 100%;
   margin-bottom: 2.5rem;
 `;
 
 export const ProfileImg = styled.div`
-  border: 1px solid purple;
   width: 11.25rem;
   height: 11.25rem;
   border-radius: 100%;
@@ -42,8 +39,62 @@ export const ProfileImg = styled.div`
   margin-left: 4rem;
 `;
 
-export const Contents = styled.div`
+export const ContentsContainer = styled.div`
   border: 1px solid green;
   width: 100%;
-  height: 500px;
+  display: flex;
 `;
+
+export const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  //임시 영역 세팅
+  width: 300px;
+  border: 1px solid pink;
+`;
+
+export const Nickname = styled.div`
+  font-family: RobotoBold;
+  font-size: 1.875rem;
+  line-height: 2.1875rem;
+  margin-bottom: 0.75rem;
+`;
+
+export const SupporterContainer = styled.div`
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  line-height: 1.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+export const NumSupporter = styled.div`
+  font-family: RobotoMedium;
+  margin-right: 0.25rem;
+`;
+
+export const ExternalLinkContainer = styled.div`
+  border: 1px solid black;
+  display: flex;
+  margin-bottom: 2.5rem;
+
+  /* 임시 영역 설정 */
+  height: 2.5rem;
+  width: 9rem;
+`;
+
+export const IntroductionContainer = styled.div`
+  width: 100%;
+  padding: 1rem;
+  max-height: 37.125rem;
+  border-radius: 1.25rem;
+  overflow-y: auto;
+
+  /* 임시 설정 */
+  background-color: #d9d9d9;
+  line-height: 2rem;
+`;
+
+export const Contents = styled.div``;
