@@ -1,47 +1,45 @@
 import styled from "styled-components";
 
 export const SelectBox = styled.div`
+  /* min-width: ${(props) => props.width || "4.125"}rem; */
+  min-width: 2rem;
+  height: 1.5625rem;
+  display: flex;
+  align-items: center;
   position: relative;
-  width: 200px;
-  padding: 8px;
-  border-radius: 12px;
-  background-color: #ffffff;
-  align-self: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  &::before {
-    content: "⌵";
-    position: absolute;
-    top: 1px;
-    right: 8px;
-    color: #49c181;
-    font-size: 20px;
-  }
 `;
+
 export const Label = styled.label`
-  font-size: 14px;
-  margin-left: 4px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  font-family: "RobotoMedium";
 `;
+
+export const Icon = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.3rem;
+`;
+
 export const SelectOptions = styled.ul`
+  max-height: 300px;
+  min-width: ${(props) => props.width || "12"}rem;
+  z-index: 1;
+  overflow-y: auto;
   position: absolute;
-  list-style: none;
-  top: 18px;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  height: 90px;
-  max-height: ${(props) => (props.show ? "none" : "0")};
-  padding: 0;
-  border-radius: 8px;
-  background-color: #222222;
-  color: #fefefe;
+  top: 1.5625rem;
+  right: 0rem;
+  font-family: RobotoMedium;
+  font-size: 1.25rem;
+  border-radius: 1.25rem;
+  background-color: var(--color-background);
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.25);
 `;
+
 export const Option = styled.li`
-  font-size: 14px;
-  padding: 6px 8px;
-  transition: background-color 0.2s ease-in;
+  padding: 1.2rem 1rem;
+  cursor: pointer;
   &:hover {
-    background-color: #595959;
+    background-color: var(--color-background-secondary);
   }
 `;
