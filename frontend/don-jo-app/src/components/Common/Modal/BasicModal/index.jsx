@@ -23,5 +23,8 @@ export const BasicModal = ({ handleSetShowModal, children }) => {
 
 BasicModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

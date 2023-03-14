@@ -1,21 +1,30 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  redirect,
   Navigate,
 } from "react-router-dom";
+import React, { useEffect } from "react";
 import Intro from "./pages/Intro";
 import Guide from "./pages/Guide";
 import GuideDetail from "./pages/GuideDetail";
 import Personal from "./pages/Personal";
 import DashBoard from "./pages/DashBoard";
 import Error from "./pages/Error";
+import { useDispatch, useSelector } from "react-redux";
+import { connectWallet } from "./utils/connectWallet";
 
 const AppRouter = () => {
-  // 비로그인 상태인 경우(isLogin 임시 처리)
-  let isLogin = true;
+  const member = useSelector((state) => state.member);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    connectWallet(dispatch);
+  }, []);
+
+  // 로그인 여부 체크
+  let isLogin = member.isLogin;
+
   if (!isLogin) {
     return (
       <Router>
