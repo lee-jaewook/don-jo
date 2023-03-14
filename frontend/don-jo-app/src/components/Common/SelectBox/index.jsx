@@ -3,17 +3,17 @@ import * as S from "./style";
 import { FiChevronDown } from "react-icons/fi";
 
 export const SelectBox = ({ width }) => {
-  const [show, setShow] = useState(false);
+  const [isDropdown, setIsDropdown] = useState(false);
 
   return (
     <S.SelectBox width={width}>
-      <S.Label onClick={() => setShow(!show)}>
+      <S.Label onClick={() => setIsDropdown((prev) => !prev)}>
         Guide
         <S.Icon>
           <FiChevronDown size="18" color="var(--color-text)" />
         </S.Icon>
       </S.Label>
-      {show && (
+      {isDropdown && (
         <S.SelectOptions>
           <S.Option>Guide1</S.Option>
           <S.Option>Guide2</S.Option>
