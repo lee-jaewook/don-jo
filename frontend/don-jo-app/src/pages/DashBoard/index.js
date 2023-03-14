@@ -1,7 +1,14 @@
 import React from "react";
-
+import NavBar from "../../components/DashBoard/NavBar";
+import * as S from "./style";
 const DashBoard = () => {
-  return <div>DashBoard Page</div>;
+  return (
+    <S.Container>
+      <S.DashboardWrapper>
+        <NavBar />
+      </S.DashboardWrapper>
+    </S.Container>
+  );
 };
 
 export default DashBoard;
