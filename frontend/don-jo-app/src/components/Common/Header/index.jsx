@@ -1,8 +1,8 @@
 import * as S from "./style";
-import { ProfileImg } from "../ProfileImg";
-import { SelectBox } from "../SelectBox";
+import ProfileImg from "../ProfileImg";
+import SelectBox from "../SelectBox";
 
-export const Header = () => {
+const Header = () => {
   return (
     <S.HeaderContainer>
       <S.Header>
@@ -17,3 +17,5 @@ export const Header = () => {
     </S.HeaderContainer>
   );
 };
+
+export default Header;

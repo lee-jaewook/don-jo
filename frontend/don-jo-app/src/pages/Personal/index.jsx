@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BasicModal } from "../../components/Common/Modal/BasicModal";
+import BasicModal from "../../components/Common/Modal/BasicModal";
 
 const Personal = () => {
   // Test Code Start
