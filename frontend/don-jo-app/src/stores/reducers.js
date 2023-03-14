@@ -7,7 +7,7 @@ import items from "./items/index.js";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["member"],
+  whitelist: [],
 };
 
 const reducers = combineReducers({
