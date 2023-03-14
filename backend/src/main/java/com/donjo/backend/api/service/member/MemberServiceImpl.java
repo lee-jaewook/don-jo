@@ -15,4 +15,9 @@ public class MemberServiceImpl implements MemberService {
   public Optional<Member> findMember(String memberAddress) {
     return memberRepository.findByAddressSupport(memberAddress);
   }
+
+  @Override
+  public boolean isPageNameDuplicate(String pageName) {
+    return memberRepository.findByPageNameSupport(pageName).isPresent();
+  }
 }

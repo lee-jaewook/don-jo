@@ -21,4 +21,12 @@ public class MemberRepository {
         .fetchOne());
   }
 
+  @Transactional(readOnly = true)
+  public Optional<Member> findByPageNameSupport(String pageName) {
+    return Optional.ofNullable(jPAQueryFactory
+        .selectFrom(QMember.member)
+        .where(QMember.member.pagename.eq(pageName))
+        .fetchOne());
+  }
+
 }
