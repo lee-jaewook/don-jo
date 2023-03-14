@@ -5,7 +5,7 @@ const Personal = () => {
   // Test Code Start
   const [isShowModal, setIsShowModal] = useState(false);
 
-  const hey = <div>호롤롤로</div>;
+  const temp = <div>들어갈 내용</div>;
   //Test Code End
 
   return (
@@ -16,7 +16,7 @@ const Personal = () => {
         <button onClick={() => setIsShowModal(true)}>베이직 모달 버튼</button>
       </div>
       {isShowModal && (
-        <BasicModal handleSetShowModal={setIsShowModal} children={hey} />
+        <BasicModal handleSetShowModal={setIsShowModal} children={temp} />
       )}
       {/* Test Code End */}
     </div>
