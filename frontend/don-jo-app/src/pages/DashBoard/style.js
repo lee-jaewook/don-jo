@@ -4,13 +4,15 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   background-color: var(--color-background-secondary);
-  padding-top: 60px;
+  padding: 3.75rem 0;
 `;
 
 export const DashboardWrapper = styled.div`
-  max-width: 1280px;
-  height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  justify-content: flex-end;
+  max-width: 80rem;
+  min-height: 63.5rem;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   margin: 0 auto;
 `;
