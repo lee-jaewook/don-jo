@@ -1,4 +1,5 @@
 import * as S from "./style";
+import PropTypes from "prop-types";
 import { FiX } from "react-icons/fi";
 
 export const BasicModal = ({ handleSetShowModal, children }) => {
@@ -18,4 +19,9 @@ export const BasicModal = ({ handleSetShowModal, children }) => {
       </S.Modal>
     </div>
   );
+};
+
+BasicModal.propTypes = {
+  handleSetShowModal: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired,
 };
