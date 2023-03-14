@@ -2,8 +2,9 @@ import * as S from "./style";
 import { FiX } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { FiDelete } from "react-icons/fi";
+import PropTypes from "prop-types";
 
-export const PasswordModal = ({ handleSetShowModal }) => {
+const PasswordModal = ({ handleSetShowModal }) => {
   const closeModal = () => {
     handleSetShowModal(false);
   };
@@ -84,4 +85,10 @@ export const PasswordModal = ({ handleSetShowModal }) => {
       </S.Modal>
     </div>
   );
+};
+
+export default PasswordModal;
+
+BasicModal.propTypes = {
+  handleSetShowModal: PropTypes.func.isRequired,
 };

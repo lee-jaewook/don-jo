@@ -2,7 +2,7 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import { FiX } from "react-icons/fi";
 
-export const BasicModal = ({ handleSetShowModal, children }) => {
+const BasicModal = ({ handleSetShowModal, children }) => {
   const closeModal = () => {
     handleSetShowModal(false);
   };
@@ -20,6 +20,8 @@ export const BasicModal = ({ handleSetShowModal, children }) => {
     </div>
   );
 };
+
+export default BasicModal;
 
 BasicModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
