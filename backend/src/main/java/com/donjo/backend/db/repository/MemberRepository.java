@@ -4,6 +4,7 @@ import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository {
+  private final EntityManager entityManager;
   private final JPAQueryFactory jPAQueryFactory;
 
   @Transactional(readOnly = true)
@@ -25,8 +27,13 @@ public class MemberRepository {
   public Optional<Member> findByPageNameSupport(String pageName) {
     return Optional.ofNullable(jPAQueryFactory
         .selectFrom(QMember.member)
-        .where(QMember.member.pagename.eq(pageName))
+        .where(QMember.member.pageName.eq(pageName))
         .fetchOne());
+  }
+
+  @Transactional
+  public void saveMember(Member member) {
+    entityManager.persist(member);
   }
 
 }

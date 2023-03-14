@@ -1,5 +1,6 @@
 package com.donjo.backend.db.entity;
 
+import javax.annotation.Nullable;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -23,16 +24,23 @@ import java.util.Set;
 public class Member {
    @Id
    @Column(name = "address")
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private String address;
 
    @Column(name = "nickname", length = 10)
    @NotNull
    private String nickname;
 
-   @Column(name = "pagename", length = 30)
+   @Column(length = 30)
    @NotNull
-   private String pagename;
+   private String pageName;
+
+   @Column(name = "password")
+   @NotNull
+   private String password;
+
+   @Column(length = 300)
+   @Nullable
+   private String profileImagePath;
 
    @ManyToMany
    @JoinTable(

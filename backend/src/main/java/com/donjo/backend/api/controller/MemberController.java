@@ -1,5 +1,6 @@
 package com.donjo.backend.api.controller;
 
+import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +56,21 @@ public class MemberController {
     if (isDuplicate) {
       throw new DuplicateDataException("이미 사용중인 페이지 이름 입니다.");
     }
+    return new ResponseEntity(HttpStatus.OK);
+
+  }
+
+  @ApiOperation(value="회원가입", notes = "회원 가입을 합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(회원 가입 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 409, message = "CONFLICT(address or pageName 존재)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PostMapping(path="/member")
+  public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
+    memberService.signUpMember(signUpMemberCond);
+
     return new ResponseEntity(HttpStatus.OK);
 
   }
