@@ -26,9 +26,9 @@ public class MemberController {
       @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @GetMapping(path="/members/{member_address}")
-  public ResponseEntity checkExistingMember(@PathVariable("member_address") String member_address) {
-    Optional<Member> member = memberService.findMember(member_address);
+  @GetMapping(path="/members/{memberAddress}")
+  public ResponseEntity checkExistingMember(@PathVariable("memberAddress") String memberAddress) {
+    Optional<Member> member = memberService.findMember(memberAddress);
 
     if (member.isPresent()) {
       return new ResponseEntity(HttpStatus.OK);

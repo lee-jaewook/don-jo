@@ -14,7 +14,7 @@ public class MemberRepository {
   private final JPAQueryFactory jPAQueryFactory;
 
   @Transactional(readOnly = true)
-  public Optional<Member> findByAddress(String address) {
+  public Optional<Member> findByAddressSupport(String address) {
     return Optional.ofNullable(jPAQueryFactory
         .selectFrom(QMember.member)
         .where(QMember.member.address.eq(address))
