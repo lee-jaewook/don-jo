@@ -10,11 +10,11 @@ const NavBar = () => {
   return (
     <S.NavBar>
       <S.UserWrapper>
-        <S.UserImg alt="user-profile-img" src={TestUserImg} />
+        <S.UserImg alt="user-profile-img" />
         <S.UseName>Robert Downey Jr.</S.UseName>
       </S.UserWrapper>
-      <S.Line />
       <S.MenuWrapper>
+        <S.Line />
         {menus &&
           menus.length > 0 &&
           menus.map((item, index) => (
