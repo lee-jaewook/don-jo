@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import BasicModal from "../../components/Common/Modal/BasicModal";
+import * as S from "./style";
 
 const Personal = () => {
-  // Test Code Start
-  const [isShowModal, setIsShowModal] = useState(false);
-
-  const temp = <div>들어갈 내용</div>;
-  //Test Code End
+  //해당 페이지 사람 더미 데이터
+  const member = {
+    member_address: "",
+    profileImgPath:
+      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
+    backgroundImgPath:
+      "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
+  };
 
   return (
-    <div>
-      Personal Page
-      {/* Test Code Start*/}
-      <div>
-        <button onClick={() => setIsShowModal(true)}>베이직 모달 버튼</button>
-      </div>
-      {isShowModal && (
-        <BasicModal handleSetShowModal={setIsShowModal} children={temp} />
-      )}
-      {/* Test Code End */}
-    </div>
+    <S.Container>
+      <S.BackgroundImg src={member.backgroundImgPath}></S.BackgroundImg>
+      <S.Wrapper>
+        <S.ProfileImgContainer>
+          <S.ProfileImg src={member.profileImgPath} />
+        </S.ProfileImgContainer>
+        <S.Contents></S.Contents>
+      </S.Wrapper>
+    </S.Container>
   );
 };
 
