@@ -28,5 +28,5 @@ const SelectBox = ({ width }) => {
 export default SelectBox;
 
 SelectBox.propTypes = {
-  width: PropTypes.func,
+  width: PropTypes.number,
 };

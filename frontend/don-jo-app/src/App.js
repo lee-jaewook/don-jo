@@ -16,7 +16,6 @@ const App = () => {
   return (
     <div>
       <GlobalStyle />
-      <Header />
       <AppRouter />
     </div>
   );
