@@ -13,12 +13,11 @@ const Wishlist = ({ Wishlist = wishlist, isDashboard, handleSetShowModal }) => {
             key={item.uid}
             isDashboard={isDashboard}
             uid={item.uid}
-            imgPath={item.img_path}
+            imgPath={item.imgPath}
             title={item.title}
             description={item.description}
-            collectedAmount={item.collected_amount}
-            totalAmount={item.total_amount}
-            thankMsg={item.thank_msg}
+            collectedAmount={item.collectedAmount}
+            totalAmount={item.totalAmount}
             handleSetShowModal={handleSetShowModal}
           />
         ))
