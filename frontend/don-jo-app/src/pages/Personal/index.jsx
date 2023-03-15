@@ -1,5 +1,6 @@
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
+import ExternalLink from "../../components/Personal/ExternalLink";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -22,8 +23,8 @@ const Personal = () => {
     numSupporters: 16000,
     socialList: [
       "https://www.youtube.com/@SamsungKorea",
-      "https://github.com/taebong1012",
       "https://velog.io/@taebong1012",
+      "https://github.com/taebong1012",
     ],
   };
 
@@ -47,12 +48,7 @@ const Personal = () => {
               </S.NumSupporter>
               supporter
             </S.SupporterContainer>
-
-            {/* 페이지 주인의 social link가 없을 경우에는 노출 X */}
-            {pageOwner.socialList.length !== 0 && (
-              <S.ExternalLinkContainer></S.ExternalLinkContainer>
-            )}
-
+            <ExternalLink socialList={pageOwner.socialList} />
             <S.IntroductionContainer>
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
               {loginUser.memgerAddress === pageOwner.memberAddress && (

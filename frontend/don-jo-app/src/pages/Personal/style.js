@@ -75,13 +75,6 @@ export const NumSupporter = styled.div`
   margin-right: 0.25rem;
 `;
 
-export const ExternalLinkContainer = styled.div`
-  border: 1px solid black;
-  display: flex;
-  margin-bottom: 2.5rem;
-  height: 2.5rem;
-  width: 9rem;
-`;
 
 export const IntroductionContainer = styled.div`
   width: 100%;
