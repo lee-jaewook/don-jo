@@ -20,7 +20,7 @@ export const BackgroundBlur = styled.div`
 `;
 
 export const Modal = styled.div`
-  width: 33rem;
+  width: ${(props) => props.width || "33"}rem;
   max-height: 47.25rem;
   z-index: 12;
   background-color: var(--color-modal);
