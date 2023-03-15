@@ -3,36 +3,38 @@ import styled from "styled-components";
 export const TabWrapper = styled.div`
   display: flex;
   width: 100%;
-  max-width: 860px;
+  max-width: 53.75rem;
   justify-content: flex-start;
   align-items: flex-end;
-  margin-bottom: 40px;
+  margin-top: 1.25rem;
+  margin-bottom: 2.5rem;
 `;
 
 export const Tabs = styled.ul`
   width: 100%;
   list-style: none;
-  border-bottom: 2px solid #eaeaea;
+  border-bottom: 0.125rem solid #eaeaea;
 `;
 export const TabItem = styled.li`
   position: relative;
   display: inline-block;
-  padding-bottom: 10px;
-  margin: 0 20px;
+  padding-bottom: 0.625rem;
+  margin: 0 1.25rem;
+  cursor: pointer;
   font-family: ${(props) => props.current && "RobotoMedium"};
   color: ${(props) =>
     props.current ? "var(--color-text)" : "var(--color-text-secondary)"};
 
   &:first-child {
-    margin-left: 0px;
+    margin-left: 0rem;
   }
 `;
 
 export const Indicator = styled.hr`
   position: absolute;
-  bottom: -10px;
+  bottom: -0.625rem;
   width: 100%;
-  border: 2px solid var(--color-text);
-  border-radius: 4px;
+  border: 0.125rem solid var(--color-text);
+  border-radius: 0.25rem;
   opacity: ${(props) => (props.current ? 1 : 0)};
 `;
