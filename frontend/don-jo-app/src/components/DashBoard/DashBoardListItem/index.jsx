@@ -1,12 +1,25 @@
 import React from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 import { FiMoreHorizontal } from "react-icons/fi";
-const DashBoardListItem = () => {
+import { useLocation } from "react-router-dom";
+const DashBoardListItem = ({
+  supportType,
+  from,
+  to,
+  amountEth,
+  arrivedDate,
+}) => {
+  const location = useLocation();
+
   return (
     <S.ItemWrapper>
-      <span aria-label="icon" role="img">
-        💰
-      </span>
+      {location.pathname === "/dashboard/home" && (
+        <S.Icon aria-label="icon" role="img">
+          💰
+        </S.Icon>
+      )}
+
       <S.UserImg src="" alt="user-img" />
       <S.UserInfo>
         <S.Supporter>userName</S.Supporter>
@@ -23,3 +36,11 @@ const DashBoardListItem = () => {
 };
 
 export default DashBoardListItem;
+
+DashBoardListItem.propTypes = {
+  supportType: PropTypes.string,
+  from: PropTypes.object.isRequired,
+  to: PropTypes.object.isRequired,
+  amountEth: PropTypes.string.isRequired,
+  arrivedDate: PropTypes.string.isRequired,
+};

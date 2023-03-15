@@ -4,7 +4,7 @@ export const ItemWrapper = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  height: 100px;
+  height: 6.25rem;
   background-color: white;
   align-items: center;
   margin-bottom: 0.75rem;
@@ -17,13 +17,16 @@ export const UserImg = styled.div`
   height: 3.75rem;
   background-color: #ddd;
   border-radius: 50%;
-  margin-left: 1.5rem;
 `;
 
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 0.75rem;
+`;
+
+export const Icon = styled.span`
+  margin-right: 1.5rem;
 `;
 
 export const Supporter = styled.label`
