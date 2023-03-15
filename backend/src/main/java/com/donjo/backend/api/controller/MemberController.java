@@ -84,7 +84,7 @@ public class MemberController {
       @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @PostMapping(path="/api/members")
+  @PostMapping(path="/members")
   public ResponseEntity login(@RequestBody LoginMemberCond loginMemberCond) {
     Map<String, Object> result = memberService.loginMember(loginMemberCond);
 
