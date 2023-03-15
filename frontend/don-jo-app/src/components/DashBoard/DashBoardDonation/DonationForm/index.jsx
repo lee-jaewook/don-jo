@@ -10,6 +10,7 @@ const DonationForm = () => {
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
   const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
   const [currentPrice, onChangeCurrentPrice] = useInput("1"); //// user별 default 가격 설정
+  const [thankMessage, onChangeThankMessage] = useInput(""); // user별 default emoji 이름 설정
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
   const handleOnClickEmoji = (item) => {
@@ -114,10 +115,19 @@ const DonationForm = () => {
         Write a personable thank you message, and include any rewards if you
         like.
       </S.FormDescription>
-      <BasicInput />
+      <BasicInput
+        type="text"
+        placeholder="Send message"
+        value={thankMessage}
+        handleOnChangeValue={onChangeThankMessage}
+      />
 
       <S.ButtonWrapper>
-        <BasicButton text="Save" handleOnClickButton={handleOnClickButton} />
+        <BasicButton
+          text="Save"
+          handleOnClickButton={handleOnClickButton}
+          color="black"
+        />
       </S.ButtonWrapper>
     </S.FormWrapper>
   );
