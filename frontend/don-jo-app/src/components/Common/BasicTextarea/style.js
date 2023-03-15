@@ -4,7 +4,7 @@ export const Textarea = styled.textarea`
   width: ${(props) => (props.width ? props.width + "rem" : "100%")};
   height: ${(props) => (props.height ? props.height : "4.5")}rem;
   padding: 0.75rem;
-  border: none;
+  border: 0.0625rem solid transparent;
   border-radius: 0.5rem;
   background-color: white;
   margin-bottom: 0.75rem;

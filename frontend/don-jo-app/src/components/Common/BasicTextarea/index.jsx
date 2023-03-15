@@ -2,6 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
 
+const handleKeyDown = (e) => {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+  }
+};
+
 const BasicTextarea = ({
   handleOnChangeValue,
   placeholder,
@@ -12,6 +18,7 @@ const BasicTextarea = ({
   return (
     <S.Textarea
       type="string"
+      onKeyDown={handleKeyDown}
       onChange={handleOnChangeValue}
       placeholder={placeholder}
       readOnly={isReadOnly}
