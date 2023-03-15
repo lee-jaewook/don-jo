@@ -1,13 +1,13 @@
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import ExternalLink from "../../components/Personal/ExternalLink";
+import { useState } from "react";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
   const loginUser = {
-    memgerAddress: "memberaddress",
-    // memgerAddress: "aa",
-    nickname: "",
+    memberAddress: "memberaddress",
+    nickname: "taehyun",
   };
 
   //해당 페이지 사람 더미 데이터
@@ -30,12 +30,41 @@ const Personal = () => {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  const [isBackgroundHover, setIsBackgroundHover] = useState(false);
+  const [isProfileHover, setIsProfileHover] = useState(false);
+
   return (
     <S.Container>
-      <S.BackgroundImg src={pageOwner.backgroundImgPath}></S.BackgroundImg>
+      <S.BackgroundImg
+        src={pageOwner.backgroundImgPath}
+        onMouseOver={() => setIsBackgroundHover(true)}
+        onMouseOut={() => setIsBackgroundHover(false)}
+      >
+        {loginUser.memberAddress === pageOwner.memberAddress &&
+          isBackgroundHover && (
+            <S.BackgroundImgEdit>
+              <S.EditIcon>
+                <FiEdit color="white" size={20.35} />
+              </S.EditIcon>
+            </S.BackgroundImgEdit>
+          )}
+      </S.BackgroundImg>
       <S.Wrapper>
         <S.ProfileImgContainer>
-          <S.ProfileImg src={pageOwner.profileImgPath} />
+          <S.ProfileImg
+            src={pageOwner.profileImgPath}
+            onMouseOver={() => setIsProfileHover(true)}
+            onMouseOut={() => setIsProfileHover(false)}
+          >
+            {loginUser.memberAddress === pageOwner.memberAddress &&
+              isProfileHover && (
+                <S.ProfileImgEdit>
+                  <S.EditIcon>
+                    <FiEdit color="white" size={20.35} />
+                  </S.EditIcon>
+                </S.ProfileImgEdit>
+              )}
+          </S.ProfileImg>
         </S.ProfileImgContainer>
         <S.ContentsContainer>
           <S.UserInfo>
@@ -51,9 +80,9 @@ const Personal = () => {
             <ExternalLink socialList={pageOwner.socialList} />
             <S.IntroductionContainer>
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
-              {loginUser.memgerAddress === pageOwner.memberAddress && (
+              {loginUser.memberAddress === pageOwner.memberAddress && (
                 <S.IntroductionEdit>
-                  <FiEdit />
+                  <FiEdit style={{ cursor: "pointer" }} />
                 </S.IntroductionEdit>
               )}
               <S.Introduction>{pageOwner.introduction}</S.Introduction>

@@ -14,6 +14,29 @@ export const BackgroundImg = styled.div`
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.src});
+  position: relative;
+`;
+
+export const BackgroundImgEdit = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const EditIcon = styled.div`
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 100%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 export const Wrapper = styled.div`
@@ -21,6 +44,7 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 80rem;
   position: absolute;
+  /* background-color: blue; */
 `;
 
 export const ProfileImgContainer = styled.div`
@@ -37,10 +61,22 @@ export const ProfileImg = styled.div`
   background-image: url(${(props) => props.src});
   filter: drop-shadow(0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05));
   margin-left: 4rem;
+  position: relative;
+`;
+
+export const ProfileImgEdit = styled.div`
+  position: absolute;
+  width: 11.25rem;
+  height: 11.25rem;
+  border-radius: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentsContainer = styled.div`
-  border: 1px solid green;
   width: 100%;
   display: flex;
 `;
@@ -52,7 +88,6 @@ export const UserInfo = styled.div`
 
   //임시 영역 세팅
   width: 300px;
-  border: 1px solid pink;
 `;
 
 export const Nickname = styled.div`
@@ -74,7 +109,6 @@ export const NumSupporter = styled.div`
   font-family: RobotoMedium;
   margin-right: 0.25rem;
 `;
-
 
 export const IntroductionContainer = styled.div`
   width: 100%;
@@ -99,4 +133,8 @@ export const Introduction = styled.div`
   max-height: 37.125rem;
 `;
 
-export const Contents = styled.div``;
+export const Contents = styled.div`
+  border: 1px solid red;
+  width: 900px;
+  margin-left: auto;
+`;
