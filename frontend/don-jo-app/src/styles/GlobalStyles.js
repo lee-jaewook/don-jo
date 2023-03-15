@@ -74,6 +74,7 @@ input, textarea {
   user-select: auto;
   font-family: "RobotoRegular";
   line-height: 1.172rem;
+  resize: none;
 }
 
 input:focus {
@@ -82,6 +83,10 @@ input:focus {
 
 input::placeholder {
   color: var(--color-placeholder);
+}
+
+textarea:focus {
+  outline: none;
 }
   
 button {
