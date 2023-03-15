@@ -1,6 +1,6 @@
 import * as S from "./style";
 
-const PersonalRecentSupport = () => {
+const HomeRecentSupport = () => {
   return (
     <S.Container>
       <S.TitleContainer>
@@ -16,4 +16,4 @@ const PersonalRecentSupport = () => {
   );
 };
 
-export default PersonalRecentSupport;
+export default HomeRecentSupport;

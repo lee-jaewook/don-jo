@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  border: 1px solid pink;
   width: 100%;
+  max-width: 35rem;
 `;
 
 export const TitleContainer = styled.div`
-  border: 1px solid blue;
   width: 100%;
   display: flex;
   align-items: flex-end;
@@ -32,7 +31,6 @@ export const Type = styled.div`
 
 export const Card = styled.div`
   width: 100%;
-  max-width: 35rem;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
   padding: 2rem 1.5rem 1.75rem 1.5rem;

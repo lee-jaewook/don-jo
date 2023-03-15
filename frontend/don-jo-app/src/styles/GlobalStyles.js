@@ -120,9 +120,6 @@ div {
     background-clip: padding-box;
     border-radius: 1.25rem;
   }
-  ::-webkit-scrollbar-track {
-    
-  }
 }
 `;
 

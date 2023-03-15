@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  border: 1px solid green;
   width: 100%;
-  max-width: 35rem;
   display: flex;
+`;
+
+export const Wrapper = styled.div`
+  border: 1px solid orange;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 18.75rem;
+  margin-left: auto;
 `;

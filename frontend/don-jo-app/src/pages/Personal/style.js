@@ -44,7 +44,6 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 80rem;
   position: absolute;
-  /* background-color: blue; */
 `;
 
 export const ProfileImgContainer = styled.div`
@@ -85,9 +84,8 @@ export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  //임시 영역 세팅
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
 `;
 
 export const Nickname = styled.div`
@@ -132,5 +130,3 @@ export const Introduction = styled.div`
   overflow-y: auto;
   max-height: 37.125rem;
 `;
-
-

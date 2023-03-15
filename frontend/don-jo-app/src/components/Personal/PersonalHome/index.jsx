@@ -1,10 +1,14 @@
 import * as S from "./style";
-import PersonalRecentSupport from "../PersonalRecentSupport";
+import HomeRecentSupport from "./HomeRecentSupport";
+import HomeDonation from "./HomeDonation";
 
 const PersonalHome = () => {
   return (
     <S.Container>
-      <PersonalRecentSupport />
+      <HomeRecentSupport />
+      <S.Wrapper>
+        <HomeDonation />
+      </S.Wrapper>
     </S.Container>
   );
 };
