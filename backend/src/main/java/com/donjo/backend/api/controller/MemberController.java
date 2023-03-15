@@ -99,14 +99,6 @@ public class MemberController {
     }}, headers, HttpStatus.OK);
   }
 
-  @ApiOperation(value="Access Token 재발급", notes = "헤더의 Refresh Token을 이용하여 Access Token과 Refresh Token을 재발급 합니다.")
-  @ApiResponses({
-      @ApiResponse(code = 200, message = "Access Token 재발급 성공"),
-      @ApiResponse(code = 400, message = "기타 오류"),
-      @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
-      @ApiResponse(code = 500, message = "서버 오류")
-  })
-  @PostMapping(path="/api/members")
   public HttpHeaders returnTokenHeader(Map<String, Object> result) {
     HttpHeaders headers = new HttpHeaders();
     headers.add(JwtFilter.ACCESS_HEADER, "Bearer " + result.get("accessToken"));
