@@ -1,12 +1,13 @@
 import * as S from "./style";
 import PersonalTab from "../PersonalTab";
 import { useTabs } from "../../../hooks/useTabs";
+import PersonalHome from "../PersonalHome";
 
 const allTab = [
   {
     index: 0,
     name: "Home",
-    component: <>홈</>,
+    component: <PersonalHome />,
   },
   {
     index: 1,
