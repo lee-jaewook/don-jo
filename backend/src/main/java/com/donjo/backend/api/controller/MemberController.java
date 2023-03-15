@@ -3,6 +3,7 @@ package com.donjo.backend.api.controller;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
+import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
   private final MemberServiceImpl memberService;
+  private final String PAGE_NAME = "pageName";
 
   @ApiOperation(value="기존 유저 정보 확인", notes = "기존 유저 정보를 확인합니다.")
   @ApiResponses({
@@ -74,8 +76,11 @@ public class MemberController {
   @PostMapping(path="/member")
   public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
     Map<String, Object> result = memberService.signUpMember(signUpMemberCond);
+    HttpHeaders headers = returnTokenHeader(result);
 
-    return returnTokenHeaderAndPageName(result);
+    return new ResponseEntity<Object>(new HashMap<String, Object>() {{
+      put(PAGE_NAME, result.get(PAGE_NAME));
+    }}, headers, HttpStatus.OK);
   }
 
   @ApiOperation(value="로그인", notes = "로그인을 합니다.")
@@ -87,18 +92,27 @@ public class MemberController {
   @PostMapping(path="/members")
   public ResponseEntity login(@RequestBody LoginMemberCond loginMemberCond) {
     Map<String, Object> result = memberService.loginMember(loginMemberCond);
-
-    return returnTokenHeaderAndPageName(result);
-  }
-
-  public ResponseEntity returnTokenHeaderAndPageName(Map<String, Object> result) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("accessToken", (String) result.get("accessToken"));
-    headers.add("refreshToken", (String) result.get("refreshToken"));
+    HttpHeaders headers = returnTokenHeader(result);
 
     return new ResponseEntity<Object>(new HashMap<String, Object>() {{
-      put("pageName", result.get("pageName"));
+      put(PAGE_NAME, result.get(PAGE_NAME));
     }}, headers, HttpStatus.OK);
+  }
+
+  @ApiOperation(value="Access Token 재발급", notes = "헤더의 Refresh Token을 이용하여 Access Token과 Refresh Token을 재발급 합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "Access Token 재발급 성공"),
+      @ApiResponse(code = 400, message = "기타 오류"),
+      @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
+      @ApiResponse(code = 500, message = "서버 오류")
+  })
+  @PostMapping(path="/api/members")
+  public HttpHeaders returnTokenHeader(Map<String, Object> result) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(JwtFilter.ACCESS_HEADER, "Bearer " + result.get("accessToken"));
+    headers.add(JwtFilter.REFRESH_HEADER, "Bearer " + result.get("refreshToken"));
+
+    return headers;
   }
 
 }
