@@ -17,7 +17,6 @@ import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.simpleconstruct.SimpleConstruct;
-import org.web3j.simplestorage.SimpleStorage;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -26,10 +25,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
-class ContractViewTest {
+class EC2ContractViewTest {
     @Value("${eth.address}")
     String myAddress;
     @Value("${eth.privateKey}")
