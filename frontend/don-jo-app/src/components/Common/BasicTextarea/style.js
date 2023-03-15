@@ -8,6 +8,7 @@ export const Textarea = styled.textarea`
   border-radius: 0.5rem;
   background-color: white;
   margin-bottom: 0.75rem;
+  font-size: 1rem;
 
   &:hover {
     border: 0.0625rem solid black;
