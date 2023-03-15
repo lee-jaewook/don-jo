@@ -1,6 +1,14 @@
 import * as S from "./style";
+import { FiEdit } from "react-icons/fi";
 
 const Personal = () => {
+  //로그인 유저 더미 데이터
+  const loginUser = {
+    memgerAddress: "memberaddress",
+    // memgerAddress: "aa",
+    nickname: "",
+  };
+
   //해당 페이지 사람 더미 데이터
   const pageOwner = {
     memberAddress: "memberaddress",
@@ -13,13 +21,13 @@ const Personal = () => {
       "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
     numSupporters: 16000,
     socialList: [
-      "https://www.youtube.com/@hellossafy",
+      "https://www.youtube.com/@SamsungKorea",
       "https://github.com/taebong1012",
       "https://velog.io/@taebong1012",
     ],
   };
 
-  // price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <S.Container>
@@ -39,9 +47,20 @@ const Personal = () => {
               </S.NumSupporter>
               supporter
             </S.SupporterContainer>
-            <S.ExternalLinkContainer></S.ExternalLinkContainer>
+
+            {/* 페이지 주인의 social link가 없을 경우에는 노출 X */}
+            {pageOwner.socialList.length !== 0 && (
+              <S.ExternalLinkContainer></S.ExternalLinkContainer>
+            )}
+
             <S.IntroductionContainer>
-              {pageOwner.introduction}
+              {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
+              {loginUser.memgerAddress === pageOwner.memberAddress && (
+                <S.IntroductionEdit>
+                  <FiEdit />
+                </S.IntroductionEdit>
+              )}
+              <S.Introduction>{pageOwner.introduction}</S.Introduction>
             </S.IntroductionContainer>
           </S.UserInfo>
           <S.Contents></S.Contents>

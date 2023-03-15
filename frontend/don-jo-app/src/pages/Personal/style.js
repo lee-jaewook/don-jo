@@ -79,22 +79,31 @@ export const ExternalLinkContainer = styled.div`
   border: 1px solid black;
   display: flex;
   margin-bottom: 2.5rem;
-
-  /* 임시 영역 설정 */
   height: 2.5rem;
   width: 9rem;
 `;
 
 export const IntroductionContainer = styled.div`
   width: 100%;
-  padding: 1rem;
-  max-height: 37.125rem;
+  padding: 1rem 0 1rem 1rem;
+  border: 1px solid var(--color-text-secondary);
   border-radius: 1.25rem;
-  overflow-y: auto;
 
   /* 임시 설정 */
-  background-color: #d9d9d9;
   line-height: 2rem;
+`;
+
+export const IntroductionEdit = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 1rem 0 0;
+  margin-bottom: 1rem;
+`;
+
+export const Introduction = styled.div`
+  overflow-y: auto;
+  max-height: 37.125rem;
 `;
 
 export const Contents = styled.div``;
