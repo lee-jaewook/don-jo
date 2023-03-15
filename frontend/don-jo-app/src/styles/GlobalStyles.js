@@ -98,6 +98,21 @@ select {
   -moz-appearance: none;
   appearance: none;
 }
+
+div {
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    border: none;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-text-secondary);
+    background-clip: padding-box;
+    border-radius: 1.25rem;
+  }
+  ::-webkit-scrollbar-track {
+    
+  }
+}
 `;
 
 export default GlobalStyle;
