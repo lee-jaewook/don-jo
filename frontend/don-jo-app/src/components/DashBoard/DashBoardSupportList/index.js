@@ -5,7 +5,107 @@ import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
 import * as S from "./style";
 
-const supportList = [];
+const supportList = [
+  {
+    uid: 1,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 2,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 3,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 4,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 5,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 6,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 7,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 8,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 9,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 10,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+  {
+    uid: 11,
+    amountEth: 100.0,
+    arrivedDate: "2023.02.01",
+    from: {
+      userNickname: "taebong",
+    },
+    to: {},
+  },
+];
 const DashBoardSupportList = () => {
   const location = useLocation();
 

@@ -11,7 +11,6 @@ export const DashboardWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   max-width: 80rem;
-  min-height: 63.5rem;
   background-color: white;
   border-radius: 1.25rem;
   margin: 0 auto;
