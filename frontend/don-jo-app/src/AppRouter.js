@@ -12,6 +12,7 @@ import Personal from "./pages/Personal";
 import DashBoard from "./pages/DashBoard";
 import Error from "./pages/Error";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "./components/Common/Header";
 import { connectWallet } from "./utils/connectWallet";
 
 const AppRouter = () => {
@@ -29,6 +30,7 @@ const AppRouter = () => {
   if (!isLogin) {
     return (
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Intro />} />
           <Route path="/guide" element={<Guide />} />
@@ -43,6 +45,7 @@ const AppRouter = () => {
 
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Intro />} />
         <Route path="/guide" element={<Guide />} />

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import * as S from "./style";
 import { FiChevronDown } from "react-icons/fi";
+import PropTypes from "prop-types";
 
-export const SelectBox = ({ width }) => {
+const SelectBox = ({ width }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
   return (
@@ -22,4 +23,10 @@ export const SelectBox = ({ width }) => {
       )}
     </S.SelectBox>
   );
+};
+
+export default SelectBox;
+
+SelectBox.propTypes = {
+  width: PropTypes.number,
 };

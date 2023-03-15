@@ -1,7 +1,8 @@
 import * as S from "./style";
 import { FiX } from "react-icons/fi";
+import PropTypes from "prop-types";
 
-export const FullScreenModal = ({ handleSetShowModal, children }) => {
+const FullScreenModal = ({ handleSetShowModal, children }) => {
   const closeModal = () => {
     handleSetShowModal(false);
   };
@@ -19,4 +20,14 @@ export const FullScreenModal = ({ handleSetShowModal, children }) => {
       </S.ModalBody>
     </S.Modal>
   );
+};
+
+export default FullScreenModal;
+
+FullScreenModal.propTypes = {
+  handleSetShowModal: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
