@@ -133,8 +133,4 @@ export const Introduction = styled.div`
   max-height: 37.125rem;
 `;
 
-export const Contents = styled.div`
-  border: 1px solid red;
-  width: 900px;
-  margin-left: auto;
-`;
+

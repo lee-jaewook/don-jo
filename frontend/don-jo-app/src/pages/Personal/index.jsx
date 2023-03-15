@@ -2,6 +2,7 @@ import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import ExternalLink from "../../components/Personal/ExternalLink";
 import { useState } from "react";
+import PersonalContent from "../../components/Personal/PersonalContent";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -88,7 +89,7 @@ const Personal = () => {
               <S.Introduction>{pageOwner.introduction}</S.Introduction>
             </S.IntroductionContainer>
           </S.UserInfo>
-          <S.Contents></S.Contents>
+          <PersonalContent />
         </S.ContentsContainer>
       </S.Wrapper>
     </S.Container>
