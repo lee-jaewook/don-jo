@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.6.0 <0.9.0;
 
-
 contract Donation {
   address payable public owner;
 
   struct Member {
     address donor;
-    string nickName;
+    string nickName; 
     uint256 amount;
     uint256 time;
   }
@@ -22,14 +21,14 @@ contract Donation {
     uint index;
     string donationType;
     string title;
-    Member[] donationInfo;
-  } 
+    // Member[] donationInfo;
+  }
 
   mapping(address => DonationData) public donations;
   mapping(address => mapping(uint16 => DonationData)) public wishlist;
   mapping(address => mapping(uint16 => DonationData)) public items;
 
-  event DonationReceived(address indexed donor, uint256 amount, string donationType);
+  event DonationReceived(uint256 amount, string donationType);
 
   constructor() {
     owner = payable(msg.sender);
@@ -48,7 +47,6 @@ contract Donation {
       owner: _to,
       title: "donation",
       donationType: "donation",
-      donationInfo: new Member[](0),
       effectiveness: true
     });
 
@@ -76,10 +74,12 @@ contract Donation {
     if(compareStrings(donationType, "donation")) {
       donations[msg.sender].amount += msg.value;
       donations[msg.sender].donationInfo.push();
+      emit DonationReceived(msg.value, donationType);
     }
     else if (compareStrings(donationType, "wishlist")) {
       wishlist[msg.sender][idx].amount += msg.value;
       wishlist[msg.sender][idx].donationInfo.push();
+      emit DonationReceived(msg.value, donationType);
     } 
     else {
       revert("Invalid donation type.");
