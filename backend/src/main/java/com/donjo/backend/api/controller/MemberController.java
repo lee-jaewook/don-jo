@@ -1,5 +1,6 @@
 package com.donjo.backend.api.controller;
 
+import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.db.entity.Member;
@@ -7,8 +8,11 @@ import com.donjo.backend.exception.DuplicateDataException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,10 +73,32 @@ public class MemberController {
   })
   @PostMapping(path="/member")
   public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
-    memberService.signUpMember(signUpMemberCond);
+    Map<String, Object> result = memberService.signUpMember(signUpMemberCond);
 
-    return new ResponseEntity(HttpStatus.OK);
+    return returnTokenHeaderAndPageName(result);
+  }
 
+  @ApiOperation(value="로그인", notes = "로그인을 합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PostMapping(path="/api/members")
+  public ResponseEntity login(@RequestBody LoginMemberCond loginMemberCond) {
+    Map<String, Object> result = memberService.loginMember(loginMemberCond);
+
+    return returnTokenHeaderAndPageName(result);
+  }
+
+  public ResponseEntity returnTokenHeaderAndPageName(Map<String, Object> result) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("accessToken", (String) result.get("accessToken"));
+    headers.add("refreshToken", (String) result.get("refreshToken"));
+
+    return new ResponseEntity<Object>(new HashMap<String, Object>() {{
+      put("pageName", result.get("pageName"));
+    }}, headers, HttpStatus.OK);
   }
 
 }
