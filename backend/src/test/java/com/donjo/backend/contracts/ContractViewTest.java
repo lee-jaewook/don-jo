@@ -18,6 +18,8 @@ import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.simpleconstruct.SimpleConstruct;
 import org.web3j.simplestorage.SimpleStorage;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -37,7 +39,7 @@ class ContractViewTest {
 
     @Test
     public void testEc2BlockConnection() throws ExecutionException, InterruptedException {
-        Web3j web3 = Web3j.build(new HttpService("http://j8a209.p.ssafy.io:8545"));
+        Web3j web3 = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         EthBlockNumber result = web3.ethBlockNumber().sendAsync().get();
         System.out.println(" The Block Number is: " + result.getBlockNumber().toString());
     }
@@ -90,4 +92,28 @@ class ContractViewTest {
         System.out.println("=====================================================================================");
     }
 
+    @Test
+    public void itemDeployViewTest() throws Exception{
+        Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
+        String myAddress = "0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7";
+        String contractAddress = "0x1187fd6E64B1b5DCE529021B70081939BcB05938";
+
+        Credentials credentials = Credentials.create(privateKey);
+
+        ContractGasProvider gasProvider = new DefaultGasProvider();
+
+        SimpleConstruct contract = SimpleConstruct.deploy(web3j
+                , credentials, gasProvider).send(); // gas limit
+        System.out.println("=====================================================================================");
+        System.out.println(contract.readMyItems().send());
+        System.out.println("=====================================================================================");
+    }
+
+    @Test
+    public void getLastBlockNumTest() throws Exception{
+        Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
+        EthBlockNumber blockNumber = web3j.ethBlockNumber().send();
+        BigInteger latestBlockNumber = blockNumber.getBlockNumber();
+        System.out.println(latestBlockNumber);
+    }
 }
