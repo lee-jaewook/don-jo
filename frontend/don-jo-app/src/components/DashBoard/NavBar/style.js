@@ -25,7 +25,7 @@ export const Line = styled.hr`
   margin-bottom: 2.5rem;
 `;
 
-export const UserImg = styled.div`
+export const UserImg = styled.img`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;

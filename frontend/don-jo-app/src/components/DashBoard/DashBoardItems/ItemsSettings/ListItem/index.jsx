@@ -1,8 +1,7 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiUser, FiEdit } from "react-icons/fi";
-import { HiOutlineCurrencyDollar } from "react-icons/hi";
+import { FiUser, FiEdit, FiCreditCard } from "react-icons/fi";
 
 const ListItem = ({
   uid,
@@ -29,12 +28,15 @@ const ListItem = ({
         </S.ItemInfo>
       </S.ItemInfoWrapper>
       <S.Count>
-        <FiUser />
+        <FiUser style={{ marginRight: "2px" }} />
         {supportCount}
-        <S.Unit>m</S.Unit>
       </S.Count>
       <S.Count>
-        <HiOutlineCurrencyDollar size="24px" color="var(--color-text)" />
+        <FiCreditCard
+          size="16px"
+          color="var(--color-text)"
+          style={{ marginRight: "2px" }}
+        />
         {totalAmount}
         <S.Unit>eth</S.Unit>
       </S.Count>

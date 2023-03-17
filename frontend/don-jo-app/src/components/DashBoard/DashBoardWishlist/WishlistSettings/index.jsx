@@ -1,6 +1,7 @@
 import React from "react";
+import * as S from "./style";
 const WishlistSettings = () => {
-  return <div>WishlistSettings</div>;
+  return <S.SettingWrapper>WishlistSettings</S.SettingWrapper>;
 };
 
 export default WishlistSettings;
