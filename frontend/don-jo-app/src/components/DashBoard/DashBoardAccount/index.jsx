@@ -59,7 +59,7 @@ const DashBoardAccount = () => {
       <S.BackgroundImg url={backgroundImgFile || ""}>
         <S.EditIconWrapper>
           <label htmlFor="bg-file">
-            <FiEdit size="24px" color="white" />
+            <FiEdit className="edit-icon" size="24px" color="white" />
           </label>
           <S.UploadButton
             ref={backgroundImgRef}
@@ -74,7 +74,7 @@ const DashBoardAccount = () => {
       <S.UserProfileImg url={profileImgFile || ""}>
         <S.EditIconWrapper>
           <label htmlFor="profile-file">
-            <FiEdit size="24px" color="white" />
+            <FiEdit className="edit-icon" size="24px" color="white" />
           </label>
           <S.UploadButton
             ref={profileRef}
