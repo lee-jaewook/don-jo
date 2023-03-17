@@ -1,4 +1,7 @@
 pipeline {
+
+   agent any
+   stages{
    stage('backend') {
              stages {
                stage('backend_build') {
@@ -16,5 +19,6 @@ pipeline {
                  }
                }
                }
+}
 }
 }
