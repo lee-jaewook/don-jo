@@ -8,12 +8,14 @@ export const Button = styled.button`
   line-height: 1.188rem;
   border-radius: 1.5rem;
   font-family: "RobotoMedium";
-  border: ${(props) => (props.isBackground ? "none" : "2px solid black")};
+  border: ${(props) =>
+    props.isBackground ? "transparent" : "2px solid black"};
   color: ${(props) => (props.isBackground ? "white" : props.color)};
   background-color: ${(props) => (props.isBackground ? props.color : "white")};
 
   &:hover {
-    border: ${(props) => (!props.isBackground ? "none" : "2px solid black")};
+    border: ${(props) =>
+      !props.isBackground ? "transparent" : "2px solid black"};
     color: ${(props) => (!props.isBackground ? "white" : props.color)};
     background-color: ${(props) =>
       !props.isBackground ? props.color : "white"};
