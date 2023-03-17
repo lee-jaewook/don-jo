@@ -8,8 +8,8 @@ export const Input = styled.input`
   border-radius: 0.5rem;
   background-color: white;
   margin-bottom: 0.75rem;
-
+  border: 1px solid transparent;
   &:hover {
-    border: 1px solid black;
+    border-color: black;
   }
 `;
