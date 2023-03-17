@@ -32,8 +32,8 @@ export const UserImg = styled.div`
   background-color: #ddd;
   border: 0.063rem solid #f1f1f1;
   box-shadow: 0rem 0.625rem 0.938rem 0.063rem rgba(0, 0, 0, 0.05);
-  margin-left: 40px;
-  margin-right: 12px;
+  margin-left: 2.5rem;
+  margin-right: 0.75rem;
   background-color: #f1f1f1;
 `;
 
@@ -59,9 +59,11 @@ export const MenuItem = styled.li`
 `;
 
 export const MenuLabel = styled(Link)`
+  padding: 1rem;
   margin-left: 1.5rem;
   line-height: 1.188rem;
   color: ${(props) => (props.current ? "white" : "var(--color-text)")};
+  background-color: transparent;
 `;
 
 export const MenuIcon = styled.span`
