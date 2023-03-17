@@ -9,13 +9,13 @@ public interface SupportService {
 
     CountResponseDto getSupportCount(String type);
 
-    DonationResponseDto getDonationSetting(int uid);
+    DonationDto getDonationSetting(String memberAddress);
 
     List<SupportResponseDto> getSupports(String Type, int pageNum);
 
     SupportDetailResponseDto getSupportDetail(String type,int supportUid);
 
-    void changeDonation(DonationRequestDto donationRequestDto);
+    void changeDonation(DonationDto donationDto);
 
-    QrResponseDto getQrcode(int uid);
+    QrResponseDto getQrcode(String memberAddress);
 }

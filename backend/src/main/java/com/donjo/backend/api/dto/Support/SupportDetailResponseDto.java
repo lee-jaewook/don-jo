@@ -21,9 +21,9 @@ public class SupportDetailResponseDto {
 
     private Double amountEth;
 
-    private String sendDate;
+    private String sendTimeStamp ;
 
-    private String arriveDate;
+    private String arriveTimeStamp ;
 
     private String sendMsg;
 }

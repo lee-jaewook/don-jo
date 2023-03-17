@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DonationResponseDto {
+public class DonationDto {
     private int pricePerDonation;
 
     private String donationEmoji;
