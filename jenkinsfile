@@ -1,15 +1,14 @@
 pipeline {
 
-      stage('backend') {
-             stages {
-               // Express Build
-               stage('back_build') {
+
+            stage('back_build') {
                  steps {
                     dir('backend'){
                    sh "docker build --tag test ."
                  }
                  }
                }
+
 
                // Express Run
                stage('back_run') {
