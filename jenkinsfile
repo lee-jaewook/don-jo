@@ -4,6 +4,16 @@ pipeline {
    stages{
    stage('backend') {
              stages {
+               stage('bootjar'){
+                steps{
+                    dir('backend'){
+                    sh "./gradlew bootJar"
+                    }
+                }
+
+               }
+
+
                stage('backend_build') {
                  steps {
                    dir('backend') {
