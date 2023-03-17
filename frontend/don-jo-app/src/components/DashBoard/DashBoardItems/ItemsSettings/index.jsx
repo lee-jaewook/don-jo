@@ -11,7 +11,7 @@ const ItemsSettings = () => {
   };
 
   return (
-    <S.FormWrapper>
+    <S.SettingWrapper>
       <S.AddButton>
         <S.AddIcon>
           <FiPlus size="32px" color="white" />
@@ -38,7 +38,7 @@ const ItemsSettings = () => {
       {itemList.length > 4 && (
         <ShowMoreButton handleOnClickButton={handleGetMyItemList} />
       )}
-    </S.FormWrapper>
+    </S.SettingWrapper>
   );
 };
 

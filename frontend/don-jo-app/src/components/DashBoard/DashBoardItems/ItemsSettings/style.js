@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const FormWrapper = styled.div`
+export const SettingWrapper = styled.div`
   width: 100%;
   max-width: 53.75rem;
   background-color: var(--color-modal);
