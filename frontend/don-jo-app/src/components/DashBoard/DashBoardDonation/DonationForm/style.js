@@ -2,59 +2,60 @@ import styled from "styled-components";
 
 export const FormWrapper = styled.div`
   width: 100%;
-  max-width: 860px;
+  max-width: 53.75rem;
   background-color: var(--color-modal);
-  border-radius: 20px;
-  padding: 32px 24px;
-  margin-bottom: 40px;
+  border-radius: 1.25rem;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2.5rem;
 `;
 
 export const FormDescription = styled.p`
   width: 100%;
-  font-size: 14px;
-  line-height: 16px;
-  margin: 12px 0px 24px 0px;
+  font-size: 0.875;
+  line-height: 1rem;
+  margin: 0.75rem 0rem 1.5rem 0rem;
 `;
 
 export const EmojiSettingWrapper = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  max-width: 288px;
-  margin-bottom: 60px;
+  max-width: 18rem;
+  margin-bottom: 3.75rem;
 `;
 
 export const EmojiButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 120px;
-  height: 44px;
-  font-size: 24px;
-  line-height: 28px;
+  width: 7.5rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
   border: none;
   background-color: white;
-  border-radius: 8px;
-  margin-right: 12px;
+  border-radius: 0.5rem;
+  margin-right: 0.75rem;
 `;
 
 export const EmojiPickerModal = styled.div`
   position: absolute !important;
-  top: 48px;
-  left: 0px;
+  top: 3rem;
+  left: 0rem;
+  z-index: 10;
 `;
 
 export const RadioGroup = styled.div`
   display: flex;
   width: 100%;
-  max-width: 268px;
+  max-width: 16.75rem;
   justify-content: space-between;
-  margin-bottom: 60px;
+  margin-bottom: 3.75rem;
 `;
 
 export const RadioWrapper = styled.div`
   position: relative;
-  max-width: 44px;
+  max-width: 2.75rem;
   background-color: transparent;
 `;
 
@@ -63,18 +64,18 @@ export const RadioLabel = styled.label`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.875rem;
+  line-height: 1rem;
   cursor: pointer;
 `;
 
 export const RadioButton = styled.input`
   appearance: none;
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 50%;
   background-color: white;
-  border: 1px solid black;
+  border: 0.0625rem solid black;
   margin: 0;
   cursor: pointer;
 
@@ -88,6 +89,6 @@ export const RadioButton = styled.input`
 `;
 
 export const ButtonWrapper = styled.div`
-  max-width: 280px;
-  margin: 60px auto 30px auto;
+  max-width: 17.5rem;
+  margin: 3.75rem auto 1.875rem auto;
 `;
