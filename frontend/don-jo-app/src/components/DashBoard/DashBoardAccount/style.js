@@ -15,6 +15,10 @@ export const BackgroundImg = styled.div`
   border-radius: 0.5rem;
   background-color: #d9d9d9;
   margin-bottom: 3.75rem;
+  background-image: ${(props) => `url(${props.url})` || ""};
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 export const EditIconWrapper = styled.div`
@@ -38,6 +42,10 @@ export const UserProfileImg = styled.div`
   border-radius: 50%;
   background-color: #d9d9d9;
   margin-bottom: 3.75rem;
+  background-image: ${(props) => `url(${props.url})` || ""};
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 export const InputWrapper = styled.div`
@@ -74,4 +82,13 @@ export const Color = styled.input`
 export const ButtonWrapper = styled.div`
   width: 17.5rem;
   margin: 3.75rem auto 0 auto;
+`;
+
+export const UploadButton = styled.input`
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 `;

@@ -91,3 +91,5 @@ export const itemList = [
     supportCount: 3,
   },
 ];
+
+export const colorSet = ["#F02C7E", "#F96D1F", "#14A985", "#2966DD", "#9042DD"];
