@@ -1,19 +1,20 @@
 pipeline {
-
-
-            stage('back_build') {
+   stage('backend') {
+             stages {
+               stage('backend_build') {
                  steps {
-                    dir('backend'){
-                   sh "docker build --tag test ."
-                 }
+                   dir('backend') {
+                     sh "docker build --tag test ."
+                   }
                  }
                }
 
-
-               // Express Run
-               stage('back_run') {
+               // 스프링 Run
+               stage('backend_serve') {
                  steps {
-                   sh "docker run -d -p 8080:8080 test"
+                   sh "docker run -d -p 8080:8080 --name test"
                  }
                }
+               }
+}
 }
