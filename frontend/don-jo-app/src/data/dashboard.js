@@ -48,3 +48,46 @@ export const generatorData = [
       "Allow your audience to buy you a coffee right from your own website. Customize the widget with a message.",
   },
 ];
+
+export const itemList = [
+  {
+    uid: 1,
+    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
+    title: "Where is my Home Project",
+    collectedAmount: "120.000",
+    totalAmount: "360.000",
+    supportCount: 257,
+  },
+  {
+    uid: 2,
+    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
+    title: "Where is my Home Project",
+    collectedAmount: "120.000",
+    totalAmount: "360.000",
+    supportCount: 3,
+  },
+  {
+    uid: 3,
+    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
+    title: "Where is my Home Project",
+    collectedAmount: "120.000",
+    totalAmount: "360.000",
+    supportCount: 18,
+  },
+  {
+    uid: 4,
+    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
+    title: "Where is my Home Project",
+    collectedAmount: "120.000",
+    totalAmount: "360.000",
+    supportCount: 534,
+  },
+  {
+    uid: 5,
+    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
+    title: "Where is my Home Project",
+    collectedAmount: "120.000",
+    totalAmount: "360.000",
+    supportCount: 3,
+  },
+];
