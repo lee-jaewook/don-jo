@@ -21,4 +21,17 @@ export const RepresentContainer = styled.div`
 export const Title = styled.div`
   width: 100%;
   display: flex;
+  position: relative;
+`;
+
+export const ReplyBtnWrapper = styled.div`
+  border: 1px solid red;
+  position: absolute;
+  top: 1.5rem;
+`;
+
+export const ReplyBtn = styled.button`
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: ;
 `;

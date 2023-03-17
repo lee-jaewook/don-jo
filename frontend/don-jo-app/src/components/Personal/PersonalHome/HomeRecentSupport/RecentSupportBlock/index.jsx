@@ -1,6 +1,7 @@
 import * as S from "./style";
 import ProfileImg from "../../../../Common/ProfileImg";
 import { useEffect, useState } from "react";
+import BasicInput from "../../../../Common/BasicInput";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -30,6 +31,7 @@ const RecentSupportBlock = ({ supportContent }) => {
   const baseURL = "http://localhost:3000/";
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
+  const [isShowReplyInput, setIsShowReplyInput] = useState(false);
 
   useEffect(() => {
     switch (supportContent.supportType) {
@@ -61,18 +63,20 @@ const RecentSupportBlock = ({ supportContent }) => {
             />
           </div>
           <S.Title>
-            <div style={{ fontFamily: "RobotoMedium" }}>
+            <span style={{ fontFamily: "RobotoMedium" }}>
               {supportContent.fromMember.nickname}
-            </div>
-            <div>
-              &nbsp;
-              {supportText}
-              &nbsp;
-            </div>
-            <div style={{ fontFamily: "RobotoMedium" }}>
+            </span>
+            &nbsp;
+            {supportText}
+            &nbsp;
+            <span style={{ fontFamily: "RobotoMedium" }}>
               {pageOwner.nickname}
-            </div>
-            <div style={{ marginLeft: "auto" }}>{emoji}</div>
+            </span>
+            <span style={{ marginLeft: "auto" }}>{emoji}</span>
+            <S.ReplyBtnWrapper>
+              <S.ReplyBtn>Reply</S.ReplyBtn>
+              <BasicInput />
+            </S.ReplyBtnWrapper>
           </S.Title>
         </S.RepresentContainer>
       </S.Container>
