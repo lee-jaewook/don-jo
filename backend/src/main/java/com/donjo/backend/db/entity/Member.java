@@ -25,6 +25,7 @@ import java.util.Set;
 public class Member {
    @Id
    @Column(name = "address")
+   @GeneratedValue(strategy = GenerationType.AUTO)
    private String address;
 
    @Column(name = "nickname", length = 10)

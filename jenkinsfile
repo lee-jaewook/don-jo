@@ -1,0 +1,34 @@
+pipeline {
+
+   agent any
+   stages{
+   stage('backend') {
+             stages {
+               stage('bootjar'){
+                steps{
+                    dir('backend'){
+                    sh "./gradlew bootJar"
+                    }
+                }
+
+               }
+
+
+               stage('backend_build') {
+                 steps {
+                   dir('backend') {
+                     sh "docker build --tag test ."
+                   }
+                 }
+               }
+
+               // 스프링 Run
+               stage('backend_serve') {
+                 steps {
+                   sh "docker run -d -p 8080:8080 --name test"
+                 }
+               }
+               }
+}
+}
+}
