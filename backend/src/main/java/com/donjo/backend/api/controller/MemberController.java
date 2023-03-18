@@ -107,6 +107,20 @@ public class MemberController {
     return ResponseEntity.status(200).headers(headers).build();
   }
 
+  @ApiOperation(value="로그아웃", notes = "헤더의 access 토큰 정보를 통해 refreshToken을 삭제 시킨다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "OK(로그아웃 성공)"),
+          @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+          @ApiResponse(code = 500, message = "서버에러")
+  })
+  @GetMapping(path="/auth/member/logout")
+  public ResponseEntity<?> logout(HttpServletRequest request) {
+    String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+    memberService.logout(accessToken.substring(7));
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
   public HttpHeaders returnTokenHeader(Map<String, Object> result) {
     HttpHeaders headers = new HttpHeaders();
     headers.add(JwtFilter.ACCESS_HEADER, "Bearer " + result.get("accessToken"));
