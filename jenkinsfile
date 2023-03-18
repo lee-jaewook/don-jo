@@ -2,9 +2,9 @@ pipeline {
 
    agent any
    stages{
-   stage('backend') {
+   stage('백엔드 자동 배포') {
              stages {
-                 stage('gradlew'){
+                 stage('gradlew 권한'){
                                 steps{
                                     dir('backend'){
                                     sh "chmod +x gradlew"
@@ -12,30 +12,23 @@ pipeline {
                                 }
 
                                }
-               stage('bootjar'){
+               stage('백엔드 이미지 생성'){
                 steps{
                     dir('backend'){
-                    sh "./gradlew bootJar"
+                    sh "./gradlew bootBuildImage"
                     }
                 }
 
                }
 
 
-               stage('backend_build') {
-                 steps {
-                   dir('backend') {
-                     sh "docker build --tag test ."
-                   }
-                 }
-               }
 
                // 스프링 Run
-               stage('backend_serve') {
-                 steps {
-                   sh "docker run -d -p 8080:8080 --name test"
-                 }
-               }
+//                stage('backend_serve') {
+//                  steps {
+//                    sh "docker run -d -p 8080:8080 --name test"
+//                  }
+//                }
                }
 }
 }
