@@ -1,5 +1,6 @@
 package com.donjo.backend.api.controller;
 
+import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
@@ -10,10 +11,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,7 +48,6 @@ public class MemberController {
   public ResponseEntity<?> checkDuplicatePageName(@RequestParam("pageName") String pageName) {
     if(memberService.isPageNameDuplicate(pageName).isPresent()) throw new DuplicateDataException("이미 사용중인 페이지명 입니다.");
     return new ResponseEntity(HttpStatus.OK);
-
   }
 
   @ApiOperation(value="회원가입", notes = "회원 가입을 합니다.")
