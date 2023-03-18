@@ -4,6 +4,14 @@ pipeline {
    stages{
    stage('backend') {
              stages {
+                 stage('gradlew'){
+                                steps{
+
+                                    sh "chmod +x gradlew"
+
+                                }
+
+                               }
                stage('bootjar'){
                 steps{
                     dir('backend'){
