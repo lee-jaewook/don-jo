@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -87,6 +89,22 @@ public class MemberController {
     return new ResponseEntity<Object>(new HashMap<String, Object>() {{
       put(PAGE_NAME, result.get(PAGE_NAME));
     }}, headers, HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "Access 토큰 재발급", notes = "헤더의 refresh 토큰 정보를 통해 access 토큰을 재발급한다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "Access Token 재발급 성공"),
+          @ApiResponse(code = 400, message = "기타 오류"),
+          @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
+          @ApiResponse(code = 500, message = "서버 오류")
+  })
+  @PostMapping("/auth/member/refresh")
+  public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
+    String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
+    Map<String, Object> result = memberService.refreshAccessToken(refreshToken.substring(7));
+    HttpHeaders headers = returnTokenHeader(result);
+
+    return ResponseEntity.status(200).headers(headers).build();
   }
 
   public HttpHeaders returnTokenHeader(Map<String, Object> result) {

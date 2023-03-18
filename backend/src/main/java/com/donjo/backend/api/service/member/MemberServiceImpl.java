@@ -2,6 +2,7 @@ package com.donjo.backend.api.service.member;
 
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.Member;
@@ -14,7 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import com.donjo.backend.exception.UnAuthorizationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
   private final TokenProvider tokenProvider;
+  private final String PAGE_NAME = "pageName";
 
   @Override
   public Optional<Member> findMember(String memberAddress) {
@@ -59,17 +64,46 @@ public class MemberServiceImpl implements MemberService {
 
     memberRepository.save(member);
 
-    return returnTokenAndPagename(member);
+    Map<String, Object> result = returnToken(member);
+    result.put(PAGE_NAME, member.getPageName());
+
+    return result;
   }
 
   @Override
   public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
     Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new BadRequestException("아이디가 존재하지 않습니다."));
+    Map<String, Object> result = returnToken(member);
+    result.put(PAGE_NAME, member.getPageName());
 
-    return returnTokenAndPagename(member);
+    return result;
   }
 
-  public Map<String, Object> returnTokenAndPagename(Member member) {
+  @Override
+  public Map<String, Object> refreshAccessToken(String refreshToken) {
+    Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+    Member object = memberRepository.findByAddress(authentication.getName());
+
+    if (object != null) {
+      Member member = object;
+      if (refreshToken.equals(member.getRefreshToken())) {
+        if (tokenProvider.validateToken(refreshToken)) {
+          HashMap<String, Object> token = returnToken(member);
+          member.setRefreshToken((String) token.get(JwtFilter.REFRESH_HEADER));
+          memberRepository.save(member);
+          return token;
+        } else {
+          throw new UnAuthorizationException("refreshToken 만료");
+        }
+      } else {
+        throw new UnAuthorizationException("refreshToken 매칭 오류");
+      }
+    } else {
+      throw new BadRequestException("회원이 존재 하지 않습니다.");
+    }
+  }
+
+  public HashMap<String, Object> returnToken(Member member) {
     String accessToken = tokenProvider.createAccessToken(member);
     String refreshToken = tokenProvider.createRefreshToken(member);
 
@@ -77,9 +111,8 @@ public class MemberServiceImpl implements MemberService {
     memberRepository.save(member);
 
     return new HashMap<>() {{
-      put("pageName", member.getPageName());
-      put("accessToken", accessToken);
-      put("refreshToken", refreshToken);
+      put(JwtFilter.ACCESS_HEADER, accessToken);
+      put(JwtFilter.REFRESH_HEADER, refreshToken);
     }};
   }
 }

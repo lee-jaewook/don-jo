@@ -12,4 +12,6 @@ public interface MemberService {
   Optional<Member> isPageNameDuplicate(String pageName);
   Map<String, Object> signUpMember(SignUpMemberCond signUpMemberCond);
   Map<String, Object> loginMember(LoginMemberCond loginMemberCond);
+
+  Map<String, Object> refreshAccessToken(String refreshToken);
 }
