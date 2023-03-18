@@ -23,7 +23,6 @@ import java.util.Set;
 public class Member {
    @Id
    @Column(name = "address")
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private String address;
 
    @Column(name = "nickname", length = 10)
@@ -32,7 +31,7 @@ public class Member {
 
    @Column(name = "pagename", length = 30)
    @NotNull
-   private String pagename;
+   private String pageName;
 
    @ManyToMany
    @JoinTable(
