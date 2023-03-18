@@ -81,8 +81,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public Map<String, Object> refreshAccessToken(String refreshToken) {
-    Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-    Member object = memberRepository.findByAddress(authentication.getName());
+    Member object = getMemberInfoWithToken(refreshToken);
 
     if (object != null) {
       Member member = object;
@@ -105,8 +104,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public void logout(String accessToken) {
-    Authentication authentication = tokenProvider.getAuthentication(accessToken);
-    Member member = memberRepository.findByAddress(authentication.getName());
+    Member member = getMemberInfoWithToken(accessToken);
 
     if (member != null) {
       member.setRefreshToken("");
@@ -128,5 +126,10 @@ public class MemberServiceImpl implements MemberService {
       put(JwtFilter.ACCESS_HEADER, accessToken);
       put(JwtFilter.REFRESH_HEADER, refreshToken);
     }};
+  }
+
+  public Member getMemberInfoWithToken(String token) {
+    Authentication authentication = tokenProvider.getAuthentication(token);
+    return memberRepository.findByAddress(authentication.getName());
   }
 }
