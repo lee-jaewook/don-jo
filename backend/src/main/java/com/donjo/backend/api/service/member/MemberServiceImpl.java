@@ -1,11 +1,17 @@
 package com.donjo.backend.api.service.member;
 
+import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.repository.MemberRepository;
+import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.DuplicateDataException;
 import com.donjo.backend.exception.DuplicateMemberException;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
-  private final MemberRepositorySupport memberRepositorySupport;
   private final PasswordEncoder passwordEncoder;
+  private final TokenProvider tokenProvider;
 
   @Override
   public Optional<Member> findMember(String memberAddress) {
@@ -58,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
-    Member member = memberRepository.findByAddressSupport(loginMemberCond.getMemberAddress());
+    Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new BadRequestException("아이디가 존재하지 않습니다."));
 
     return returnTokenAndPagename(member);
   }
@@ -68,9 +74,9 @@ public class MemberServiceImpl implements MemberService {
     String refreshToken = tokenProvider.createRefreshToken(member);
 
     member.setRefreshToken(refreshToken);
-    memberRepository.saveMember(member);
+    memberRepository.save(member);
 
-    return new HashMap<String, Object>() {{
+    return new HashMap<>() {{
       put("pageName", member.getPageName());
       put("accessToken", accessToken);
       put("refreshToken", refreshToken);
