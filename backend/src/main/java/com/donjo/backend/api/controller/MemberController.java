@@ -1,6 +1,5 @@
 package com.donjo.backend.api.controller;
 
-import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +29,7 @@ public class MemberController {
       @ApiResponse(code = 500, message = "서버에러")
   })
   @GetMapping(path="/members/{memberAddress}")
-  public ResponseEntity checkExistingMember(@PathVariable("memberAddress") String memberAddress) {
+  public ResponseEntity<?> checkExistingMember(@PathVariable("memberAddress") String memberAddress) {
     Optional<Member> member = memberService.findMember(memberAddress);
 
     if (member.isPresent()) {
@@ -50,12 +47,8 @@ public class MemberController {
       @ApiResponse(code = 500, message = "서버에러")
   })
   @GetMapping(path="/members/page-name/check")
-  public ResponseEntity checkDuplicatePageName(@RequestParam("pageName") String pageName) {
-    boolean isDuplicate = memberService.isPageNameDuplicate(pageName);
-
-    if (isDuplicate) {
-      throw new DuplicateDataException("이미 사용중인 페이지 이름 입니다.");
-    }
+  public ResponseEntity<?> checkDuplicatePageName(@RequestParam("pageName") String pageName) {
+    if(memberService.isPageNameDuplicate(pageName).isPresent()) throw new DuplicateDataException("이미 사용중인 페이지명 입니다.");
     return new ResponseEntity(HttpStatus.OK);
 
   }

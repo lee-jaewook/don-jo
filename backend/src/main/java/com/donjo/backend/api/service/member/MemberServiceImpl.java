@@ -1,32 +1,26 @@
 package com.donjo.backend.api.service.member;
 
-import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.repository.MemberRepository;
-import com.donjo.backend.exception.DuplicateDataException;
-import com.donjo.backend.exception.DuplicateMemberException;
+import com.donjo.backend.db.repository.MemberRepositorySupport;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service("MemberService")
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
-  private final PasswordEncoder passwordEncoder;
-
+  private final MemberRepositorySupport memberRepositorySupport;
   @Override
   public Optional<Member> findMember(String memberAddress) {
-    return memberRepository.findByAddressSupport(memberAddress);
+    return Optional.ofNullable(memberRepository.findByAddress(memberAddress));
   }
 
   @Override
-  public boolean isPageNameDuplicate(String pageName) {
-    return memberRepository.findByPageNameSupport(pageName).isPresent();
+  public Optional<Member> isPageNameDuplicate(String pageName) {
+    return Optional.ofNullable(memberRepository.findByPageName(pageName));
   }
 
   @Override
