@@ -32,6 +32,7 @@ const RecentSupportBlock = ({ supportContent }) => {
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
+  const [commentInputText, setCommentInputText] = useState(""); //댓글 입력
 
   useEffect(() => {
     switch (supportContent.supportType) {
@@ -48,37 +49,58 @@ const RecentSupportBlock = ({ supportContent }) => {
         setEmoji("📁");
         break;
     }
-    console.log(">>>>", supportText);
   }, []);
+
+  //댓글 입력 반영
+  const handleOnChangeInput = (e) => {
+    setCommentInputText(e.target.value);
+  };
+
+  //댓글 등록
+  const doRegistComment = () => {
+    console.log({ commentInputText }, "댓글 등록");
+  };
 
   return (
     <div>
       <S.Container>
         <S.RepresentContainer>
-          <div style={{ marginRight: "0.5rem" }}>
+          <S.ProfileImgContainer>
             <ProfileImg
               width={3}
               src={supportContent.fromMember.profileImgPath}
               to={baseURL + supportContent.fromMember.pageName}
             />
-          </div>
-          <S.Title>
-            <span style={{ fontFamily: "RobotoMedium" }}>
-              {supportContent.fromMember.nickname}
-            </span>
-            &nbsp;
-            {supportText}
-            &nbsp;
-            <span style={{ fontFamily: "RobotoMedium" }}>
-              {pageOwner.nickname}
-            </span>
-            <span style={{ marginLeft: "auto" }}>{emoji}</span>
-            <S.ReplyBtnWrapper>
-              <S.ReplyBtn>Reply</S.ReplyBtn>
-              <BasicInput />
-            </S.ReplyBtnWrapper>
-          </S.Title>
+          </S.ProfileImgContainer>
+          <S.TitleWrapper>
+            <S.TitleContent>
+              <S.Nickname>{supportContent.fromMember.nickname}</S.Nickname>
+              &nbsp;
+              {supportText}
+              &nbsp;
+              <S.Nickname>{pageOwner.nickname}</S.Nickname>
+            </S.TitleContent>
+            {loginUser.memberAddress === pageOwner.memberAddress && (
+              <S.ReplyBtn
+                onClick={() => {
+                  setIsShowReplyInput((prev) => !prev);
+                }}
+              >
+                {isShowReplyInput ? "Close" : "Reply"}
+              </S.ReplyBtn>
+            )}
+          </S.TitleWrapper>
+          <span style={{ marginLeft: "auto" }}>{emoji}</span>
         </S.RepresentContainer>
+        {loginUser.memberAddress === pageOwner.memberAddress &&
+          isShowReplyInput && (
+            <S.InputContainer>
+              <S.BasicInputWrapper>
+                <BasicInput handleOnChangeValue={handleOnChangeInput} />
+              </S.BasicInputWrapper>
+              <S.RegistBtn onClick={doRegistComment}>Regist</S.RegistBtn>
+            </S.InputContainer>
+          )}
       </S.Container>
       <S.Line />
     </div>
