@@ -44,6 +44,10 @@ public class Member {
    @Nullable
    private String profileImagePath;
 
+   @Column(length = 300)
+   @Nullable
+   private String refreshToken;
+
    @ManyToMany
    @JoinTable(
       name = "user_authority_join",
