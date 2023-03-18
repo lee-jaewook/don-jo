@@ -1,24 +1,15 @@
 package com.donjo.backend.db.repository;
 
 import com.donjo.backend.db.entity.Member;
-import com.donjo.backend.db.entity.QMember;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
-  private final JPAQueryFactory jPAQueryFactory;
+public interface MemberRepository extends JpaRepository<Member, String> {
+  @Transactional(readOnly = true)
+  Member findByAddress(String address);
 
   @Transactional(readOnly = true)
-  public Optional<Member> findByAddressSupport(String address) {
-    return Optional.ofNullable(jPAQueryFactory
-        .selectFrom(QMember.member)
-        .where(QMember.member.address.eq(address))
-        .fetchOne());
-  }
+  Member findByPageName(String address);
+
 
 }

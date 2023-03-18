@@ -5,5 +5,6 @@ import java.util.Optional;
 
 public interface MemberService {
   Optional<Member> findMember(String memberAddress);
+  Optional<Member> isPageNameDuplicate(String pageName);
 
 }

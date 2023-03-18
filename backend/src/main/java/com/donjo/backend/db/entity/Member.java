@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,12 +23,15 @@ import java.util.Set;
 public class Member {
    @Id
    @Column(name = "address")
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private String address;
 
    @Column(name = "nickname", length = 10)
    @NotNull
    private String nickname;
+
+   @Column(name = "pagename", length = 30)
+   @NotNull
+   private String pageName;
 
    @ManyToMany
    @JoinTable(
