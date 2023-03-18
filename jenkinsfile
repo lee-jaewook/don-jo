@@ -6,9 +6,9 @@ pipeline {
              stages {
                  stage('gradlew'){
                                 steps{
-
+                                    dir('backend'){
                                     sh "chmod +x gradlew"
-
+}
                                 }
 
                                }
