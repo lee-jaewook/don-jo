@@ -103,6 +103,20 @@ public class MemberServiceImpl implements MemberService {
     }
   }
 
+  @Override
+  public void logout(String accessToken) {
+    Authentication authentication = tokenProvider.getAuthentication(accessToken);
+    Member member = memberRepository.findByAddress(authentication.getName());
+
+    if (member != null) {
+      member.setRefreshToken("");
+      memberRepository.save(member);
+    } else {
+      throw new BadRequestException("회원이 존재 하지 않습니다.");
+    }
+
+  }
+
   public HashMap<String, Object> returnToken(Member member) {
     String accessToken = tokenProvider.createAccessToken(member);
     String refreshToken = tokenProvider.createRefreshToken(member);
