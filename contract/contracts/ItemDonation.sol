@@ -47,28 +47,10 @@ contract ItemDonation is SupportHistory {
         return _id;
     }
 
-    function _createItem(
-        string memory _title,
-        string memory _imgPath,
-        string memory _description,
-        uint _price,
-        string memory _message,
-        string memory _filePath,
-        address _seller
-    ) internal {
+    function _createItem(Item memory _item) internal {
         itemCount++;
-        items[itemCount] = Item({
-            id: itemCount,
-            title: _title,
-            imgPath: _imgPath,
-            description: _description,
-            price: _price,
-            message: _message,
-            filePath: _filePath,
-            isDeleted: false,
-            seller: _seller
-        });
-        myItems[_seller].push(itemCount);
+        items[itemCount] = _item;
+        myItems[_item.seller].push(itemCount);
     }
     function _getItemList(uint256[] memory indexes) internal view returns (Item[] memory) {
         Item[] memory result = new Item[](indexes.length);
@@ -95,28 +77,9 @@ contract ItemDonation is SupportHistory {
         items[id].isDeleted = true;
     }
 
-    function _updateItem(
-        string memory _title,
-        string memory _imgPath,
-        string memory _description,
-        uint _price,
-        string memory _message,
-        string memory _filePath,
-        address _seller,
-        uint256 _id
-    ) internal {
-        require(_id <= itemCount, "Invalid index");
-        items[_id] = Item({
-            id: _id,
-            title: _title,
-            imgPath: _imgPath,
-            description: _description,
-            price: _price,
-            message: _message,
-            filePath: _filePath,
-            isDeleted: false,
-            seller: _seller
-        });
-        myItems[_seller].push(itemCount);
+    function _updateItem(Item memory _item) internal {
+        require(_item.id <= itemCount, "Invalid index");
+        items[_item.id] = _item;
+        myItems[_item.seller].push(itemCount);
     }
 }
