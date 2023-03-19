@@ -4,12 +4,10 @@ import BasicInput from "../Common/BasicInput";
 import BasicModal from "../Common/Modal/BasicModal";
 import BasicButton from "../Common/BasicButton";
 
-import * as S from "./style";
-
-const LogIn = () => {
+const LogIn = ({ isModelOpen }) => {
+  console.log("하하");
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleId = (e) => {
     setId(e.target.value);
@@ -36,16 +34,24 @@ const LogIn = () => {
           handleOnChangeValue={handlePassword}
           placeholder="비밀번호를 입력해주세요."
         />
-        <BasicButton text="Submit" handleOnClickButton={handleSubmit} />
+        <BasicButton
+          text="Submit"
+          color="black"
+          handleOnClickButton={handleSubmit}
+        />
       </>
     );
   };
 
   return (
     <div>
-      <BasicModal handleSetShowModal={setIsModalOpen} children={children()} />
+      <BasicModal handleSetShowModal={isModelOpen} children={children()} />
     </div>
   );
 };
 
 export default LogIn;
+
+LogIn.propTypes = {
+  isModelOpen: PropTypes.func.isRequired,
+};
