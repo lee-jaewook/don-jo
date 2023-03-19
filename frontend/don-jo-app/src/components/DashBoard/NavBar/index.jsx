@@ -3,18 +3,22 @@ import { useLocation } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
 import TestUserImg from "../../../assets/img/common/img-test-user.jpg";
-
+import { Desktop } from "../../../components/Common/Template";
 const NavBar = () => {
   const location = useLocation();
 
   return (
     <S.NavBar>
-      <S.UserWrapper>
-        <S.UserImg alt="user-profile-img" src={TestUserImg} />
-        <S.UseName>HyunJu</S.UseName>
-      </S.UserWrapper>
+      <Desktop>
+        <S.UserWrapper>
+          <S.UserImg alt="user-profile-img" src={TestUserImg} />
+          <S.UseName>HyunJu</S.UseName>
+        </S.UserWrapper>
+      </Desktop>
       <S.MenuWrapper>
-        <S.Line />
+        <Desktop>
+          <S.Line />
+        </Desktop>
         {menus &&
           menus.length > 0 &&
           menus.map((item, index) => (

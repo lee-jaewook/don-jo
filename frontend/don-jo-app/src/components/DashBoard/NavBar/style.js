@@ -9,6 +9,21 @@ export const NavBar = styled.div`
   width: 23.75rem;
   height: 100%;
   background-color: transparent;
+  padding-left: 2.5rem;
+  @media (max-width: 768px) {
+    position: absolute;
+    top: unset;
+    bottom: 7rem;
+    right: 1.25rem;
+    width: 12.75rem;
+    height: 21.125rem;
+    border-radius: 1.25rem;
+    background-color: white;
+    z-index: 100;
+    overflow: hidden;
+    padding-left: 0px;
+    align-items: center;
+  }
 `;
 
 export const UserWrapper = styled.div`
@@ -48,6 +63,10 @@ export const MenuWrapper = styled.ul`
   list-style: none;
   margin-top: 2.25rem;
   margin-left: 2.5rem;
+  @media (max-width: 768px) {
+    width: 11.25rem;
+    margin: 0.75rem;
+  }
 `;
 export const MenuItem = styled.li`
   width: 100%;
@@ -64,6 +83,9 @@ export const MenuLabel = styled(Link)`
   line-height: 1.188rem;
   color: ${(props) => (props.current ? "white" : "var(--color-text)")};
   background-color: transparent;
+  @media (max-width: 768px) {
+    margin: 0rem;
+  }
 `;
 
 export const MenuIcon = styled.span`
