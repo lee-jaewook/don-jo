@@ -1,4 +1,4 @@
-package com.donjo.backend.api.dto;
+package com.donjo.backend.api.dto.web3j;
 
 import java.math.BigInteger;
 import org.web3j.abi.TypeReference;
