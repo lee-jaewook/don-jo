@@ -29,7 +29,6 @@ export const TitleWrapper = styled.div`
 
 export const TitleContent = styled.div`
   width: 100%;
-  display: flex;
 `;
 
 export const Nickname = styled.span`
