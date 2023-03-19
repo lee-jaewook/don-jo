@@ -4,8 +4,15 @@ import BasicTitle from "../../Common/BasicTitle";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
 import * as S from "./style";
-
-const supportList = [];
+const supportList = [
+  {
+    uid: 1,
+    amountEth: "100.000",
+    arrivedDate: "2023.03.02",
+    fromMember: {},
+    toMember: {},
+  },
+];
 const DashBoardSupportList = () => {
   const location = useLocation();
 

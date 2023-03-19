@@ -29,7 +29,7 @@ export const EditIconWrapper = styled.div`
 
 export const BackgroundImg = styled.div`
   position: relative;
-  width: 40rem;
+  max-width: 40rem;
   height: 7.1875rem;
   border-radius: 0.5rem;
   background-color: #d9d9d9;

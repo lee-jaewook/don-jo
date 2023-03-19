@@ -15,6 +15,10 @@ export const SupportListHeader = styled.div`
   justify-content: space-between;
   background-color: transparent;
   margin-bottom: 0.75rem;
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `;
 
 export const EmojiList = styled.ul`

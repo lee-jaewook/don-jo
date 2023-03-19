@@ -6,4 +6,7 @@ export const HomeContainer = styled.div`
   min-height: calc(100vh - 120px);
   background-color: transparent;
   margin: 2.5rem 2.5rem 0rem 0rem;
+  @media (max-width: 768px) {
+    margin: 0 auto;
+  }
 `;

@@ -10,15 +10,16 @@ const DashBoard = () => {
 
   const handleOnClickButton = () => {
     setToggleClassName((prev) => !prev);
-    if (isToggleStatus) {
-      document.body.style.overflow = "unset";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
+    document.body.style.overflow = isToggleStatus ? "unset" : "hidden";
   };
 
+  // 메뉴바 상태에 따른 처리
   useEffect(() => {
-    if (isToggleStatus) setToggleClassName(false);
+    if (!isToggleStatus) return;
+
+    setToggleClassName(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.body.style.overflow = "unset";
   }, [location.pathname]);
 
   return (
