@@ -3,6 +3,7 @@ import PersonalTab from "../PersonalTab";
 import { useTabs } from "../../../hooks/useTabs";
 import PersonalHome from "../PersonalHome";
 import PersonalItems from "../PersonalItems";
+import PersonalWishlist from "../PersonalWishlist";
 
 const allTab = [
   {
@@ -18,7 +19,7 @@ const allTab = [
   {
     index: 2,
     name: "Wishlist",
-    component: <>위시리스트</>,
+    component: <PersonalWishlist />,
   },
 ];
 
