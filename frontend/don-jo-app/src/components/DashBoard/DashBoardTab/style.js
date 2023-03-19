@@ -2,12 +2,16 @@ import styled from "styled-components";
 
 export const TabWrapper = styled.div`
   display: flex;
-  width: 100%;
-  max-width: 53.75rem;
   justify-content: flex-start;
   align-items: flex-end;
   margin-top: 1.25rem;
   margin-bottom: 2.5rem;
+  @media (max-width: 769px) {
+    max-width: 53.75rem;
+  }
+  @media (max-width: 768px) {
+    margin: 2rem 1.5rem 0rem 1.5rem;
+  }
 `;
 
 export const Tabs = styled.ul`
