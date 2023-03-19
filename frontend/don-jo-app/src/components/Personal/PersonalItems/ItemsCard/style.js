@@ -3,7 +3,9 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   max-width: 17.875rem;
+  margin-bottom: 2rem;
   background-color: var(--color-modal);
+  border-radius: 1.25rem;
 
   @media screen and (max-width: 1190px) {
     max-width: 26rem;
