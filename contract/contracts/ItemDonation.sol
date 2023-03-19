@@ -21,7 +21,7 @@ contract ItemDonation is SupportHistory {
     uint256 internal itemCount;
     mapping(address => mapping(uint256 => bool)) public purchasedItems;
 
-    event ItemPurchased(address indexed buyer, address indexed seller, uint256 itemId);
+    // event ItemPurchased(address indexed buyer, address indexed seller, uint256 itemId);
 
     function _buyItem(address _address, uint256 _itemId, uint256 _value) internal returns(uint256){
         require(_value <= address(this).balance, "Insufficient balance");

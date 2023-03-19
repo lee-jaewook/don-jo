@@ -5,7 +5,7 @@ contract SupportHistory {
     enum SupportType { Donation, Item, Wishlist }
     enum SupportStatus { Pending, Failed, Success, Deleted}
 
-    event SupportReceived(address indexed from, address to, uint256 amount, string donationType);
+    // event SupportReceived(address indexed from, address to, uint256 amount, string donationType);
 
     struct Support{
         uint256 id;

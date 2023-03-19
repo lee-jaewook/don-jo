@@ -22,7 +22,7 @@ contract WishlistDonation is SupportHistory {
     mapping(address => uint256[]) public myWishlists;
     uint256 internal wishlistCount;
 
-    event WishlistCreated(address indexed creator, uint256 wishlistId);
+    // event WishlistCreated(address indexed creator, uint256 wishlistId);
 
     function _buyWishlist(address _address, uint256 _wishlistId, uint256 _value) internal returns(uint256){
         require(_value <= address(this).balance, "Insufficient balance");
