@@ -130,4 +130,5 @@ export const IntroductionEdit = styled.div`
 export const Introduction = styled.div`
   overflow-y: auto;
   max-height: 37.125rem;
+  padding-right: 0.625rem;
 `;
