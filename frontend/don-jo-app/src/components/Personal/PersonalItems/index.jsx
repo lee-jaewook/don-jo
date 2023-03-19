@@ -2,6 +2,7 @@ import * as S from "./style";
 import ItemCard from "./ItemsCard";
 import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
+import { FiPlus } from "react-icons/fi";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -11,7 +12,7 @@ const loginUser = {
 
 //해당 페이지 사람 더미 데이터
 const pageOwner = {
-  memberAddress: "memberaddress1",
+  memberAddress: "memberaddress",
   profileImgPath:
     "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
   backgroundImgPath:
@@ -32,13 +33,20 @@ const PersonalItems = () => {
   const [isOwner, setIsOwner] = useState(false);
   useEffect(() => {
     setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
-    console.log(isOwner);
   }, []);
 
   return (
     <S.Container>
       <S.Title>This is my Items</S.Title>
       <S.CardContainer>
+        {isOwner && (
+          <S.AddCard onClick={() => {}}>
+            <S.IconWrapper>
+              <FiPlus color="white" size={30} />
+            </S.IconWrapper>
+          </S.AddCard>
+        )}
+
         {itemList.map((item, i) => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}

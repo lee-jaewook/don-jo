@@ -23,3 +23,37 @@ export const CardContainer = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
+export const AddCard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  max-width: 17.875rem;
+  height: 20.1875rem;
+  border: 0.125rem dashed #d2d2d2;
+  border-radius: 1.25rem;
+
+  &:hover {
+    background-color: var(--color-modal);
+  }
+
+  @media screen and (max-width: 1190px) {
+    max-width: 26rem;
+  }
+
+  /* @media screen and (max-width: 768px) {
+    
+  } */
+`;
+
+export const IconWrapper = styled.div`
+  background-color: ${(props) => (props.color ? props.color : "black")};
+  height: 3.75rem;
+  width: 3.75rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
