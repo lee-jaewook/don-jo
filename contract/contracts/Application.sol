@@ -38,8 +38,8 @@ contract Application is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 아이템 추가하기
-  function addMemberItem(string memory _title, string memory _imgPath, string memory _description, uint _price, string memory _message, string memory _filePath, address _seller) external{
-    _createItem(_title, _imgPath, _description, _price, _message, _filePath, _seller);
+  function addMemberItem(Item memory _item) external{
+    _createItem(_item);
   }
 
   // 멤버의 아이템 삭제하기
@@ -48,8 +48,8 @@ contract Application is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 아이템 수정하기
-  function updateMemberItem(string memory _title, string memory _imgPath, string memory _description, uint _price, string memory _message, string memory _filePath, address _seller, uint256 _id) external {
-    _updateItem(_title, _imgPath, _description, _price, _message, _filePath, _seller, _id);
+  function updateMemberItem(Item memory _item) external {
+    _updateItem(_item);
   }
 
   // 멤버의 위시리스트 목록 가져오기
