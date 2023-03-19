@@ -1,7 +1,7 @@
 import * as S from "./style";
 import ProfileImg from "../../../../Common/ProfileImg";
 import { useEffect, useState } from "react";
-import BasicInput from "../../../../Common/BasicInput";
+
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {

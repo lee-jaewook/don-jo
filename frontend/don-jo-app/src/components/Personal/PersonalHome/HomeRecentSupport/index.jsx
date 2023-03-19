@@ -1,7 +1,6 @@
 import * as S from "./style";
 import RecentSupportBlock from "./RecentSupportBlock";
-import { supportList } from "./dummyData";
-
+import { supportList } from "../dummyData";
 
 const HomeRecentSupport = () => {
   return (

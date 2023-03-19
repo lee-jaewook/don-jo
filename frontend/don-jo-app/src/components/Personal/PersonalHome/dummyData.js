@@ -1,3 +1,29 @@
+export const wishlistList = [
+  {
+    uid: 0,
+    title: "Tesla Model3",
+    imgPath:
+      "https://cdn.autotribune.co.kr/news/photo/202104/5152_31947_195.jpg",
+    collectedAmount: 2.128,
+    totalAmount: 10.0,
+  },
+  {
+    uid: 1,
+    title: "Macbook M1",
+    imgPath: "https://blog.wishket.com/wp-content/uploads/2021/03/2-23.jpg",
+    collectedAmount: 1.284,
+    totalAmount: 2.023,
+  },
+  {
+    uid: 2,
+    title: "Lotte Tower",
+    imgPath:
+      "https://blog.kakaocdn.net/dn/FGZuC/btrxoWrEZRB/rPoqBkir7pB6RpfRljwg20/img.jpg",
+    collectedAmount: 23.0,
+    totalAmount: 120.001,
+  },
+];
+
 export const supportList = [
   {
     uid: 0,

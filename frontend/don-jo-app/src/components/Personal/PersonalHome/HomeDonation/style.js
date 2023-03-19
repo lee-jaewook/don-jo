@@ -15,7 +15,6 @@ export const Card = styled.div`
   width: 100%;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
-  padding: 2rem 1.5rem 1.75rem 1.5rem;
   padding: 1.875rem 1.5rem 2rem 1.5rem;
 `;
 
