@@ -59,10 +59,12 @@ const RecentSupportBlock = ({ supportContent }) => {
   //댓글 등록
   const doRegistComment = () => {
     console.log({ commentInputText }, "댓글 등록");
+    setIsShowReplyInput(false);
   };
 
   return (
     <div>
+      {/* 누가 누구에게 어떠한 후원을 했는지 노출 */}
       <S.Container>
         <S.RepresentContainer>
           <S.ProfileImgContainer>
@@ -80,28 +82,56 @@ const RecentSupportBlock = ({ supportContent }) => {
               &nbsp;
               <S.Nickname>{pageOwner.nickname}</S.Nickname>
             </S.TitleContent>
-            {loginUser.memberAddress === pageOwner.memberAddress && (
-              <S.ReplyBtn
-                onClick={() => {
-                  setIsShowReplyInput((prev) => !prev);
-                }}
-              >
-                {isShowReplyInput ? "Close" : "Reply"}
-              </S.ReplyBtn>
-            )}
+            {loginUser.memberAddress === pageOwner.memberAddress &&
+              Object.keys(supportContent.comments).length === 0 && (
+                <S.ReplyBtn
+                  onClick={() => {
+                    setIsShowReplyInput((prev) => !prev);
+                  }}
+                >
+                  {isShowReplyInput ? "Close" : "Reply"}
+                </S.ReplyBtn>
+              )}
           </S.TitleWrapper>
           <span style={{ marginLeft: "auto" }}>{emoji}</span>
         </S.RepresentContainer>
         {loginUser.memberAddress === pageOwner.memberAddress &&
           isShowReplyInput && (
             <S.InputContainer>
-              <S.BasicInputWrapper>
-                <BasicInput handleOnChangeValue={handleOnChangeInput} />
-              </S.BasicInputWrapper>
+              <S.ReplyInput handleOnChangeValue={handleOnChangeInput} />
               <S.RegistBtn onClick={doRegistComment}>Regist</S.RegistBtn>
             </S.InputContainer>
           )}
       </S.Container>
+      {/* 서포트 메세지가 있을 경우 노출 */}
+      {supportContent.sendMsg !== "" && (
+        <S.CommentContainer>
+          <S.ProfileImgContainer>
+            <ProfileImg
+              width={3}
+              src={supportContent.fromMember.profileImgPath}
+              to={baseURL + supportContent.fromMember.pageName}
+            />
+          </S.ProfileImgContainer>
+          <div>
+            <S.Nickname>{supportContent.fromMember.nickname}</S.Nickname>
+            <S.Comment>{supportContent.sendMsg}</S.Comment>
+            <S.SupportMsgText>Support message</S.SupportMsgText>
+          </div>
+        </S.CommentContainer>
+      )}
+      {/* 해당 후원에 댓글이 있을 경우 노출 */}
+      {Object.keys(supportContent.comments).length !== 0 && (
+        <S.CommentContainer>
+          <S.ProfileImgContainer>
+            <ProfileImg width={3} src={pageOwner.profileImgPath} />
+          </S.ProfileImgContainer>
+          <div>
+            <S.Nickname>{pageOwner.nickname}</S.Nickname>
+            <S.Comment>{supportContent.comments.content}</S.Comment>
+          </div>
+        </S.CommentContainer>
+      )}
       <S.Line />
     </div>
   );
