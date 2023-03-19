@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   max-width: 35rem;
+  margin-right: 1rem;
 `;
 
 export const TitleContainer = styled.div`

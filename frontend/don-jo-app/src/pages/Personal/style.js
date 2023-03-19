@@ -86,6 +86,7 @@ export const UserInfo = styled.div`
   align-items: center;
   width: 100%;
   max-width: 300px;
+  margin-right: 2rem;
 `;
 
 export const Nickname = styled.div`
