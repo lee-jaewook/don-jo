@@ -5,9 +5,10 @@ contract SupportHistory {
     enum SupportType { Donation, Item, Wishlist }
     enum SupportStatus { Pending, Failed, Success, Deleted}
 
-    event SupportReceived(address indexed from, address to, uint256 amount, string donationType);
+    // event SupportReceived(address indexed from, address to, uint256 amount, string donationType);
 
     struct Support{
+        uint256 id;
         address from;
         address to;
         uint256 amount;
@@ -19,13 +20,13 @@ contract SupportHistory {
 
 
     mapping(address => mapping(uint256 => Support)) public supportList;
-    mapping(address => uint256) public memberEarningList;
     mapping(address => uint256) public supportCount;
 
     // 서포트를 기록합니다.
     function recordSupport(address _from, address _to, uint256 _amount, SupportType _supportType) internal returns (uint256) {
-        uint256 id = supportCount[_to]++;
-        supportList[_to][id] = Support({
+        uint256 _id = supportCount[_to]++;
+        supportList[_to][_id] = Support({
+            id: _id,
             from: _from,
             to: _to,
             amount: _amount,
@@ -33,7 +34,7 @@ contract SupportHistory {
             supportType: _supportType,
             supportStatus: SupportStatus.Pending
         });
-        return id;
+        return _id;
     }
 
     function updateSupportStatus(address _from, address _to,uint256 _id, SupportStatus _status) internal {
@@ -41,11 +42,11 @@ contract SupportHistory {
         supportList[_to][_id].supportStatus = _status;
     }
 
-    function getSupportListCount(address _address) public view returns (uint256){
+    function getSupportListCount(address _address) internal view returns (uint256){
         return supportCount[_address];
     }
 
-    function getSupportList(address _address) public view returns (Support[] memory){
+    function _getSupportList(address _address) internal view returns (Support[] memory){
         uint256 count = supportCount[_address];
         Support[] memory mySupport = new Support[](count);
 
@@ -56,7 +57,10 @@ contract SupportHistory {
         return mySupport;
     }
 
-    function addMemberEarning(address _to) internal{
-        memberEarningList[_to] += msg.value;
+    function _getSupportDetail(address _address, uint256 _id) internal view returns(Support memory){
+        uint256 count = supportCount[_address];
+        require(_id <= count, "Invalid index");
+        return supportList[_address][_id];
     }
+
 }
