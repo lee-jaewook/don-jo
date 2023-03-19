@@ -22,6 +22,25 @@ class ContractWriteTest {
     String privateKey;
 
     @Test
+    void testEc2ContractWrite() throws Exception {
+        boolean flag = false;
+        if(flag) return;
+        Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
+
+
+        String contractAddress = "0xd2Acb77F482f65409779deD406A26ed5f5305647";
+
+        SimpleStorage contract = SimpleStorage.load(contractAddress, web3j
+                ,Credentials.create(privateKey)
+                ,BigInteger.valueOf(777096850) // gas price
+                ,BigInteger.valueOf(5000000)); // gas limit
+        System.out.println("=====================================================================================");
+        System.out.println(contract.write(BigInteger.valueOf(40)).send());
+        System.out.println("=====================================================================================");
+        System.out.println(contract.read().send());
+    }
+
+    @Test
     void testContractWrite() throws Exception {
         boolean flag = true;
         if(flag) return;
@@ -35,7 +54,7 @@ class ContractWriteTest {
                 ,BigInteger.valueOf(777096850) // gas price
                 ,BigInteger.valueOf(5000000)); // gas limit
         System.out.println("=====================================================================================");
-        System.out.println(contract.write(BigInteger.valueOf(20)).send());
+        System.out.println(contract.write(BigInteger.valueOf(40)).send());
         System.out.println("=====================================================================================");
         System.out.println(contract.read().send());
     }
