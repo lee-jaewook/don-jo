@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import BasicButton from "../../../Common/BasicButton";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { type } from "@testing-library/user-event/dist/type";
+
+//해당 페이지의 후원 세팅
+const donationSetting = {
+  pricePerDonation: 3,
+  donationEmoji: "🍪",
+  donationName: "MyCookie",
+  thankMsg: "Thanks for ur donation~",
+};
 
 const HomeDonation = () => {
   const [count, setCount] = useState(1);
   const [msg, setMsg] = useState("");
+  const [btnText, setBtnText] = useState("");
+  const [donationAmount, setDonationAmount] = useState(0);
 
   const DecreaseBtn = () => {
     return (
@@ -45,13 +56,19 @@ const HomeDonation = () => {
 
   const handleOnClickDonate = () => {};
 
+  useEffect(() => {
+    const donationAmount = donationSetting.pricePerDonation * count;
+    setDonationAmount(donationAmount);
+    setBtnText("Donate $" + String(donationAmount));
+  }, [count, donationSetting.pricePerDonation]);
+
   return (
     <S.Container>
       <S.Title>Buy Robert Downy Jr.</S.Title>
       <S.Card>
         <S.ImojiContainer>
-          <S.Imoji>🍪</S.Imoji>
-          <S.ImojiTitle>Cookie</S.ImojiTitle>
+          <S.Imoji>{donationSetting.donationEmoji}</S.Imoji>
+          <S.ImojiTitle>{donationSetting.donationName}</S.ImojiTitle>
         </S.ImojiContainer>
         <S.CounterContainer>
           <S.CountInput
@@ -68,7 +85,7 @@ const HomeDonation = () => {
         />
         <S.BasicButtonWrapper>
           <BasicButton
-            text="Donate"
+            text={btnText}
             color="var(--color-primary)"
             handleOnClickButton={handleOnClickDonate}
             isBackground={true}
