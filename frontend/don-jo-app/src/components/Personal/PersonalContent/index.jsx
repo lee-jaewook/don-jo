@@ -2,6 +2,7 @@ import * as S from "./style";
 import PersonalTab from "../PersonalTab";
 import { useTabs } from "../../../hooks/useTabs";
 import PersonalHome from "../PersonalHome";
+import PersonalItems from "../PersonalItems";
 
 const allTab = [
   {
@@ -12,7 +13,7 @@ const allTab = [
   {
     index: 1,
     name: "Items",
-    component: <>아이템</>,
+    component: <PersonalItems />,
   },
   {
     index: 2,

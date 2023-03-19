@@ -24,10 +24,10 @@ export const Img = styled.div`
       ? "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTJtcqqYSIbVJbT4MV6mWW50ICsYn3azyn0w&usqp=CAU)"
       : "url(" + props.imgPath + ")";
   }};
-
   margin-right: 0.75rem;
   border-radius: 0.5rem;
 `;
+
 export const TitleText = styled.div`
   font-size: 0.875rem;
 `;
