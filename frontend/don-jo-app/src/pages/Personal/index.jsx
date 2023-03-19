@@ -5,6 +5,7 @@ import { useState } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
+import MDEditor from "@uiw/react-md-editor";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -21,8 +22,7 @@ const Personal = () => {
     backgroundImgPath:
       "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
     nickname: "Robert Downey Jr.",
-    introduction:
-      "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
+    introduction: `![image](https://i.ytimg.com/vi/FZhIEzWjb5w/maxresdefault.jpg)`,
     numSupporters: 16000,
     socialList: [
       "https://www.youtube.com/@SamsungKorea",
@@ -94,13 +94,18 @@ const Personal = () => {
                     <FiEdit style={{ cursor: "pointer" }} />
                   </S.IntroductionEdit>
                 )}
-                <S.Introduction>{pageOwner.introduction}</S.Introduction>
+                <S.Introduction>
+                  <MDEditor.Markdown
+                    source={pageOwner.introduction}
+                  ></MDEditor.Markdown>
+                </S.Introduction>
               </S.IntroductionContainer>
             </S.UserInfo>
             <PersonalContent />
           </S.ContentsContainer>
         </S.Wrapper>
       </S.Container>
+
       {isShowIntroductionEdit && (
         <FullScreenModal
           handleSetShowModal={setIsShowIntroductionEdit}
