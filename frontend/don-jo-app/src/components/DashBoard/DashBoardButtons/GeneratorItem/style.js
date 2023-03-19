@@ -10,6 +10,10 @@ export const ItemWrapper = styled.div`
   margin-bottom: 0.75rem;
   background-color: white;
   padding: 1.25rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: unset;
+  }
 `;
 
 export const ItemImg = styled.div`
@@ -19,6 +23,12 @@ export const ItemImg = styled.div`
   border-radius: 0.5rem;
   background-color: #ddd;
   margin-right: 0.75rem;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 13.4375rem;
+    margin-right: 0rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 export const ItemInfo = styled.div`
@@ -49,4 +59,9 @@ export const generateButton = styled.button`
   text-align: center;
   margin-left: 1.25rem;
   padding: 0 1.6875rem;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 0.75rem;
+    margin-left: 0rem;
+  }
 `;
