@@ -92,7 +92,9 @@ const RecentSupportBlock = ({ supportContent }) => {
                 </S.ReplyBtn>
               )}
           </S.TitleWrapper>
-          <span style={{ marginLeft: "auto" }}>{emoji}</span>
+          <S.EmojiWrapper>
+            <label style={{ marginLeft: "0.5rem" }}>{emoji}</label>
+          </S.EmojiWrapper>
         </S.RepresentContainer>
         {loginUser.memberAddress === pageOwner.memberAddress &&
           isShowReplyInput && (

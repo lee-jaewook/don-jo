@@ -149,6 +149,24 @@ public class HelloWorld {
             <PersonalContent />
           </S.ContentsContainer>
         </Tablet>
+
+        <Mobile>
+          <S.ContentsContainer>
+            <S.UserInfo>
+              <S.Nickname>{pageOwner.nickname}</S.Nickname>
+              <S.SupporterContainer>
+                <S.NumSupporter>
+                  {pageOwner.numSupporters
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </S.NumSupporter>
+                supporter
+              </S.SupporterContainer>
+              <ExternalLink socialList={pageOwner.socialList} />
+            </S.UserInfo>
+            <PersonalContent />
+          </S.ContentsContainer>
+        </Mobile>
       </S.Container>
 
       {isShowIntroductionEdit && (

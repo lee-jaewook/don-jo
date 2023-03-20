@@ -53,6 +53,10 @@ export const CountInput = styled.input`
   &:hover {
     border: 1px solid black;
   }
+
+  @media screen and (max-width: 48rem) {
+    max-width: unset;
+  }
 `;
 
 export const RoundBtn = styled.button`
@@ -66,6 +70,12 @@ export const RoundBtn = styled.button`
   align-items: center;
   background-color: ${(props) => props.color || "var(--color-primary)"};
   background-color: rgba(0, 0, 0, 0.3);
+  margin-left: 0.25rem;
+`;
+
+export const RoundBtnWrapper = styled.div`
+  display: flex;
+  margin-left: 0.5rem;
 `;
 
 export const BasicButtonWrapper = styled.div`
