@@ -1,5 +1,6 @@
 package com.donjo.backend.db.entity;
 
+import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,9 +28,25 @@ public class Member {
    @Column(name = "address")
    private String address;
 
-   @Column(name = "nickname", length = 10)
+   @Column(length = 300)
+   @Nullable
+   private String profileImagePath;
+
+   @Column(length = 300)
+   @Nullable
+   private String backgroundImgPath;
+
+   @Column(length = 10)
    @NotNull
    private String nickname;
+
+   @Column
+   @Nullable
+   private String introduction;
+
+   @Column
+   @NotNull
+   private int numSupporters;
 
    @Column(length = 30)
    @NotNull
@@ -41,11 +58,17 @@ public class Member {
 
    @Column(length = 300)
    @Nullable
-   private String profileImagePath;
-
-   @Column(length = 300)
-   @Nullable
    private String refreshToken;
+
+   @Column(length = 1)
+   @Builder.Default
+   private int themeColor = 1;
+
+   @OneToMany
+   private List<Social> social;
+
+   @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+   private DonationSetting donationSetting;
 
    @ManyToMany
    @JoinTable(
