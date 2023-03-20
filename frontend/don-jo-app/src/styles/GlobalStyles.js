@@ -37,6 +37,31 @@ const GlobalStyle = createGlobalStyle`
     src: url(https://fonts.gstatic.com/s/notosanskr/v27/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.119.woff2) format('woff2');
   }
 
+  @font-face {
+    font-family: "RedHatDisplayRegular";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/redhatdisplay/v14/8vIQ7wUr0m80wwYf0QCXZzYzUoTg_T6h.woff2) format('woff2');
+  }
+
+  @font-face {
+    font-family: "RedHatDisplayMedium";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/redhatdisplay/v14/8vIQ7wUr0m80wwYf0QCXZzYzUoTg_T6h.woff2) format('woff2');
+  }   
+
+
+  @font-face {
+    font-family: "RedHatDisplayBold";
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/redhatdisplay/v14/8vIf7wUr0m80wwYf0QCXZzYzUoTK8RZQvRd-D1NYbouRQk8z-A.woff2) format('woff2');
+  }   
+
   html {
   --color-text: #222222;
   --color-text-secondary: #666666;
