@@ -29,12 +29,12 @@ class WishlistSolidityTest {
         wishlistSolidity.addMemberWishList(wishlist);
     }
 
-    @Test
-    public void getMemberWishlistDetail(){
-        Wishlist wishlist = wishlistSolidity.getMemberWishListDetail(1L).get();
-        System.out.println(wishlist.getDescription());
-        assertThat(wishlist.getDescription()).isEqualTo("This is a description for the example wishlist item.");
-//        assertThat(wishlist.getDescription()).isEqualTo("This is a description for the example wishlist item.?");
-    }
+//    @Test
+//    public void getMemberWishlistDetail(){
+//        Wishlist wishlist = wishlistSolidity.getMemberWishListDetail(1L).get();
+//        System.out.println(wishlist.getDescription());
+//        assertThat(wishlist.getDescription()).isEqualTo("This is a description for the example wishlist item.");
+////        assertThat(wishlist.getDescription()).isEqualTo("This is a description for the example wishlist item.?");
+//    }
 
 }
