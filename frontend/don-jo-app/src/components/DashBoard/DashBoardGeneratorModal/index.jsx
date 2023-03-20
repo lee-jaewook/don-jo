@@ -3,7 +3,7 @@ import BasicInput from "../../Common/BasicInput";
 import SelectBox from "../../Common/SelectBox";
 import BasicModal from "../../Common/Modal/BasicModal";
 import BasicTitle from "../../Common/BasicTitle";
-import CustomSelect from "../CustomSelect";
+import CustomSelect from "../DashBoardCustomSelect";
 import * as S from "./style";
 
 /**
