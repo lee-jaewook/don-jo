@@ -10,7 +10,7 @@ export const NavBar = styled.div`
   height: 100%;
   background-color: transparent;
   padding-left: 2.5rem;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     position: absolute;
     top: unset;
     bottom: 7rem;
@@ -63,7 +63,7 @@ export const MenuWrapper = styled.ul`
   list-style: none;
   margin-top: 2.25rem;
   margin-left: 2.5rem;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     width: 11.25rem;
     margin: 0.75rem;
   }
@@ -83,7 +83,7 @@ export const MenuLabel = styled(Link)`
   line-height: 1.188rem;
   color: ${(props) => (props.current ? "white" : "var(--color-text)")};
   background-color: transparent;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     margin: 0rem;
   }
 `;

@@ -12,7 +12,7 @@ export const Container = styled.div`
     background-color: black;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     width: 100%;
     height: 6.625rem;
     flex-direction: row;
@@ -28,7 +28,7 @@ export const Classification = styled.p`
   line-height: 1.188rem;
   color: ${(props) => (props.isFirstCard ? "white" : "var(--color-text)")};
   margin-bottom: 1.5rem;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     margin-bottom: 0rem;
   }
 `;
@@ -38,7 +38,7 @@ export const Data = styled.h2`
   font-size: 2.5rem;
   line-height: 1.6888rem;
   color: ${(props) => (props.isFirstCard ? "white" : "var(--color-text)")};
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     font-size: 2.25rem;
     line-height: 2.625rem;
   }

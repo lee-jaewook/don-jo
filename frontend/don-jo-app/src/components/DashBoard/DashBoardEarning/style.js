@@ -7,10 +7,6 @@ export const EarningWrapper = styled.div`
   padding: 2rem 1.5rem;
   margin-bottom: 2.5rem;
 
-  @media (min-width: 769px) {
-    max-height: 15.813rem;
-    height: 15.813rem;
-  }
   @media (max-width: 768px) {
     background-color: transparent;
     margin-bottom: 0.5rem;
@@ -20,7 +16,7 @@ export const EarningWrapper = styled.div`
 export const CardWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     flex-direction: column;
   }
 `;

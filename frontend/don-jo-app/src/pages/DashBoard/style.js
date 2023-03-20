@@ -5,7 +5,7 @@ export const Container = styled.div`
   height: 100%;
   background-color: var(--color-background-secondary);
   padding: 3.75rem 0;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     padding-top: 0.5rem;
     background-color: var(--color-modal);
   }
@@ -19,8 +19,9 @@ export const DashboardWrapper = styled.div`
   border-radius: 1.25rem;
   margin: 0 auto;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     background-color: transparent;
+    justify-content: center;
   }
 `;
 

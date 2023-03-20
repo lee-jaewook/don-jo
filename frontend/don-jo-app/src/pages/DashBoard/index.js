@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useLocation } from "react-router-dom";
-import { Desktop, Mobile } from "../../components/Common/Template";
+import { Desktop } from "../../components/Common/Template";
 import DashBoardContent from "../../components/DashBoard/DashBoardContent";
 import NavBar from "../../components/DashBoard/NavBar";
 import * as S from "./style";
 const DashBoard = () => {
   const location = useLocation();
+  const isTablet = useMediaQuery({ maxWidth: 1280 });
   const [isToggleStatus, setToggleClassName] = useState(false);
 
   const handleOnClickButton = () => {
@@ -35,7 +37,7 @@ const DashBoard = () => {
           </S.MenuWrapper>
         )}
 
-        <Mobile>
+        {isTablet && (
           <S.HamburgerMenu onClick={handleOnClickButton}>
             <div id="nav-icon3" className={isToggleStatus ? "open" : ""}>
               <span></span>
@@ -44,7 +46,8 @@ const DashBoard = () => {
               <span></span>
             </div>
           </S.HamburgerMenu>
-        </Mobile>
+        )}
+
         <DashBoardContent />
       </S.DashboardWrapper>
     </S.Container>
