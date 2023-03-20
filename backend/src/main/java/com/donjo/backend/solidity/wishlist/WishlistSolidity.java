@@ -1,5 +1,7 @@
 package com.donjo.backend.solidity.wishlist;
 
+import com.donjo.backend.exception.BadRequestException;
+import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.util.Web3jUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,41 +53,30 @@ public class WishlistSolidity {
     }
 
     public void addMemberWishList(Wishlist wishlist){
-        CompletableFuture<TransactionReceipt> future = contract.addMemberWishList(wishlist.toSol()).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            contract.addMemberWishList(wishlist.toSol()).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public void deleteMemberWishlist(String address, Long id){
-        CompletableFuture<TransactionReceipt> future = contract.deleteMemberWishlist(address, BigInteger.valueOf(id)).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            String seller = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send().seller;
+            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다");
+            contract.deleteMemberWishlist(address, BigInteger.valueOf(id)).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public void updateMemberWishlist(String address, Wishlist wishlist){
-        CompletableFuture<TransactionReceipt> future = contract.updateMemberWishlist(address, wishlist.toSol()).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlist.getId())).send().seller;
+            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
+            contract.updateMemberWishlist(address,wishlist.toSol()).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 }

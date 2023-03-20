@@ -49,6 +49,7 @@ contract ItemDonation is SupportHistory {
 
     function _createItem(Item memory _item) internal {
         itemCount++;
+        _item.id = itemCount;
         items[itemCount] = _item;
         myItems[_item.seller].push(itemCount);
     }
