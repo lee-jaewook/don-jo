@@ -56,8 +56,12 @@ export const ProfileImg = styled.div`
   background-position: center;
   background-image: url(${(props) => props.src});
   filter: drop-shadow(0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05));
-  margin-left: 4rem;
   position: relative;
+  margin-left: 4rem;
+
+  @media screen and (max-width: 80rem) {
+    margin: 0 auto;
+  }
 `;
 
 export const ProfileImgEdit = styled.div`
@@ -77,6 +81,10 @@ export const ContentsContainer = styled.div`
   max-width: 80rem;
   display: flex;
   margin-top: 140px;
+
+  @media screen and (max-width: 80rem) {
+    flex-direction: column;
+  }
 `;
 
 export const UserInfo = styled.div`
@@ -86,6 +94,11 @@ export const UserInfo = styled.div`
   width: 100%;
   max-width: 300px;
   margin-right: 2rem;
+
+  @media screen and (max-width: 80rem) {
+    max-width: unset;
+    margin-right: unset;
+  }
 `;
 
 export const Nickname = styled.div`
@@ -113,9 +126,6 @@ export const IntroductionContainer = styled.div`
   padding: 1rem 0 1rem 1rem;
   border: 1px solid var(--color-text-secondary);
   border-radius: 1.25rem;
-
-  /* 임시 설정 */
-  line-height: 2rem;
 `;
 
 export const IntroductionEdit = styled.div`

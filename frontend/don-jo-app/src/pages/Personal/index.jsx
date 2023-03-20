@@ -6,7 +6,7 @@ import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
-import { Desktop, Mobile } from "../../components/Common/Template";
+import { Desktop, Tablet, Mobile } from "../../components/Common/Template";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -97,19 +97,19 @@ public class HelloWorld {
           </S.ProfileImg>
         </S.ProfileImgContainer>
 
-        <S.ContentsContainer>
-          <S.UserInfo>
-            <S.Nickname>{pageOwner.nickname}</S.Nickname>
-            <S.SupporterContainer>
-              <S.NumSupporter>
-                {pageOwner.numSupporters
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </S.NumSupporter>
-              supporter
-            </S.SupporterContainer>
-            <ExternalLink socialList={pageOwner.socialList} />
-            <Desktop>
+        <Desktop>
+          <S.ContentsContainer>
+            <S.UserInfo>
+              <S.Nickname>{pageOwner.nickname}</S.Nickname>
+              <S.SupporterContainer>
+                <S.NumSupporter>
+                  {pageOwner.numSupporters
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </S.NumSupporter>
+                supporter
+              </S.SupporterContainer>
+              <ExternalLink socialList={pageOwner.socialList} />
               <S.IntroductionContainer>
                 {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
                 {loginUser.memberAddress === pageOwner.memberAddress && (
@@ -127,10 +127,28 @@ public class HelloWorld {
                   ></MDEditor.Markdown>
                 </S.Introduction>
               </S.IntroductionContainer>
-            </Desktop>
-          </S.UserInfo>
-          <PersonalContent />
-        </S.ContentsContainer>
+            </S.UserInfo>
+            <PersonalContent />
+          </S.ContentsContainer>
+        </Desktop>
+
+        <Tablet>
+          <S.ContentsContainer>
+            <S.UserInfo>
+              <S.Nickname>{pageOwner.nickname}</S.Nickname>
+              <S.SupporterContainer>
+                <S.NumSupporter>
+                  {pageOwner.numSupporters
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </S.NumSupporter>
+                supporter
+              </S.SupporterContainer>
+              <ExternalLink socialList={pageOwner.socialList} />
+            </S.UserInfo>
+            <PersonalContent />
+          </S.ContentsContainer>
+        </Tablet>
       </S.Container>
 
       {isShowIntroductionEdit && (
