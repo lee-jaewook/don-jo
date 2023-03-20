@@ -9,6 +9,10 @@ export const HeaderContainer = styled.div`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+
+  @media screen and (max-width: 80rem) {
+    padding: 0 1.25rem;
+  }
 `;
 
 export const Header = styled.div`
@@ -22,12 +26,15 @@ export const Logo = styled.div`
   height: 2.5rem;
   background-size: cover;
   background-image: url(${LogoImg});
+  cursor: pointer;
 `;
 
 export const GuideSelect = styled.div`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export const ProfileImgContainer = styled.div`
   margin-left: 1.5rem;
+  cursor: pointer;
 `;
