@@ -5,7 +5,7 @@ import "./ItemDonation.sol";
 import "./BasicDonation.sol";
 import "./WishlistDonation.sol";
 
-contract Application is ItemDonation, BasicDonation, WishlistDonation {
+contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   address owner;
 
   constructor(){
@@ -63,8 +63,8 @@ contract Application is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 위시리스트 추가하기
-  function addMemberWishList(address _address, Wishlist memory _wishlist) external{
-    _createWishlist(_address, _wishlist);
+  function addMemberWishList(Wishlist memory _wishlist) external{
+    _createWishlist(_wishlist);
   }
 
   // 멤버의 위시리스트 삭제하기

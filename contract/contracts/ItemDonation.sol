@@ -6,12 +6,12 @@ import "./SupportHistory.sol";
 contract ItemDonation is SupportHistory {
     struct Item {
         uint256 id;
-        string title;
-        string imgPath;
-        string description;
+        bytes title;
+        bytes imgPath;
+        bytes description;
         uint price; // wei
-        string message;
-        string filePath;
+        bytes message;
+        bytes filePath;
         bool isDeleted;
         address seller;
     }
@@ -65,7 +65,7 @@ contract ItemDonation is SupportHistory {
     function _getItemDetail(uint256 id) internal view returns (Item memory) {
         require(id <= itemCount, "Invalid index");
         Item storage item = items[id];
-        require(!item.isDeleted, "Item does not exist");
+        // require(!item.isDeleted, "Item does not exist");
         return item;
     }
 
@@ -73,7 +73,7 @@ contract ItemDonation is SupportHistory {
         require(id <= itemCount, "Invalid index");
         Item memory item = items[id];
         require(!item.isDeleted, "Item does not exist");
-        require(item.seller == _address, "Item does not exist");
+        require(item.seller == _address, "You are not seller");
         items[id].isDeleted = true;
     }
 
