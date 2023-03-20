@@ -1,7 +1,7 @@
 import * as S from "./style";
 import ProfileImg from "../../../../Common/ProfileImg";
 import { useEffect, useState } from "react";
-
+import PropTypes from "prop-types";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -138,3 +138,16 @@ const RecentSupportBlock = ({ supportContent }) => {
 };
 
 export default RecentSupportBlock;
+
+RecentSupportBlock.propTypes = {
+  supportContent: PropTypes.shape({
+    uid: PropTypes.number.isRequired,
+    supportType: PropTypes.string.isRequired,
+    fromMember: PropTypes.shape({
+      pageName: PropTypes.string.isRequired,
+      nickname: PropTypes.string.isRequired,
+      profileImgPath: PropTypes.string,
+    }).isRequired,
+    sendMsg: PropTypes.string,
+  }).isRequired,
+};

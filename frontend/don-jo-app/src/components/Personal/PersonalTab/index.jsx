@@ -1,5 +1,7 @@
 import React from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
+
 const PersonalTab = ({ currentItem, changeItem }) => {
   return (
     <S.TabWrapper>
@@ -31,3 +33,10 @@ const PersonalTab = ({ currentItem, changeItem }) => {
 };
 
 export default PersonalTab;
+
+PersonalTab.propTypes = {
+  currentItem: PropTypes.shape({
+    index: PropTypes.number.isRequired,
+  }).isRequired,
+  changeItem: PropTypes.func.isRequired,
+};

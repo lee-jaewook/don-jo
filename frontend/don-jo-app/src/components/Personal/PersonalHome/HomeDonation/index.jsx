@@ -3,7 +3,6 @@ import * as S from "./style";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import BasicButton from "../../../Common/BasicButton";
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { type } from "@testing-library/user-event/dist/type";
 
 //해당 페이지의 후원 세팅
 const donationSetting = {

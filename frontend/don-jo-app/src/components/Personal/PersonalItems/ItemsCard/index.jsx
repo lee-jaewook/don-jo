@@ -1,9 +1,8 @@
 import * as S from "./style";
+import PropTypes from "prop-types";
 
 const ItemCard = ({ item, isOwner }) => {
-  const handleOnClickButton = () => {
-    console.log(isOwner);
-  };
+  const handleOnClickButton = () => {};
 
   return (
     <S.Container>
@@ -26,3 +25,12 @@ const ItemCard = ({ item, isOwner }) => {
 };
 
 export default ItemCard;
+
+ItemCard.propTypes = {
+  item: PropTypes.shape({
+    imgPath: PropTypes.string,
+    description: PropTypes.string,
+    price: PropTypes.number.isRequired,
+  }).isRequired,
+  isOwner: PropTypes.bool,
+};

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 
 const WishlistCard = ({ content }) => {
   // 진행 퍼센티지 계산
@@ -30,3 +31,12 @@ const WishlistCard = ({ content }) => {
 };
 
 export default WishlistCard;
+
+WishlistCard.propTypes = {
+  content: PropTypes.shape({
+    uid: PropTypes.number.isRequired,
+    imgPath: PropTypes.string,
+    collectedAmount: PropTypes.number.isRequired,
+    totalAmount: PropTypes.number.isRequired,
+  }),
+};
