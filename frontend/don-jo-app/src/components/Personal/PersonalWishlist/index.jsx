@@ -2,7 +2,7 @@ import * as S from "./style";
 import WishlistItem from "../../Common/WishlistItem";
 import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { wishlistList } from "./dummyData";
+import { wishlist } from "./dummyData";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -46,17 +46,17 @@ const PersonalWishlist = () => {
             </S.IconWrapper>
           </S.AddCard>
         )}
-        {wishlistList.map((wishlist) => {
+        {wishlist.map((wishlistItem) => {
           return (
-            <S.WishlistItemWrapper key={wishlist.uid}>
+            <S.WishlistItemWrapper key={wishlistItem.uid}>
               <WishlistItem
-                uid={wishlist.uid}
-                title={wishlist.title}
-                imgPath={wishlist.imgPath}
-                description={wishlist.description}
-                collectedAmount={wishlist.collectedAmount.toFixed(3)}
-                totalAmount={wishlist.totalAmount.toFixed(3)}
-                thankMsg={wishlist.thankMsg}
+                uid={wishlistItem.uid}
+                title={wishlistItem.title}
+                imgPath={wishlistItem.imgPath}
+                description={wishlistItem.description}
+                collectedAmount={wishlistItem.collectedAmount.toFixed(3)}
+                totalAmount={wishlistItem.totalAmount.toFixed(3)}
+                thankMsg={wishlistItem.thankMsg}
               />
             </S.WishlistItemWrapper>
           );

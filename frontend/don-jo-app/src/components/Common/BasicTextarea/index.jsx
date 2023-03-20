@@ -17,7 +17,6 @@ const BasicTextarea = ({
 }) => {
   return (
     <S.Textarea
-      type="string"
       onKeyDown={handleKeyDown}
       onChange={handleOnChangeValue}
       placeholder={placeholder}

@@ -35,6 +35,7 @@ export default WishlistCard;
 WishlistCard.propTypes = {
   content: PropTypes.shape({
     uid: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
     imgPath: PropTypes.string,
     collectedAmount: PropTypes.number.isRequired,
     totalAmount: PropTypes.number.isRequired,

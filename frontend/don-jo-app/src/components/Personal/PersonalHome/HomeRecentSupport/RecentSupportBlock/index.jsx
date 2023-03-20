@@ -28,7 +28,6 @@ const pageOwner = {
 };
 
 const RecentSupportBlock = ({ supportContent }) => {
-  const baseURL = "http://localhost:3000/";
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
@@ -71,7 +70,7 @@ const RecentSupportBlock = ({ supportContent }) => {
             <ProfileImg
               width={3}
               src={supportContent.fromMember.profileImgPath}
-              to={baseURL + supportContent.fromMember.pageName}
+              to={`/${supportContent.fromMember.pageName}`}
             />
           </S.ProfileImgContainer>
           <S.TitleWrapper>
@@ -110,7 +109,7 @@ const RecentSupportBlock = ({ supportContent }) => {
             <ProfileImg
               width={3}
               src={supportContent.fromMember.profileImgPath}
-              to={baseURL + supportContent.fromMember.pageName}
+              to={`/${supportContent.fromMember.pageName}`}
             />
           </S.ProfileImgContainer>
           <div>

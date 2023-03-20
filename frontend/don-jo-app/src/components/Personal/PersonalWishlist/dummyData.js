@@ -1,4 +1,4 @@
-export const wishlistList = [
+export const wishlist = [
   {
     uid: 0,
     imgPath:

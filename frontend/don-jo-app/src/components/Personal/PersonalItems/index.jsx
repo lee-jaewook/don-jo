@@ -39,7 +39,7 @@ const PersonalItems = () => {
     <S.Container>
       <S.Title>This is my Items</S.Title>
       <S.CardContainer>
-        {loginUser.memberAddress === pageOwner.memberAddress && (
+        {isOwner && (
           <S.AddCard onClick={() => {}}>
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
