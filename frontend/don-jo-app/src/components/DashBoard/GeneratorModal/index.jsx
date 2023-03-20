@@ -18,12 +18,12 @@ const GeneratorModal = ({ isSearchDefault, isModalOpen }) => {
   const [title, setTitle] = useState("");
 
   const handleTitleChange = (e) => {
-    setTitle(() => e.target.value);
+    setTitle(e.target.value);
   };
 
-  const children = () => {
-    return (
-      <>
+  return (
+    <div>
+      <BasicModal width={26.25} sort={true} isModalOpen={isModalOpen}>
         <S.PreViewWrap>
           <S.PreView></S.PreView>
         </S.PreViewWrap>
@@ -40,21 +40,10 @@ const GeneratorModal = ({ isSearchDefault, isModalOpen }) => {
         <BasicTitle text="Color" />
         {/* <CustomSelect /> */}
         <BasicTitle text="Font" />
-        {/* <CustomSelect /> */}
+        <CustomSelect isBefore={true} />
         <BasicTitle text="Search Items" />
-        <CustomSelect />
-      </>
-    );
-  };
-
-  return (
-    <div>
-      <BasicModal
-        width={26.25}
-        sort={true}
-        isModalOpen={isModalOpen}
-        children={children()}
-      />
+        <CustomSelect isBefore={false} />
+      </BasicModal>
     </div>
   );
 };
