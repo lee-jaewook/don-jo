@@ -24,8 +24,7 @@ const AppRouter = () => {
   }, []);
 
   // 로그인 여부 체크
-  // let isLogin = member.isLogin;
-  let isLogin = true;
+  let isLogin = member.isLogin;
 
   if (!isLogin) {
     return (
