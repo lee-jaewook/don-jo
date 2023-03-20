@@ -1,5 +1,6 @@
 package com.donjo.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -67,7 +68,8 @@ public class Member {
    @OneToMany
    private List<Social> social;
 
-   @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @JsonIgnore
    private DonationSetting donationSetting;
 
    @ManyToMany
