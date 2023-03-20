@@ -23,12 +23,12 @@ pipeline {
 
 
 
-               // 스프링 Run
-//                stage('backend_serve') {
-//                  steps {
-//                    sh "docker run -d -p 8080:8080 --name test"
-//                  }
-//                }
+               스프링 Run
+               stage('컨테이너 생성') {
+                 steps {
+                   sh "docker run -d -p 5000:8081 backend"
+                 }
+               }
                }
 }
 }
