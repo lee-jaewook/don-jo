@@ -29,7 +29,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.jejuinn.backend"))
+                .apis(RequestHandlerSelectors.basePackage("com.donjo.backend"))
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(newArrayList(securityContext()))

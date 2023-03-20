@@ -20,4 +20,12 @@ export const Button = styled.button`
     background-color: ${(props) =>
       !props.isBackground ? props.color : "white"};
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  `}
 `;
