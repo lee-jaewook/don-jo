@@ -1,13 +1,14 @@
 pipeline {
 
    agent any
-
+    stages{
     stage('백엔드 컨테이너 삭제'){
                                  steps{
 
                                       sh "docker rm backend"
                                    }
 
+                                  }
                                   }
    stages{
    stage('백엔드 자동 배포') {
