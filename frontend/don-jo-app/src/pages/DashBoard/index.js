@@ -38,7 +38,10 @@ const DashBoard = () => {
         )}
 
         {isTablet && (
-          <S.HamburgerMenu onClick={handleOnClickButton}>
+          <S.HamburgerMenu
+            onClick={handleOnClickButton}
+            aria-label="hamburger-button"
+          >
             <div id="nav-icon3" className={isToggleStatus ? "open" : ""}>
               <span></span>
               <span></span>
