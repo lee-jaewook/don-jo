@@ -8,12 +8,12 @@ contract WishlistDonation is SupportHistory {
 
     struct Wishlist {
         uint256 id;
-        string imgPath;
-        string title;
-        string description;
+        bytes imgPath;
+        bytes title;
+        bytes description;
         uint256 collectedAmount;
         uint256 targetAmount;
-        string message;
+        bytes message;
         bool isClosed;
         address seller;
     }
@@ -46,10 +46,10 @@ contract WishlistDonation is SupportHistory {
         return _id;
     }
 
-    function _createWishlist(address _address, Wishlist memory _wishlist) internal {
+    function _createWishlist(Wishlist memory _wishlist) internal {
         wishlistCount++;
         wishlists[wishlistCount] = _wishlist;
-        myWishlists[_address].push(wishlistCount);
+        myWishlists[_wishlist.seller].push(wishlistCount);
     }
 
     function _getWishlists(uint256[] memory indexes) internal view returns (Wishlist[] memory) {
