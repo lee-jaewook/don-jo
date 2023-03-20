@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+  @media screen and (max-width: 48rem) {
+    max-width: 20.625rem;
+    margin: 0 auto;
+  }
 `;
 
 export const Title = styled.div`
@@ -15,12 +19,14 @@ export const CardContainer = styled.div`
   justify-content: center;
   grid-template-columns: repeat(3, 1fr);
 
-  @media screen and (max-width: 1190px) {
+  @media screen and (max-width: 58.75rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
+  @media screen and (max-width: 48rem) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 `;
 
@@ -34,18 +40,19 @@ export const AddCard = styled.div`
   height: 20.1875rem;
   border: 0.125rem dashed #d2d2d2;
   border-radius: 1.25rem;
+  margin-bottom: 2rem;
 
   &:hover {
     background-color: var(--color-modal);
   }
 
-  @media screen and (max-width: 1190px) {
-    max-width: 26rem;
+  @media screen and (max-width: 58.75rem) {
+    max-width: 420px;
   }
 
-  /* @media screen and (max-width: 768px) {
-    
-  } */
+  @media screen and (max-width: 48rem) {
+    width: 100%;
+  }
 `;
 
 export const IconWrapper = styled.div`

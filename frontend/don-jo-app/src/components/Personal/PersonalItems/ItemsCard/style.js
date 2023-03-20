@@ -7,13 +7,13 @@ export const Container = styled.div`
   background-color: var(--color-modal);
   border-radius: 1.25rem;
 
-  @media screen and (max-width: 1190px) {
-    max-width: 26rem;
+  @media screen and (max-width: 58.75rem) {
+    max-width: 420px;
   }
 
-  /* @media screen and (max-width: 768px) {
-    
-  } */
+  @media screen and (max-width: 40rem) {
+    max-width: unset;
+  }
 `;
 
 export const ItemImg = styled.div`
