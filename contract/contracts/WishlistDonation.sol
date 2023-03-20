@@ -48,6 +48,7 @@ contract WishlistDonation is SupportHistory {
 
     function _createWishlist(Wishlist memory _wishlist) internal {
         wishlistCount++;
+        _wishlist.id = wishlistCount;
         wishlists[wishlistCount] = _wishlist;
         myWishlists[_wishlist.seller].push(wishlistCount);
     }
