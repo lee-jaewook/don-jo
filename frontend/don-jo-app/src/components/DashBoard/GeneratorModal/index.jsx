@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import BasicInput from "../../BasicInput";
-import SelectBox from "../../SelectBox";
-import BasicModal from "../BasicModal";
-import BasicTitle from "../../BasicTitle";
+import BasicInput from "../../Common/BasicInput";
+import SelectBox from "../../Common/SelectBox";
+import BasicModal from "../../Common/Modal/BasicModal";
+import BasicTitle from "../../Common/BasicTitle";
+import CustomSelect from "../CustomSelect";
 import * as S from "./style";
 
 /**
@@ -13,7 +14,7 @@ import * as S from "./style";
  * @returns {JSX.Element} - 렌더링 결과
  */
 
-export const GeneratorModal = ({ isSearchDefault, isModalOpen }) => {
+const GeneratorModal = ({ isSearchDefault, isModalOpen }) => {
   const [title, setTitle] = useState("");
 
   const handleTitleChange = (e) => {
@@ -37,16 +38,25 @@ export const GeneratorModal = ({ isSearchDefault, isModalOpen }) => {
           />
         </S.GridBox>
         <BasicTitle text="Color" />
-        <SelectBox />
+        {/* <CustomSelect /> */}
         <BasicTitle text="Font" />
-        <SelectBox />
+        {/* <CustomSelect /> */}
+        <BasicTitle text="Search Items" />
+        <CustomSelect />
       </>
     );
   };
 
   return (
     <div>
-      <BasicModal isModalOpen={isModalOpen} children={children()} />
+      <BasicModal
+        width={26.25}
+        sort={true}
+        isModalOpen={isModalOpen}
+        children={children()}
+      />
     </div>
   );
 };
+
+export default GeneratorModal;

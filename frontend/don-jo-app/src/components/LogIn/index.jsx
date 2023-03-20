@@ -5,7 +5,6 @@ import BasicModal from "../Common/Modal/BasicModal";
 import BasicButton from "../Common/BasicButton";
 
 const LogIn = ({ isModelOpen }) => {
-  console.log("하하");
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
