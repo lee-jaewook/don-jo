@@ -65,6 +65,7 @@ const GlobalStyle = createGlobalStyle`
   html {
   --color-text: #222222;
   --color-text-secondary: #666666;
+  --color-text-third: #999999;
   --color-primary: #222222;
   --color-background: #FFFFFF;
   --color-background-secondary: #EAEAEA;
@@ -99,6 +100,7 @@ input, textarea {
   user-select: auto;
   font-family: "RobotoRegular";
   line-height: 1.172rem;
+  resize: none;
 }
 
 input:focus {
@@ -107,6 +109,16 @@ input:focus {
 
 input::placeholder {
   color: var(--color-placeholder);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+textarea:focus {
+  outline: none;
 }
   
 button {
@@ -133,9 +145,6 @@ div {
     background-color: var(--color-text-secondary);
     background-clip: padding-box;
     border-radius: 1.25rem;
-  }
-  ::-webkit-scrollbar-track {
-    
   }
 }
 `;

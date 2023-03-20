@@ -4,13 +4,11 @@ export const Modal = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   z-index: 10;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   background-color: var(--color-background-secondary);
 `;
 
@@ -20,7 +18,6 @@ export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: var(--color-background);
 `;
 

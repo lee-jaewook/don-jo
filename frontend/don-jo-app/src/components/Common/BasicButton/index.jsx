@@ -10,10 +10,12 @@ const BasicButton = ({
 }) => {
   return (
     <S.Button
+      id="target-button"
       color={color}
       onClick={handleOnClickButton}
       isBackground={isBackground}
       isDisabled={isDisabled}
+      disabled={isDisabled && "disabled"}
     >
       {text}
     </S.Button>

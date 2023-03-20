@@ -1,6 +1,6 @@
 import * as S from "./style";
 import ProfileImg from "../ProfileImg";
-import SelectBox from "../SelectBox";
+import SelectBox from "./SelectBox";
 
 const Header = () => {
   //임시 프로필 이미지 주소
