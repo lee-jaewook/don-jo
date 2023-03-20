@@ -10,6 +10,8 @@ public class TestController {
 
     @GetMapping("/api/test")
     public void test(){
-      log.info("test");
+        System.out.println("???");
+        log.info("test");
+
     }
 }
