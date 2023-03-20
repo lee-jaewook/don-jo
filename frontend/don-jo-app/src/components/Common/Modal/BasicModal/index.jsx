@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import { FiX } from "react-icons/fi";
 
 const BasicModal = ({ handleSetShowModal, children, width }) => {
+  //모달 열릴때 외부 요소 스크롤 막기
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+  }, []);
+
+  //모달 닫힐 때 외부 요소 스크롤 허용
   const closeModal = () => {
+    document.body.style.overflowY = "auto";
     handleSetShowModal(false);
   };
 
