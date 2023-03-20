@@ -1,6 +1,7 @@
 package com.donjo.backend.api.service.Support;
 
 import com.donjo.backend.api.dto.Support.*;
+import com.donjo.backend.db.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +11,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupportServiceImpl implements SupportService {
 
+    private final MemberRepository memberRepository;
+
     @Override
-    public EarningsResponseDto getEarning(String type, int period){
+    public Double getEarning(String type, int period){
         //🌍 type : String
         //    - donation or
         //    - item or
         //    - wishilist or
         //    - all
         //🌍 period : int
-        // type과 period를 입력 받아 수익금 Dto에 담아 리턴!
+        // type과 period를 입력 받아 support 레포에 들어가서 jqpl사용?
         return null;
     }
     @Override

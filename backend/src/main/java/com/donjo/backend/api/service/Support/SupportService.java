@@ -5,7 +5,7 @@ import com.donjo.backend.api.dto.Support.*;
 import java.util.List;
 
 public interface SupportService {
-    EarningsResponseDto getEarning(String type, int period);
+    Double getEarning(String type, int period);
 
     CountResponseDto getSupportCount(String type);
 
