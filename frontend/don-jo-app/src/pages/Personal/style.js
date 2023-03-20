@@ -39,16 +39,13 @@ export const EditIcon = styled.div`
   cursor: pointer;
 `;
 
-export const Wrapper = styled.div`
+export const ProfileImgContainer = styled.div`
+  width: 100%;
+  margin-bottom: 2.5rem;
   margin-top: 10rem;
   width: 100%;
   max-width: 80rem;
   position: absolute;
-`;
-
-export const ProfileImgContainer = styled.div`
-  width: 100%;
-  margin-bottom: 2.5rem;
 `;
 
 export const ProfileImg = styled.div`
@@ -77,7 +74,9 @@ export const ProfileImgEdit = styled.div`
 
 export const ContentsContainer = styled.div`
   width: 100%;
+  max-width: 80rem;
   display: flex;
+  margin-top: 140px;
 `;
 
 export const UserInfo = styled.div`
