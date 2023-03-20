@@ -4,8 +4,12 @@ export const useInput = (initValue = "") => {
   const [value, setValue] = useState(initValue);
 
   const onChange = (e) => {
-    const { value } = e.target;
-    setValue(value);
+    if (typeof e === "object") {
+      const { value } = e.target;
+      setValue(value);
+    } else {
+      setValue(e);
+    }
   };
 
   return [value, onChange];
