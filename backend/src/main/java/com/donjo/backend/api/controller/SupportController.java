@@ -41,6 +41,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
+
     @GetMapping(path="api/auth/member/dashboard/supports")
     public ResponseEntity<?> getSupports(@RequestParam String type, @RequestParam int page_num) {
         List<SupportResponseDto> supports = supportService.getSupports(type,page_num);
