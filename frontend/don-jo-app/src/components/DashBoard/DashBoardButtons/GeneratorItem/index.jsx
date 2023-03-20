@@ -31,7 +31,10 @@ const GeneratorItem = ({ title, description, isItemsRequired }) => {
         </S.generateButton>
       </S.ItemWrapper>
       {isPlugInGenModalOpen && (
-        <PluginGenerator isModalOpen={handlePlugInGenModalChange} />
+        <PluginGenerator
+          isModalOpen={handlePlugInGenModalChange}
+          isItemsRequired={isItemsRequired}
+        />
       )}
     </>
   );
