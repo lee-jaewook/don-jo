@@ -1,6 +1,7 @@
 pipeline {
 
    agent any
+
    stages{
    stage('백엔드 자동 배포') {
              stages {
@@ -21,15 +22,12 @@ pipeline {
 
                }
 
-
-
-               스프링 Run
                stage('컨테이너 생성') {
                  steps {
                    sh "docker run -d -p 5000:8081 backend"
                  }
                }
-               }
+           }
 }
 }
 }
