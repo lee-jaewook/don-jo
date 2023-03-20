@@ -16,6 +16,10 @@ export const AddButton = styled.button`
   border: 2px dashed #d2d2d2;
   border-radius: 1.25rem;
   margin-bottom: 2.5rem;
+
+  &:hover {
+    background-color: white;
+  }
 `;
 
 export const AddIcon = styled.div`
