@@ -1,5 +1,6 @@
 import GlobalStyle from "./styles/GlobalStyles";
 import AppRouter from "./AppRouter";
+import Footer from "./components/Common/Footer";
 
 // 모바일 웹에서 올바른 영역을 잡기 위한 작업
 let vh = window.innerHeight * 0.01;
@@ -16,6 +17,7 @@ const App = () => {
     <div>
       <GlobalStyle />
       <AppRouter />
+      <Footer />
     </div>
   );
 };
