@@ -10,6 +10,7 @@ export const ItemWrapper = styled.div`
   background-color: ${(props) =>
     props.isDashboard ? "white" : "var(--color-modal)"};
   border-radius: 1.25rem;
+  cursor: default;
 `;
 
 export const ItemContent = styled.div`
@@ -40,6 +41,7 @@ export const EditButton = styled(FiEdit)`
   right: 0.875rem;
   color: var(--color-text-secondary);
   z-index: 100;
+  cursor: pointer;
 `;
 
 export const Title = styled.h1`

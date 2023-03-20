@@ -5,7 +5,12 @@ export const Mobile = ({ children }) => {
   return isMobile ? children : null;
 };
 
+export const Tablet = ({ children }) => {
+  const isTablet = useMediaQuery({ minWidth: 769, maxWidth: 1280 });
+  return isTablet ? children : null;
+};
+
 export const Desktop = ({ children }) => {
-  const isDesktop = useMediaQuery({ minWidth: 769 });
+  const isDesktop = useMediaQuery({ minWidth: 1281 });
   return isDesktop ? children : null;
 };
