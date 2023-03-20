@@ -26,9 +26,14 @@ public class FileController {
                 @ApiResponse(code = 500, message = "서버 오류")
         })
         public ResponseEntity<String> upload( @RequestParam String category,
-                                              @RequestPart MultipartFile multipartFile) throws IOException {
-                String fileName = s3Upload.uploadFile(multipartFile,category);
-                return ResponseEntity.status(200).body("https://don-jo.s3.ap-northeast-2.amazonaws.com/"+fileName);
+                                              @RequestPart MultipartFile multipartFile){
+            String fileName = null;
+            try {
+                fileName = s3Upload.uploadFile(multipartFile,category);
+                return ResponseEntity.status(200).body(fileName);
+            } catch (IOException e) {
+                return ResponseEntity.status(400).body("요청실패");
+            }
             }
 }
 

@@ -29,8 +29,8 @@ public class SupportController {
     })
     @GetMapping(path="api/auth/member/dashboard/earning")
     public ResponseEntity<?> getEarning(@RequestParam String type, @RequestParam int period) {
-        EarningsResponseDto earningsResponseDto = supportService.getEarning(type,period);
-        return ResponseEntity.status(200).body("수익조회!");
+        Double earning = supportService.getEarning(type,period);
+        return ResponseEntity.status(200).body(earning);
     }
 
     @ApiOperation(value = "대시보드 서포트 조회", notes = "example content")
