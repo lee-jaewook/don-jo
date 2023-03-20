@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 const DashBoardTab = ({ currentItem, changeItem }) => {
   return (
     <S.TabWrapper>
@@ -24,3 +25,7 @@ const DashBoardTab = ({ currentItem, changeItem }) => {
 };
 
 export default DashBoardTab;
+DashBoardTab.propTypes = {
+  currentItem: PropTypes.object.isRequired,
+  changeItem: PropTypes.func.isRequired,
+};

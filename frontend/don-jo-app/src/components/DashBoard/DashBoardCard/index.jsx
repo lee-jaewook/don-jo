@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 const DashBoardCard = ({
   isFirstCard = false,
   classification,
@@ -19,3 +20,10 @@ const DashBoardCard = ({
   );
 };
 export default DashBoardCard;
+
+DashBoardCard.propTypes = {
+  isFirstCard: PropTypes.bool,
+  classification: PropTypes.string.isRequired,
+  data: PropTypes.string.isRequired,
+  unit: PropTypes.string,
+};

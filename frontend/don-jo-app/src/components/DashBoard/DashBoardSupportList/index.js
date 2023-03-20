@@ -1,18 +1,11 @@
 import React from "react";
+import * as S from "./style";
 import { useLocation } from "react-router-dom";
 import BasicTitle from "../../Common/BasicTitle";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
-import * as S from "./style";
-const supportList = [
-  {
-    uid: 1,
-    amountEth: "100.000",
-    arrivedDate: "2023.03.02",
-    fromMember: {},
-    toMember: {},
-  },
-];
+import { supportList } from "../../../data/dashboard";
+
 const DashBoardSupportList = () => {
   const location = useLocation();
 

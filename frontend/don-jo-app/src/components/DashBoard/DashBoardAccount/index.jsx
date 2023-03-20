@@ -44,13 +44,7 @@ const DashBoardAccount = () => {
   };
 
   const handleSaveAccount = () => {
-    const account = {
-      nickname: nickname,
-      backgroundImgFile: backgroundImgFile,
-      profile: profileImgFile,
-      theme: colorIndex,
-    };
-    console.log("handleSaveAccount()...", account);
+    console.log("handleSaveAccount()...");
   };
 
   return (

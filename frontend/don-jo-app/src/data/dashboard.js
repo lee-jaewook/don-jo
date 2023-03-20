@@ -93,3 +93,13 @@ export const itemList = [
 ];
 
 export const colorSet = ["#F02C7E", "#F96D1F", "#14A985", "#2966DD", "#9042DD"];
+
+export const supportList = [
+  {
+    uid: 1,
+    amountEth: "100.000",
+    arrivedDate: "2023.03.02",
+    fromMember: {},
+    toMember: {},
+  },
+];

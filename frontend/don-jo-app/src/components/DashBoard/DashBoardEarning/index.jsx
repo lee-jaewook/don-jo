@@ -1,7 +1,8 @@
 import React from "react";
+import * as S from "./style";
+import PropTypes from "prop-types";
 import BasicTitle from "../../Common/BasicTitle";
 import DashBoardCard from "../DashBoardCard";
-import * as S from "./style";
 const DashBoardEarning = ({ text }) => {
   return (
     <S.EarningWrapper>
@@ -21,3 +22,7 @@ const DashBoardEarning = ({ text }) => {
 };
 
 export default DashBoardEarning;
+
+DashBoardEarning.protoTypes = {
+  text: PropTypes.string.isRequired,
+};
