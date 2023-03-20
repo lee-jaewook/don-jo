@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
 const BasicButton = ({
@@ -10,10 +10,12 @@ const BasicButton = ({
 }) => {
   return (
     <S.Button
+      id="target-button"
       color={color}
       onClick={handleOnClickButton}
       isBackground={isBackground}
       isDisabled={isDisabled}
+      disabled={isDisabled && "disabled"}
     >
       {text}
     </S.Button>
