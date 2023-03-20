@@ -126,4 +126,9 @@ sourceSets {
 	}
 }
 
+
 tasks.named("npmInstall").configure { enabled = false }
+
+afterEvaluate {
+	tasks.build.dependsOn tasks.getByPath('generateContractWrappers')
+}
