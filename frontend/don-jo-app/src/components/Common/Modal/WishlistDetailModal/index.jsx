@@ -44,8 +44,8 @@ const WishlistDetailModal = ({
             </S.Price>
           </S.Content>
         </S.WishlistContent>
-        <S.ProgressBarWrapper>
-          <S.ProgressBar isDashboard={isDashboard}>
+        <S.ProgressBarWrapper isDashboard={isDashboard}>
+          <S.ProgressBar>
             <S.ProgressState currentState={50.0} />
           </S.ProgressBar>
           <S.AmountWrapper>
