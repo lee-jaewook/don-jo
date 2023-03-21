@@ -22,11 +22,13 @@ public class UpdateItemCond {
     @NotNull
     private String imgPath;
 
+    @NotNull
     private String description;
 
     @NotNull
     private double price;
 
+    @NotNull
     private String message;
 
     @NotNull

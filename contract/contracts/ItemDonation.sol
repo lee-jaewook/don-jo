@@ -81,6 +81,5 @@ contract ItemDonation is SupportHistory {
     function _updateItem(Item memory _item) internal {
         require(_item.id <= itemCount, "Invalid index");
         items[_item.id] = _item;
-        myItems[_item.seller].push(itemCount);
     }
 }

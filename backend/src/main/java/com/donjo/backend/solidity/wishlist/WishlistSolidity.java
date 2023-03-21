@@ -70,11 +70,11 @@ public class WishlistSolidity {
         }
     }
 
-    public void updateMemberWishlist(String address, Wishlist wishlist){
+    public void updateMemberWishlist(Wishlist wishlist){
         try {
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlist.getId())).send().seller;
-            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
-            contract.updateMemberWishlist(address,wishlist.toSol()).send();
+            if(!seller.equals(wishlist.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
+            contract.updateMemberWishlist(wishlist.toSol()).send();
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }

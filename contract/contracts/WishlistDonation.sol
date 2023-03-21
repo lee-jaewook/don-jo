@@ -78,9 +78,8 @@ contract WishlistDonation is SupportHistory {
         wishlists[id].isClosed = true;
     }
 
-    function _updateWishlist(address _address, Wishlist memory _wishlist) internal {
+    function _updateWishlist(Wishlist memory _wishlist) internal {
         require(_wishlist.id <= wishlistCount, "Invalid index");
-        require(_wishlist.seller == _address, "You do not have the authority to close the wishlist");
         wishlists[_wishlist.id] = _wishlist;
     }
 }
