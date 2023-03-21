@@ -49,6 +49,7 @@ contract ItemDonation is SupportHistory {
 
     function _createItem(Item memory _item) internal {
         itemCount++;
+        _item.id = itemCount;
         items[itemCount] = _item;
         myItems[_item.seller].push(itemCount);
     }
@@ -80,6 +81,5 @@ contract ItemDonation is SupportHistory {
     function _updateItem(Item memory _item) internal {
         require(_item.id <= itemCount, "Invalid index");
         items[_item.id] = _item;
-        myItems[_item.seller].push(itemCount);
     }
 }

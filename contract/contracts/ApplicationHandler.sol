@@ -73,8 +73,8 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 위시리스트 수정하기
-  function updateMemberWishlist(address _address, Wishlist memory _wishlist) external {
-    _updateWishlist(_address, _wishlist);
+  function updateMemberWishlist(Wishlist memory _wishlist) external {
+    _updateWishlist(_wishlist);
   }
 
   // 후원 상세 정보 조회
@@ -87,4 +87,8 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
     return _getSupportList(_address);
   }
 
+  // 후원 요청 시간 조회
+  function getSupportSendTime(address _address, uint256 _id) external view returns(uint256){
+    return _getSupportDetail(_address, _id).sendTimestamp;
+  }
 }

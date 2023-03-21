@@ -2,15 +2,18 @@ package com.donjo.backend.api.service.member;
 
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+//import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
+import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.repository.MemberRepository;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.DuplicateDataException;
 import com.donjo.backend.exception.DuplicateMemberException;
 
+import com.donjo.backend.exception.NoContentException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service("MemberService")
 @RequiredArgsConstructor
@@ -62,6 +67,12 @@ public class MemberServiceImpl implements MemberService {
         .authorities(Set.of(userAuthority))
         .build();
 
+    DonationSetting donationSetting = DonationSetting.builder()
+        .member(member)
+        .memberAddress(signUpMemberCond.getAddress())
+        .build();
+
+    member.setDonationSetting(donationSetting);
     memberRepository.save(member);
 
     Map<String, Object> result = returnToken(member);
@@ -114,6 +125,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
   }
+
+  @Override
+  public String getMemberAddress(HttpServletRequest request) {
+    String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+    Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+    String memberAddress = authentication.getName();
+    return memberAddress;
+  }
+
+//  @Override
+//  public FindPageInfoPayload getPageInfoByPageName(String pageName) {
+//    Member member = Optional.ofNullable(memberRepository.findByPageName(pageName)).orElseThrow(() -> new NoContentException("페이지가 존재하지 않습니다."));
+//
+//    FindPageInfoPayload findPageInfoPayload = new FindPageInfoPayload();
+//    findPageInfoPayload.setMemberInfo(member);
+//    findPageInfoPayload.setDonationSetting(member.getDonationSetting());
+//    return findPageInfoPayload;
+//  }
 
   public HashMap<String, Object> returnToken(Member member) {
     String accessToken = tokenProvider.createAccessToken(member);

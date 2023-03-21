@@ -5,14 +5,16 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.nio.charset.StandardCharsets;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddItemCond {
+public class UpdateItemCond {
+    @NotNull
+    private Long uid;
+
     @NotNull
     @Size(min = 2)
     private String title;
@@ -24,7 +26,7 @@ public class AddItemCond {
     private String description;
 
     @NotNull
-    private Double price;
+    private double price;
 
     @NotNull
     private String message;
@@ -34,7 +36,7 @@ public class AddItemCond {
 
     public Item from(String address){
         return Item.builder()
-                .id(1L)
+                .id(this.getUid())
                 .title(this.getTitle())
                 .imgPath(this.getImgPath())
                 .description(this.getDescription())
