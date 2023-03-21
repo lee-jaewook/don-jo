@@ -47,7 +47,7 @@ public class WishlistSolidity {
             ApplicationHandler.Wishlist response = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send();
             wishlist = Wishlist.fromSol(response);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(wishlist);
     }
