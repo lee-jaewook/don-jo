@@ -92,5 +92,4 @@ public class WishlistController {
         wishlistService.updateWishlist(memberService.getMemberAddress(request), cond);
         return ResponseEntity.status(200).build();
     }
-
 }
