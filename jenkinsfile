@@ -1,34 +1,42 @@
 pipeline {
 
    agent any
+
    stages{
-   stage('backend') {
-             stages {
-               stage('bootjar'){
+
+    stage('백엔드 컨테이너 중지'){
+                    steps{
+                        sh "docker stop backend"
+                                           }
+                                       }
+
+    stage('백엔드 컨테이너 삭제'){
+                steps{
+                    sh "docker rm backend"
+                                       }
+                                   }
+    stage('백엔드 자동 배포') {
+        stages {
+                stage('gradlew 권한'){
+                    steps{
+                          dir('backend'){
+                          sh "chmod +x gradlew"
+                                }
+                                }
+                               }
+               stage('백엔드 이미지 생성'){
                 steps{
                     dir('backend'){
-                    sh "./gradlew bootJar"
+                    sh "./gradlew bootBuildImage"
                     }
                 }
-
                }
-
-
-               stage('backend_build') {
+               stage('컨테이너 생성') {
                  steps {
-                   dir('backend') {
-                     sh "docker build --tag test ."
-                   }
+                   sh "docker run -d -p 8081:8080 --name backend backend:0.0.1-SNAPSHOT"
                  }
                }
-
-               // 스프링 Run
-               stage('backend_serve') {
-                 steps {
-                   sh "docker run -d -p 8080:8080 --name test"
-                 }
-               }
-               }
+           }
 }
 }
 }

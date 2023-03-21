@@ -1,7 +1,7 @@
 package com.donjo.backend.api.controller;
 
-import com.donjo.backend.api.dto.Support.DonationDto;
-import com.donjo.backend.api.service.Support.SupportServiceImpl;
+import com.donjo.backend.api.dto.support.DonationDto;
+import com.donjo.backend.api.service.support.SupportServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = SupportController.class, excludeAutoConfiguration = {
