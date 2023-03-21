@@ -18,12 +18,12 @@ const Header = () => {
   const [profileLinkTo, setProfileLinkTo] = useState("");
 
   useEffect(() => {
-    if (location.pathname === "/dashboard") {
+    if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
       setProfileLinkTo(`/${loginUser.memberAddress}`);
     } else {
       setProfileImgSrc(loginUser.profileImgPath);
-      setProfileLinkTo("/dashboard");
+      setProfileLinkTo("/dashboard/home");
     }
   }, [location.pathname]);
 
