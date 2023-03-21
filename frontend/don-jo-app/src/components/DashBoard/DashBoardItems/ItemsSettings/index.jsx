@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import BasicTitle from "../../../Common/BasicTitle";
 import * as S from "./style";
 import { FiPlus } from "react-icons/fi";
 import ListItem from "./ListItem";
 import { itemList } from "../../../../data/dashboard";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
+import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 const ItemsSettings = () => {
+  const [isShowItemModal, setShowItemModal] = useState(false);
+
   const handleGetMyItemList = () => {
     console.log("handleGetMyItemList");
+  };
+
+  const handleShowItemDetailModal = () => {
+    console.log(" 클릭");
+    setShowItemModal(true);
   };
 
   return (
@@ -29,6 +37,7 @@ const ItemsSettings = () => {
               title={item.title}
               collectedAmount={item.collectedAmount}
               totalAmount={item.totalAmount}
+              handleShowItemDetailModal={handleShowItemDetailModal}
             />
           ))
         ) : (
@@ -37,6 +46,14 @@ const ItemsSettings = () => {
       </div>
       {itemList.length > 4 && (
         <ShowMoreButton handleOnClickButton={handleGetMyItemList} />
+      )}
+
+      {isShowItemModal && (
+        <ItemDetailModal
+          handleSetShowModal={setShowItemModal}
+          idDashboard={true}
+          handleOnClickButton={() => console.log("edit item")}
+        />
       )}
     </S.SettingWrapper>
   );

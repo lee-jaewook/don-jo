@@ -10,13 +10,14 @@ const ListItem = ({
   collectedAmount,
   totalAmount,
   supportCount,
+  handleShowItemDetailModal,
 }) => {
   const handleEditItem = () => {
     console.log("handleEditItem()...");
   };
 
   return (
-    <S.ItemWrapper uid={uid}>
+    <S.ItemWrapper onClick={handleShowItemDetailModal}>
       <S.ItemInfoWrapper>
         <S.ItemImg src={imgPath} alt="item-img" />
         <S.ItemInfo>
@@ -56,4 +57,5 @@ ListItem.propTypes = {
   collectedAmount: PropTypes.string.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
+  handleShowItemDetailModal: PropTypes.func.isRequired,
 };
