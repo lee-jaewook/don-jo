@@ -1,18 +1,13 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 100%;
-  max-width: 17.875rem;
+  width: 17.875rem;
   margin-bottom: 2rem;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
 
-  @media screen and (max-width: 58.75rem) {
-    max-width: 420px;
-  }
-
-  @media screen and (max-width: 40rem) {
-    max-width: unset;
+  @media screen and (max-width: 48rem) {
+    width: 100%;
   }
 `;
 

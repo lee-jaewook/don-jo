@@ -18,6 +18,8 @@ export const CardContainer = styled.div`
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  place-items: center;
 
   @media screen and (max-width: 58.75rem) {
     grid-template-columns: repeat(2, 1fr);
@@ -35,8 +37,7 @@ export const AddCard = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  width: 100%;
-  max-width: 17.875rem;
+  width: 17.875rem;
   height: 20.1875rem;
   border: 0.125rem dashed #d2d2d2;
   border-radius: 1.25rem;
@@ -44,10 +45,6 @@ export const AddCard = styled.div`
 
   &:hover {
     background-color: var(--color-modal);
-  }
-
-  @media screen and (max-width: 58.75rem) {
-    max-width: 420px;
   }
 
   @media screen and (max-width: 48rem) {
