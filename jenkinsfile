@@ -16,9 +16,21 @@ pipeline {
                                 }
                                 }
         }
+            stage('프론트엔드 컨테이너 삭제'){
+                                    steps{
+                                    catchError{
+                                        sh "docker rm --force frontend"
+                                        }
+                                                           }
+                                                       }
+     
+                    stage('컨테이너 생성') {
+                      steps {
+                        sh "docker run -d -p 3000:3000 --name frontend react-image"
+                      }
+                    }
     }
     }
-
     stage('백엔드 자동 배포') {
         stages {
                 stage('gradlew 권한'){
@@ -51,5 +63,7 @@ pipeline {
                }
            }
 }
+
+
 }
 }
