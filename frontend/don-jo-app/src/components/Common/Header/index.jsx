@@ -16,6 +16,7 @@ const Header = () => {
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {

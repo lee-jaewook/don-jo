@@ -29,9 +29,9 @@ export const Logo = styled.div`
   cursor: pointer;
 `;
 
-export const GuideSelect = styled.div`
+export const GuideSelect = styled.button`
   margin-left: auto;
-  cursor: pointer;
+  font-size: 1rem;
 `;
 
 export const ProfileImgContainer = styled.div`
