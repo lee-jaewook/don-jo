@@ -42,8 +42,8 @@ public class ItemController {
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress){
-        return ResponseEntity.status(200).body(itemService.getItemList(memberAddress));
+    public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
+        return ResponseEntity.status(200).body(itemService.getItemList(memberAddress, pageNum, pageSize));
     }
 
     @GetMapping("/api/member/item")

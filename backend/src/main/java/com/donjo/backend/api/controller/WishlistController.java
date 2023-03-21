@@ -34,9 +34,9 @@ public class WishlistController {
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress){
+    public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
         return ResponseEntity.status(200)
-                .body(wishlistService.getAllWishlist(memberAddress));
+                .body(wishlistService.getAllWishlist(memberAddress, pageNum, pageSize));
     }
 
     @GetMapping("/api/member/wishlist")
