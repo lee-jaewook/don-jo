@@ -24,13 +24,13 @@ export const ImojiContainer = styled.div`
 `;
 
 export const Imoji = styled.div`
-  font-size: 5rem;
+  font-size: 3.125rem;
   margin-bottom: 0.875rem;
 `;
 
 export const ImojiTitle = styled.div`
   font-family: RobotoBold;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 `;
 
 export const CounterContainer = styled.div`
