@@ -61,7 +61,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(item);
     }
 
-    @PostMapping("/api/auth/member/item")
+    @PostMapping("/api/auth/member/item/limited")
     @ApiOperation(value = "아이템 등록", notes = "<strong>아이템 정보</strong>를 입력받아 아이템을 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -91,7 +91,7 @@ public class ItemController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/api/auth/member/item")
+    @PutMapping("/api/auth/member/item/limited")
     @ApiOperation(value = "아이템 수정", notes = "<strong>아이템 uid</strong>를 입력받아 아이템을 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
