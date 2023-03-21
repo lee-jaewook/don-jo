@@ -25,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service("MemberService")
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -122,6 +124,14 @@ public class MemberServiceImpl implements MemberService {
       throw new BadRequestException("회원이 존재 하지 않습니다.");
     }
 
+  }
+
+  @Override
+  public String getMemberAddress(HttpServletRequest request) {
+    String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+    Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+    String memberAddress = authentication.getName();
+    return memberAddress;
   }
 
 //  @Override

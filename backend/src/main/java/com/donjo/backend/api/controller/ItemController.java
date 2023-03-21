@@ -3,6 +3,7 @@ package com.donjo.backend.api.controller;
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
 import com.donjo.backend.api.service.item.ItemService;
+import com.donjo.backend.api.service.member.MemberService;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.exception.NoContentException;
@@ -28,6 +29,7 @@ import java.util.List;
 @Slf4j
 public class ItemController {
     private final TokenProvider tokenProvider;
+    private final MemberService memberService;
     private final ItemService itemService;
 
     @GetMapping("/api/member/items")
@@ -67,7 +69,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMyItem(HttpServletRequest request, @RequestBody @Valid AddItemCond cond){
-        String memberAddress = getMemberAddress(request);
+        String memberAddress = memberService.getMemberAddress(request);
 
         itemService.addItem(memberAddress, cond);
 
@@ -83,7 +85,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteItem(HttpServletRequest request, @RequestParam @NotNull Long itemUid){
-        String memberAddress = getMemberAddress(request);
+        String memberAddress = memberService.getMemberAddress(request);
         itemService.deleteMemberItem(memberAddress, itemUid);
         return ResponseEntity.status(200).build();
     }
@@ -97,15 +99,10 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> updateItem(HttpServletRequest request, @RequestBody @Valid UpdateItemCond cond){
-        String memberAddress = getMemberAddress(request);
+        String memberAddress = memberService.getMemberAddress(request);
         itemService.updateMemberItem(memberAddress, cond);
         return ResponseEntity.status(200).build();
     }
 
-    private String getMemberAddress(HttpServletRequest request) {
-        String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
-        Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
-        String memberAddress = authentication.getName();
-        return memberAddress;
-    }
+
 }
