@@ -2,10 +2,12 @@ package com.donjo.backend.api.controller;
 
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+//import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Api(tags = "사용자 관련 기능 API")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -34,7 +37,7 @@ public class MemberController {
       @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @GetMapping(path="/members/{memberAddress}")
+  @GetMapping(path="/api/members/{memberAddress}")
   public ResponseEntity<?> checkExistingMember(@PathVariable("memberAddress") String memberAddress) {
     Optional<Member> member = memberService.findMember(memberAddress);
 
@@ -52,7 +55,7 @@ public class MemberController {
       @ApiResponse(code = 409, message = "CONFLICT(이미 사용 중인 이름)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @GetMapping(path="/members/page-name/check")
+  @GetMapping(path="/api/members/page-name/check")
   public ResponseEntity<?> checkDuplicatePageName(@RequestParam("pageName") String pageName) {
     if(memberService.isPageNameDuplicate(pageName).isPresent()) throw new DuplicateDataException("이미 사용중인 페이지명 입니다.");
     return new ResponseEntity(HttpStatus.OK);
@@ -65,7 +68,7 @@ public class MemberController {
       @ApiResponse(code = 409, message = "CONFLICT(address or pageName 존재)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @PostMapping(path="/member")
+  @PostMapping(path="/api/member")
   public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
     Map<String, Object> result = memberService.signUpMember(signUpMemberCond);
     HttpHeaders headers = returnTokenHeader(result);
@@ -81,7 +84,7 @@ public class MemberController {
       @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
       @ApiResponse(code = 500, message = "서버에러")
   })
-  @PostMapping(path="/members")
+  @PostMapping(path="/api/members")
   public ResponseEntity login(@RequestBody LoginMemberCond loginMemberCond) {
     Map<String, Object> result = memberService.loginMember(loginMemberCond);
     HttpHeaders headers = returnTokenHeader(result);
@@ -98,7 +101,7 @@ public class MemberController {
           @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
           @ApiResponse(code = 500, message = "서버 오류")
   })
-  @PostMapping("/auth/member/refresh")
+  @PostMapping("/api/member/refresh")
   public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
     String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
     Map<String, Object> result = memberService.refreshAccessToken(refreshToken.substring(7));
@@ -113,7 +116,7 @@ public class MemberController {
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 500, message = "서버에러")
   })
-  @GetMapping(path="/auth/member/logout")
+  @GetMapping(path="/api/auth/member/logout")
   public ResponseEntity<?> logout(HttpServletRequest request) {
     String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
     memberService.logout(accessToken.substring(7));
@@ -128,5 +131,19 @@ public class MemberController {
 
     return headers;
   }
+
+//  @ApiOperation(value="페이지 정보 요청", notes = "PathVariable 값 page-name을 사용해서 페이지 정보를 요청합니다.")
+//  @ApiResponses({
+//      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+//      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+//      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
+//      @ApiResponse(code = 500, message = "서버에러")
+//  })
+//  @GetMapping(path="/pages/{page-name}")
+//  public ResponseEntity<?> getPageInfo(@PathVariable("page-name") String pageName) {
+//    FindPageInfoPayload result = memberService.getPageInfoByPageName(pageName);
+//
+//    return new ResponseEntity(result, HttpStatus.OK);
+//  }
 
 }
