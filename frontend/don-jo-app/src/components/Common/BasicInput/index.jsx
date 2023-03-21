@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
 const BasicInput = ({
+  id,
   type,
   value,
   handleOnChangeValue,
@@ -10,6 +11,7 @@ const BasicInput = ({
 }) => {
   return (
     <S.Input
+      id={id}
       type={type}
       value={value}
       onChange={handleOnChangeValue}
@@ -22,6 +24,7 @@ const BasicInput = ({
 export default BasicInput;
 
 BasicInput.propTypes = {
+  id: PropTypes.string,
   type: PropTypes.oneOf(["text", "password", "number", "price"]),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handleOnChangeValue: PropTypes.func.isRequired,
