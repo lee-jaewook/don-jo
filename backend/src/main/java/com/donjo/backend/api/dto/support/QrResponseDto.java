@@ -1,4 +1,4 @@
-package com.donjo.backend.api.dto.Support;
+package com.donjo.backend.api.dto.support;
 
 import lombok.Getter;
 import lombok.Setter;

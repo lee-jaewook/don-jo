@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.donjo.backend.api.service.S3.S3Uploader;
+import com.donjo.backend.api.service.s3.S3Uploader;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
