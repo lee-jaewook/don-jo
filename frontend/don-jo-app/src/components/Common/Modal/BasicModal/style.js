@@ -1,16 +1,24 @@
 import styled from "styled-components";
 
-export const BackgroundOpacity = styled.div`
+export const Container = styled.div`
+  position: fixed;
   height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
+  top: 0;
+  left: 0;
+`;
+
+export const BackgroundOpacity = styled.div`
+  height: 100%;
+  width: 100%;
   z-index: 10;
   background-color: #000000;
   opacity: 0.2;
 `;
 
 export const BackgroundBlur = styled.div`
-  height: calc(var(--vh, 1vh) * 100);
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   z-index: 11;
   backdrop-filter: blur(1.25rem);
   position: absolute;
@@ -21,7 +29,7 @@ export const BackgroundBlur = styled.div`
 
 export const Modal = styled.div`
   width: ${(props) => props.width || "33"}rem;
-  max-height: 47.25rem;
+  max-height: 60.6875rem;
   z-index: 12;
   background-color: var(--color-modal);
   border-radius: 1.25rem;

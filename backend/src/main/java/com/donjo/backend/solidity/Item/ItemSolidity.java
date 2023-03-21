@@ -1,5 +1,7 @@
 package com.donjo.backend.solidity.Item;
 
+import com.donjo.backend.exception.BadRequestException;
+import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.util.Web3jUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,16 +32,11 @@ public class ItemSolidity {
 
     public void addMemberItem(Item cond){
         ApplicationHandler.Item item = cond.toSol();
-        CompletableFuture<TransactionReceipt> future = contract.addMemberItem(item).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            contract.addMemberItem(item).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public Optional<List<Item>> getMemberItemList(String address){
@@ -73,29 +70,22 @@ public class ItemSolidity {
     }
 
     public void deleteMemberItem(String address, Long id){
-        CompletableFuture<TransactionReceipt> future = contract.deleteMemberItem(address, BigInteger.valueOf(id)).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            String seller = contract.getItemDetail(BigInteger.valueOf(id)).send().seller;
+            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
+            contract.deleteMemberItem(address, BigInteger.valueOf(id)).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e);
+        }
     }
 
     public void updateMemberItem(Item cond){
         ApplicationHandler.Item item = cond.toSol();
-        CompletableFuture<TransactionReceipt> future = contract.updateMemberItem(item).sendAsync();
-
-        // 비동기 callback block
-        future.whenComplete((transactionReceipt, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error sending transaction: " + throwable.getMessage());
-            } else {
-                System.out.println("Transaction sent, transaction hash: " + transactionReceipt.getTransactionHash());
-            }
-        });
+        try {
+            if(!contract.getItemDetail(item.id).send().seller.equals(cond.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다");
+            contract.updateMemberItem(item).send();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 }

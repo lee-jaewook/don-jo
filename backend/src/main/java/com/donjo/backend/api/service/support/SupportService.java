@@ -1,21 +1,23 @@
-package com.donjo.backend.api.service.Support;
+package com.donjo.backend.api.service.support;
 
-import com.donjo.backend.api.dto.Support.*;
+import com.donjo.backend.api.dto.support.*;
 
 import java.util.List;
 
 public interface SupportService {
-    EarningsResponseDto getEarning(String type, int period);
+    Double getEarning(String address,String type, int period);
 
     CountResponseDto getSupportCount(String type);
 
     DonationDto getDonationSetting(String memberAddress);
 
+    void createSupports(SupportRequestDto supportRequestDto);
+
     List<SupportResponseDto> getSupports(String Type, int pageNum);
 
     SupportDetailResponseDto getSupportDetail(String type,int supportUid);
 
-    void changeDonation(DonationDto donationDto);
+    void changeDonation(DonationDto donationDto,String memberAddress);
 
     QrResponseDto getQrcode(String memberAddress);
 }
