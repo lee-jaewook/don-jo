@@ -68,8 +68,8 @@ public class SecurityConfig {
                 .authorizeRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근 제한을 설정하겠다는 의미
                 .antMatchers("/authenticate","/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/auth/**").authenticated()
                 .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/auth/**").authenticated()
                 .anyRequest().permitAll()
 
                 .and()

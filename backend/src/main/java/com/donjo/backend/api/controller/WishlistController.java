@@ -1,6 +1,7 @@
 package com.donjo.backend.api.controller;
 
 import com.donjo.backend.api.service.wishlist.WishlistService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 
 @RestController
+@Api(tags = "위시리스트 관련 기능 API")
 @RequiredArgsConstructor
 public class WishlistController {
 

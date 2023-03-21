@@ -2,6 +2,7 @@ package com.donjo.backend.api.controller;
 
 import com.donjo.backend.api.dto.support.*;
 import com.donjo.backend.api.service.support.SupportService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -13,6 +14,7 @@ import java.util.List;
 
 
 @RestController
+@Api(tags = "후원 관련 기능 API")
 @RequiredArgsConstructor
 public class SupportController {
 

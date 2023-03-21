@@ -44,7 +44,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(list);
     }
 
-    @GetMapping("/api/member/items")
+    @GetMapping("/api/member/item")
     @ApiOperation(value = "아이템 상세 조회", notes = "<strong>아이템의 uid</strong>를 입력받아 아이템 상세 정보를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
