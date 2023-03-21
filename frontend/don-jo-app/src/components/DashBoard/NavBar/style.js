@@ -24,6 +24,7 @@ export const NavBar = styled.div`
     overflow: hidden;
     padding-left: 0px;
     align-items: center;
+    margin: 0;
   }
 `;
 
