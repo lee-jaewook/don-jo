@@ -20,11 +20,13 @@ public class AddItemCond {
     @NotNull
     private String imgPath;
 
+    @NotNull
     private String description;
 
     @NotNull
-    private double price;
+    private Double price;
 
+    @NotNull
     private String message;
 
     @NotNull
