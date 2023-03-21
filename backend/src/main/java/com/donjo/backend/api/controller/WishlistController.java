@@ -34,9 +34,9 @@ public class WishlistController {
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress){
+    public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
         return ResponseEntity.status(200)
-                .body(wishlistService.getAllWishlist(memberAddress));
+                .body(wishlistService.getAllWishlist(memberAddress, pageNum, pageSize));
     }
 
     @GetMapping("/api/member/wishlist")
@@ -53,7 +53,7 @@ public class WishlistController {
                         .orElseThrow(()-> new NoContentException("위시리스트가 없습니다.")));
     }
 
-    @PostMapping("/api/auth/member/wishlist")
+    @PostMapping("/api/auth/member/wishlist/limited")
     @ApiOperation(value = "멤버의 위시 리시트 추가", notes = "<strong>위시리스트 정보</strong>를 입력받아 위시리스트를 추가합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(작성 성공)"),
@@ -79,11 +79,11 @@ public class WishlistController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/api/auth/member/wishlist")
-    @ApiOperation(value = "멤버의 위시 리시트 삭제", notes = "<strong>위시리스트 uid</strong>를 입력받아 위시리스트를 삭제합니다.")
+    @PutMapping("/api/auth/member/wishlist/limited")
+    @ApiOperation(value = "멤버의 위시 리시트 수정", notes = "<strong>위시리스트 uid를 포함한 전체 데이터</strong>를 입력받아 위시리스트를 수정합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(삭제 실패)"),
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
             @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })

@@ -8,6 +8,7 @@ import com.donjo.backend.solidity.Item.ItemSolidity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,25 @@ public class ItemServiceImpl implements ItemService{
     private final ItemSolidity itemSolidity;
 
     @Override
-    public List<Item> getItemList(String address) {
+    public List<Item> getItemList(String address, int pageNum, int pageSize) {
+        // null 체크
         List<Item> list = itemSolidity.getMemberItemList(address).orElseThrow(()-> new NoContentException());
-        if(list.size() == 0) throw new NoContentException();
-        Collections.reverse(list);
-        return list;
+
+        // 페이지네이션
+        int startIdx = pageNum * pageSize;
+        int endIdx = (pageNum + 1) * pageSize - 1;
+        if(list.size() == 0 || list.size() <= startIdx) {
+            throw new NoContentException();
+        }
+        List<Item> result = new ArrayList<>();
+        for (int i = startIdx; i < list.size(); i++) {
+            if(i > endIdx) break;
+            result.add(list.get(i));
+        }
+
+        // 정렬
+        Collections.reverse(result);
+        return result;
     }
 
     @Override

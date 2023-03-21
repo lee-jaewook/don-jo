@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WishlistService {
-    List<Wishlist> getAllWishlist(String address);
+    List<Wishlist> getAllWishlist(String address, int pageNum, int pageSize);
     Optional<Wishlist> getOneWishlist(Long uid);
     void addWishlist(String memberAddress, AddWishlistCond cond);
     void deleteWishlist(String memberAddress, Long uid);
