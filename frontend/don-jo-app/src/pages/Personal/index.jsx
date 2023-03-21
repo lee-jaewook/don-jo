@@ -6,7 +6,7 @@ import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
-import { Desktop, Tablet, Mobile } from "../../components/Common/Template";
+import { Desktop } from "../../components/Common/Template";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -64,110 +64,72 @@ public class HelloWorld {
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
 
   return (
-    <div>
-      <S.Container>
-        <S.BackgroundImg
-          src={pageOwner.backgroundImgPath}
-          onMouseOver={() => setIsBackgroundHover(true)}
-          onMouseOut={() => setIsBackgroundHover(false)}
+    <S.Container>
+      <S.BackgroundImg
+        src={pageOwner.backgroundImgPath}
+        onMouseOver={() => setIsBackgroundHover(true)}
+        onMouseOut={() => setIsBackgroundHover(false)}
+      >
+        {loginUser.memberAddress === pageOwner.memberAddress &&
+          isBackgroundHover && (
+            <S.BackgroundImgEdit>
+              <S.EditIcon>
+                <FiEdit color="white" size={20.35} />
+              </S.EditIcon>
+            </S.BackgroundImgEdit>
+          )}
+      </S.BackgroundImg>
+      <S.ProfileImgContainer>
+        <S.ProfileImg
+          src={pageOwner.profileImgPath}
+          onMouseOver={() => setIsProfileHover(true)}
+          onMouseOut={() => setIsProfileHover(false)}
         >
           {loginUser.memberAddress === pageOwner.memberAddress &&
-            isBackgroundHover && (
-              <S.BackgroundImgEdit>
+            isProfileHover && (
+              <S.ProfileImgEdit>
                 <S.EditIcon>
                   <FiEdit color="white" size={20.35} />
                 </S.EditIcon>
-              </S.BackgroundImgEdit>
+              </S.ProfileImgEdit>
             )}
-        </S.BackgroundImg>
-        <S.ProfileImgContainer>
-          <S.ProfileImg
-            src={pageOwner.profileImgPath}
-            onMouseOver={() => setIsProfileHover(true)}
-            onMouseOut={() => setIsProfileHover(false)}
-          >
-            {loginUser.memberAddress === pageOwner.memberAddress &&
-              isProfileHover && (
-                <S.ProfileImgEdit>
-                  <S.EditIcon>
-                    <FiEdit color="white" size={20.35} />
-                  </S.EditIcon>
-                </S.ProfileImgEdit>
+        </S.ProfileImg>
+      </S.ProfileImgContainer>
+
+      <S.ContentsContainer>
+        <S.UserInfo>
+          <S.Nickname>{pageOwner.nickname}</S.Nickname>
+          <S.SupporterContainer>
+            <S.NumSupporter>
+              {pageOwner.numSupporters
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </S.NumSupporter>
+            supporter
+          </S.SupporterContainer>
+          <ExternalLink socialList={pageOwner.socialList} />
+          <Desktop>
+            <S.IntroductionContainer>
+              {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
+              {loginUser.memberAddress === pageOwner.memberAddress && (
+                <S.IntroductionEdit
+                  onClick={() => {
+                    setIsShowIntroductionEdit(true);
+                  }}
+                >
+                  <FiEdit style={{ cursor: "pointer" }} />
+                </S.IntroductionEdit>
               )}
-          </S.ProfileImg>
-        </S.ProfileImgContainer>
-
-        <Desktop>
-          <S.ContentsContainer>
-            <S.UserInfo>
-              <S.Nickname>{pageOwner.nickname}</S.Nickname>
-              <S.SupporterContainer>
-                <S.NumSupporter>
-                  {pageOwner.numSupporters
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </S.NumSupporter>
-                supporter
-              </S.SupporterContainer>
-              <ExternalLink socialList={pageOwner.socialList} />
-              <S.IntroductionContainer>
-                {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
-                {loginUser.memberAddress === pageOwner.memberAddress && (
-                  <S.IntroductionEdit
-                    onClick={() => {
-                      setIsShowIntroductionEdit(true);
-                    }}
-                  >
-                    <FiEdit style={{ cursor: "pointer" }} />
-                  </S.IntroductionEdit>
-                )}
-                <S.Introduction>
-                  <MDEditor.Markdown
-                    source={pageOwner.introduction}
-                  ></MDEditor.Markdown>
-                </S.Introduction>
-              </S.IntroductionContainer>
-            </S.UserInfo>
-            <PersonalContent />
-          </S.ContentsContainer>
-        </Desktop>
-
-        <Tablet>
-          <S.ContentsContainer>
-            <S.UserInfo>
-              <S.Nickname>{pageOwner.nickname}</S.Nickname>
-              <S.SupporterContainer>
-                <S.NumSupporter>
-                  {pageOwner.numSupporters
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </S.NumSupporter>
-                supporter
-              </S.SupporterContainer>
-              <ExternalLink socialList={pageOwner.socialList} />
-            </S.UserInfo>
-            <PersonalContent />
-          </S.ContentsContainer>
-        </Tablet>
-
-        <Mobile>
-          <S.ContentsContainer>
-            <S.UserInfo>
-              <S.Nickname>{pageOwner.nickname}</S.Nickname>
-              <S.SupporterContainer>
-                <S.NumSupporter>
-                  {pageOwner.numSupporters
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </S.NumSupporter>
-                supporter
-              </S.SupporterContainer>
-              <ExternalLink socialList={pageOwner.socialList} />
-            </S.UserInfo>
-            <PersonalContent />
-          </S.ContentsContainer>
-        </Mobile>
-      </S.Container>
+              <S.Introduction>
+                <MDEditor.Markdown
+                  source={pageOwner.introduction}
+                ></MDEditor.Markdown>
+              </S.Introduction>
+            </S.IntroductionContainer>
+          </Desktop>
+        </S.UserInfo>
+        <PersonalContent />
+      </S.ContentsContainer>
 
       {isShowIntroductionEdit && (
         <FullScreenModal
@@ -177,7 +139,7 @@ public class HelloWorld {
           }
         />
       )}
-    </div>
+    </S.Container>
   );
 };
 
