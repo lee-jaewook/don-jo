@@ -24,7 +24,9 @@ const FullScreenModal = ({ handleSetShowModal, children }) => {
       </S.ModalHeader>
 
       <S.ModalBody>
+        <S.ContentCardWrapper>
         <S.ContentCard>{children}</S.ContentCard>
+        </S.ContentCardWrapper>
       </S.ModalBody>
     </S.Modal>
   );
