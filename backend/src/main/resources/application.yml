@@ -8,7 +8,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
@@ -54,12 +54,21 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: bucket_name
+      bucket: don-jo
     region:
       static: ap-northeast-2
     stack:
       auto: false
     credentials:
-      accessKey:
-      secretKey:
+      accessKey: AKIAREBD2QI77A32LV6T
+      secretKey: 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
+
+# eth address
+eth:
+  address: '0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7'
+  privateKey: '9c63b31a88c410c7d33265876407b31aea175c589ec82fff8d0bc4aa2baf150d'
+  rpcUtil : 'https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a'
+  applicationAddress : '0xc45694392A301B63a1FD0A1b2762521915a78f44'
+#  rpcUtil: 'http://j8a209.p.ssaft.io:8545'
+#  applicationAddress: '0xBf431108276e429c168E12938E8f1BF823Ee02B6'
 
