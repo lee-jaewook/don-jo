@@ -7,7 +7,7 @@ import java.util.List;
 public interface SupportService {
     Double getEarning(String address,String type, int period);
 
-    CountResponseDto getSupportCount(String type);
+    int getSupportCount(String type,String memberAddress);
 
     DonationDto getDonationSetting(String memberAddress);
 

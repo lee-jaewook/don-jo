@@ -62,18 +62,5 @@ public class SupportRepositorySupport {
         return query.getResultList();
     }
 
-    public List<?> findTop10() {
-
-        String jpql = "select u from Support u"; //member support로 바꿔야함
-        String whereSql = " where u.arriveTimeStamp is not null limit 10"; //support 날짜가 not null
-
-        System.out.println(whereSql);
-        jpql += whereSql;
-        System.out.println(jpql);
-        TypedQuery<Support> query = em.createQuery(jpql, Support.class);
-
-        return query.getResultList();
-
-    }
 
 }

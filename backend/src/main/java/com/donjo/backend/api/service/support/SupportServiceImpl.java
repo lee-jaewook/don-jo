@@ -73,28 +73,31 @@ public class SupportServiceImpl implements SupportService{
         return null;
     }
     @Override
-    public CountResponseDto getSupportCount(String type){
+    public int getSupportCount(String type, String memberAddress){
         //🌍 type : String
         //- donation or
         //- item or
         //- wishilist or
         //- all
         // type을 받아 서포트 수 Dto에 담아 return!
-        return null;
+        List<Support> list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress);
+        return list.size();
     }
 
 
     @Override
     public DonationDto getDonationSetting(String memberAddress){
         DonationSetting donationSetting = donationSettingRepository.findById(memberAddress).get().getDonationSetting();
-        DonationDto donationDto = DonationDto.builder()
-                .pricePerDonation(donationSetting.getPricePerDonation())
-                .donationEmoji(donationSetting.getDonationEmoji())
-                .donationName(donationSetting.getDonationName())
-                .thankMsg(donationSetting.getThankMsg())
-                .build();
+        DonationDto donationDto = new DonationDto();
 
-        return donationDto;
+//        DonationDto donationDto = DonationDto.builder()
+//                .pricePerDonation(donationSetting.getPricePerDonation())
+//                .donationEmoji(donationSetting.getDonationEmoji())
+//                .donationName(donationSetting.getDonationName())
+//                .thankMsg(donationSetting.getThankMsg())
+//                .build();
+
+        return donationDto.getDonation(donationSetting);
     }
 
     @Override

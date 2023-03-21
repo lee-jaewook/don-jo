@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface SupportRepository extends JpaRepository<Support, String> {
     List<Support> findAllBySupportTypeAndToAddress(String supportType, String toAddress, Pageable pageable);
+    List<Support> findAllBySupportTypeAndToAddress(String supportType, String toAddress);
+
 }
