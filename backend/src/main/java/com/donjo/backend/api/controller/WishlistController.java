@@ -80,7 +80,7 @@ public class WishlistController {
         return ResponseEntity.status(200).build();
     }
 
-    @DeleteMapping("/api/auth/member/wishlist")
+    @PutMapping("/api/auth/member/wishlist")
     @ApiOperation(value = "멤버의 위시 리시트 삭제", notes = "<strong>위시리스트 uid</strong>를 입력받아 위시리스트를 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
