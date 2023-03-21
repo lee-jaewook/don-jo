@@ -17,7 +17,7 @@ public class SupportRepositorySupport {
     private EntityManager em;
 
 
-    public List<Support> findEarning(String address,String type, int period) {
+    public List<Support> findEarning(String address, String type, int period) {
 
         String jpql = "select u from Support u";
         String whereSql = " where u.toAddress = "; //support adress where u.userId = 'address'
