@@ -3,6 +3,21 @@ pipeline {
    agent any
 
    stages{
+    stage('프론트엔드 자동 배포'){
+
+        stages{
+            stage('프론트엔드 이미지 생성'){
+                            steps{
+                                dir('frontend')
+                                {
+                                dir('don-jo-app'){
+                                sh "docker build -t react-image ."
+                                }
+                                }
+                                }
+        }
+    }
+    }
 
     stage('백엔드 자동 배포') {
         stages {
