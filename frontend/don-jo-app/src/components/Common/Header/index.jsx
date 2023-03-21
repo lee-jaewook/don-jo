@@ -4,6 +4,7 @@ import SelectBox from "./SelectBox";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
+import FullScreenModal from "../Modal/FullScreenModal";
 
 const Header = () => {
   //로그인 유저 더미데이터
@@ -17,6 +18,7 @@ const Header = () => {
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isShowLoginModal, setIsShowLoginModal] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {
@@ -38,9 +40,26 @@ const Header = () => {
           <SelectBox />
         </S.GuideSelect>
         <S.ProfileImgContainer>
-          <ProfileImg width={2.5} src={profileImgSrc} to={profileLinkTo} />
+          {isLogin ? (
+            <ProfileImg width={2.5} src={profileImgSrc} to={profileLinkTo} />
+          ) : (
+            <S.Startbtn
+              onClick={() => {
+                setIsShowLoginModal(true);
+              }}
+            >
+              Start
+            </S.Startbtn>
+          )}
         </S.ProfileImgContainer>
       </S.Header>
+
+      {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
+      {isShowLoginModal && (
+        <FullScreenModal handleSetShowModal={setIsShowLoginModal}>
+          <div></div>
+        </FullScreenModal>
+      )}
     </S.HeaderContainer>
   );
 };
