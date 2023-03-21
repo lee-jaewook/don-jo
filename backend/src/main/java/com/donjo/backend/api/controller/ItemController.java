@@ -43,9 +43,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress){
-        List<Item> list = itemService.getItemList(memberAddress)
-                .orElseThrow(()-> new NoContentException("Item이 없습니다."));
-        return ResponseEntity.status(200).body(list);
+        return ResponseEntity.status(200).body(itemService.getItemList(memberAddress));
     }
 
     @GetMapping("/api/member/item")

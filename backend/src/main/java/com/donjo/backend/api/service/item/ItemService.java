@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemService {
-    Optional<List<Item>> getItemList(String address);
+    List<Item> getItemList(String address);
     Optional<Item> getItemDetail(Long uid);
     void addItem(String address, AddItemCond cond);
     void deleteMemberItem(String address, Long uid);

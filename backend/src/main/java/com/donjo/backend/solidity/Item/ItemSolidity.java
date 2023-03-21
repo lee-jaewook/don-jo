@@ -64,7 +64,7 @@ public class ItemSolidity {
             ApplicationHandler.Item response = contract.getItemDetail(BigInteger.valueOf(id)).send();
             item = Item.fromSol(response);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(item);
     }
@@ -75,7 +75,7 @@ public class ItemSolidity {
             if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
             contract.deleteMemberItem(address, BigInteger.valueOf(id)).send();
         } catch (Exception e) {
-            throw new BadRequestException(e);
+            throw new BadRequestException(e.getMessage());
         }
     }
 

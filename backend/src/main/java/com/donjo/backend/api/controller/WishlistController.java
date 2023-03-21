@@ -36,8 +36,7 @@ public class WishlistController {
     })
     public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress){
         return ResponseEntity.status(200)
-                .body(wishlistService.getAllWishlist(memberAddress)
-                        .orElseThrow(()-> new NoContentException("위시리스트가 없습니다.")));
+                .body(wishlistService.getAllWishlist(memberAddress));
     }
 
     @GetMapping("/api/member/wishlist")
