@@ -14,18 +14,38 @@ export const BackgroundImg = styled.div`
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.src});
+  position: relative;
 `;
 
-export const Wrapper = styled.div`
-  margin-top: 10rem;
-  width: 100%;
-  max-width: 80rem;
+export const BackgroundImgEdit = styled.div`
   position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const EditIcon = styled.div`
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 100%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 export const ProfileImgContainer = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
+  margin-top: 10rem;
+  width: 100%;
+  max-width: 80rem;
+  position: absolute;
 `;
 
 export const ProfileImg = styled.div`
@@ -37,22 +57,35 @@ export const ProfileImg = styled.div`
   background-image: url(${(props) => props.src});
   filter: drop-shadow(0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05));
   margin-left: 4rem;
+  position: relative;
+`;
+
+export const ProfileImgEdit = styled.div`
+  position: absolute;
+  width: 11.25rem;
+  height: 11.25rem;
+  border-radius: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentsContainer = styled.div`
-  border: 1px solid green;
   width: 100%;
+  max-width: 80rem;
   display: flex;
+  margin-top: 140px;
 `;
 
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  //임시 영역 세팅
-  width: 300px;
-  border: 1px solid pink;
+  width: 100%;
+  max-width: 300px;
+  margin-right: 2rem;
 `;
 
 export const Nickname = styled.div`
@@ -73,14 +106,6 @@ export const SupporterContainer = styled.div`
 export const NumSupporter = styled.div`
   font-family: RobotoMedium;
   margin-right: 0.25rem;
-`;
-
-export const ExternalLinkContainer = styled.div`
-  border: 1px solid black;
-  display: flex;
-  margin-bottom: 2.5rem;
-  height: 2.5rem;
-  width: 9rem;
 `;
 
 export const IntroductionContainer = styled.div`
@@ -104,6 +129,5 @@ export const IntroductionEdit = styled.div`
 export const Introduction = styled.div`
   overflow-y: auto;
   max-height: 37.125rem;
+  padding-right: 0.625rem;
 `;
-
-export const Contents = styled.div``;
