@@ -11,6 +11,9 @@ import com.donjo.backend.api.service.s3.S3Uploader;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,6 +32,9 @@ public class FileController {
         })
         public ResponseEntity<String> upload( @RequestParam String category,
                                               @RequestPart MultipartFile multipartFile){
+            List<String> list = new ArrayList<>(Arrays.asList(new String[]{"img/profile", "img/background", "img/item", "img/wishlist", "item"}));
+            if(!list.contains(category)) return ResponseEntity.status(400).build();
+
             String fileName = null;
             try {
                 fileName = s3Upload.uploadFile(multipartFile,category);

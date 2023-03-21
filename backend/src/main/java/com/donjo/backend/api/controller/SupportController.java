@@ -1,6 +1,7 @@
 package com.donjo.backend.api.controller;
 
 import com.donjo.backend.api.dto.support.*;
+import com.donjo.backend.api.service.member.MemberService;
 import com.donjo.backend.api.service.support.SupportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,13 +20,14 @@ import java.util.List;
 public class SupportController {
 
     private final SupportService supportService;
+    private final MemberService memberService;
 
 
     @ApiOperation(value = "수익금 조회", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
-            @ApiResponse(code=404, message = "NOT FOUND(정보 없음"),
+            @ApiResponse(code = 404, message = "NOT FOUND(정보 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
