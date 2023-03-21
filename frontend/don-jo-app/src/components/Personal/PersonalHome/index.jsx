@@ -2,26 +2,25 @@ import * as S from "./style";
 import HomeRecentSupport from "./HomeRecentSupport";
 import HomeDonation from "./HomeDonation";
 import HomeWishlist from "./HomeWishlist";
-import { Desktop, Tablet, Mobile } from "../../Common/Template";
+import { Mobile } from "../../Common/Template";
+import { useMediaQuery } from "react-responsive";
+
+//데스크탑이거나 태블릿일 경우
+const DesktopTablet = ({ children }) => {
+  const isTablet = useMediaQuery({ minWidth: 769 });
+  return isTablet ? children : null;
+};
 
 const PersonalHome = () => {
   return (
     <S.Container>
-      <Desktop>
+      <DesktopTablet>
         <HomeRecentSupport />
         <S.Wrapper>
           <HomeDonation />
           <HomeWishlist />
         </S.Wrapper>
-      </Desktop>
-
-      <Tablet>
-        <HomeRecentSupport />
-        <S.Wrapper>
-          <HomeDonation />
-          <HomeWishlist />
-        </S.Wrapper>
-      </Tablet>
+      </DesktopTablet>
 
       <Mobile>
         <HomeDonation />
