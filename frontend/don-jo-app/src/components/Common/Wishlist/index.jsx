@@ -5,6 +5,8 @@ import * as S from "./style";
 import { wishlist } from "../../../data/common";
 
 const Wishlist = ({ Wishlist = wishlist, isDashboard, handleSetShowModal }) => {
+  const handleOpenModal = () => handleSetShowModal(true);
+
   return (
     <S.WishlistContainer isDashboard={isDashboard}>
       {Wishlist && Wishlist.length > 0 ? (
@@ -19,6 +21,7 @@ const Wishlist = ({ Wishlist = wishlist, isDashboard, handleSetShowModal }) => {
             collectedAmount={item.collectedAmount}
             totalAmount={item.totalAmount}
             handleSetShowModal={handleSetShowModal}
+            onClick={handleOpenModal}
           />
         ))
       ) : (
