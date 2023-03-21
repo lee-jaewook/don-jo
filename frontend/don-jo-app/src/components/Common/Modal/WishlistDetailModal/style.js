@@ -72,7 +72,8 @@ export const ProgressBarWrapper = styled.div`
   width: 100%;
   height: 2.5rem;
   background-color: transparent;
-  margin: ${(props) => "2rem 0rem 0rem 0rem" || "2rem 0rem 3.75rem 0rem"};
+  margin: ${(props) =>
+    props.isDashboard ? "2rem 0rem 0rem 0rem" : "2rem 0rem 3.75rem 0rem"};
 `;
 
 export const ProgressBar = styled.div`

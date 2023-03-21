@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
@@ -6,7 +6,11 @@ import BasicTitle from "../../BasicTitle";
 import BasicButton from "../../BasicButton";
 import BasicTextarea from "../../BasicTextarea";
 
-const WishlistDetailModal = ({ handleSetShowModal, isDashboard }) => {
+const WishlistDetailModal = ({
+  isDashboard,
+  handleSetShowModal,
+  handleOnClickButton,
+}) => {
   // 후원 상태바 계산을 위한 함수
   //   const handleCalcProgressState = () => {
   //     if (Number(collectedAmount) >= Number(totalAmount)) {
@@ -14,6 +18,13 @@ const WishlistDetailModal = ({ handleSetShowModal, isDashboard }) => {
   //     }
   //     return (Number(collectedAmount) / Number(totalAmount)) * 100;
   //   };
+
+  const [price, setPrice] = useState(0); // 확인 메세지
+  const [confirmationMessage, setConfirmationMessage] = useState(""); // 확인 메세지
+
+  const handleDeleteWishlistItem = useCallback(() => {
+    console.log("handleDeleteWishlistItem()...");
+  }, []);
 
   return (
     <BasicModal handleSetShowModal={handleSetShowModal} width={40}>
@@ -49,20 +60,33 @@ const WishlistDetailModal = ({ handleSetShowModal, isDashboard }) => {
             <S.PriceInputWrapper>
               <BasicTitle text="Price" />
               <span>
-                <S.PriceInput type="text" placeholder="1000.000" />
+                <S.PriceInput
+                  type="number"
+                  placeholder="1000.000"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
                 <S.Eth>eth</S.Eth>
               </span>
             </S.PriceInputWrapper>
             <BasicTitle text="Confirmation Message" />
-            <BasicTextarea placeholder="Thank you for supporting my wishlist!" />
+            <BasicTextarea
+              handleOnChangeValue={setConfirmationMessage}
+              placeholder="Thank you for supporting my wishlist!"
+            />
           </div>
         )}
         <S.ButtonWrapper>
-          {isDashboard && <S.DeleteButton>Delete</S.DeleteButton>}
+          {isDashboard && (
+            <S.DeleteButton onClick={handleDeleteWishlistItem}>
+              Delete
+            </S.DeleteButton>
+          )}
           <BasicButton
             text={isDashboard ? "Edit" : "Donate"}
             color="black"
             isBackground={true}
+            handleOnClickButton={handleOnClickButton}
           />
         </S.ButtonWrapper>
       </S.ContentWrapper>
@@ -74,5 +98,6 @@ export default WishlistDetailModal;
 
 WishlistDetailModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
+  handleOnClickButton: PropTypes.func.isRequired,
   idDashboard: PropTypes.bool,
 };
