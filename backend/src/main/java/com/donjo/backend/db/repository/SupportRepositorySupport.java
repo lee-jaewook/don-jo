@@ -1,5 +1,6 @@
 package com.donjo.backend.db.repository;
 
+import com.donjo.backend.db.entity.Support;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
@@ -16,27 +17,28 @@ public class SupportRepositorySupport {
     private EntityManager em;
 
 
-    public List<?> findEarning(String address, String type,int period) {
+    public List<Support> findEarning(String address,String type, int period) {
 
-        String jpql = "select u from Member u"; //member support로 바꿔야함
-        String whereSql = " where u.userId = 'address' and "; //support adress
+        String jpql = "select u from Support u";
+        String whereSql = " where u.toAddress = "; //support adress where u.userId = 'address'
+        whereSql+= address;
         List<String> whereCondition = new ArrayList<>();
         LocalDate todayLocalDate = LocalDate.now();
         // 스위치문 수정해줘야함
         switch (type) {
             case "donation":
-                whereCondition.add("u.type = 'donation'");
+                whereCondition.add(" u.supportType = 'donation'");
                 break;
             case "item":
-                whereCondition.add("u.type = 'item'");
+                whereCondition.add(" u.supportType = 'item'");
                 break;
-            case "wishlist ":
-                whereCondition.add("u.type = 'wishlist'");
+            case "wishlist":
+                whereCondition.add(" u.supportType = 'wishlist'");
                 break;
             case "all":
                 break;
         }
-        if (type != "all") {
+        if (type != "all" && period != 0) {
             whereCondition.add(" and ");
         }
         switch (period) {
@@ -53,26 +55,25 @@ public class SupportRepositorySupport {
         System.out.println(whereCondition);
         jpql += whereSql;
         jpql += String.join("", whereCondition);
-        jpql += " order by u.id desc";
-        System.out.println(jpql);
-//        TypedQuery<User> query = em.createQuery(jpql, User.class);
 
-//        return query.setFirstResult(z).setMaxResults(w).getResultList();
-        return null;
+        System.out.println(jpql);
+        TypedQuery<Support> query = em.createQuery(jpql, Support.class);
+
+        return query.getResultList();
     }
 
     public List<?> findTop10() {
 
-        String jpql = "select u from Member u"; //member support로 바꿔야함
-        String whereSql = " where u.userId is not null limit 10"; //support 날짜가 not null
+        String jpql = "select u from Support u"; //member support로 바꿔야함
+        String whereSql = " where u.arriveTimeStamp is not null limit 10"; //support 날짜가 not null
 
         System.out.println(whereSql);
         jpql += whereSql;
         System.out.println(jpql);
-//        TypedQuery<User> query = em.createQuery(jpql, User.class);
+        TypedQuery<Support> query = em.createQuery(jpql, Support.class);
 
-//        return query.setFirstResult(z).setMaxResults(w).getResultList();
-        return null;
+        return query.getResultList();
+
     }
 
 }

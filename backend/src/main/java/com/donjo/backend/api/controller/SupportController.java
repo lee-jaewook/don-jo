@@ -1,7 +1,7 @@
 package com.donjo.backend.api.controller;
 
-import com.donjo.backend.api.dto.Support.*;
-import com.donjo.backend.api.service.Support.SupportService;
+import com.donjo.backend.api.dto.support.*;
+import com.donjo.backend.api.service.support.SupportService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,8 +29,24 @@ public class SupportController {
     })
     @GetMapping(path="api/auth/member/dashboard/earning")
     public ResponseEntity<?> getEarning(@RequestParam String type, @RequestParam int period) {
-        Double earning = supportService.getEarning(type,period);
+        Double earning = supportService.getEarning("3fa",type,period);
         return ResponseEntity.status(200).body(earning);
+    }
+
+    @ApiOperation(value = "후원내역 저장", notes = "example content")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
+            @ApiResponse(code=404, message = "NOT FOUND(정보 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+
+    })
+
+    @PostMapping(path="api/auth/member/supports")
+    public ResponseEntity<?> createSupport(@RequestBody SupportRequestDto supportRequestDto) {
+        System.out.println("옴??");
+        supportService.createSupports(supportRequestDto);
+        return ResponseEntity.status(200).body("저장 성공");
     }
 
     @ApiOperation(value = "대시보드 서포트 조회", notes = "example content")
@@ -88,7 +104,7 @@ public class SupportController {
     })
     @GetMapping(path="api/auth/member/donation/setting")
     public ResponseEntity<?> getDonationSetting() {
-        DonationDto donationDto = supportService.getDonationSetting("수정해야함");
+        DonationDto donationDto = supportService.getDonationSetting("3fa");
         return ResponseEntity.status(200).body(donationDto);
     }
 
@@ -102,7 +118,7 @@ public class SupportController {
     })
     @PutMapping(path="api/auth/member/donation/setting")
     public ResponseEntity<?> changeDonationSetting(@RequestBody DonationDto donationDto) {
-        supportService.changeDonation(donationDto);
+        supportService.changeDonation(donationDto,"3fa");
         return ResponseEntity.status(200).build();
     }
 
