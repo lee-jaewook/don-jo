@@ -101,7 +101,7 @@ public class MemberController {
           @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
           @ApiResponse(code = 500, message = "서버 오류")
   })
-  @PostMapping("/api/auth/member/refresh")
+  @PostMapping("/api/member/refresh")
   public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
     String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
     Map<String, Object> result = memberService.refreshAccessToken(refreshToken.substring(7));
