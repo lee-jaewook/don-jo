@@ -27,7 +27,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    @GetMapping(path="api/auth/member/dashboard/earning")
+    @GetMapping(path="/api/auth/member/dashboard/earning")
     public ResponseEntity<?> getEarning(@RequestParam String type, @RequestParam int period) {
         Double earning = supportService.getEarning("3fa",type,period);
         return ResponseEntity.status(200).body(earning);
@@ -41,7 +41,6 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-
     @PostMapping(path="api/auth/member/supports")
     public ResponseEntity<?> createSupport(@RequestBody SupportRequestDto supportRequestDto) {
         System.out.println("옴??");
