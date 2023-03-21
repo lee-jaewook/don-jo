@@ -6,6 +6,7 @@ import { FiChevronDown } from "react-icons/fi";
 import * as S from "./style";
 import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
+import BasicTextarea from "../../../Common/BasicTextarea";
 
 const DonationForm = () => {
   const PricePerData = [1, 2, 3, 4, 5];
@@ -76,10 +77,8 @@ const DonationForm = () => {
         This will be visible after the payment and in the receipt email. Write a
         personable thank you message, and include any rewards if you like.
       </S.FormDescription>
-      <BasicInput
-        type="text"
+      <BasicTextarea
         placeholder="Send message"
-        value={thankMessage}
         handleOnChangeValue={onChangeThankMessage}
       />
 
