@@ -86,6 +86,7 @@ export const Color = styled.input`
   justify-content: center;
   align-items: center;
   font-size: 1.4rem;
+  cursor: pointer;
   &:checked {
     ::after {
       content: "✔";
