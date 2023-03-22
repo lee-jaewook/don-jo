@@ -1,20 +1,18 @@
 package com.donjo.backend.api.service.member;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.donjo.backend.api.dto.member.DonationSettingItem;
 import com.donjo.backend.api.dto.member.MemberInfoItem;
 import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
-import com.donjo.backend.api.dto.member.response.FromMemberItem;
-import com.donjo.backend.api.dto.member.response.SupportItem;
-import com.donjo.backend.api.dto.member.response.ToMemberItem;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
-import com.donjo.backend.db.entity.Support;
 import com.donjo.backend.db.repository.MemberRepository;
 import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.exception.BadRequestException;
@@ -162,6 +160,17 @@ public class MemberServiceImpl implements MemberService {
     FindPageInfoPayload findPageInfoPayload = new FindPageInfoPayload(memberInfoItem, donationSettingItem, wishList.subList(0, maxItems));
 
     return findPageInfoPayload;
+  }
+
+  @Override
+  public FindMemberPayload getMemberInfo(String memberAddress) {
+    Member member = memberRepository.findByAddress(memberAddress);
+    if (member == null) {
+      new NotFoundException("유저 정보가 없습니다.");
+    }
+
+    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
+    return findMemberPayload;
   }
 
   private List<WishListItem> memberWishList(Member member) {
