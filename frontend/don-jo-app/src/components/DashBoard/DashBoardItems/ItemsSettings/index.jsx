@@ -16,8 +16,8 @@ const ItemsSettings = () => {
   const handleGetMyItemList = () => {
     console.log("handleGetMyItemList");
   };
- 
- const handleAddItemModalOpen = () => {
+
+  const handleAddItemModalOpen = () => {
     setIsAddItemModalOpen((prev) => !prev);
   };
 
@@ -25,10 +25,9 @@ const ItemsSettings = () => {
     setShowItemModal(true);
   };
 
-
   return (
     <S.SettingWrapper>
-      <S.AddButton>
+      <S.AddButton onClick={handleAddItemModalOpen}>
         <S.AddIcon>
           <FiPlus size="32px" color="white" />
         </S.AddIcon>
@@ -63,7 +62,10 @@ const ItemsSettings = () => {
           handleOnClickButton={() => console.log("show Edit Modal", uid)}
         />
       )}
-      {isShowItemModal && (<AddItemModal handleSetShowModal={handleAddItemModalOpen} />)}
+
+      {isAddItemModalOpen && (
+        <AddItemModal handleSetShowModal={handleAddItemModalOpen} />
+      )}
     </S.SettingWrapper>
   );
 };
