@@ -19,17 +19,19 @@ const BasicModal = ({ handleSetShowModal, children, width }) => {
     <S.Container>
       <S.BackgroundOpacity />
       <S.BackgroundBlur onClick={closeModal} />
-      <S.Modal width={width}>
-        <S.CloseContainer>
-          <FiX
-            size="26"
-            color="#666666"
-            onClick={closeModal}
-            style={{ cursor: "pointer" }}
-          />
-        </S.CloseContainer>
-        <S.Content>{children}</S.Content>
-      </S.Modal>
+      <S.ModalWrapper>
+        <S.Modal width={width}>
+          <S.CloseContainer>
+            <FiX
+              size="26"
+              color="#666666"
+              onClick={closeModal}
+              style={{ cursor: "pointer" }}
+            />
+          </S.CloseContainer>
+          <S.Content>{children}</S.Content>
+        </S.Modal>
+      </S.ModalWrapper>
     </S.Container>
   );
 };
