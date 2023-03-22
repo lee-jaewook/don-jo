@@ -25,7 +25,7 @@ import com.donjo.backend.solidity.support.SupportSolidity;
 import java.util.*;
 
 import com.donjo.backend.exception.UnAuthorizationException;
-import com.donjo.backend.solidity.wishlist.Wishlist;
+import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -175,10 +175,10 @@ public class MemberServiceImpl implements MemberService {
 
   private List<WishListItem> memberWishList(Member member) {
     List<WishListItem> wishList = new ArrayList<>();
-    List<Wishlist> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
+    List<WishlistSol> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
 
-    for (Wishlist wishlist : memberWishLists) {
-      WishListItem item = WishListItem.builder(wishlist).build();
+    for (WishlistSol wishlistSol : memberWishLists) {
+      WishListItem item = WishListItem.builder(wishlistSol).build();
       wishList.add(item);
     }
 
