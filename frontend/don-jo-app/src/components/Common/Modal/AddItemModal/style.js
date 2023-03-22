@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  width: 100%;
+  @media (min-width: 53.75rem) {
+    width: 53.75rem;
+  }
+`;
+
 export const ContentWrap = styled.div`
   width: 100%;
-  /* margin-bottom: 3.75rem; */
   padding-bottom: 3rem;
 `;
 
@@ -50,8 +56,6 @@ export const ImageSizeInfo = styled.div`
   font-weight: 400;
   font-size: 0.875remx;
   line-height: 1.25rem;
-  /* identical to box height, or 143% */
-
   color: #222222;
 `;
 

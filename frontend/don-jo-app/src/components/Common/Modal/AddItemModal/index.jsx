@@ -17,9 +17,9 @@ import BasicInput from "../../BasicInput";
 
 const AddItemModal = ({ handleSetShowModal }) => {
   const [itemName, setItemName] = useState("");
-  const [itemPrice, setItemPrice] = useState(null);
-  const [itemFeaturedImage, setItemFeaturedImage] = useState(null);
-  const [itemFile, setItemNamFile] = useState(null);
+  const [itemPrice, setItemPrice] = useState("");
+  const [itemFeaturedImage, setItemFeaturedImage] = useState();
+  const [itemFile, setItemNamFile] = useState();
   const [itemDescription, setItemDescription] = useState("");
   const [itemMessage, setItemMessage] = useState("");
 
@@ -33,54 +33,56 @@ const AddItemModal = ({ handleSetShowModal }) => {
 
   return (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
-      <S.ContentWrap>
-        <BasicTitle text="Name" />
-        <S.BasicInputWrap>
-          <BasicInput
-            type="text"
-            value={itemName}
-            placeholder="Items Title"
-            handleOnChangeValue={handleItemNameChange}
-          />
-        </S.BasicInputWrap>
-      </S.ContentWrap>
+      <S.Container>
+        <S.ContentWrap>
+          <BasicTitle text="Name" />
+          <S.BasicInputWrap>
+            <BasicInput
+              type="text"
+              value={itemName}
+              placeholder="Items Title"
+              handleOnChangeValue={handleItemNameChange}
+            />
+          </S.BasicInputWrap>
+        </S.ContentWrap>
 
-      <S.ContentWrap>
-        <BasicTitle text="Price" />
-        <S.PriceInputWrap>
-          <S.BasicInput
-            type="text"
-            value={itemPrice}
-            placeholder="1000.000"
-            onChange={handleItemPriceChange}
-          />
-          <S.UnitWrap>eth</S.UnitWrap>
-        </S.PriceInputWrap>
-      </S.ContentWrap>
+        <S.ContentWrap>
+          <BasicTitle text="Price" />
+          <S.PriceInputWrap>
+            <S.BasicInput
+              type="text"
+              value={itemPrice}
+              placeholder="1000.000"
+              onChange={handleItemPriceChange}
+            />
+            <S.UnitWrap>eth</S.UnitWrap>
+          </S.PriceInputWrap>
+        </S.ContentWrap>
 
-      <S.ContentWrap>
-        <BasicTitle text="Featured Image" />
-        <S.ImageSizeInfo>
-          We recommend an image at least 460px wide and 200px tall.
-        </S.ImageSizeInfo>
-        <S.AddButton>
-          <S.AddIcon>
-            <FiUpload size="20px" color="white" />
-          </S.AddIcon>
-        </S.AddButton>
-      </S.ContentWrap>
+        <S.ContentWrap>
+          <BasicTitle text="Featured Image" />
+          <S.ImageSizeInfo>
+            We recommend an image at least 460px wide and 200px tall.
+          </S.ImageSizeInfo>
+          <S.AddButton>
+            <S.AddIcon>
+              <FiUpload size="20px" color="white" />
+            </S.AddIcon>
+          </S.AddButton>
+        </S.ContentWrap>
 
-      <S.ContentWrap>
-        <BasicTitle text="File Upload" />
-      </S.ContentWrap>
+        <S.ContentWrap>
+          <BasicTitle text="File Upload" />
+        </S.ContentWrap>
 
-      <S.ContentWrap>
-        <BasicTitle text="Description" />
-      </S.ContentWrap>
+        <S.ContentWrap>
+          <BasicTitle text="Description" />
+        </S.ContentWrap>
 
-      <S.ContentWrap>
-        <BasicTitle text="Confirmation Message" />
-      </S.ContentWrap>
+        <S.ContentWrap>
+          <BasicTitle text="Confirmation Message" />
+        </S.ContentWrap>
+      </S.Container>
     </FullScreenModal>
   );
 };

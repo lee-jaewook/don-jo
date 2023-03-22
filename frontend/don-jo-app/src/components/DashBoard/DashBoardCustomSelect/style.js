@@ -4,7 +4,7 @@ export const SelectBox = styled.div`
   position: relative;
   align-self: center;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
   cursor: pointer;
   width: 100%;
   height: 2.75rem;
@@ -30,7 +30,7 @@ export const SelectBox = styled.div`
 export const Label = styled.label`
   display: flex;
   align-items: center;
-  padding-left: 12px;
+  padding-left: 0.75rem;
   font-size: 1rem;
   text-align: center;
   height: 2.75rem;
@@ -46,7 +46,7 @@ export const SelectOptions = styled.ul`
   overflow: hidden;
   max-height: ${(props) => (props.show ? "none" : "0")};
   padding: 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background-color: var(--color-modal);
   color: var(--color-text);
   z-index: 1;
@@ -54,13 +54,13 @@ export const SelectOptions = styled.ul`
 
 export const Option = styled.li`
   display: flex;
-  padding-left: 12px;
+  padding-left: 0.75rem;
   align-items: center;
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
   height: 2.75rem;
-  border-radius: 8px;
-  padding: 6px 8px;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.5rem;
   transition: background-color 0.2s ease-in;
   &:hover {
     background-color: var(--color-placeholder);
