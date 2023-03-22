@@ -2,6 +2,7 @@ import * as S from "./style";
 import ProfileImg from "../../../../Common/ProfileImg";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import ContractModal from "../../../../Common/Modal/ContractModal";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -32,6 +33,7 @@ const RecentSupportBlock = ({ supportContent }) => {
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
   const [commentInputText, setCommentInputText] = useState(""); //댓글 입력
+  const [isShowContractModal, setIsShowContractModal] = useState(false);
 
   useEffect(() => {
     switch (supportContent.supportType) {
@@ -65,7 +67,11 @@ const RecentSupportBlock = ({ supportContent }) => {
     <div>
       {/* 누가 누구에게 어떠한 후원을 했는지 노출 */}
       <S.Container>
-        <S.RepresentContainer>
+        <S.RepresentContainer
+          onClick={() => {
+            setIsShowContractModal(true);
+          }}
+        >
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
@@ -132,6 +138,9 @@ const RecentSupportBlock = ({ supportContent }) => {
         </S.CommentContainer>
       )}
       <S.Line />
+      {isShowContractModal && (
+        <ContractModal handleSetShowModal={setIsShowContractModal} />
+      )}
     </div>
   );
 };

@@ -21,26 +21,33 @@ export const BackgroundBlur = styled.div`
   width: 100%;
   z-index: 11;
   backdrop-filter: blur(1.25rem);
-  position: absolute;
+  position: absolute
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
 
-export const Modal = styled.div`
-  width: ${(props) => props.width || "33"}rem;
-  max-height: 60.6875rem;
+export const ModalWrapper = styled.div`
+  margin: auto;
   z-index: 12;
-  background-color: var(--color-modal);
-  border-radius: 1.25rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  position: absolute;
+  /* border: 1px solid red; */
+`;
+
+export const Modal = styled.div`
+  width: ${(props) => props.width}rem;
+  background-color: var(--color-modal);
+  border-radius: 1.25rem;
+
   box-sizing: border-box;
   padding: 1rem 1.5rem 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
+  margin: 12px;
 `;
 
 export const CloseContainer = styled.div`
