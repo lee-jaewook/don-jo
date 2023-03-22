@@ -18,8 +18,8 @@ const BasicModal = ({ handleSetShowModal, children, width }) => {
 
   return createPortal(
     <S.Container>
-      <S.BackgroundBlur onClick={closeModal} />
-      <S.ModalContainer>
+      <S.BackgroundBlur />
+      <S.ModalContainer onClick={closeModal}>
         <S.ModalWrapper>
           <S.Modal width={width}>
             <S.CloseContainer>
