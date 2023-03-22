@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Title = styled.h1`
   font-family: "RobotoBold";
@@ -12,10 +12,59 @@ export const ProgressContainer = styled.div`
   width: 100%;
   height: 10.4375rem;
   margin-bottom: 2rem;
+  padding: 0.75rem;
+`;
+
+export const RefreshContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.875rem;
+  color: var(--color-text-secondary);
+`;
+
+export const RefreshIconWrapper = styled.button`
+  margin-left: 0.5rem;
+`;
+
+export const ProgressWrapper = styled.div`
+  position: relative;
+  display: flex;
+`;
+
+export const Bar = styled.div`
+  width: 48%;
+  height: 0.5rem;
+  background-color: ${(props) => (props.isEnable ? "black" : "#DDDDDD")};
+  position: absolute;
+  top: 50%;
+  transform: translate(${(props) => (props.isFirst ? "5%" : "105%")}, -14px);
+`;
+
+export const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: ${(props) => (props.isMiddle ? "0 auto" : "0")};
+`;
+
+export const ProfileWrapper = styled.div`
+  width: 3.75rem;
+  height: 3.75rem;
+  background-color: ${(props) => (props.isEnable ? "black" : "#DDDDDD")};
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+`;
+
+export const Tag = styled.label`
+  font-family: "RobotoMedium";
+  margin-top: 0.5rem;
 `;
 
 export const InfoContainer = styled.div`
-  border: 1px solid green;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -27,26 +76,24 @@ export const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const Type = styled.text`
+export const Type = styled.label`
   font-family: "RobotoMedium";
   font-size: 1.25rem;
-  border: 1px solid red;
   color: var(--color-text-secondary);
   min-width: 8.75rem;
 `;
 
 export const TextContainer = styled.div`
-  border: 1px solid blue;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 `;
 
-export const Amount = styled.text`
+export const Amount = styled.label`
   font-family: "RobotoBold";
 `;
 
-export const Unit = styled.text`
+export const Unit = styled.label`
   margin-left: 2px;
 `;
 
@@ -54,4 +101,7 @@ export const TimeContainer = styled.div`
   display: flex;
 `;
 
-// export const
+export const TimeText = styled.label`
+  margin-left: 0.3125rem;
+  color: var(--color-text-secondary);
+`;
