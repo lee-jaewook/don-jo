@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const PreViewWrap = styled.div`
   width: 100%;
   margin-bottom: 2rem;
-  height: 120px;
+  height: 7.5rem;
   background-color: black;
   border-radius: 1.25rem;
   position: relative;

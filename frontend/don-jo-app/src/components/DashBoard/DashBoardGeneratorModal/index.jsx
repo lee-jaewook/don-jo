@@ -50,7 +50,7 @@ const GeneratorModal = ({
 
   return (
     <div>
-      <BasicModal width={26.25} sort={true} handleSetShowModal={isModalOpen}>
+      <BasicModal width={26.25} handleSetShowModal={isModalOpen}>
         <S.PreViewWrap>
           <S.PreView></S.PreView>
         </S.PreViewWrap>

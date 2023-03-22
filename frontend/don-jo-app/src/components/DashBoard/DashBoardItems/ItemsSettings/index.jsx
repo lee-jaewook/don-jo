@@ -5,7 +5,7 @@ import { FiPlus } from "react-icons/fi";
 import ListItem from "./ListItem";
 import { itemList } from "../../../../data/dashboard";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
-import AddItemModal from "../AddItemModal";
+import AddItemModal from "../../../Common/Modal/AddItemModal";
 const ItemsSettings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -2,9 +2,9 @@ import * as S from "./style";
 import React, { useState, useEffect } from "react";
 import { FiUpload } from "react-icons/fi";
 
-import FullScreenModal from "../../../Common/Modal/FullScreenModal";
-import BasicTitle from "../../../Common/BasicTitle";
-import BasicInput from "../../../Common/BasicInput";
+import FullScreenModal from "../FullScreenModal";
+import BasicTitle from "../../BasicTitle";
+import BasicInput from "../../BasicInput";
 
 /**
  * 아이템 추가/수정 모달
