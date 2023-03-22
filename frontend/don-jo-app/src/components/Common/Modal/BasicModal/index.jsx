@@ -21,7 +21,12 @@ const BasicModal = ({ handleSetShowModal, children, width }) => {
       <S.BackgroundBlur />
       <S.ModalContainer onClick={closeModal}>
         <S.ModalWrapper>
-          <S.Modal width={width}>
+          <S.Modal
+            width={width}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <S.CloseContainer>
               <FiX
                 size="26"

@@ -13,7 +13,7 @@ public interface SupportService {
 
     void createSupports(SupportRequestDto supportRequestDto);
 
-    List<SupportResponseDto> getSupports(String Type, int pageNum);
+    List<SupportResponseDto> getSupports(String memberAddress, String Type, int pageNum);
 
     SupportDetailResponseDto getSupportDetail(String type,int supportUid);
 

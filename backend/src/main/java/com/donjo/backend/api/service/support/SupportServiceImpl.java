@@ -8,7 +8,11 @@ import com.donjo.backend.db.repository.DonationSettingRepository;
 import com.donjo.backend.db.repository.MemberRepository;
 import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.db.repository.SupportRepositorySupport;
+import com.donjo.backend.exception.NoContentException;
+import com.donjo.backend.solidity.support.SupportSolidity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +24,7 @@ import java.util.List;
 public class SupportServiceImpl implements SupportService{
 
     private final MemberRepository memberRepository;
+    private final SupportSolidity supportSolidity;
     private final DonationSettingRepository donationSettingRepository;
     private final SupportRepository supportRepository;
 
@@ -27,39 +32,22 @@ public class SupportServiceImpl implements SupportService{
 
 
     public Double getEarning(String address,String type, int period){
-        List<Support> supportList = supportRepositorySupport.findEarning(address,type,period);
-        //🌍 type : String
-        //    - donation or
-        //    - item or
-        //    - wishilist or
-        //    - all
-        //🌍 period : int
-        // type과 period를 입력 받아 support 레포에 들어가서 jqpl사용?
-        System.out.println(supportList);
-        return null;
+        List<Support> supportList = supportRepositorySupport.findEarning(address, type, period);
+        Long result = 0L;
+        for (Support support : supportList) {
+            result += support.getAmount();
+        }
+        return result / Math.pow(10,18);
     }
 
     @Override
-    public void createSupports(SupportRequestDto supportRequestDto){
-        Member toMember = memberRepository.findByAddress(supportRequestDto.getToAddress());
-        Member fromMember = memberRepository.findByAddress(supportRequestDto.getFromAddress());
-        System.out.println(supportRequestDto);
-        Support newsupport = Support.builder()
-                .transactionHash(supportRequestDto.getTransactionHash())
-                .supportType(supportRequestDto.getSupportType())
-                .supportUid(supportRequestDto.getSupportUid())
-                .fromAddress(fromMember)
-                .toAddress(toMember)
-                .sendMsg(supportRequestDto.getSendMsg())
-                .sendTimeStamp(LocalDateTime.now())
-                .amountEth(supportRequestDto.getAmountEth())
-                .build();
-        System.out.println(newsupport);
-        supportRepository.save(newsupport);
-
+    public void createSupports(SupportRequestDto dto){
+        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
+                .orElseThrow(() -> new NoContentException());
+        supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
-    public List<SupportResponseDto> getSupports(String type, int pageNum){
+    public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum){
         //🌍 type : String
         //    - donation or
         //    - item or
@@ -67,6 +55,9 @@ public class SupportServiceImpl implements SupportService{
         //    - all
         //🌍 pageNum: int
         //support 조회해서 리스트로 넘겨줘야함!
+        Pageable pageable = PageRequest.of(pageNum, 15);
+        List<Support> list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
+
         return null;
     }
 

@@ -36,7 +36,7 @@ public class SupportSolidity {
         try {
             support = Support.fromSol(contract.getSupportDetail(address, BigInteger.valueOf(id)).send());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(support);
     }
@@ -52,7 +52,7 @@ public class SupportSolidity {
            List<ApplicationHandler.Support> response = contract.getSupportList(address).send();
            list = response.stream().map(support -> Support.fromSol(support)).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new BadRequestException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(list);
     }
@@ -69,7 +69,7 @@ public class SupportSolidity {
             BigInteger response = contract.getSupportSendTime(address, BigInteger.valueOf(uid)).send();
             result = TimeConvertUtil.convertToLocalDateTime(response);
         } catch (Exception e) {
-            throw new BadRequestException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(result);
     }
