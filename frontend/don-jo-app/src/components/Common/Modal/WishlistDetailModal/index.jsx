@@ -1,57 +1,77 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 import BasicTitle from "../../BasicTitle";
 import BasicButton from "../../BasicButton";
 import BasicTextarea from "../../BasicTextarea";
+import { useMediaQuery } from "react-responsive";
+import FullScreenModal from "../FullScreenModal";
 
 const WishlistDetailModal = ({
+  uid,
   isDashboard,
   handleSetShowModal,
   handleOnClickButton,
 }) => {
-  // 후원 상태바 계산을 위한 함수
-  //   const handleCalcProgressState = () => {
-  //     if (Number(collectedAmount) >= Number(totalAmount)) {
-  //       return 100;
-  //     }
-  //     return (Number(collectedAmount) / Number(totalAmount)) * 100;
-  //   };
+  const [result, setResult] = useState({});
 
   const [price, setPrice] = useState(0); // 확인 메세지
   const [confirmationMessage, setConfirmationMessage] = useState(""); // 확인 메세지
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleDeleteWishlistItem = useCallback(() => {
     console.log("handleDeleteWishlistItem()...");
   }, []);
 
-  return (
-    <BasicModal handleSetShowModal={handleSetShowModal} width={40}>
+  const handleGetWishlistItemDetail = () => {
+    // wishlist 상세 정보 API 호출
+    setResult({
+      id: 1,
+      title: "Title 5634481689157267798",
+      imgPath: "ImgPath 5634481689157267798",
+      description: "Description 5634481689157267798",
+      price: 1000000,
+      message: "Message 5634481689157267798",
+      filePath: "FilePath 5634481689157267798",
+      seller: "0x288fb136c9291a4b62f1620bee5901beb2b0ffd7",
+      deleted: false,
+    });
+  };
+
+  useEffect(() => {
+    handleGetWishlistItemDetail();
+  }, []);
+
+  // 후원 상태바 계산을 위한 함수
+  const handleCalcProgressState = () => {
+    if (Number(result.collectedAmount) >= Number(result.totalAmount)) {
+      return 100;
+    }
+    return (Number(result.collectedAmount) / Number(result.totalAmount)) * 100;
+  };
+
+  const handleMakeModalContent = () => {
+    return (
       <S.ContentWrapper>
         <S.WishlistContent>
-          <S.wishlistImg src="" alt="" />
+          <S.wishlistImg src={`/${result.imgPath}`} alt="" />
           <S.Content>
-            <S.Title>Tesla</S.Title>
-            <S.Description>
-              Inspirational designs, illustrations, and graphic elements from
-              the world’s best designers. Want more inspiration? Browse our
-              search results. Inspirational designs, illustrations, and graphic
-              elements.
-            </S.Description>
+            <S.Title>{result.title}</S.Title>
+            <S.Description>{result.description}</S.Description>
             <S.Price>
-              1000.000 <S.Eth>eth</S.Eth>
+              {result.price} <S.Eth>eth</S.Eth>
             </S.Price>
           </S.Content>
         </S.WishlistContent>
         <S.ProgressBarWrapper isDashboard={isDashboard}>
           <S.ProgressBar>
-            <S.ProgressState currentState={50.0} />
+            <S.ProgressState currentState={handleCalcProgressState()} />
           </S.ProgressBar>
           <S.AmountWrapper>
-            <S.ProgressAmount>50.000</S.ProgressAmount>
+            <S.ProgressAmount>{result.collectedAmount}</S.ProgressAmount>
             <S.ProgressAmount isAllAmount={true}>
-              /100.000 <S.Eth>eth</S.Eth>
+              /{result.targetAmount} <S.Eth>eth</S.Eth>
             </S.ProgressAmount>
           </S.AmountWrapper>
         </S.ProgressBarWrapper>
@@ -90,6 +110,16 @@ const WishlistDetailModal = ({
           />
         </S.ButtonWrapper>
       </S.ContentWrapper>
+    );
+  };
+
+  return isMobile ? (
+    <FullScreenModal handleSetShowModal={handleSetShowModal}>
+      {handleMakeModalContent()}
+    </FullScreenModal>
+  ) : (
+    <BasicModal handleSetShowModal={handleSetShowModal} width={40}>
+      {handleMakeModalContent()}
     </BasicModal>
   );
 };
@@ -97,7 +127,8 @@ const WishlistDetailModal = ({
 export default WishlistDetailModal;
 
 WishlistDetailModal.propTypes = {
+  uid: PropTypes.number.isRequired,
+  idDashboard: PropTypes.bool,
   handleSetShowModal: PropTypes.func.isRequired,
   handleOnClickButton: PropTypes.func.isRequired,
-  idDashboard: PropTypes.bool,
 };

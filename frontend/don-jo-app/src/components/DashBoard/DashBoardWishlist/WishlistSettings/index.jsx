@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import BasicTitle from "../../../Common/BasicTitle";
-import WishlistDetailModal from "../../../Common/Modal/WishlistDetailModal";
 import Wishlist from "../../../Common/Wishlist";
 import * as S from "./style";
 const WishlistSettings = () => {
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
-
-  const handleEditWishlistItem = useCallback(() => {
-    console.log("handleEditWishlist()...");
-  }, []);
 
   return (
     <S.SettingWrapper>
@@ -24,13 +19,6 @@ const WishlistSettings = () => {
         isShowWishlistModal={isShowWishlistModal}
         handleSetShowModal={setShowWishlistModal}
       />
-      {isShowWishlistModal && (
-        <WishlistDetailModal
-          handleSetShowModal={setShowWishlistModal}
-          handleOnClickButton={handleEditWishlistItem}
-          isDashboard={true}
-        />
-      )}
     </S.SettingWrapper>
   );
 };

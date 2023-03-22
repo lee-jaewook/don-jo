@@ -1,16 +1,23 @@
 import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: center;
+  @media (max-width: 768px) {
+    padding-bottom: 2rem;
+  }
 `;
 
 export const WishlistContent = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const wishlistImg = styled.div`
@@ -18,6 +25,9 @@ export const wishlistImg = styled.div`
   height: 11.25rem;
   background-color: #d9d9d9;
   border-radius: 1.25rem;
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
 `;
 
 export const Content = styled.div`
@@ -25,6 +35,9 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 1.25rem;
+  @media (max-width: 768px) {
+    margin-left: 0rem;
+  }
 `;
 
 export const Title = styled.h1`
@@ -112,8 +125,12 @@ export const ButtonWrapper = styled.div`
 
 export const DeleteButton = styled.button`
   position: absolute;
-  bottom: 2.5rem;
-  left: 1.5rem;
-  /* text-decoration: underline; */
+  bottom: 0rem;
+  left: 0rem;
   color: var(--color-text-secondary);
+  @media (max-width: 768px) {
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;
