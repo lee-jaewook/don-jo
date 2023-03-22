@@ -6,7 +6,7 @@ import com.donjo.backend.api.dto.member.MemberInfoItem;
 import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-import com.donjo.backend.api.dto.member.response.FindMemberPayload;
+//import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
@@ -162,16 +162,16 @@ public class MemberServiceImpl implements MemberService {
     return findPageInfoPayload;
   }
 
-  @Override
-  public FindMemberPayload getMemberInfo(String memberAddress) {
-    Member member = memberRepository.findByAddress(memberAddress);
-    if (member == null) {
-      new NotFoundException("유저 정보가 없습니다.");
-    }
-
-    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
-    return findMemberPayload;
-  }
+//  @Override
+//  public FindMemberPayload getMemberInfo(String memberAddress) {
+//    Member member = memberRepository.findByAddress(memberAddress);
+//    if (member == null) {
+//      new NotFoundException("유저 정보가 없습니다.");
+//    }
+//
+//    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
+//    return findMemberPayload;
+//  }
 
   private List<WishListItem> memberWishList(Member member) {
     List<WishListItem> wishList = new ArrayList<>();

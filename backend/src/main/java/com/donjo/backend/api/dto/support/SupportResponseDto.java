@@ -26,7 +26,7 @@ public class SupportResponseDto {
 
     private fromMember fromMember;
 
-    private String toAddress;
+    private toMember toAddress;
 
     private String replyMsg;
 
@@ -49,24 +49,33 @@ public class SupportResponseDto {
         private String fromMemberNickname;
 
     }
+    @Getter
+    @Setter
+    @ToString
+    public static class toMember {
+        private String toMemberAddress;
+
+        private String toMemberNickname;
+
+    }
     @Nullable
-    public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress){
+    public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress,toMember toMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
-                .toAddress(support.getToAddress())
+                .toAddress(toMemberAddress)
                 .amount(support.getAmount())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return supportResponseDto;
     }
-    public static SupportResponseDto getSomeoneSupport(Support support){
+    public static SupportResponseDto getSomeoneSupport(Support support,toMember toMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
-                .toAddress(support.getToAddress())
+                .toAddress(toMemberAddress)
                 .amount(support.getAmount())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())

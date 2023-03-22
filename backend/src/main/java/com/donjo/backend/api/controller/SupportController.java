@@ -82,8 +82,8 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportDetail(@RequestParam String type, @RequestParam int supportUid) {
-        SupportDetailResponseDto supportDetail = supportService.getSupportDetail(type,supportUid);
+    public ResponseEntity<?> getSupportDetail(HttpServletRequest request,@RequestParam String type, @RequestParam Long supportUid) {
+        SupportDetailResponseDto supportDetail = supportService.getSupportDetail(memberService.getMemberAddress(request),type,supportUid);
         return ResponseEntity.status(200).body(supportDetail);
     }
 

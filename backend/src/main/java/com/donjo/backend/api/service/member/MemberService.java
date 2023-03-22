@@ -2,7 +2,6 @@ package com.donjo.backend.api.service.member;
 
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.db.entity.Member;
 
@@ -19,5 +18,5 @@ public interface MemberService {
   void logout(String accessToken);
   String getMemberAddress(HttpServletRequest request);
   FindPageInfoPayload getPageInfoByPageName(String pageName);
-  FindMemberPayload getMemberInfo(String memberAddress);
+//  FindMemberPayload getMemberInfo(String memberAddress);
 }
