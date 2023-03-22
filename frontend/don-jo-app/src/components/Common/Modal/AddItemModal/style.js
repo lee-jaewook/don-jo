@@ -7,18 +7,18 @@ export const ContentWrap = styled.div`
 `;
 
 export const BasicInputWrap = styled.div`
-  width: 240px;
+  width: 15rem;
 `;
 
 export const BasicInput = styled.input`
-  width: 240px;
+  width: 15rem;
   height: 2.75rem;
   padding-right: 0.75rem;
   border: none;
   border-radius: 0.5rem;
   background-color: white;
   margin-bottom: 0.75rem;
-  border: 1px solid transparent;
+  border: 0.0625rem solid transparent;
   text-align: right;
   &:hover {
     border-color: black;
@@ -26,7 +26,7 @@ export const BasicInput = styled.input`
 `;
 
 export const PriceInputWrap = styled.div`
-  width: 268px;
+  width: 16.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,8 +37,8 @@ export const UnitWrap = styled.div`
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.875rem;
+  line-height: 1rem;
 
   color: #999999;
 `;
@@ -48,8 +48,8 @@ export const ImageSizeInfo = styled.div`
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 0.875remx;
+  line-height: 1.25rem;
   /* identical to box height, or 143% */
 
   color: #222222;
@@ -58,7 +58,7 @@ export const ImageSizeInfo = styled.div`
 export const AddButton = styled.button`
   width: 17.875rem;
   height: 11.25rem;
-  border: 2px dashed #d2d2d2;
+  border: 0.125rem dashed #d2d2d2;
   border-radius: 0.5rem;
 
   &:hover {

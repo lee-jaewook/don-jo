@@ -49,7 +49,6 @@ export const CloseContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  cursor: pointer;
 `;
 
 export const Content = styled.div`

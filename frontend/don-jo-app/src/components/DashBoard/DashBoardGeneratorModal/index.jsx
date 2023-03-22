@@ -115,7 +115,7 @@ const GeneratorModal = ({
             <BasicButton
               text="Generate"
               handleOnClickButton={handleGeneratePlugIn}
-              isBackground="var(--color-primary)"
+              isBackground={true}
               isDisabled={false}
             />
           </S.ButtonContent>
