@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BasicTitle from "../../../Common/BasicTitle";
 import * as S from "./style";
 import { FiPlus } from "react-icons/fi";
@@ -6,17 +6,25 @@ import ListItem from "./ListItem";
 import { itemList } from "../../../../data/dashboard";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
+import AddItemModal from "../../../Common/Modal/AddItemModal";
+
 const ItemsSettings = () => {
+  const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
   const [isShowItemModal, setShowItemModal] = useState(false);
   const [uid, setUid] = useState(0);
 
   const handleGetMyItemList = () => {
     console.log("handleGetMyItemList");
   };
+ 
+ const handleAddItemModalOpen = () => {
+    setIsAddItemModalOpen((prev) => !prev);
+  };
 
   const handleShowItemDetailModal = () => {
     setShowItemModal(true);
   };
+
 
   return (
     <S.SettingWrapper>
@@ -55,6 +63,7 @@ const ItemsSettings = () => {
           handleOnClickButton={() => console.log("show Edit Modal", uid)}
         />
       )}
+      {isShowItemModal && (<AddItemModal handleSetShowModal={handleAddItemModalOpen} />)}
     </S.SettingWrapper>
   );
 };

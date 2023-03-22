@@ -14,8 +14,9 @@ const DashBoardButtons = () => {
           generatorData.map((item, index) => (
             <GeneratorItem
               key={index}
-              title={item.title}
+              title={item.text}
               description={item.description}
+              isItemsRequired={item.isItemsRequired}
             />
           ))}
       </div>

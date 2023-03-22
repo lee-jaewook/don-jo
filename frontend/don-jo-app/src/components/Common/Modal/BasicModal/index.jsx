@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import { FiX } from "react-icons/fi";
