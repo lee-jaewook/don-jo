@@ -68,7 +68,7 @@ eth:
   address: '0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7'
   privateKey: '9c63b31a88c410c7d33265876407b31aea175c589ec82fff8d0bc4aa2baf150d'
   rpcUtil : 'https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a'
-  applicationAddress : '0xc45694392A301B63a1FD0A1b2762521915a78f44'
-#  rpcUtil: 'http://j8a209.p.ssaft.io:8545'
+  applicationAddress : '0x95D5e1e6bbA5817440cfB44a7c901e66d5EE95C5'
+#  rpcUtil: 'http://j8a2091.p.ssafy.io:8545'
 #  applicationAddress: '0xBf431108276e429c168E12938E8f1BF823Ee02B6'
 

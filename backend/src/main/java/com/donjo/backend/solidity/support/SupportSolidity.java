@@ -3,7 +3,6 @@ package com.donjo.backend.solidity.support;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.util.TimeConvertUtil;
 import com.donjo.backend.util.Web3jUtil;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +30,14 @@ public class SupportSolidity {
      * @param id
      * @return
      */
-    public Optional<Support> getSupportDetail(String address, Long id){
-        Support support = null;
+    public Optional<SupportSol> getSupportDetail(String address, Long id){
+        SupportSol supportSol = null;
         try {
-            support = Support.fromSol(contract.getSupportDetail(address, BigInteger.valueOf(id)).send());
+            supportSol = SupportSol.fromSol(contract.getSupportDetail(address, BigInteger.valueOf(id)).send());
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
-        return Optional.ofNullable(support);
+        return Optional.ofNullable(supportSol);
     }
 
     /**
@@ -46,11 +45,11 @@ public class SupportSolidity {
      * @param address(지갑 주소)
      * @return 후원 내역
      */
-    public Optional<List<Support>> getSupportList(String address){
-        List<Support> list = null;
+    public Optional<List<SupportSol>> getSupportList(String address){
+        List<SupportSol> list = null;
         try {
-           List<ApplicationHandler.Support> response = contract.getSupportList(address).send();
-           list = response.stream().map(support -> Support.fromSol(support)).collect(Collectors.toList());
+           List<ApplicationHandler.SupportSol> response = contract.getSupportList(address).send();
+           list = response.stream().map(support -> SupportSol.fromSol(support)).collect(Collectors.toList());
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }

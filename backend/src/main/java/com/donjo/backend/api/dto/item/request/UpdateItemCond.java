@@ -1,6 +1,6 @@
 package com.donjo.backend.api.dto.item.request;
 
-import com.donjo.backend.solidity.Item.Item;
+import com.donjo.backend.solidity.Item.ItemSol;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -34,8 +34,8 @@ public class UpdateItemCond {
     @NotNull
     private String filePath;
 
-    public Item from(String address){
-        return Item.builder()
+    public ItemSol from(String address){
+        return ItemSol.builder()
                 .id(this.getUid())
                 .title(this.getTitle())
                 .imgPath(this.getImgPath())

@@ -6,15 +6,11 @@ import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
-import com.donjo.backend.api.dto.member.response.FromMemberItem;
-import com.donjo.backend.api.dto.member.response.SupportItem;
-import com.donjo.backend.api.dto.member.response.ToMemberItem;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
-import com.donjo.backend.db.entity.Support;
 import com.donjo.backend.db.repository.MemberRepository;
 import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.exception.BadRequestException;
@@ -27,7 +23,7 @@ import com.donjo.backend.solidity.support.SupportSolidity;
 import java.util.*;
 
 import com.donjo.backend.exception.UnAuthorizationException;
-import com.donjo.backend.solidity.wishlist.Wishlist;
+import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -166,10 +162,10 @@ public class MemberServiceImpl implements MemberService {
 
   private List<WishListItem> memberWishList(Member member) {
     List<WishListItem> wishList = new ArrayList<>();
-    List<Wishlist> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
+    List<WishlistSol> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
 
-    for (Wishlist wishlist : memberWishLists) {
-      WishListItem item = WishListItem.builder(wishlist).build();
+    for (WishlistSol wishlistSol : memberWishLists) {
+      WishListItem item = WishListItem.builder(wishlistSol).build();
       wishList.add(item);
     }
 
