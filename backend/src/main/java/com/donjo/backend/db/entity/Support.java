@@ -31,7 +31,7 @@ public class Support {
     private String supportType;
 
     @Column
-    private Integer supportUid;
+    private Long supportUid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_address", referencedColumnName = "address")
@@ -40,7 +40,6 @@ public class Support {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_address", referencedColumnName = "address")
     private Member toAddress;
-
 
     @Column
     private String sendMsg;
