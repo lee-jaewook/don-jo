@@ -25,9 +25,19 @@ const ItemsSettings = () => {
     setShowItemModal(true);
   };
 
+  useEffect(() => {
+    const addButton = document.getElementById("add-button");
+
+    if (!addButton) return;
+
+    addButton.addEventListener("click", () => {
+      setIsAddItemModalOpen((prev) => !prev);
+    });
+  }, []);
+
   return (
     <S.SettingWrapper>
-      <S.AddButton onClick={handleAddItemModalOpen}>
+      <S.AddButton id="add-button">
         <S.AddIcon>
           <FiPlus size="32px" color="white" />
         </S.AddIcon>
