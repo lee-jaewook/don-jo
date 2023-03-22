@@ -22,11 +22,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public List<Item> getItemList(String address, int pageNum, int pageSize) {
-        // null 체크 및 삭제된 아이템 필터링
+        // null 체크
         List<Item> list = itemSolidity.getMemberItemList(address)
-                .orElseThrow(()-> new NoContentException())
-                .stream().filter(item -> !item.isDeleted())
-                .collect(Collectors.toList());
+                .orElseThrow(()-> new NoContentException());
 
         // 페이지네이션
         int startIdx = pageNum * pageSize;
