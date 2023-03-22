@@ -21,7 +21,7 @@ export const BackgroundBlur = styled.div`
   width: 100%;
   z-index: 11;
   backdrop-filter: blur(1.25rem);
-  position: absolute
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -30,7 +30,6 @@ export const BackgroundBlur = styled.div`
 export const ModalWrapper = styled.div`
   margin: auto;
   z-index: 12;
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
