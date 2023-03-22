@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.donjo.backend.solidity.support.SupportSolidity;
 
 
 @Service("SupportService")
@@ -46,6 +45,7 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public void createSupports(SupportRequestDto dto){
+        System.out.println(dto);
         LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
                 .orElseThrow(() -> new NoContentException());
         supportRepository.save(dto.toSupport(sendTime));
@@ -62,12 +62,14 @@ public class SupportServiceImpl implements SupportService{
         else{
             list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
         }
+        System.out.println(list.get(0).getFromAddress());
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFromAddress()==null){
+            if (list.get(i).getFromAddress()==null || list.get(i).getFromAddress().isEmpty()){
                 SupportResponseDto supportResponseDto = SupportResponseDto.getSomeoneSupport(list.get(i));
                 supportResponseDtoList.add(supportResponseDto);
             }
             else {
+                System.out.println("엘즈옴");
                 SupportResponseDto.fromMember fromMember = new SupportResponseDto.fromMember();
                 Member findMember = memberRepository.findById(list.get(i).getFromAddress()).get();
                 fromMember.setFromMemberAddress(findMember.getAddress());

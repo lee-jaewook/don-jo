@@ -48,6 +48,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> createSupport(@RequestBody SupportRequestDto supportRequestDto) {
+        System.out.println(supportRequestDto);
         supportService.createSupports(supportRequestDto);
         return ResponseEntity.status(200).build();
     }
@@ -119,7 +120,7 @@ public class SupportController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
-            @ApiResponse(code = 404, message = "UNAUTHORIZED(권한 없음)"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
 
     })

@@ -3,12 +3,15 @@ package com.donjo.backend.api.dto.support;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Support;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -46,6 +49,7 @@ public class SupportResponseDto {
         private String fromMemberNickname;
 
     }
+    @Nullable
     public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())

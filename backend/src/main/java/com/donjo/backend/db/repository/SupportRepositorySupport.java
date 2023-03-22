@@ -73,13 +73,13 @@ public class SupportRepositorySupport {
 
     public List<Support> findTop10() {
         String jpql = "select u from Support u";
-        String whereSql = " where u.arriveTimeStamp IS NOT NULL"; //support adress where u.userId = 'address'
+        String whereSql = " where u.arriveTimeStamp IS NOT NULL order by u.arriveTimeStamp desc"; //support adress where u.userId = 'address'
 
         jpql += whereSql;
 
         System.out.println(jpql);
         TypedQuery<Support> query = em.createQuery(jpql, Support.class);
         System.out.println(query.getResultList());
-        return query.getResultList();
+        return query.setMaxResults(10).getResultList();
     }
 }

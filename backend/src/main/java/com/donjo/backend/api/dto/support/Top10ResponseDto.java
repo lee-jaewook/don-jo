@@ -22,7 +22,7 @@ public class Top10ResponseDto {
 
     public static Top10ResponseDto getTop10(Support support){
         Top10ResponseDto top10ResponseDto = Top10ResponseDto.builder()
-                .amount(support.getAmount())
+                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
                 .supportType(support.getSupportType())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();

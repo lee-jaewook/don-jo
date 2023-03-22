@@ -24,7 +24,7 @@ public class SupportRequestDto {
 
     private String sendMsg;
 
-    private Double amountEth;
+    private Long amountEth;
 
     public Support toSupport(LocalDateTime sendTime){
         return  Support.builder()
