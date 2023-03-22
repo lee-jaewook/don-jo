@@ -17,7 +17,7 @@ import BasicInput from "../../BasicInput";
 
 const AddItemModal = ({ handleSetShowModal }) => {
   const [itemName, setItemName] = useState("");
-  const [itemPrice, setItemPrice] = useState(null);
+  const [itemPrice, setItemPrice] = useState("");
   const [itemFeaturedImage, setItemFeaturedImage] = useState(null);
   const [itemFile, setItemNamFile] = useState(null);
   const [itemDescription, setItemDescription] = useState("");
