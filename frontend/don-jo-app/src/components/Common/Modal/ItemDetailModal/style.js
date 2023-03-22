@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
+  max-width: 33.0625rem;
   display: flex;
   flex-direction: column;
 `;
