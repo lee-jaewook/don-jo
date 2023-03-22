@@ -16,6 +16,7 @@ const BasicButton = ({
       isBackground={isBackground}
       isDisabled={isDisabled}
       disabled={isDisabled && "disabled"}
+      aria-label="button"
     >
       {text}
     </S.Button>

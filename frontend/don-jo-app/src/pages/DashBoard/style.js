@@ -13,7 +13,7 @@ export const Container = styled.div`
 
 export const DashboardWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   max-width: 80rem;
   background-color: white;
   border-radius: 1.25rem;

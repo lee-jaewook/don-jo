@@ -6,10 +6,11 @@ export const NavBar = styled.div`
   top: 0rem;
   display: flex;
   flex-direction: column;
-  width: 23.75rem;
+  width: 17.5rem;
+  margin-right: 3.75rem;
   height: 100%;
   background-color: transparent;
-  padding-left: 2.5rem;
+  margin-left: 2.5rem;
   @media (max-width: 1280px) {
     position: absolute;
     top: unset;
@@ -23,6 +24,7 @@ export const NavBar = styled.div`
     overflow: hidden;
     padding-left: 0px;
     align-items: center;
+    margin: 0;
   }
 `;
 
@@ -47,7 +49,7 @@ export const UserImg = styled.img`
   background-color: #ddd;
   border: 0.063rem solid #f1f1f1;
   box-shadow: 0rem 0.625rem 0.938rem 0.063rem rgba(0, 0, 0, 0.05);
-  margin-left: 2.5rem;
+  /* margin-left: 2.5rem; */
   margin-right: 0.75rem;
   background-color: #f1f1f1;
 `;
@@ -62,7 +64,8 @@ export const MenuWrapper = styled.ul`
   max-width: 17.5rem;
   list-style: none;
   margin-top: 2.25rem;
-  margin-left: 2.5rem;
+  background-color: #fff;
+  /* margin-left: 2.5rem; */
   @media (max-width: 1280px) {
     width: 11.25rem;
     margin: 0.75rem;

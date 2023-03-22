@@ -10,6 +10,7 @@ export const EarningWrapper = styled.div`
   @media (max-width: 768px) {
     background-color: transparent;
     margin-bottom: 0.5rem;
+    padding: 2rem 1.25rem;
   }
 `;
 

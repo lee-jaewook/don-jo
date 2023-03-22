@@ -14,9 +14,11 @@ const BasicTextarea = ({
   isReadOnly,
   width,
   height,
+  id,
 }) => {
   return (
     <S.Textarea
+      id={id}
       onKeyDown={handleKeyDown}
       onChange={handleOnChangeValue}
       placeholder={placeholder}
@@ -30,6 +32,7 @@ const BasicTextarea = ({
 export default BasicTextarea;
 
 BasicTextarea.propTypes = {
+  id: PropTypes.string,
   handleOnChangeValue: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   isReadOnly: PropTypes.bool,

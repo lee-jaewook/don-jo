@@ -1,7 +1,6 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 const DashBoardListItem = ({
   supportType,
@@ -19,18 +18,19 @@ const DashBoardListItem = ({
           💰
         </S.Icon>
       )}
-
       <S.UserImg src="" alt="user-img" />
-      <S.UserInfo>
-        <S.Supporter>userName</S.Supporter>
-        <S.SponsorshipAmount>
-          100.000 <S.Eth>eth</S.Eth>
-        </S.SponsorshipAmount>
-      </S.UserInfo>
-      <S.DateWrapper>
-        <S.Date>2023.02.28</S.Date>
-        <FiMoreHorizontal size="24px" />
-      </S.DateWrapper>
+      <S.ContentWrapper pathname={location.pathname}>
+        <S.UserInfo>
+          <S.Supporter>userName</S.Supporter>
+          <S.SponsorshipAmount>
+            100.000 <S.Eth>eth</S.Eth>
+          </S.SponsorshipAmount>
+        </S.UserInfo>
+        <S.DateWrapper>
+          <S.Date>2023.02.28</S.Date>
+        </S.DateWrapper>
+      </S.ContentWrapper>
+      <S.SFiMoreHorizontal size="24px" />
     </S.ItemWrapper>
   );
 };
