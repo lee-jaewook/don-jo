@@ -2,6 +2,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+
+  @media screen and (max-width: 48rem) {
+    max-width: 20.625rem;
+    margin: 0 auto;
+  }
 `;
 
 export const Title = styled.div`
@@ -14,10 +19,22 @@ export const CardContainer = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  @media screen and (max-width: 48rem) {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: unset;
+    gap: 0.75rem;
+  }
 `;
 
 export const WishlistItemWrapper = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: 0.75rem;
+
+  @media screen and (max-width: 48rem) {
+    margin-bottom: unset;
+  }
 `;
 
 export const AddCard = styled.div`

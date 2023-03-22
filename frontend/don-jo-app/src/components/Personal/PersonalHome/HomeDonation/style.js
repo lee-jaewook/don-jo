@@ -24,13 +24,13 @@ export const ImojiContainer = styled.div`
 `;
 
 export const Imoji = styled.div`
-  font-size: 5rem;
+  font-size: 3.125rem;
   margin-bottom: 0.875rem;
 `;
 
 export const ImojiTitle = styled.div`
   font-family: RobotoBold;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 `;
 
 export const CounterContainer = styled.div`
@@ -53,6 +53,10 @@ export const CountInput = styled.input`
   &:hover {
     border: 1px solid black;
   }
+
+  @media screen and (max-width: 48rem) {
+    max-width: unset;
+  }
 `;
 
 export const RoundBtn = styled.button`
@@ -66,6 +70,12 @@ export const RoundBtn = styled.button`
   align-items: center;
   background-color: ${(props) => props.color || "var(--color-primary)"};
   background-color: rgba(0, 0, 0, 0.3);
+  margin-left: 0.25rem;
+`;
+
+export const RoundBtnWrapper = styled.div`
+  display: flex;
+  margin-left: 0.5rem;
 `;
 
 export const BasicButtonWrapper = styled.div`
