@@ -1,11 +1,6 @@
 package com.donjo.backend.solidity.Item;
 
-import com.donjo.backend.util.Web3jUtil;
 import lombok.*;
-import org.web3j.abi.datatypes.Address;
-import org.web3j.abi.datatypes.Bool;
-import org.web3j.abi.datatypes.generated.Bytes32;
-import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.applicationhandler.ApplicationHandler;
 
 import java.math.BigInteger;
@@ -16,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Item {
+public class ItemSol {
     private Long id;
     private String title;
     private String imgPath;
@@ -27,7 +22,7 @@ public class Item {
     private boolean isDeleted;
     private String seller;
 
-    public ApplicationHandler.Item toSol(){
+    public ApplicationHandler.ItemSol toSol(){
         BigInteger solId = BigInteger.valueOf(id);
         byte[] solTitle = title.getBytes(StandardCharsets.UTF_8);
         byte[] solImgPath = imgPath.getBytes(StandardCharsets.UTF_8);
@@ -37,11 +32,11 @@ public class Item {
         byte[] solFilePath = filePath.getBytes(StandardCharsets.UTF_8);
         Boolean solIsDeleted = isDeleted;
         String solSeller = seller;
-        return new ApplicationHandler.Item(solId, solTitle, solImgPath, solDescription, solPrice, solMessage, solFilePath, solIsDeleted, solSeller);
+        return new ApplicationHandler.ItemSol(solId, solTitle, solImgPath, solDescription, solPrice, solMessage, solFilePath, solIsDeleted, solSeller);
     }
 
-    public static Item fromSol(ApplicationHandler.Item item){
-        return Item.builder()
+    public static ItemSol fromSol(ApplicationHandler.ItemSol item){
+        return ItemSol.builder()
                 .id(item.id.longValue())
                 .title(new String(item.title, StandardCharsets.UTF_8))
                 .imgPath(new String(item.imgPath, StandardCharsets.UTF_8))
