@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import { FiX } from "react-icons/fi";
-import { useEffect } from "react";
 
 const BasicModal = ({ handleSetShowModal, children, width }) => {
   //모달 열릴때 외부 요소 스크롤 막기
