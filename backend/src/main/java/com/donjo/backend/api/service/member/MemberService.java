@@ -3,6 +3,7 @@ package com.donjo.backend.api.service.member;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 //import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
 import org.springframework.security.core.Authentication;
@@ -19,5 +20,5 @@ public interface MemberService {
   Map<String, Object> refreshAccessToken(String refreshToken);
   void logout(String accessToken);
   String getMemberAddress(HttpServletRequest request);
-//  FindPageInfoPayload getPageInfoByPageName(String pageName);
+  FindPageInfoPayload getPageInfoByPageName(String pageName);
 }

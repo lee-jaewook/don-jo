@@ -2,7 +2,7 @@ package com.donjo.backend.api.controller;
 
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-//import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
@@ -132,18 +132,18 @@ public class MemberController {
     return headers;
   }
 
-//  @ApiOperation(value="페이지 정보 요청", notes = "PathVariable 값 page-name을 사용해서 페이지 정보를 요청합니다.")
-//  @ApiResponses({
-//      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
-//      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
-//      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
-//      @ApiResponse(code = 500, message = "서버에러")
-//  })
-//  @GetMapping(path="/pages/{page-name}")
-//  public ResponseEntity<?> getPageInfo(@PathVariable("page-name") String pageName) {
-//    FindPageInfoPayload result = memberService.getPageInfoByPageName(pageName);
-//
-//    return new ResponseEntity(result, HttpStatus.OK);
-//  }
+  @ApiOperation(value="페이지 정보 요청", notes = "PathVariable 값 page-name을 사용해서 페이지 정보를 요청합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @GetMapping(path="/api/pages/{page-name}")
+  public ResponseEntity<?> getPageInfo(@PathVariable("page-name") String pageName) {
+    FindPageInfoPayload result = memberService.getPageInfoByPageName(pageName);
+
+    return new ResponseEntity(result, HttpStatus.OK);
+  }
 
 }
