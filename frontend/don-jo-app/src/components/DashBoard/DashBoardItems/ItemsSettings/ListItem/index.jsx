@@ -1,22 +1,28 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiUser, FiEdit, FiCreditCard } from "react-icons/fi";
+import { FiUser, FiCreditCard } from "react-icons/fi";
+import { useMediaQuery } from "react-responsive";
 
 const ListItem = ({
   uid,
+  setUid,
   imgPath,
   title,
   collectedAmount,
   totalAmount,
   supportCount,
+  handleShowItemDetailModal,
 }) => {
-  const handleEditItem = () => {
-    console.log("handleEditItem()...");
-  };
+  const isMobile = useMediaQuery({ maxWidth: 578 });
 
   return (
-    <S.ItemWrapper uid={uid}>
+    <S.ItemWrapper
+      onClick={() => {
+        setUid(uid);
+        handleShowItemDetailModal(true);
+      }}
+    >
       <S.ItemInfoWrapper>
         <S.ItemImg src={imgPath} alt="item-img" />
         <S.ItemInfo>
@@ -27,22 +33,24 @@ const ListItem = ({
           </S.InfoText>
         </S.ItemInfo>
       </S.ItemInfoWrapper>
-      <S.Count>
-        <FiUser style={{ marginRight: "2px" }} />
-        {supportCount}
-      </S.Count>
-      <S.Count>
-        <FiCreditCard
-          size="16px"
-          color="var(--color-text)"
-          style={{ marginRight: "2px" }}
-        />
-        {totalAmount}
-        <S.Unit>eth</S.Unit>
-      </S.Count>
-      <button onClick={handleEditItem}>
-        <FiEdit size="24px" color="var(--color-text-secondary)" />
-      </button>
+
+      {!isMobile && (
+        <>
+          <S.Count>
+            <FiUser style={{ marginRight: "2px" }} />
+            {supportCount}
+          </S.Count>
+          <S.Count>
+            <FiCreditCard
+              size="16px"
+              color="var(--color-text)"
+              style={{ marginRight: "2px" }}
+            />
+            {totalAmount}
+            <S.Unit>eth</S.Unit>
+          </S.Count>
+        </>
+      )}
     </S.ItemWrapper>
   );
 };
@@ -51,9 +59,11 @@ export default ListItem;
 
 ListItem.propTypes = {
   uid: PropTypes.number.isRequired,
+  setUid: PropTypes.func.isRequired,
   imgPath: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   collectedAmount: PropTypes.string.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
+  handleShowItemDetailModal: PropTypes.func.isRequired,
 };

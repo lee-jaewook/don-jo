@@ -4,6 +4,7 @@ export const SelectBox = styled.div`
   position: relative;
   align-self: center;
   text-align: center;
+  margin-bottom: 12px;
   cursor: pointer;
   width: 100%;
   height: 2.75rem;
@@ -46,8 +47,9 @@ export const SelectOptions = styled.ul`
   max-height: ${(props) => (props.show ? "none" : "0")};
   padding: 0;
   border-radius: 8px;
-  background-color: transparent;
+  background-color: var(--color-modal);
   color: var(--color-text);
+  z-index: 1;
 `;
 
 export const Option = styled.li`

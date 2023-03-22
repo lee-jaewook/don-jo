@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import BasicTitle from "../../../Common/BasicTitle";
 import Wishlist from "../../../Common/Wishlist";
 import * as S from "./style";
 const WishlistSettings = () => {
+  const [isShowWishlistModal, setShowWishlistModal] = useState(false);
+
   return (
     <S.SettingWrapper>
       <S.AddButton>
@@ -12,7 +14,11 @@ const WishlistSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Wishlist" />
-      <Wishlist isDashboard={true} />
+      <Wishlist
+        isDashboard={true}
+        isShowWishlistModal={isShowWishlistModal}
+        handleSetShowModal={setShowWishlistModal}
+      />
     </S.SettingWrapper>
   );
 };

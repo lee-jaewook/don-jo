@@ -40,7 +40,6 @@ export const EditButton = styled(FiEdit)`
   top: 0.875rem;
   right: 0.875rem;
   color: var(--color-text-secondary);
-  z-index: 100;
   cursor: pointer;
 `;
 

@@ -9,7 +9,7 @@ export const Input = styled.input`
   background-color: white;
   margin-bottom: 0.75rem;
   border: 1px solid transparent;
-  &:hover {
+  &:focus {
     border-color: black;
   }
 `;

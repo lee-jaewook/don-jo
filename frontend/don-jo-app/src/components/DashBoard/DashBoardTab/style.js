@@ -6,10 +6,10 @@ export const TabWrapper = styled.div`
   align-items: flex-end;
   margin-top: 1.25rem;
   margin-bottom: 2.5rem;
-  @media (max-width: 769px) {
+  @media (max-width: 1281px) {
     max-width: 53.75rem;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     margin: 2rem 1.5rem 0rem 1.5rem;
   }
 `;

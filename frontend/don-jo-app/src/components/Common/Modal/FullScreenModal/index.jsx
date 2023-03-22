@@ -2,20 +2,21 @@ import * as S from "./style";
 import { FiX } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 const FullScreenModal = ({ handleSetShowModal, children }) => {
   //모달 열릴때 외부 요소 스크롤 막기
   useEffect(() => {
-    document.body.style.overflowY = "hidden";
+    document.body.style.overflow = "hidden";
   }, []);
 
   //모달 닫힐 때 외부 요소 스크롤 허용
   const closeModal = () => {
-    document.body.style.overflowY = "auto";
+    document.body.style.overflow = "auto";
     handleSetShowModal(false);
   };
 
-  return (
+  return createPortal(
     <S.Modal>
       <S.ModalHeader>
         <S.CloseBtnContainer>
@@ -24,9 +25,12 @@ const FullScreenModal = ({ handleSetShowModal, children }) => {
       </S.ModalHeader>
 
       <S.ModalBody>
-        <S.ContentCard>{children}</S.ContentCard>
+        <S.ContentCardWrapper>
+          <S.ContentCard>{children}</S.ContentCard>
+        </S.ContentCardWrapper>
       </S.ModalBody>
-    </S.Modal>
+    </S.Modal>,
+    document.getElementById("modal")
   );
 };
 
