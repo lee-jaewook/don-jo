@@ -1,19 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 100%;
-  max-width: 17.875rem;
-  margin-bottom: 2rem;
+  width: 17.875rem;
+  margin-bottom: 0.6875rem;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
 
-  @media screen and (max-width: 1190px) {
-    max-width: 26rem;
+  @media screen and (max-width: 48rem) {
+    width: 100%;
+    margin-bottom: unset;
   }
-
-  /* @media screen and (max-width: 768px) {
-    
-  } */
 `;
 
 export const ItemImg = styled.div`
