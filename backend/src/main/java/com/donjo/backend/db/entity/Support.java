@@ -42,6 +42,9 @@ public class Support {
     private String sendMsg;
 
     @Column
+    private String replyMsg;
+
+    @Column
     private LocalDateTime sendTimeStamp;
 
     @Column
