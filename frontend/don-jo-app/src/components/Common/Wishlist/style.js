@@ -11,7 +11,6 @@ export const WishlistContainer = styled.div`
     props.isDashboard ? "var(--color-modal)" : "white"};
 
   @media (max-width: 768px) {
-    padding: 0 1rem;
     grid-template-columns: 1fr;
     justify-items: center;
   }
