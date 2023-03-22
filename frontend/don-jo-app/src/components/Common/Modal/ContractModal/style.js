@@ -9,8 +9,7 @@ export const Title = styled.h1`
 export const ProgressContainer = styled.div`
   border-radius: 0.75rem;
   background-color: var(--color-background);
-  /* width: 100%; */
-  min-width: 34.875rem;
+  width: 100%;
   height: 10.4375rem;
   margin-bottom: 2rem;
 `;
@@ -28,7 +27,7 @@ export const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const Type = styled.h2`
+export const Type = styled.text`
   font-family: "RobotoMedium";
   font-size: 1.25rem;
   border: 1px solid red;
@@ -43,4 +42,16 @@ export const TextContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const Text = styled.label``;
+export const Amount = styled.text`
+  font-family: "RobotoBold";
+`;
+
+export const Unit = styled.text`
+  margin-left: 2px;
+`;
+
+export const TimeContainer = styled.div`
+  display: flex;
+`;
+
+// export const

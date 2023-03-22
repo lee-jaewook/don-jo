@@ -19,21 +19,32 @@ const ContractInfo = () => {
         <S.Wrapper>
           <S.Type>Supporter</S.Type>
           <S.TextContainer>
-            <S.Text>Tom</S.Text>
-            <S.Text>0xb890800CA5f2b802758FC30AE1f2b3663796331A</S.Text>
+            <label>Tom</label>
+            <label>0xb890800CA5f2b802758FC30AE1f2b3663796331A</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Creator</S.Type>
+          <S.TextContainer>
+            <label>Robert Downey Jr.</label>
+            <label>0xb890800CA5f2b802758FC30AE1f2b3663796332B</label>
+          </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
-          <S.Type>Supporter</S.Type>
+          <S.Type>Amount</S.Type>
+          <S.Amount>1000.000</S.Amount>
+          <S.Unit>eth</S.Unit>
         </S.Wrapper>
         <S.Wrapper>
-          <S.Type>Supporter</S.Type>
-        </S.Wrapper>
-        <S.Wrapper>
-          <S.Type>Supporter</S.Type>
+          <S.Type>Time stamp</S.Type>
+          <S.TextContainer>
+            <S.TimeContainer>
+              <label>Send: &nbsp;</label>
+            </S.TimeContainer>
+            <S.TimeContainer>
+              <label>Arrived:</label>
+            </S.TimeContainer>
+          </S.TextContainer>
         </S.Wrapper>
       </S.InfoContainer>
     </div>
