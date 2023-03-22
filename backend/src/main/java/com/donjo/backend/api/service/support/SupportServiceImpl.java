@@ -17,7 +17,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.donjo.backend.solidity.support.SupportSolidity;
+
 
 @Service("SupportService")
 @RequiredArgsConstructor
@@ -31,8 +35,8 @@ public class SupportServiceImpl implements SupportService{
     private final SupportRepositorySupport supportRepositorySupport;
 
 
-    public Double getEarning(String address,String type, int period){
-        List<Support> supportList = supportRepositorySupport.findEarning(address, type, period);
+    public Double getEarning(String address,String type,int period){
+        List<Support> supportList = supportRepositorySupport.findEarning(address,type,period);
         Long result = 0L;
         for (Support support : supportList) {
             result += support.getAmount();
@@ -48,17 +52,34 @@ public class SupportServiceImpl implements SupportService{
     }
     @Override
     public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum){
-        //🌍 type : String
-        //    - donation or
-        //    - item or
-        //    - wishilist or
-        //    - all
-        //🌍 pageNum: int
-        //support 조회해서 리스트로 넘겨줘야함!
-        Pageable pageable = PageRequest.of(pageNum, 15);
-        List<Support> list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
+        List<SupportResponseDto> supportResponseDtoList = new ArrayList<>();
+        List<Support> list = new ArrayList<>();
 
-        return null;
+        Pageable pageable = PageRequest.of(pageNum, 15);
+        if (type.equals("all")) {
+            list = supportRepository.findAllByToAddress(memberAddress,pageable);
+        }
+        else{
+            list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getFromAddress()==null){
+                SupportResponseDto supportResponseDto = SupportResponseDto.getSomeoneSupport(list.get(i));
+                supportResponseDtoList.add(supportResponseDto);
+            }
+            else {
+                SupportResponseDto.fromMember fromMember = new SupportResponseDto.fromMember();
+                Member findMember = memberRepository.findById(list.get(i).getFromAddress()).get();
+                fromMember.setFromMemberAddress(findMember.getAddress());
+                fromMember.setFromMemberNickname(findMember.getNickname());
+                fromMember.setFromMemberPageName(findMember.getPageName());
+                fromMember.setFromMemberProfileImagePath(findMember.getProfileImagePath());
+                SupportResponseDto supportResponseDto = SupportResponseDto.getSupport(list.get(i), fromMember);
+                supportResponseDtoList.add(supportResponseDto);
+            }
+
+        }
+        return supportResponseDtoList;
     }
 
     @Override
@@ -70,17 +91,21 @@ public class SupportServiceImpl implements SupportService{
         //    - all
         //🌍 support_uid : int
         // 서포트 상세 조회해서 Dto에 담아 리턴!
+
+
+
         return null;
     }
     @Override
     public int getSupportCount(String type, String memberAddress){
-        //🌍 type : String
-        //- donation or
-        //- item or
-        //- wishilist or
-        //- all
-        // type을 받아 서포트 수 Dto에 담아 return!
-        List<Support> list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress);
+        List<Support> list = new ArrayList<>();
+        if (type.equals("all")){
+            list = supportRepository.findAllByToAddress(memberAddress);
+        }
+        else{
+            list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress);
+        }
+
         return list.size();
     }
 
@@ -112,9 +137,18 @@ public class SupportServiceImpl implements SupportService{
         //업데이트 해줘야함 도네이션 설정!
     }
 
+
+
     @Override
-    public QrResponseDto getQrcode(String memberAddress){
-        //맴버 접근해서 qr코드 가져오기!
-        return null;
+    public List<Top10ResponseDto> getTop10(){
+        List<Support> supportList = supportRepositorySupport.findTop10();
+        List<Top10ResponseDto> top10ResponseDtoList = new ArrayList<>();
+
+        for (int i = 0; i < supportList.size(); i++) {
+            Top10ResponseDto top10ResponseDto = Top10ResponseDto.getTop10(supportList.get(i));
+            top10ResponseDtoList.add(top10ResponseDto);
+        }
+
+        return top10ResponseDtoList;
     }
 }
