@@ -32,7 +32,7 @@ public class WishlistSolidity {
             List<ApplicationHandler.Wishlist> response = contract.getMemberWishLists(address).send();
             list = new ArrayList<>();
             for (ApplicationHandler.Wishlist wishlist : response) {
-                if(wishlist.isClosed) continue;
+//                if(wishlist.isClosed) continue;
                 list.add(Wishlist.fromSol(wishlist));
             }
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class WishlistSolidity {
             ApplicationHandler.Wishlist response = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send();
             wishlist = Wishlist.fromSol(response);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return Optional.ofNullable(wishlist);
     }

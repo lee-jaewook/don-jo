@@ -40,7 +40,7 @@ class ItemSolidityTest {
                 .filePath(filePath)
                 .isDeleted(isDeleted)
                 .seller(seller).build();
-
+        System.out.println("하이하이");
         itemSolidity.addMemberItem(item);
     }
 

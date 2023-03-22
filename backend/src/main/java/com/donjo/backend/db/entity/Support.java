@@ -21,7 +21,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "DonationSetting")
 public class Support {
     @Id
     @Column(name = "support_id")
@@ -33,13 +32,11 @@ public class Support {
     @Column
     private Long supportUid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_address", referencedColumnName = "address")
-    private Member fromAddress;
+    @Column
+    private String fromAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_address", referencedColumnName = "address")
-    private Member toAddress;
+    @Column
+    private String toAddress;
 
     @Column
     private String sendMsg;
@@ -48,9 +45,8 @@ public class Support {
     private LocalDateTime sendTimeStamp;
 
     @Column
-    @Nullable
     private LocalDateTime arriveTimeStamp;
 
     @Column
-    private Double amountEth;
+    private Long amount; // wei
 }

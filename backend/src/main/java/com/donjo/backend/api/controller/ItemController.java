@@ -8,6 +8,7 @@ import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.Item.Item;
+import io.github.bucket4j.Bucket;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -42,10 +43,8 @@ public class ItemController {
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress){
-        List<Item> list = itemService.getItemList(memberAddress)
-                .orElseThrow(()-> new NoContentException("Item이 없습니다."));
-        return ResponseEntity.status(200).body(list);
+    public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
+        return ResponseEntity.status(200).body(itemService.getItemList(memberAddress, pageNum, pageSize));
     }
 
     @GetMapping("/api/member/item")
@@ -57,12 +56,11 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull Long itemUid){
-        Item item = itemService.getItemDetail(itemUid)
-                .orElseThrow(()-> new NoContentException("Item이 없습니다."));
-        return ResponseEntity.status(200).body(item);
+        return ResponseEntity.status(200)
+                .body(itemService.getItemDetail(itemUid));
     }
 
-    @PostMapping("/api/auth/member/item")
+    @PostMapping("/api/auth/member/item/limited")
     @ApiOperation(value = "아이템 등록", notes = "<strong>아이템 정보</strong>를 입력받아 아이템을 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -92,7 +90,7 @@ public class ItemController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/api/auth/member/item")
+    @PutMapping("/api/auth/member/item/limited")
     @ApiOperation(value = "아이템 수정", notes = "<strong>아이템 uid</strong>를 입력받아 아이템을 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),

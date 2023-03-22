@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemService {
-    Optional<List<Item>> getItemList(String address);
-    Optional<Item> getItemDetail(Long uid);
+    List<Item> getItemList(String address, int pageNum, int pageSize);
+    Item getItemDetail(Long uid);
     void addItem(String address, AddItemCond cond);
     void deleteMemberItem(String address, Long uid);
     void updateMemberItem(String address, UpdateItemCond cond);

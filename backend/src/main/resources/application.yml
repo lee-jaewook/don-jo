@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
-    username: root
-    password: root
+    url: jdbc:mysql://donjodb.ctvdncgwhc2a.ap-northeast-2.rds.amazonaws.com:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: admin
+    password: donjoroot
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true

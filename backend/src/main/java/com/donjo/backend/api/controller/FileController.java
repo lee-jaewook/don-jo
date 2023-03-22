@@ -35,13 +35,13 @@ public class FileController {
             List<String> list = new ArrayList<>(Arrays.asList(new String[]{"img/profile", "img/background", "img/item", "img/wishlist", "item"}));
             if(!list.contains(category)) return ResponseEntity.status(400).build();
 
-            String fileName = null;
+            String fileName;
             try {
                 fileName = s3Upload.uploadFile(multipartFile,category);
                 return ResponseEntity.status(200).body(fileName);
             } catch (IOException e) {
                 return ResponseEntity.status(400).body("요청실패");
             }
-            }
+        }
 }
 
