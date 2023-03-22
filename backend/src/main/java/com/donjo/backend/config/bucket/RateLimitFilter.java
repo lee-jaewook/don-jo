@@ -10,13 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class RateLimitFilter extends OncePerRequestFilter {
 
     private final Bucket bucket;
 
     public RateLimitFilter() {
-        Bandwidth limit = Bandwidth.simple(5, Duration.ofHours(1));
+        Bandwidth limit = Bandwidth.simple(5, Duration.ofHours(5));
         this.bucket = Bucket4j.builder().addLimit(limit).build();
     }
 

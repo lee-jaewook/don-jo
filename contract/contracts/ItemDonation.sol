@@ -65,6 +65,7 @@ contract ItemDonation is SupportHistory {
 
     function _getItemDetail(uint256 id) internal view returns (Item memory) {
         require(id <= itemCount, "Invalid index");
+        require(id != 0, "Invalid index");
         Item storage item = items[id];
         // require(!item.isDeleted, "Item does not exist");
         return item;

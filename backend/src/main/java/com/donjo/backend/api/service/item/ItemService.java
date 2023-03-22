@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ItemService {
     List<Item> getItemList(String address, int pageNum, int pageSize);
-    Optional<Item> getItemDetail(Long uid);
+    Item getItemDetail(Long uid);
     void addItem(String address, AddItemCond cond);
     void deleteMemberItem(String address, Long uid);
     void updateMemberItem(String address, UpdateItemCond cond);

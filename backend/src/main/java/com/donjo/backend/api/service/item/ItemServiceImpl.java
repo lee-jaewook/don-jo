@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,8 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public List<Item> getItemList(String address, int pageNum, int pageSize) {
         // null 체크
-        List<Item> list = itemSolidity.getMemberItemList(address).orElseThrow(()-> new NoContentException());
+        List<Item> list = itemSolidity.getMemberItemList(address)
+                .orElseThrow(()-> new NoContentException());
 
         // 페이지네이션
         int startIdx = pageNum * pageSize;
@@ -57,7 +59,10 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Optional<Item> getItemDetail(Long uid) {
-        return itemSolidity.getItemDetail(uid);
+    public Item getItemDetail(Long uid) {
+        Item item = itemSolidity.getItemDetail(uid)
+                .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
+        if(item.isDeleted()) throw new NoContentException("삭제된 아이템 입니다.");
+        return item;
     }
 }

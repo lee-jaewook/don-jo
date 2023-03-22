@@ -65,6 +65,7 @@ contract WishlistDonation is SupportHistory {
 
     function _getWishlistDetail(uint256 id) internal view returns (Wishlist memory) {
         require(id <= wishlistCount, "Invalid index");
+        require(id != 0, "Invalid index");
         Wishlist memory wishlist = wishlists[id];
         // require(!wishlist.isClosed, "Item does not exist"); // 차후 고민
         return wishlist;
