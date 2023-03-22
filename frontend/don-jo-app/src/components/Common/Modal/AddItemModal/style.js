@@ -31,15 +31,18 @@ export const BasicInput = styled.input`
   }
 `;
 
-export const PriceInputWrap = styled.div`
-  width: 16.75rem;
+export const SeparationContainer = styled.div`
+  /* width: 16.75rem; */
+  width: ${(props) => `${props.width}rem`};
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 export const UnitWrap = styled.div`
+  width: 2rem;
   margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
@@ -79,4 +82,8 @@ export const AddIcon = styled.div`
   border-radius: 50%;
   background-color: var(--color-text);
   margin: 0 auto;
+`;
+
+export const FileUploadButton = styled.input`
+  display: none;
 `;

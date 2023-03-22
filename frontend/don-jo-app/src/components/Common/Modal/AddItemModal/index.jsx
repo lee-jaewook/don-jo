@@ -5,6 +5,8 @@ import { FiUpload } from "react-icons/fi";
 import FullScreenModal from "../FullScreenModal";
 import BasicTitle from "../../BasicTitle";
 import BasicInput from "../../BasicInput";
+import BasicTextarea from "../../BasicTextarea";
+import BasicButton from "../../BasicButton";
 
 /**
  * 아이템 추가/수정 모달
@@ -31,6 +33,14 @@ const AddItemModal = ({ handleSetShowModal }) => {
     setItemPrice(e.target.value);
   };
 
+  const handleItemDescriptionChange = (e) => {
+    setItemDescription(e.target.value);
+  };
+
+  const handleItemMessageChange = (e) => {
+    setItemMessage(e.target.value);
+  };
+
   return (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
@@ -48,7 +58,7 @@ const AddItemModal = ({ handleSetShowModal }) => {
 
         <S.ContentWrap>
           <BasicTitle text="Price" />
-          <S.PriceInputWrap>
+          <S.SeparationContainer width="16.75">
             <S.BasicInput
               type="text"
               value={itemPrice}
@@ -56,7 +66,7 @@ const AddItemModal = ({ handleSetShowModal }) => {
               onChange={handleItemPriceChange}
             />
             <S.UnitWrap>eth</S.UnitWrap>
-          </S.PriceInputWrap>
+          </S.SeparationContainer>
         </S.ContentWrap>
 
         <S.ContentWrap>
@@ -73,14 +83,25 @@ const AddItemModal = ({ handleSetShowModal }) => {
 
         <S.ContentWrap>
           <BasicTitle text="File Upload" />
+          <S.SeparationContainer width="20.75">
+            <S.FileUploadButton type="file" />
+            <S.UnitWrap>
+              <BasicButton
+                text="Open"
+                handleOnClickButton={handleSetShowModal}
+              ></BasicButton>
+            </S.UnitWrap>
+          </S.SeparationContainer>
         </S.ContentWrap>
 
         <S.ContentWrap>
           <BasicTitle text="Description" />
+          <BasicTextarea handleOnChangeValue={handleItemDescriptionChange} />
         </S.ContentWrap>
 
         <S.ContentWrap>
           <BasicTitle text="Confirmation Message" />
+          <BasicTextarea handleOnChangeValue={handleItemMessageChange} />
         </S.ContentWrap>
       </S.Container>
     </FullScreenModal>
