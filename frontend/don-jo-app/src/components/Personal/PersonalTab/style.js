@@ -8,6 +8,12 @@ export const TabWrapper = styled.div`
   align-items: flex-end;
   margin-top: 1.25rem;
   margin-bottom: 2.5rem;
+
+  @media screen and (max-width: 48rem) {
+    max-width: 20.625rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 export const Tabs = styled.ul`

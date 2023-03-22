@@ -27,6 +27,10 @@ export const TitleWrapper = styled.div`
   width: 100%;
 `;
 
+export const EmojiWrapper = styled.div`
+  margin-left: auto;
+`;
+
 export const TitleContent = styled.div`
   width: 100%;
 `;
