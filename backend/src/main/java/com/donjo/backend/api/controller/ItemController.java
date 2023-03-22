@@ -56,9 +56,8 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull Long itemUid){
-        Item item = itemService.getItemDetail(itemUid)
-                .orElseThrow(()-> new NoContentException("Item이 없습니다."));
-        return ResponseEntity.status(200).body(item);
+        return ResponseEntity.status(200)
+                .body(itemService.getItemDetail(itemUid));
     }
 
     @PostMapping("/api/auth/member/item/limited")
