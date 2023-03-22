@@ -25,7 +25,6 @@ import com.donjo.backend.exception.NoContentException;
 
 import com.donjo.backend.solidity.support.SupportSolidity;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.solidity.wishlist.Wishlist;
@@ -177,24 +176,24 @@ public class MemberServiceImpl implements MemberService {
     return wishList;
   }
 
-  private List<SupportItem> memberSupport(Member member) {
-    List<SupportItem> support = new ArrayList<>();
-    List<Support> supports = supportRepository.findByToAddress(member);
-
-    for (Support supportInfoInDb : supports) {
-      Optional<com.donjo.backend.solidity.support.Support> optionalBlockSupport =
-          supportSolidity.getSupportDetail(supportInfoInDb.getToAddress().getAddress(), supportInfoInDb.getSupportUid());
-
-      optionalBlockSupport.ifPresent(supportInfoInBlockchain -> {
-        FromMemberItem fromMemberItem = FromMemberItem.builder(supportInfoInDb.getFromAddress()).build();
-        ToMemberItem toMemberItem = ToMemberItem.builder(supportInfoInDb.getToAddress()).build();
-        SupportItem item = SupportItem.builder(supportInfoInDb, fromMemberItem, toMemberItem, supportInfoInBlockchain);
-        support.add(item);
-      });
-    }
-
-    return support;
-  }
+//  private List<SupportItem> memberSupport(Member member) {
+//    List<SupportItem> support = new ArrayList<>();
+//    List<Support> supports = supportRepository.findByToAddress(member);
+//
+//    for (Support supportInfoInDb : supports) {
+//      Optional<com.donjo.backend.solidity.support.Support> optionalBlockSupport =
+//          supportSolidity.getSupportDetail(supportInfoInDb.getToAddress(), supportInfoInDb.getSupportUid());
+//
+//      optionalBlockSupport.ifPresent(supportInfoInBlockchain -> {
+//        FromMemberItem fromMemberItem = FromMemberItem.builder(memberRepository.findByAddress(supportInfoInDb.getFromAddress())).build();
+//        ToMemberItem toMemberItem = ToMemberItem.builder(member).build();
+//        SupportItem item = SupportItem.builder(supportInfoInDb, fromMemberItem, toMemberItem, supportInfoInBlockchain);
+//        support.add(item);
+//      });
+//    }
+//
+//    return support;
+//  }
 
   public HashMap<String, Object> returnToken(Member member) {
     String accessToken = tokenProvider.createAccessToken(member);
