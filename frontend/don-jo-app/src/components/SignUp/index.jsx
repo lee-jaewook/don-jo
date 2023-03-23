@@ -62,6 +62,7 @@ export const SignUp = ({ isModelOpen }) => {
       .catch((error) => {
         console.log("회원가입 실패");
       });
+    isModelOpen();
   };
 
   return (
@@ -97,4 +98,6 @@ export const SignUp = ({ isModelOpen }) => {
 
 export default SignUp;
 
-SignUp.propTypes = {};
+SignUp.propTypes = {
+  isModelOpen: PropTypes.func.isRequired,
+};
