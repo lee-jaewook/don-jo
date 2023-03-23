@@ -3,12 +3,9 @@ import { FiX } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { FiDelete } from "react-icons/fi";
 import PropTypes from "prop-types";
+import BasicModal from "../BasicModal";
 
 const PasswordModal = ({ handleSetShowModal }) => {
-  const closeModal = () => {
-    handleSetShowModal(false);
-  };
-
   const [password, setPassword] = useState("");
   //   const PASSWORD_MAX_LENGTH = 6;
 
@@ -46,49 +43,42 @@ const PasswordModal = ({ handleSetShowModal }) => {
   };
 
   return (
-    <div>
-      <S.BackgroundOpacity />
-      <S.BackgroundBlur onClick={closeModal} />
-      <S.Modal>
-        <S.CloseContainer>
-          <FiX size="26" color="#666666" onClick={closeModal} />
-        </S.CloseContainer>
-        <S.Title>Set Password</S.Title>
-        <S.Description>
-          Set the password to use for login and payment.
-        </S.Description>
-        <S.PasswordContainer>여기에비밀번호!</S.PasswordContainer>
-        <S.KeypadContainer>
-          {showNums.map((n, i) => {
-            const BasicButton = (
-              <S.KeypadButton
-                onClick={() => {
-                  shuffle();
-                  updatePassword(n);
-                }}
-                key={i}
-              >
-                {n}
-              </S.KeypadButton>
-            );
-            return i === 9 ? (
-              <S.KeypadButton key={i} />
-            ) : i === 11 ? (
-              <S.KeypadButton key={i}>
-                <FiDelete size="28" />
-              </S.KeypadButton>
-            ) : (
-              BasicButton
-            );
-          })}
-        </S.KeypadContainer>
-      </S.Modal>
-    </div>
+    <BasicModal handleSetShowModal={handleSetShowModal}>
+      <S.Title>Set Password</S.Title>
+      <S.Description>
+        Set the password to use for login and payment.
+      </S.Description>
+      <S.PasswordContainer>여기에비밀번호!</S.PasswordContainer>
+      <S.KeypadContainer>
+        {showNums.map((n, i) => {
+          const BasicButton = (
+            <S.KeypadButton
+              onClick={() => {
+                shuffle();
+                updatePassword(n);
+              }}
+              key={i}
+            >
+              {n}
+            </S.KeypadButton>
+          );
+          return i === 9 ? (
+            <S.KeypadButton key={i} />
+          ) : i === 11 ? (
+            <S.KeypadButton key={i}>
+              <FiDelete size="28" />
+            </S.KeypadButton>
+          ) : (
+            BasicButton
+          );
+        })}
+      </S.KeypadContainer>
+    </BasicModal>
   );
 };
 
 export default PasswordModal;
 
-BasicModal.propTypes = {
+PasswordModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
 };
