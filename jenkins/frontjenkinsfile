@@ -1,6 +1,6 @@
 pipeline{
     agent any
-
+    stages{
      stage('프론트엔드 자동 배포'){
 
             stages{
@@ -29,5 +29,5 @@ pipeline{
                         }
         }
         }
-
+}
 }

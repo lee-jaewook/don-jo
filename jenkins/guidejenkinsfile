@@ -1,6 +1,6 @@
 pipeline{
     agent any
-
+      stages{
       stage('가이드 자동 배포'){
 
                 stages{
@@ -28,5 +28,5 @@ pipeline{
             }
             }
 
-
+}
 }
