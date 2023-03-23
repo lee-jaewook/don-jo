@@ -1,5 +1,5 @@
 import * as S from "./style";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
 
 import FullScreenModal from "../FullScreenModal";
@@ -18,6 +18,10 @@ import BasicButton from "../../BasicButton";
  */
 
 const AddItemModal = ({ handleSetShowModal }) => {
+  // 업로드 파일 미리보기
+  const profileRef = useRef();
+  const backgroundImgRef = useRef();
+
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemFeaturedImage, setItemFeaturedImage] = useState(null);

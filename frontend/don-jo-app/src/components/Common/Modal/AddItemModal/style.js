@@ -87,3 +87,39 @@ export const AddIcon = styled.div`
 export const FileUploadButton = styled.input`
   display: none;
 `;
+
+export const EditIconWrapper = styled.div`
+  display: none;
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .edit-icon {
+    cursor: pointer;
+  }
+`;
+
+export const UserProfileImg = styled.div`
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  margin-bottom: 3.75rem;
+  background-image: ${(props) => `url(${props.url})` || ""};
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &:hover > ${EditIconWrapper} {
+    display: flex;
+  }
+`;

@@ -32,6 +32,7 @@ const DashBoardGeneratorModal = ({
   //////////////// Test /////////////////////
 
   const web3 = useSelector((state) => state.web3.web);
+  const valueInWei = web3.utils.toWei("0.000003", "ether");
   console.log(web3);
   const myContract = new web3.eth.Contract(
     ApplicationHandler.abi, // abi 설정
@@ -42,7 +43,7 @@ const DashBoardGeneratorModal = ({
     .send({
       from: "0x0964fB71FB405f75fd95bAe71825Cc2d697E4eE9", // 보내는 주소
       to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12", // 받는 주소
-      value: 3000000, // 전송할 이더 양
+      value: valueInWei, // 전송할 이더 양
       gas: 20000, // 가스 리밋
     })
     .on("transactionHash", (hash) => {
