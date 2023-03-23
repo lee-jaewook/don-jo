@@ -33,5 +33,4 @@ public class Social {
   @Column
   @Nullable
   private String socialLink;
-
 }
