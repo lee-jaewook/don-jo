@@ -141,7 +141,10 @@ const RecentSupportBlock = ({ supportContent }) => {
       )}
       <S.Line />
       {isShowContractModal && (
-        <ContractModal handleSetShowModal={setIsShowContractModal} />
+        <ContractModal
+          handleSetShowModal={setIsShowContractModal}
+          supportContent={supportContent}
+        />
       )}
     </div>
   );

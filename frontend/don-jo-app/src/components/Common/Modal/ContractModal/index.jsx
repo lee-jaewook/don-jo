@@ -14,7 +14,14 @@ const DesktopTablet = ({ children }) => {
   return isDesktopTablet ? children : null;
 };
 
-const ContractInfo = () => {
+const ContractInfo = ({ supportContent }) => {
+  // 임시 페이지 주인 정보
+  const pageOwner = {
+    profileImgPath:
+      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
+    nickname: "Robert Downey Jr.",
+  };
+
   const [refreshedTime, setRefreshedTime] = useState("");
 
   const getRefreshedTime = () => {
@@ -49,7 +56,7 @@ const ContractInfo = () => {
             <S.ProfileWrapper isEnable={true}>
               <ProfileImg
                 width={3}
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpEewiU8DvuCtpyAO0pb5xQaSQYQcCTobUDw&usqp=CAU"
+                src={supportContent.fromMember.profileImgPath}
               />
             </S.ProfileWrapper>
             <S.Tag>Supporter</S.Tag>
@@ -66,10 +73,7 @@ const ContractInfo = () => {
           {/* 받는 사람 */}
           <S.ProfileContainer>
             <S.ProfileWrapper isEnable={false}>
-              <ProfileImg
-                width={3}
-                src="https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp"
-              />
+              <ProfileImg width={3} src={pageOwner.profileImgPath} />
             </S.ProfileWrapper>
             <S.Tag>Creator</S.Tag>
           </S.ProfileContainer>
@@ -79,21 +83,21 @@ const ContractInfo = () => {
         <S.Wrapper>
           <S.Type>Supporter</S.Type>
           <S.TextContainer>
-            <label>Tom</label>
-            <label>0xb890800CA5f2b802758FC30AE1f2b3663796331A</label>
+            <label>{supportContent.fromMember.nickname}</label>
+            <label>{supportContent.fromMember.address}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Creator</S.Type>
           <S.TextContainer>
-            <label>Robert Downey Jr.</label>
-            <label>0xb890800CA5f2b802758FC30AE1f2b3663796332B</label>
+            <label>{supportContent.toMember.nickname}</label>
+            <label>{supportContent.toMember.address}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Amount</S.Type>
           <div>
-            <S.Amount>1000.000</S.Amount>
+            <S.Amount>{supportContent.amountEth.toFixed(3)}</S.Amount>
             <S.Unit>eth</S.Unit>
           </div>
         </S.Wrapper>
@@ -104,13 +108,13 @@ const ContractInfo = () => {
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Send:
               </label>
-              <S.TimeText>2023.03.01 12:48:23</S.TimeText>
+              <S.TimeText>{supportContent.sendTimeStamp}</S.TimeText>
             </S.TimeContainer>
             <S.TimeContainer>
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Arrived:
               </label>
-              <S.TimeText>2023.03.01 12:50:43</S.TimeText>
+              <S.TimeText>{supportContent.arriveTimeStamp}</S.TimeText>
             </S.TimeContainer>
           </S.TextContainer>
         </S.Wrapper>
@@ -119,17 +123,17 @@ const ContractInfo = () => {
   );
 };
 
-const ContractModal = ({ handleSetShowModal,  }) => {
+const ContractModal = ({ handleSetShowModal, supportContent }) => {
   return (
     <>
       <DesktopTablet>
         <BasicModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo />
+          <ContractInfo supportContent={supportContent} />
         </BasicModal>
       </DesktopTablet>
       <Mobile>
         <FullScreenModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo />
+          <ContractInfo supportContent={supportContent} />
         </FullScreenModal>
       </Mobile>
     </>
@@ -140,4 +144,20 @@ export default ContractModal;
 
 ContractModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
+  supportContent: PropTypes.shape({
+    amountEth: PropTypes.number,
+    uid: PropTypes.number.isRequired,
+    fromMember: PropTypes.shape({
+      nickname: PropTypes.string.isRequired,
+      profileImgPath: PropTypes.string,
+      address: PropTypes.string.isRequired,
+    }).isRequired,
+    toMember: PropTypes.shape({
+      nickname: PropTypes.string.isRequired,
+      profileImgPath: PropTypes.string,
+      address: PropTypes.string.isRequired,
+    }),
+    sendTimeStamp: PropTypes.string,
+    arriveTimeStamp: PropTypes.string,
+  }).isRequired,
 };
