@@ -51,18 +51,32 @@
   url = "/docs/prologue/introduction/"
 
 [[main]]
-  name = "Quick Start"
+  name = "Create a Wallet"
   weight = 40
-  identifier = "quick-start"
-  url = "/docs/prologue/quick-start/"
+  identifier = "create-wallet"
+  url = "/docs/create-wallet/create-wallet-intro/"
   parent = "get-started"
 
 [[main]]
-  name = "Tutorial"
+  name = "Add ETH to Wallet"
   weight = 50
-  identifier = "tutorial"
-  url = "/docs/prologue/commands/"
+  identifier = "add-eth"
+  url = "/docs/add-eth/add-eth-intro/"
   parent = "get-started"
+
+# [[main]]
+#   name = "Quick Start"
+#   weight = 40
+#   identifier = "quick-start"
+#   url = "/docs/prologue/quick-start/"
+#   parent = "get-started"
+
+# [[main]]
+#   name = "Tutorial"
+#   weight = 50
+#   identifier = "tutorial"
+#   url = "/docs/prologue/commands/"
+#   parent = "get-started"
 
 # [[social]]
 #   name = "GitHub"
