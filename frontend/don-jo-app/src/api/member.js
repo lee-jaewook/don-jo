@@ -16,4 +16,13 @@ export const memberApi = {
   // 페이지이름 중복 검사 API
   checkPageName: (pageName) =>
     api.get(`/members/page-name/check?pageName=${pageName}`),
+
+  // 사용자 정보 조회 API
+  getUserInfo: () => api.get(`/auth/member/info`),
+
+  // 사용자 정보 수정 API
+  updateUserInfo: (memberCond) => api.put(`/auth/member/info`, memberCond),
+
+  // 페이지 정보 조회 API
+  getPageInfo: (pageName) => api.get(`/pages/${pageName}`),
 };

@@ -4,6 +4,7 @@ export const supportApi = {
   // 수익금 조회 API
   getAllEarnings: (period, type) =>
     api.get(`/auth/member/dashboard/earning?period=${period}&type=${type}`),
+
   // 대시보드 서포트 조회 API
   getSupportList: (pageNum, type) =>
     api.get(`/auth/member/dashboard/supports?pageNum=${pageNum}&type=${type}`),
@@ -25,4 +26,7 @@ export const supportApi = {
   // 서포트 상세 조회 API
   getSupportDetail: (supportUid, type) =>
     api.get(`/member/supports?supportUid=${supportUid}&type=${type}`),
+
+  // 최근 후원 내역 10건 조회 API - intro page 전광판에서만 사용
+  getSponsorshipList: () => api.get(`/main/supports`),
 };
