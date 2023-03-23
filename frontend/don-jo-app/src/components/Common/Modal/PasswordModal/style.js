@@ -17,6 +17,20 @@ export const PasswordContainer = styled.div`
   justify-content: center;
 `;
 
+export const PasswordWrapper = styled.div`
+  margin: auto;
+  display: flex;
+  gap: 1.25rem;
+`;
+
+export const Circle = styled.div`
+  width: 1.5625rem;
+  height: 1.5625rem;
+  border-radius: 50%;
+  background-color: ${(props) =>
+    props.isEnable ? "var(--color-primary)" : "var(--color-text-third)"};
+`;
+
 export const KeypadContainer = styled.div`
   width: 100%;
   height: 20rem;

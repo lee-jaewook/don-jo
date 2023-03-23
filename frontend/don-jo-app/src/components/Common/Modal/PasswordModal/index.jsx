@@ -32,14 +32,24 @@ const PasswordModal = ({ handleSetShowModal }) => {
     setShowNums(copyNums);
   };
 
-  //초기 shuffle
   useEffect(() => {
+    if (password.length >= 6) {
+      handleSetShowModal(false);
+      console.log(password);
+    }
     shuffle();
-  }, []);
+  }, [password]);
 
   //패스워드 업데이트
   const updatePassword = (n) => {
     setPassword(password + n.toString());
+  };
+
+  //패스워드 지우기
+  const deletePassword = (n) => {
+    if (password.length > 1) {
+      setPassword(password.slice(0, -1));
+    }
   };
 
   return (
@@ -48,13 +58,18 @@ const PasswordModal = ({ handleSetShowModal }) => {
       <S.Description>
         Set the password to use for login and payment.
       </S.Description>
-      <S.PasswordContainer>여기에비밀번호!</S.PasswordContainer>
+      <S.PasswordContainer>
+        <S.PasswordWrapper>
+          {[...Array(6)].map((_, index) => {
+            return <S.Circle key={index} isEnable={index < password.length} />;
+          })}
+        </S.PasswordWrapper>
+      </S.PasswordContainer>
       <S.KeypadContainer>
         {showNums.map((n, i) => {
           const BasicButton = (
             <S.KeypadButton
               onClick={() => {
-                shuffle();
                 updatePassword(n);
               }}
               key={i}
@@ -65,7 +80,12 @@ const PasswordModal = ({ handleSetShowModal }) => {
           return i === 9 ? (
             <S.KeypadButton key={i} />
           ) : i === 11 ? (
-            <S.KeypadButton key={i}>
+            <S.KeypadButton
+              key={i}
+              onClick={() => {
+                deletePassword();
+              }}
+            >
               <FiDelete size="28" />
             </S.KeypadButton>
           ) : (
