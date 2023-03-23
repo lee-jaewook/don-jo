@@ -13,6 +13,7 @@ import EmojiPicker from "emoji-picker-react";
 import { useInput } from "../../../hooks/useInput";
 import { FiChevronDown } from "react-icons/fi";
 
+// import Web3 from "web3";
 import { useSelector, useProvider } from "react-redux";
 import ApplicationHandler from "../../../contracts/ApplicationHandler.json";
 /**
@@ -31,27 +32,35 @@ const DashBoardGeneratorModal = ({
 }) => {
   //////////////// Test /////////////////////
 
-  const web3 = useSelector((state) => state.web3.web);
-  const valueInWei = web3.utils.toWei("0.000003", "ether");
-  console.log(web3);
-  const myContract = new web3.eth.Contract(
-    ApplicationHandler.abi, // abi 설정
-    "0xc45694392A301B63a1FD0A1b2762521915a78f44" // 지갑 주소
-  );
-  myContract.methods
-    .callBasicDonation("0x6c3ea1dD30BEb9B449272d393693A47727a5dF12")
-    .send({
-      from: "0x0964fB71FB405f75fd95bAe71825Cc2d697E4eE9", // 보내는 주소
-      to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12", // 받는 주소
-      value: valueInWei, // 전송할 이더 양
-      gas: 20000, // 가스 리밋
-    })
-    .on("transactionHash", (hash) => {
-      console.log("트랜잭션 해시: ", hash);
-    })
-    .on("error", (error) => {
-      console.log(error);
-    });
+  // const web3 = useSelector((state) => state.web3.web);
+  // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
+  // const valueInWei = web3.utils.toWei("0.000003", "ether");
+
+  // const myWallet = useSelector((state) => state.web3.walletAddress);
+  // const myContract = new web3.eth.Contract(
+  //   ApplicationHandler.abi, // abi 설정
+  //   "0xc45694392A301B63a1FD0A1b2762521915a78f44" // contract 주소
+  // );
+
+  // const tx = myContract.methods.callBasicDonation(
+  //   "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12"
+  // );
+  // window.ethereum
+  //   .request({
+  //     method: "eth_sendTransaction",
+  //     params: [
+  //       {
+  //         from: myWallet,
+  //         to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12",
+  //         value: valueInWei,
+  //         gas: "20000",
+  //         data: tx.encodeABI(),
+  //       },
+  //     ],
+  //   })
+  //   .then((res) => console.log(res))
+  //   .catch((err) => console.log(err));
+
   ///////////////////////////////////////////
 
   const [title, setTitle] = useState("");

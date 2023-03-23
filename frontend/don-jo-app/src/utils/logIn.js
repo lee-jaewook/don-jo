@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
 import SignUp from "../components/SignUp";
+import { memberApi } from "../api/member";
 
 /**
  * 로그인 함수
@@ -29,30 +30,55 @@ export const logIn = ({ dispatch, handleModalOpen }) => {
           web3.setProvider(infuraWeb3.currentProvider);
           dispatch(setWeb3({ web3: web3, walletAddress: accounts[0] }));
 
-          // 여기서 우리 회원인지 체크하고,
-          // 여기는 memberAddress를 보냄.
-          // 우리 회원이 아니면
-          // if(signUprequired){
-          //
-          // }
-          // else {
-          //우리 회원이면 로그인...
-          // 로그인 시에는 MetaMask에 서명 요청
-          // 서명 요청 코드
-          //   web3.eth.personal.sign(accounts[0], accounts[0])
-          //   .then((signature) => {
-          //     // 로그인
-          //   })
-          //   //
-          //   .catch((error) => {
-          //     console.error("error: ", error);
-          //   })
-          // //
-          // // }
-          // console.log("우리 회원인지 체크");
-          // console.log("우리 회원이 아니네요");
-          // // 우리 회원이 아니면 회원가입 모달...
-          handleModalOpen();
+          // 우리 회원인지 아닌지
+          memberApi
+            .checkMemberAddress(accounts[0])
+            .then(async ({ status }) => {
+              if (status === 200) {
+                // 서명 데이터 만들기...
+                console.log(web3.eth);
+                console.log(typeof accounts[0]);
+
+                window.ethereum
+                  .request({
+                    method: "personal_sign",
+                    params: [accounts[0], accounts[0], "Example password"],
+                  })
+                  .then((signature) => {
+                    const loginMemberCond = {
+                      memberAddress: accounts[0],
+                      memberSignature: signature,
+                    };
+                    // 로그인
+                    memberApi
+                      .login(loginMemberCond)
+                      .then((res) => {
+                        console.log("로그인 성공: ", res);
+                        localStorage.setItem(
+                          "accesstoken",
+                          res.headers.accesstoken
+                        );
+                        sessionStorage.setItem(
+                          "refreshtoken",
+                          res.headers.refreshtoken
+                        );
+                      })
+                      .catch((error) => {
+                        console.log("login로그인 실패: ", error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.error("error ㅠㅠ: ", error);
+                  });
+              } else if (status === 204) {
+                console.log("비회원입니다: ", status);
+                handleModalOpen();
+              }
+            })
+            .catch((error) => {
+              console.log("error: ", error);
+              alert("다시 로그인 해주세요.");
+            });
         });
         console.log("MetaMask is connected");
 
