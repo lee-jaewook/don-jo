@@ -8,8 +8,8 @@ export const supportApi = {
   getSupportList: (pageNum, type) =>
     api.get(`/auth/member/dashboard/supports?pageNum=${pageNum}&type=${type}`),
 
-  // 도네이션 설정 API
-  setDonationSettings: () => api.post(`/auth/member/donation/setting`),
+  // 도네이션 설정 조회 API
+  getDonationSettings: () => api.get(`/auth/member/donation/setting`),
 
   // 도네이션 설정 수정 API
   updateDonationSettings: (donationDto) =>
