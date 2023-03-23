@@ -68,11 +68,11 @@ public class SupportServiceImpl implements SupportService{
         supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
-    public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum){
+    public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum,int pageSize){
         List<SupportResponseDto> supportResponseDtoList = new ArrayList<>();
         List<Support> list = new ArrayList<>();
 
-        Pageable pageable = PageRequest.of(pageNum, 15);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
         if (type.equals("all")) {
             list = supportRepository.findAllByToAddress(memberAddress,pageable);
         }

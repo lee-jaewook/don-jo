@@ -63,8 +63,8 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupports(HttpServletRequest request, @RequestParam String type, @RequestParam int pageNum) {
-        List<SupportResponseDto> supports = supportService.getSupports(memberService.getMemberAddress(request), type, pageNum);
+    public ResponseEntity<?> getSupports(@RequestParam String memberAddress, @RequestParam String type, @RequestParam int pageNum,@RequestParam int pageSize) {
+        List<SupportResponseDto> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
         if (supports.size()>0){
             return ResponseEntity.status(200).body(supports);
         }
