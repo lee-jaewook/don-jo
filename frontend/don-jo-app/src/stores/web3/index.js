@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  web3: null,
+  web: null,
 };
 
 export const web3Slice = createSlice({
@@ -9,7 +9,7 @@ export const web3Slice = createSlice({
   initialState,
   reducers: {
     setWeb3(state, action) {
-      state.web3 = action.payload.web3;
+      state.web = action.payload.web3;
     },
   },
 });

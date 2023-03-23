@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 
@@ -13,6 +13,8 @@ import EmojiPicker from "emoji-picker-react";
 import { useInput } from "../../../hooks/useInput";
 import { FiChevronDown } from "react-icons/fi";
 
+import { useSelector, useProvider } from "react-redux";
+import ApplicationHandler from "../../../contracts/ApplicationHandler.json";
 /**
  * 플러그인 생성기 컴포넌트
  * @param {Object} props - 컴포넌트에 전달되는 props
@@ -22,11 +24,35 @@ import { FiChevronDown } from "react-icons/fi";
  * @returns {JSX.Element} - 렌더링 결과
  */
 
-const GeneratorModal = ({
+const DashBoardGeneratorModal = ({
   isSearchDefault,
   isModalOpen,
   isItemsRequired = true,
 }) => {
+  //////////////// Test /////////////////////
+
+  const web3 = useSelector((state) => state.web3.web);
+  console.log(web3);
+  const myContract = new web3.eth.Contract(
+    ApplicationHandler.abi, // abi 설정
+    "0xc45694392A301B63a1FD0A1b2762521915a78f44" // 지갑 주소
+  );
+  myContract.methods
+    .callBasicDonation("0x6c3ea1dD30BEb9B449272d393693A47727a5dF12")
+    .send({
+      from: "0x0964fB71FB405f75fd95bAe71825Cc2d697E4eE9", // 보내는 주소
+      to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12", // 받는 주소
+      value: 3000000, // 전송할 이더 양
+      gas: 20000, // 가스 리밋
+    })
+    .on("transactionHash", (hash) => {
+      console.log("트랜잭션 해시: ", hash);
+    })
+    .on("error", (error) => {
+      console.log(error);
+    });
+  ///////////////////////////////////////////
+
   const [title, setTitle] = useState("");
   const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
@@ -126,9 +152,9 @@ const GeneratorModal = ({
   );
 };
 
-export default GeneratorModal;
+export default DashBoardGeneratorModal;
 
-GeneratorModal.propTypes = {
+DashBoardGeneratorModal.propTypes = {
   isSearchDefault: PropTypes.bool,
   isModalOpen: PropTypes.func.isRequired,
   isItemsRequired: PropTypes.bool,
