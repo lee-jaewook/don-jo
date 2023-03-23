@@ -74,6 +74,11 @@ export const InfoContainer = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   width: 100%;
+
+  @media screen and (max-width: 48rem) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 export const Type = styled.label`

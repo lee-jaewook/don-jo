@@ -92,8 +92,10 @@ const ContractInfo = () => {
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Amount</S.Type>
-          <S.Amount>1000.000</S.Amount>
-          <S.Unit>eth</S.Unit>
+          <div>
+            <S.Amount>1000.000</S.Amount>
+            <S.Unit>eth</S.Unit>
+          </div>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Time stamp</S.Type>
@@ -117,7 +119,7 @@ const ContractInfo = () => {
   );
 };
 
-const ContractModal = ({ handleSetShowModal }) => {
+const ContractModal = ({ handleSetShowModal,  }) => {
   return (
     <>
       <DesktopTablet>
