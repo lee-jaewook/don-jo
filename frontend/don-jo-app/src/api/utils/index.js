@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "j8a209.p.ssafy.io/api";
+const BASE_URL = "https://j8a209.p.ssafy.io/api/";
 
 const instance = axios.create({
   baseURL: BASE_URL,
