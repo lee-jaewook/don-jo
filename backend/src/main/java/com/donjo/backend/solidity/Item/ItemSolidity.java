@@ -3,18 +3,15 @@ package com.donjo.backend.solidity.Item;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.util.Web3jUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.applicationhandler.ApplicationHandler;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -30,8 +27,8 @@ public class ItemSolidity {
         this.contract = web3jUtil.getContractApi();
     }
 
-    public void addMemberItem(Item cond){
-        ApplicationHandler.Item item = cond.toSol();
+    public void addMemberItem(ItemSol cond){
+        ApplicationHandler.ItemSol item = cond.toSol();
         try {
             contract.addMemberItem(item).send();
         } catch (Exception e) {
@@ -39,9 +36,9 @@ public class ItemSolidity {
         }
     }
 
-    public Optional<List<Item>> getMemberItemList(String address){
+    public Optional<List<ItemSol>> getMemberItemList(String address){
         // 스마트 컨트랙트 호출
-        List<ApplicationHandler.Item> items = null;
+        List<ApplicationHandler.ItemSol> items = null;
         try {
             items = contract.getMemberItemList(address).send();
         } catch (Exception e) {
@@ -49,24 +46,24 @@ public class ItemSolidity {
         }
 
         // 형 변환 및 isDeleted 여부 판별
-        List<Item> result = new ArrayList<>();
+        List<ItemSol> result = new ArrayList<>();
         for (int i = 0, size = items.size(); i < size; i++) {
-            ApplicationHandler.Item item = items.get(i);
+            ApplicationHandler.ItemSol item = items.get(i);
             if(item.isDeleted || item == null) continue;
-            result.add(Item.fromSol(item));
+            result.add(ItemSol.fromSol(item));
         }
         return Optional.ofNullable(result);
     }
 
-    public Optional<Item> getItemDetail(Long id){
-        Item item = null;
+    public Optional<ItemSol> getItemDetail(Long id){
+        ItemSol itemSol = null;
         try {
-            ApplicationHandler.Item response = contract.getItemDetail(BigInteger.valueOf(id)).send();
-            item = Item.fromSol(response);
+            ApplicationHandler.ItemSol response = contract.getItemDetail(BigInteger.valueOf(id)).send();
+            itemSol = ItemSol.fromSol(response);
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
-        return Optional.ofNullable(item);
+        return Optional.ofNullable(itemSol);
     }
 
     public void deleteMemberItem(String address, Long id){
@@ -79,8 +76,8 @@ public class ItemSolidity {
         }
     }
 
-    public void updateMemberItem(Item cond){
-        ApplicationHandler.Item item = cond.toSol();
+    public void updateMemberItem(ItemSol cond){
+        ApplicationHandler.ItemSol item = cond.toSol();
         try {
             if(!contract.getItemDetail(item.id).send().seller.equals(cond.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다");
             contract.updateMemberItem(item).send();

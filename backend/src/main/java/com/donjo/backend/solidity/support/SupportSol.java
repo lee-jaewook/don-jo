@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Support {
+public class SupportSol {
     public Long id;
 
     public String from;
@@ -27,8 +27,8 @@ public class Support {
 
     public Long supportStatus;
 
-    public ApplicationHandler.Support toSol(){
-        return new ApplicationHandler.Support(
+    public ApplicationHandler.SupportSol toSol(){
+        return new ApplicationHandler.SupportSol(
                 BigInteger.valueOf(id),
                 from,
                 to,
@@ -39,8 +39,8 @@ public class Support {
         );
     }
 
-    public static Support fromSol(ApplicationHandler.Support s){
-        return Support.builder()
+    public static SupportSol fromSol(ApplicationHandler.SupportSol s){
+        return SupportSol.builder()
                 .id(s.id.longValue())
                 .from(s.from)
                 .to(s.to)

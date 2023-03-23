@@ -1,21 +1,18 @@
 package com.donjo.backend.solidity.wishlist;
 
-import com.donjo.backend.solidity.Item.ItemSolidity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.*;
-
 @SpringBootTest
-class WishlistSolidityTest {
+class WishlistSolSolidityTest {
 
     @Autowired
     private WishlistSolidity wishlistSolidity;
 
     @Test
     public void addMemberWishListTest(){
-        Wishlist wishlist = Wishlist.builder()
+        WishlistSol wishlistSol = WishlistSol.builder()
                 .id(1L)
                 .title("Example Wishlist Item")
                 .imgPath("https://example.com/image.jpg")
@@ -26,7 +23,7 @@ class WishlistSolidityTest {
                 .isClosed(false)
                 .seller("0x1234567890abcdef1234567890abcdef12345678")
                 .build();
-        wishlistSolidity.addMemberWishList(wishlist);
+        wishlistSolidity.addMemberWishList(wishlistSol);
     }
 
 //    @Test

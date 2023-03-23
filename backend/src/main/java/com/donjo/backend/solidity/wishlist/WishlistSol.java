@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Wishlist {
+public class WishlistSol {
     private Long id;
     private String title;
     private String imgPath;
@@ -22,8 +22,8 @@ public class Wishlist {
     private boolean isClosed;
     private String seller;
 
-    public ApplicationHandler.Wishlist toSol(){
-        return new ApplicationHandler.Wishlist(
+    public ApplicationHandler.WishlistSol toSol(){
+        return new ApplicationHandler.WishlistSol(
                 BigInteger.valueOf(id),
                 imgPath.getBytes(StandardCharsets.UTF_8),
                 title.getBytes(StandardCharsets.UTF_8),
@@ -36,8 +36,8 @@ public class Wishlist {
         );
     }
 
-    public static Wishlist fromSol(ApplicationHandler.Wishlist w){
-        return Wishlist.builder()
+    public static WishlistSol fromSol(ApplicationHandler.WishlistSol w){
+        return WishlistSol.builder()
                 .id(w.id.longValue())
                 .title(new String(w.title, StandardCharsets.UTF_8))
                 .imgPath(new String(w.imgPath, StandardCharsets.UTF_8))

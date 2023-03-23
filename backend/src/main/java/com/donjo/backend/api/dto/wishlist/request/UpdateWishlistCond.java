@@ -1,6 +1,6 @@
 package com.donjo.backend.api.dto.wishlist.request;
 
-import com.donjo.backend.solidity.wishlist.Wishlist;
+import com.donjo.backend.solidity.wishlist.WishlistSol;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -24,8 +24,8 @@ public class UpdateWishlistCond {
     @NotNull
     private String message;
 
-    public Wishlist toWishlist(String memberAddress) {
-        return Wishlist.builder()
+    public WishlistSol toWishlist(String memberAddress) {
+        return WishlistSol.builder()
                 .id(uid)
                 .title(title)
                 .imgPath(imgPath)
