@@ -1,13 +1,17 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
+import SignUp from "../components/SignUp";
 
 /**
- * 지갑연결 함수
- * 메타마스크 설치 여부 + 지갑 연결 체크
- * @param {*} dispatch
+ * 로그인 함수
+ * 메타마스크 설치 여부 + 지갑 연결 체크 + 회원 체크
+ * 회원이면, 로그인
+ * 회원이 아니면, 회원가입 모달
+ * @param {*} param0
+ * @param {}
  */
 
-export const connectWallet = (dispatch) => {
+export const logIn = ({ dispatch, handleModalOpen }) => {
   // 메타마스크 설치 여부 확인
   if (typeof window.ethereum !== "undefined") {
     // 메타마스크 설치되어 있으면, 로그인 요청
@@ -24,6 +28,31 @@ export const connectWallet = (dispatch) => {
           );
           web3.setProvider(infuraWeb3.currentProvider);
           dispatch(setWeb3({ web3: web3, walletAddress: accounts[0] }));
+
+          // 여기서 우리 회원인지 체크하고,
+          // 여기는 memberAddress를 보냄.
+          // 우리 회원이 아니면
+          // if(signUprequired){
+          //
+          // }
+          // else {
+          //우리 회원이면 로그인...
+          // 로그인 시에는 MetaMask에 서명 요청
+          // 서명 요청 코드
+          //   web3.eth.personal.sign(accounts[0], accounts[0])
+          //   .then((signature) => {
+          //     // 로그인
+          //   })
+          //   //
+          //   .catch((error) => {
+          //     console.error("error: ", error);
+          //   })
+          // //
+          // // }
+          // console.log("우리 회원인지 체크");
+          // console.log("우리 회원이 아니네요");
+          // // 우리 회원이 아니면 회원가입 모달...
+          handleModalOpen();
         });
         console.log("MetaMask is connected");
 
