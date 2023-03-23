@@ -7,7 +7,7 @@ import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-//import com.donjo.backend.api.dto.member.response.FindMemberPayload;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
@@ -110,11 +110,16 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
-    Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new BadRequestException("아이디가 존재하지 않습니다."));
-    Map<String, Object> result = returnToken(member);
-    result.put(PAGE_NAME, member.getPageName());
+    boolean check = verifySignature(loginMemberCond.getMemberAddress(), loginMemberCond.getMemberSignature(), loginMemberCond.getSignMessage());
+    if (check) {
+      Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new UnAuthorizationException("아이디가 존재하지 않습니다."));
+      Map<String, Object> result = returnToken(member);
+      result.put(PAGE_NAME, member.getPageName());
 
-    return result;
+      return result;
+    }
+
+    throw new BadRequestException("잘못된 요청");
   }
 
   @Override
@@ -179,16 +184,16 @@ public class MemberServiceImpl implements MemberService {
     return findPageInfoPayload;
   }
 
-//  @Override
-//  public FindMemberPayload getMemberInfo(String memberAddress) {
-//    Member member = memberRepository.findByAddress(memberAddress);
-//    if (member == null) {
-//      new NotFoundException("유저 정보가 없습니다.");
-//    }
-//
-//    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
-//    return findMemberPayload;
-//  }
+  @Override
+  public FindMemberPayload getMemberInfo(String memberAddress) {
+    Member member = memberRepository.findByAddress(memberAddress);
+    if (member == null) {
+      new NotFoundException("유저 정보가 없습니다.");
+    }
+
+    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
+    return findMemberPayload;
+  }
 
   @Override
   @Transactional

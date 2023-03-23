@@ -3,7 +3,7 @@ package com.donjo.backend.api.controller;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-//import com.donjo.backend.api.dto.member.response.FindMemberPayload;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
@@ -148,21 +148,21 @@ public class MemberController {
     return new ResponseEntity(result, HttpStatus.OK);
   }
 
-//  @ApiOperation(value="멤버 정보 요청", notes = "AccessToken을 사용해서 페이지 정보를 요청합니다.")
-//  @ApiResponses({
-//      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
-//      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
-//      @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
-//      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
-//      @ApiResponse(code = 500, message = "서버에러")
-//  })
-//  @GetMapping(path="/api/auth/member/info")
-//  public ResponseEntity<?> getMemberInfo(HttpServletRequest request) {
-//    String memberAddress = memberService.getMemberAddress(request);
-//    FindMemberPayload findMemberPayload = memberService.getMemberInfo(memberAddress);
+  @ApiOperation(value="멤버 정보 요청", notes = "AccessToken을 사용해서 페이지 정보를 요청합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @GetMapping(path="/api/auth/member/info")
+  public ResponseEntity<?> getMemberInfo(HttpServletRequest request) {
+    String memberAddress = memberService.getMemberAddress(request);
+    FindMemberPayload findMemberPayload = memberService.getMemberInfo(memberAddress);
 
-//    return new ResponseEntity(findMemberPayload, HttpStatus.OK);
-//  }
+    return new ResponseEntity(findMemberPayload, HttpStatus.OK);
+  }
 
   @ApiOperation(value="멤버 정보 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 페이지를 수정합니다.")
   @ApiResponses({
