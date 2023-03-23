@@ -32,4 +32,6 @@ public interface MemberService {
   FindMemberPayload getMemberInfo(String memberAddress);
 
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
+
+  boolean verifySignature(String memberAddress, String signature, String message);
 }
