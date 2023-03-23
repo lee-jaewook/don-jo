@@ -15,9 +15,11 @@ const ItemCard = ({ item, isOwner }) => {
             <S.Price>{item.price.toFixed(3)}</S.Price>
             <S.Unit>eth</S.Unit>
           </S.PriceWrapper>
-          <S.BuyBtn color="" onClick={handleOnClickButton} disabled={isOwner}>
-            Buy
-          </S.BuyBtn>
+          {!isOwner && (
+            <S.BuyBtn color="" onClick={handleOnClickButton}>
+              Buy
+            </S.BuyBtn>
+          )}
         </S.PriceBtnContainer>
       </S.DescriptionContainer>
     </S.Container>
