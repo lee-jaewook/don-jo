@@ -1,11 +1,13 @@
 package com.donjo.backend.api.dto.support;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@Builder
 @ToString
 public class SupportDetailResponseDto {
 
@@ -26,4 +28,8 @@ public class SupportDetailResponseDto {
     private String arriveTimeStamp ;
 
     private String sendMsg;
+
+    public static SupportDetailResponseDto fromSupport(){
+        return SupportDetailResponseDto.builder().build();
+    }
 }

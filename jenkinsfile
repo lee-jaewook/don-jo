@@ -3,18 +3,34 @@ pipeline {
    agent any
 
    stages{
+    stage('프론트엔드 자동 배포'){
 
-    stage('백엔드 컨테이너 중지'){
-                    steps{
-                        sh "docker stop backend"
-                                           }
-                                       }
+        stages{
+            stage('프론트엔드 이미지 생성'){
+                            steps{
+                                dir('frontend')
+                                {
+                                dir('don-jo-app'){
+                                sh "docker build -t react-image ."
+                                }
+                                }
+                                }
+        }
+            stage('프론트엔드 컨테이너 삭제'){
+                                    steps{
+                                    catchError{
+                                        sh "docker rm --force frontend"
+                                        }
+                                                           }
+                                                       }
 
-    stage('백엔드 컨테이너 삭제'){
-                steps{
-                    sh "docker rm backend"
-                                       }
-                                   }
+                    stage('컨테이너 생성') {
+                      steps {
+                        sh "docker run -d -p 3000:3000 --name frontend react-image"
+                      }
+                    }
+    }
+    }
     stage('백엔드 자동 배포') {
         stages {
                 stage('gradlew 권한'){
@@ -31,12 +47,23 @@ pipeline {
                     }
                 }
                }
-               stage('컨테이너 생성') {
+
+               stage('백엔드 컨테이너 삭제'){
+                               steps{
+                               catchError{
+                                   sh "docker rm --force backend"
+                                   }
+                                                      }
+                                                  }
+
+               stage('백엔드 컨테이너 생성') {
                  steps {
                    sh "docker run -d -p 8081:8080 --name backend backend:0.0.1-SNAPSHOT"
                  }
                }
            }
 }
+
+
 }
 }
