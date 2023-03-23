@@ -72,7 +72,11 @@ const RecentSupportBlock = ({ supportContent }) => {
             setIsShowContractModal(true);
           }}
         >
-          <S.ProfileImgContainer>
+          <S.ProfileImgContainer
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <ProfileImg
               width={3}
               src={supportContent.fromMember.profileImgPath}
