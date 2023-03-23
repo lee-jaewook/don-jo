@@ -1,6 +1,6 @@
 pipeline{
     agent any
-
+      stages{
       stage('백엔드 자동 배포') {
             stages {
                     stage('gradlew 권한'){
@@ -33,5 +33,5 @@ pipeline{
                    }
                }
               }
-
+}
 }
