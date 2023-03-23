@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +25,9 @@ public class S3Uploader {
     private String bucket;
 
     public String uploadFile(MultipartFile multipartFile,String category) throws IOException {
-        String fileName =category+"/"+multipartFile.getName() + LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        String myDateFormat = now.format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+        String fileName =category+"/"+multipartFile.getName() + myDateFormat;
         ObjectMetadata objectMetaData = new ObjectMetadata();
         objectMetaData.setContentType(multipartFile.getContentType());
         objectMetaData.setContentLength(multipartFile.getSize());
