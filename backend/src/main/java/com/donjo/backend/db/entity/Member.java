@@ -23,6 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
+@ToString
 public class Member {
    @Id
    @Column(name = "address")
@@ -64,11 +65,11 @@ public class Member {
    @Builder.Default
    private int themeColor = 1;
 
-   @OneToMany
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @JoinColumn(name = "member_address", referencedColumnName = "address")
    private List<Social> social;
 
    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-   @JsonIgnore
    private DonationSetting donationSetting;
 
    @ManyToMany

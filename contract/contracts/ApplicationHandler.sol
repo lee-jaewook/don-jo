@@ -28,17 +28,17 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
 
   // ================= Backend Call =================
   // 멤버의 아이템 리스트 가져오기  
-  function getMemberItemList(address _address) external view returns(Item[] memory){
+  function getMemberItemList(address _address) external view returns(ItemSol[] memory){
     return _getItemList(myItems[_address]);
   }
 
   // 특정 아이템 상세 조회하기
-  function getItemDetail(uint256 _id) external view returns(Item memory){
+  function getItemDetail(uint256 _id) external view returns(ItemSol memory){
     return _getItemDetail(_id);
   }
 
   // 멤버의 아이템 추가하기
-  function addMemberItem(Item memory _item) external{
+  function addMemberItem(ItemSol memory _item) external{
     _createItem(_item);
   }
 
@@ -48,22 +48,22 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 아이템 수정하기
-  function updateMemberItem(Item memory _item) external {
+  function updateMemberItem(ItemSol memory _item) external {
     _updateItem(_item);
   }
 
   // 멤버의 위시리스트 목록 가져오기
-  function getMemberWishLists(address _address) external view returns(Wishlist[] memory){
+  function getMemberWishLists(address _address) external view returns(WishlistSol[] memory){
     return _getWishlists(myWishlists[_address]);
   }
 
   // 멤버의 위시리스트 상제 조회하기
-  function getMemberWishListDetail(uint256 _id) external view returns(Wishlist memory){
+  function getMemberWishListDetail(uint256 _id) external view returns(WishlistSol memory){
     return _getWishlistDetail(_id);
   }
 
   // 멤버의 위시리스트 추가하기
-  function addMemberWishList(Wishlist memory _wishlist) external{
+  function addMemberWishList(WishlistSol memory _wishlist) external{
     _createWishlist(_wishlist);
   }
 
@@ -73,17 +73,17 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 위시리스트 수정하기
-  function updateMemberWishlist(Wishlist memory _wishlist) external {
+  function updateMemberWishlist(WishlistSol memory _wishlist) external {
     _updateWishlist(_wishlist);
   }
 
   // 후원 상세 정보 조회
-  function getSupportDetail(address _address, uint256 _id) external view returns(Support memory){
+  function getSupportDetail(address _address, uint256 _id) external view returns(SupportSol memory){
     return _getSupportDetail(_address, _id);
   }
 
   // 후원 받은 내역 조회
-  function getSupportList(address _address) external view returns(Support[] memory){
+  function getSupportList(address _address) external view returns(SupportSol[] memory){
     return _getSupportList(_address);
   }
 

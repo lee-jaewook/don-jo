@@ -1,14 +1,19 @@
 package com.donjo.backend.solidity.Item;
 
+import com.donjo.backend.exception.BadRequestException;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.web3j.applicationhandler.ApplicationHandler;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Random;
-
-import static org.assertj.core.api.Assertions.*;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 class ItemSolidityTest {
@@ -30,7 +35,7 @@ class ItemSolidityTest {
         String message = "Message " + id;
         String filePath = "FilePath " + id;
         boolean isDeleted = false;
-        Item item = Item.builder()
+        ItemSol itemSol = ItemSol.builder()
                 .id(id)
                 .title(title)
                 .imgPath(imgPath)
@@ -40,8 +45,8 @@ class ItemSolidityTest {
                 .filePath(filePath)
                 .isDeleted(isDeleted)
                 .seller(seller).build();
-
-        itemSolidity.addMemberItem(item);
+        System.out.println("하이하이");
+        itemSolidity.addMemberItem(itemSol);
     }
 
 //    @Test
