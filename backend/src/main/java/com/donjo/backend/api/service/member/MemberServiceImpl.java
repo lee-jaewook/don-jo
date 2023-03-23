@@ -5,6 +5,7 @@ import com.donjo.backend.api.dto.member.DonationSettingItem;
 import com.donjo.backend.api.dto.member.MemberInfoItem;
 import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
+import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 //import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
@@ -13,8 +14,8 @@ import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
+import com.donjo.backend.db.entity.Social;
 import com.donjo.backend.db.repository.MemberRepository;
-import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.DuplicateDataException;
 import com.donjo.backend.exception.DuplicateMemberException;
@@ -22,29 +23,39 @@ import com.donjo.backend.exception.DuplicateMemberException;
 import com.donjo.backend.exception.NoContentException;
 
 import com.donjo.backend.solidity.support.SupportSolidity;
+
+import java.math.BigInteger;
 import java.util.*;
 
 import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
+import org.web3j.crypto.ECDSASignature;
+import org.web3j.crypto.Hash;
+import org.web3j.crypto.Keys;
+import org.web3j.crypto.Sign;
+import org.web3j.utils.Numeric;
 
+@Slf4j
 @Service("MemberService")
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+  public static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
 
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
   private final TokenProvider tokenProvider;
   private final String PAGE_NAME = "pageName";
   private final WishlistSolidity wishlistSolidity;
-  private final SupportSolidity supportSolidity;
-  private final SupportRepository supportRepository;
 
   @Override
   public Optional<Member> findMember(String memberAddress) {
@@ -68,6 +79,11 @@ public class MemberServiceImpl implements MemberService {
 
     Authority userAuthority = Authority.user();
 
+    List<Social> socialList = new ArrayList<>();
+    socialList.add(Social.builder().socialLink("").build());
+    socialList.add(Social.builder().socialLink("").build());
+    socialList.add(Social.builder().socialLink("").build());
+
     Member member = Member.builder()
         .address(signUpMemberCond.getAddress())
         .nickname(signUpMemberCond.getNickname())
@@ -75,6 +91,7 @@ public class MemberServiceImpl implements MemberService {
         .password(passwordEncoder.encode(signUpMemberCond.getPassword()))
         .profileImagePath(signUpMemberCond.getProfileImgPath())
         .authorities(Set.of(userAuthority))
+        .social(socialList)
         .build();
 
     DonationSetting donationSetting = DonationSetting.builder()
@@ -172,6 +189,67 @@ public class MemberServiceImpl implements MemberService {
 //    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
 //    return findMemberPayload;
 //  }
+
+  @Override
+  @Transactional
+  public void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond) {
+    Member member = memberRepository.findByAddress(memberAdress);
+
+    // 유저 체크
+    if (member == null) {
+      new NotFoundException("유저 정보가 없습니다.");
+    }
+
+    // 중복 페이지 검사
+    Member duplicatePageMember = memberRepository.findByPageName(modifyMemberCond.getPageName());
+    if (duplicatePageMember != null && !member.getAddress().equals(duplicatePageMember.getAddress()) && modifyMemberCond.getPageName().equals(duplicatePageMember.getPageName())) {
+      throw new DuplicateMemberException("다른 유저의 페이지 네임과 중복");
+    }
+
+    modifyMemberCond.updateMember(member);
+
+  }
+
+  @Override
+  public boolean verifySignature(String memberAddress, String signature, String message) {
+    String prefix = PERSONAL_MESSAGE_PREFIX + message.length();
+    byte[] msgHash = Hash.sha3((prefix + message).getBytes());
+
+    byte[] signatureBytes = Numeric.hexStringToByteArray(signature);
+    byte v = signatureBytes[64];
+    if (v < 27) {
+      v += 27;
+    }
+
+    Sign.SignatureData sd =
+            new Sign.SignatureData(
+                    v,
+                    (byte[]) Arrays.copyOfRange(signatureBytes, 0, 32),
+                    (byte[]) Arrays.copyOfRange(signatureBytes, 32, 64));
+
+    String addressRecovered = null;
+    boolean match = false;
+
+    // Iterate for each possible key to recover
+    for (int i = 0; i < 4; i++) {
+      BigInteger publicKey =
+              Sign.recoverFromSignature(
+                      (byte) i,
+                      new ECDSASignature(
+                              new BigInteger(1, sd.getR()), new BigInteger(1, sd.getS())),
+                      msgHash);
+
+      if (publicKey != null) {
+        addressRecovered = "0x" + Keys.getAddress(publicKey);
+
+        if (addressRecovered.equals(memberAddress)) {
+          match = true;
+          break;
+        }
+      }
+    }
+    return memberAddress.equals(addressRecovered);
+  }
 
   private List<WishListItem> memberWishList(Member member) {
     List<WishListItem> wishList = new ArrayList<>();
