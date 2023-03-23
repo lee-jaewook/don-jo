@@ -18,7 +18,7 @@ COPY . .
 # 1313 포트 노출
 EXPOSE 1313
 
-CMD ["npm", "install", "hugo"]
+#CMD ["npm", "install", "hugo"]
 # npm start 스크립트 실행
 CMD ["npm", "start"]
 
