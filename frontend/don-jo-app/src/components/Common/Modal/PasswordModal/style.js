@@ -15,6 +15,10 @@ export const PasswordContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 48rem) {
+    height: 8rem;
+  }
 `;
 
 export const PasswordWrapper = styled.div`
@@ -34,17 +38,16 @@ export const Circle = styled.div`
 export const KeypadContainer = styled.div`
   width: 100%;
   height: 20rem;
-  font-family: RobotoBold;
-  font-size: 1.75rem;
   display: flex;
   flex-wrap: wrap;
 `;
 
-export const KeypadButton = styled.div`
+export const KeypadButton = styled.button`
   width: 33.33%;
   height: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  font-family: RobotoBold;
+  font-size: 1.75rem;
 `;

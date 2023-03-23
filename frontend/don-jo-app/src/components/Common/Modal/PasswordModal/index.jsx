@@ -53,7 +53,7 @@ const PasswordModal = ({ handleSetShowModal }) => {
   };
 
   return (
-    <BasicModal handleSetShowModal={handleSetShowModal}>
+    <BasicModal handleSetShowModal={handleSetShowModal} width={1}>
       <S.Title>Set Password</S.Title>
       <S.Description>
         Set the password to use for login and payment.
