@@ -58,14 +58,28 @@ public class SupportResponseDto {
         private String toMemberNickname;
 
     }
-    @Nullable
+
+    public static SupportResponseDto.fromMember getFromMember(Member member){
+        SupportResponseDto.fromMember newFromMember = new SupportResponseDto.fromMember();
+        newFromMember.setFromMemberAddress(member.getAddress());
+        newFromMember.setFromMemberPageName(member.getPageName());
+        newFromMember.setFromMemberProfileImagePath(member.getProfileImagePath());
+        newFromMember.setFromMemberNickname(member.getNickname());
+        return newFromMember;
+    }
+    public static SupportResponseDto.toMember getToMember(Member member){
+        SupportResponseDto.toMember newToMember = new SupportResponseDto.toMember();
+        newToMember.setToMemberAddress(member.getAddress());
+        newToMember.setToMemberNickname(member.getNickname());
+        return newToMember;
+    }
     public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress,toMember toMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
                 .toAddress(toMemberAddress)
-                .amount(support.getAmount())
+                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
@@ -76,7 +90,7 @@ public class SupportResponseDto {
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .toAddress(toMemberAddress)
-                .amount(support.getAmount())
+                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
