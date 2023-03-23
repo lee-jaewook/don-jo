@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,15 +27,14 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class DonationSetting {
 
   @Id
   private String memberAddress;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
-  @JoinColumn(name = "member_address", referencedColumnName = "address")
+  @JoinColumn(name = "member_address")
+  @JsonIgnore
   private Member member;
 
   @Column

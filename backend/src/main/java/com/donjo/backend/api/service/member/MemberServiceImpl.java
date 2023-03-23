@@ -1,25 +1,32 @@
 package com.donjo.backend.api.service.member;
 
+import com.amazonaws.services.kms.model.NotFoundException;
+import com.donjo.backend.api.dto.member.DonationSettingItem;
+import com.donjo.backend.api.dto.member.MemberInfoItem;
+import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-//import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
+import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.repository.MemberRepository;
+import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.DuplicateDataException;
 import com.donjo.backend.exception.DuplicateMemberException;
 
 import com.donjo.backend.exception.NoContentException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+
+import com.donjo.backend.solidity.support.SupportSolidity;
+import java.util.*;
 
 import com.donjo.backend.exception.UnAuthorizationException;
+import com.donjo.backend.solidity.wishlist.WishlistSol;
+import com.donjo.backend.solidity.wishlist.WishlistSolidity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -35,6 +42,9 @@ public class MemberServiceImpl implements MemberService {
   private final PasswordEncoder passwordEncoder;
   private final TokenProvider tokenProvider;
   private final String PAGE_NAME = "pageName";
+  private final WishlistSolidity wishlistSolidity;
+  private final SupportSolidity supportSolidity;
+  private final SupportRepository supportRepository;
 
   @Override
   public Optional<Member> findMember(String memberAddress) {
@@ -125,7 +135,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
   }
-
   @Override
   public String getMemberAddress(HttpServletRequest request) {
     String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
@@ -134,14 +143,65 @@ public class MemberServiceImpl implements MemberService {
     return memberAddress;
   }
 
-//  @Override
-//  public FindPageInfoPayload getPageInfoByPageName(String pageName) {
-//    Member member = Optional.ofNullable(memberRepository.findByPageName(pageName)).orElseThrow(() -> new NoContentException("페이지가 존재하지 않습니다."));
+  @Override
+  public FindPageInfoPayload getPageInfoByPageName(String pageName) {
+    Member member = memberRepository.findByPageName(pageName);
+    if (member == null) {
+      throw new NoContentException("페이지가 존재하지 않습니다.");
+    }
+
+    MemberInfoItem memberInfoItem = MemberInfoItem.builder(member).build();
+    DonationSettingItem donationSettingItem = DonationSettingItem.builder(member).build();
+
+    // 위시리스트 추가
+    List<WishListItem> wishList = memberWishList(member);
+    int maxItems = Math.min(3, wishList.size()); // 최대 3개의 아이템만 포함되도록 함
+
+    FindPageInfoPayload findPageInfoPayload = new FindPageInfoPayload(memberInfoItem, donationSettingItem, wishList.subList(0, maxItems));
+
+    return findPageInfoPayload;
+  }
+
+  @Override
+  public FindMemberPayload getMemberInfo(String memberAddress) {
+    Member member = memberRepository.findByAddress(memberAddress);
+    if (member == null) {
+      new NotFoundException("유저 정보가 없습니다.");
+    }
+
+    FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
+    return findMemberPayload;
+  }
+
+  private List<WishListItem> memberWishList(Member member) {
+    List<WishListItem> wishList = new ArrayList<>();
+    List<WishlistSol> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
+
+    for (WishlistSol wishlistSol : memberWishLists) {
+      WishListItem item = WishListItem.builder(wishlistSol).build();
+      wishList.add(item);
+    }
+
+    return wishList;
+  }
+
+//  private List<SupportItem> memberSupport(Member member) {
+//    List<SupportItem> support = new ArrayList<>();
+//    List<Support> supports = supportRepository.findByToAddress(member);
 //
-//    FindPageInfoPayload findPageInfoPayload = new FindPageInfoPayload();
-//    findPageInfoPayload.setMemberInfo(member);
-//    findPageInfoPayload.setDonationSetting(member.getDonationSetting());
-//    return findPageInfoPayload;
+//    for (Support supportInfoInDb : supports) {
+//      Optional<com.donjo.backend.solidity.support.Support> optionalBlockSupport =
+//          supportSolidity.getSupportDetail(supportInfoInDb.getToAddress(), supportInfoInDb.getSupportUid());
+//
+//      optionalBlockSupport.ifPresent(supportInfoInBlockchain -> {
+//        FromMemberItem fromMemberItem = FromMemberItem.builder(memberRepository.findByAddress(supportInfoInDb.getFromAddress())).build();
+//        ToMemberItem toMemberItem = ToMemberItem.builder(member).build();
+//        SupportItem item = SupportItem.builder(supportInfoInDb, fromMemberItem, toMemberItem, supportInfoInBlockchain);
+//        support.add(item);
+//      });
+//    }
+//
+//    return support;
 //  }
 
   public HashMap<String, Object> returnToken(Member member) {
