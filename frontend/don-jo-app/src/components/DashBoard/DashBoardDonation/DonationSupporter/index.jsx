@@ -14,8 +14,6 @@ const DonationSupporter = () => {
     handleGetEarning();
   }, []);
 
-  useEffect(() => console.log("result: ", result), []);
-
   return (
     <div>
       <DashBoardEarning text="Data" result={result} unit="" />
