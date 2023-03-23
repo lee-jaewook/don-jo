@@ -3,6 +3,7 @@ import ItemCard from "./ItemsCard";
 import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
+import AddItemModal from "../../Common/Modal/AddItemModal";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -31,16 +32,23 @@ const pageOwner = {
 const PersonalItems = () => {
   //로그인 유저가 페이지 주인인지 확인
   const [isOwner, setIsOwner] = useState(false);
+
   useEffect(() => {
     setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
   }, []);
+
+  const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
 
   return (
     <S.Container>
       <S.Title>This is my Items</S.Title>
       <S.CardContainer>
         {isOwner && (
-          <S.AddCard onClick={() => {}}>
+          <S.AddCard
+            onClick={() => {
+              setIsOpenAddItemModal(true);
+            }}
+          >
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
             </S.IconWrapper>
@@ -51,6 +59,9 @@ const PersonalItems = () => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}
       </S.CardContainer>
+      {isOpenAddItemModal && (
+        <AddItemModal handleSetShowModal={setIsOpenAddItemModal} />
+      )}
     </S.Container>
   );
 };
