@@ -2,6 +2,8 @@ package com.donjo.backend.api.dto.member.response;
 
 import com.donjo.backend.db.entity.Support;
 import java.time.LocalDateTime;
+
+import com.donjo.backend.solidity.support.SupportSol;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,14 +26,14 @@ public class SupportItem {
   private LocalDateTime arriveStamp;
   private String sendMsg;
 
-  public static SupportItem builder(Support support, FromMemberItem fromMember, ToMemberItem toMember, com.donjo.backend.solidity.support.Support blockSupport) {
+  public static SupportItem builder(Support support, FromMemberItem fromMember, ToMemberItem toMember, SupportSol blockSupportSol) {
     return MakeSupportItemBuilder()
         .transactionHash(support.getTransactionHash())
         .supportType(support.getSupportType())
         .id(support.getSupportUid())
         .fromMember(fromMember)
         .toMember(toMember)
-        .amountEth(blockSupport.getAmount())
+        .amountEth(blockSupportSol.getAmount())
         .sendTimeStamp(support.getSendTimeStamp())
         .arriveStamp(support.getArriveTimeStamp())
         .sendMsg(support.getSendMsg())

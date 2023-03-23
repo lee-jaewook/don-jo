@@ -1,6 +1,6 @@
 package com.donjo.backend.api.dto.member;
 
-import com.donjo.backend.solidity.wishlist.Wishlist;
+import com.donjo.backend.solidity.wishlist.WishlistSol;
 import lombok.*;
 
 @Getter
@@ -16,13 +16,13 @@ public class WishListItem {
     private Long collectedAmount;
     private Long totalAmount;
 
-    public static WishListItemBuilder builder(Wishlist wishlist) {
+    public static WishListItemBuilder builder(WishlistSol wishlistSol) {
         return MakeWishListItemBuilder()
-                .uid(wishlist.getId())
-                .title(wishlist.getTitle())
-                .imgPath(wishlist.getImgPath())
-                .collectedAmount(wishlist.getCollectedAmount())
-                .totalAmount(wishlist.getTargetAmount());
+                .uid(wishlistSol.getId())
+                .title(wishlistSol.getTitle())
+                .imgPath(wishlistSol.getImgPath())
+                .collectedAmount(wishlistSol.getCollectedAmount())
+                .totalAmount(wishlistSol.getTargetAmount());
 
     }
 }
