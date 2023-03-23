@@ -57,6 +57,8 @@ public class SupportResponseDto {
 
         private String toMemberNickname;
 
+        private String toMemberProfileImagePath;
+
     }
 
     public static SupportResponseDto.fromMember getFromMember(Member member){
@@ -71,6 +73,7 @@ public class SupportResponseDto {
         SupportResponseDto.toMember newToMember = new SupportResponseDto.toMember();
         newToMember.setToMemberAddress(member.getAddress());
         newToMember.setToMemberNickname(member.getNickname());
+        newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
         return newToMember;
     }
     public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress,toMember toMemberAddress){
