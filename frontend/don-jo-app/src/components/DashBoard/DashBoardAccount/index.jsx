@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import BasicButton from "../../Common/BasicButton";
@@ -6,10 +6,13 @@ import BasicInput from "../../Common/BasicInput";
 import BasicTitle from "../../Common/BasicTitle";
 import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
+import { memberApi } from "../../../api/member";
 
 const DashBoardAccount = () => {
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
+  const S3URL =
+    "https://don-jo.s3.ap-northeast-2.amazonaws.com/img/profile/multipartFile20230323062637";
 
   // 업로드 파일 미리보기
   const backgroundImgRef = useRef();
@@ -23,22 +26,34 @@ const DashBoardAccount = () => {
     previewImgUrl: "",
     file: {},
   }); // 사용자의 기본 프로필 설정
-  const [account, setAccount] = useState({
-    nickname: "HyunJu",
-    pageName: "songo427",
-    colorIndex: "#F02C7E",
-    link1: "",
-    link2: "",
-    link3: "",
-  });
+  const [account, setAccount] = useState({});
 
-  const { nickname, pageName, colorIndex, link1, link2, link3 } = account;
+  const {
+    nickname,
+    pageName,
+    themeColor,
+    link1,
+    link2,
+    link3,
+    profileImgPath,
+  } = account;
 
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
+
     setAccount({
       ...account,
       [id]: value,
+    });
+  };
+
+  // 라디오 버튼 값 변경시
+  const handleOnChangeRadioButton = (e) => {
+    const { value } = e.target;
+
+    setAccount({
+      ...account,
+      themeColor: Number(value),
     });
   };
 
@@ -94,6 +109,26 @@ const DashBoardAccount = () => {
     }
   };
 
+  const handleGetAccountInfo = async () => {
+    try {
+      const { data } = await memberApi.getUserInfo();
+      console.log("success: ", data);
+      setAccount({
+        ...data,
+      });
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("account ", account);
+  }, [account]);
+
+  useEffect(() => {
+    //handleGetAccountInfo();
+  }, []);
+
   return (
     <S.AccountWrapper>
       <BasicTitle text="Background Photo" />
@@ -108,11 +143,18 @@ const DashBoardAccount = () => {
             type="file"
             accept="image/*"
             onChange={handleMakePreviewImg}
+            defaultValue=""
           />
         </S.EditIconWrapper>
       </S.BackgroundImg>
       <BasicTitle text="Profile Photo" />
-      <S.UserProfileImg url={profileImgFile.previewImgUrl || ""}>
+      <S.UserProfileImg
+        url={
+          profileImgPath !== undefined
+            ? `${S3URL}${profileImgPath}`
+            : profileImgFile.previewImgUrl || ""
+        }
+      >
         <S.EditIconWrapper>
           <label htmlFor="profile-file">
             <FiEdit className="edit-icon" size="24px" color="white" />
@@ -123,6 +165,7 @@ const DashBoardAccount = () => {
             type="file"
             accept="image/*"
             onChange={handleMakePreviewImg}
+            defaultValue=""
           />
         </S.EditIconWrapper>
       </S.UserProfileImg>
@@ -132,7 +175,7 @@ const DashBoardAccount = () => {
         <BasicInput
           id="nickname"
           type="text"
-          value={nickname}
+          value={nickname || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
@@ -141,19 +184,20 @@ const DashBoardAccount = () => {
         <BasicInput
           id="link1"
           type="text"
-          value={link1}
+          value={link1 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
         <BasicInput
           id="link2"
           type="text"
-          value={link2}
+          value={link2 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
+
         <BasicInput
           id="link3"
           type="text"
-          value={link3}
+          value={link3 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
@@ -161,7 +205,7 @@ const DashBoardAccount = () => {
       <S.InputWrapper>
         <BasicInput
           type="text"
-          value={pageName}
+          value={pageName || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
@@ -169,17 +213,21 @@ const DashBoardAccount = () => {
       <S.ColorPalette>
         {colorSet &&
           colorSet.length > 0 &&
-          colorSet.map((color, index) => (
-            <S.Color
-              id={`color${index}`}
-              type="radio"
-              name="color"
-              key={color}
-              value={color}
-              defaultChecked={color === colorIndex}
-              onChange={handleOnChangeInput}
-            />
-          ))}
+          colorSet.map((color, index) => {
+            console.log("color:", color, index === themeColor);
+            return (
+              <S.Color
+                id={`color${index}`}
+                type="radio"
+                name="color"
+                key={color}
+                value={index}
+                color={color}
+                defaultChecked={index === themeColor}
+                onChange={handleOnChangeRadioButton}
+              />
+            );
+          })}
       </S.ColorPalette>
       <S.ButtonWrapper>
         <BasicButton
