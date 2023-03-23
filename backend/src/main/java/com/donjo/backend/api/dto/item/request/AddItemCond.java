@@ -1,11 +1,10 @@
 package com.donjo.backend.api.dto.item.request;
 
-import com.donjo.backend.solidity.Item.Item;
+import com.donjo.backend.solidity.Item.ItemSol;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.nio.charset.StandardCharsets;
 
 @Getter
 @Setter
@@ -32,8 +31,8 @@ public class AddItemCond {
     @NotNull
     private String filePath;
 
-    public Item from(String address){
-        return Item.builder()
+    public ItemSol from(String address){
+        return ItemSol.builder()
                 .id(1L)
                 .title(this.getTitle())
                 .imgPath(this.getImgPath())

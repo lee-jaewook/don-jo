@@ -1,11 +1,13 @@
 import styled from "styled-components";
 export const AccountWrapper = styled.div`
   width: 100%;
-  max-width: 53.75rem;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
   margin-bottom: 2.5rem;
+  @media (max-width: 768px) {
+    padding: 2rem 1.25rem;
+  }
 `;
 
 export const EditIconWrapper = styled.div`
@@ -84,6 +86,7 @@ export const Color = styled.input`
   justify-content: center;
   align-items: center;
   font-size: 1.4rem;
+  cursor: pointer;
   &:checked {
     ::after {
       content: "✔";

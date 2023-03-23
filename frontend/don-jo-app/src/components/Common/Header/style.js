@@ -29,12 +29,22 @@ export const Logo = styled.div`
   cursor: pointer;
 `;
 
-export const GuideSelect = styled.div`
+export const GuideSelect = styled.button`
   margin-left: auto;
-  cursor: pointer;
+  font-size: 1rem;
 `;
 
 export const ProfileImgContainer = styled.div`
   margin-left: 1.5rem;
   cursor: pointer;
+`;
+
+export const Startbtn = styled.button`
+  font-size: 1rem;
+  width: 100px;
+  height: 40px;
+  border-radius: 1.25rem;
+  font-family: "RobotoMedium";
+  background-color: var(--color-primary);
+  color: var(--color-background);
 `;

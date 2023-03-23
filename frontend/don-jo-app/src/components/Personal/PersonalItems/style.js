@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+  @media screen and (max-width: 48rem) {
+    max-width: 20.625rem;
+    margin: 0 auto;
+  }
 `;
 
 export const Title = styled.div`
@@ -14,13 +18,18 @@ export const CardContainer = styled.div`
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(3, 1fr);
+  gap: 1.3125rem;
+  place-items: center;
 
-  @media screen and (max-width: 1190px) {
+  @media screen and (max-width: 58.75rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
+  @media screen and (max-width: 48rem) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
   }
 `;
 
@@ -29,23 +38,20 @@ export const AddCard = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  width: 100%;
-  max-width: 17.875rem;
+  width: 17.875rem;
   height: 20.1875rem;
   border: 0.125rem dashed #d2d2d2;
   border-radius: 1.25rem;
+  margin-bottom: 0.6875rem;
 
   &:hover {
     background-color: var(--color-modal);
   }
 
-  @media screen and (max-width: 1190px) {
-    max-width: 26rem;
+  @media screen and (max-width: 48rem) {
+    width: 100%;
+    margin-bottom: unset;
   }
-
-  /* @media screen and (max-width: 768px) {
-    
-  } */
 `;
 
 export const IconWrapper = styled.div`

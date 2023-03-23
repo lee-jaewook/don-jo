@@ -6,6 +6,10 @@ export const SupportListWrapper = styled.div`
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
   margin-bottom: 2.5rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.25rem;
+  }
 `;
 
 export const SupportListHeader = styled.div`
@@ -26,6 +30,7 @@ export const EmojiList = styled.ul`
   background-color: transparent;
   margin-bottom: 0.75rem;
 `;
+
 export const EmojiItem = styled.li`
   display: inline-block;
   margin-right: 0.75rem;

@@ -7,17 +7,19 @@ import java.util.List;
 public interface SupportService {
     Double getEarning(String address,String type, int period);
 
-    CountResponseDto getSupportCount(String type);
+    int getSupportCount(String type,String memberAddress);
 
     DonationDto getDonationSetting(String memberAddress);
 
     void createSupports(SupportRequestDto supportRequestDto);
 
-    List<SupportResponseDto> getSupports(String Type, int pageNum);
+    List<SupportResponseDto> getSupports(String memberAddress, String Type, int pageNum);
 
     SupportDetailResponseDto getSupportDetail(String type,int supportUid);
 
     void changeDonation(DonationDto donationDto,String memberAddress);
 
-    QrResponseDto getQrcode(String memberAddress);
+
+
+    List<Top10ResponseDto> getTop10();
 }

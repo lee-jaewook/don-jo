@@ -7,13 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.applicationhandler.ApplicationHandler;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -26,14 +24,14 @@ public class WishlistSolidity {
         this.contract = web3jUtil.getContractApi();
     }
 
-    public Optional<List<Wishlist>> getMemberWishLists(String address){
-        List<Wishlist> list = null;
+    public Optional<List<WishlistSol>> getMemberWishLists(String address){
+        List<WishlistSol> list = null;
         try {
-            List<ApplicationHandler.Wishlist> response = contract.getMemberWishLists(address).send();
+            List<ApplicationHandler.WishlistSol> response = contract.getMemberWishLists(address).send();
             list = new ArrayList<>();
-            for (ApplicationHandler.Wishlist wishlist : response) {
-                if(wishlist.isClosed) continue;
-                list.add(Wishlist.fromSol(wishlist));
+            for (ApplicationHandler.WishlistSol wishlist : response) {
+//                if(wishlist.isClosed) continue;
+                list.add(WishlistSol.fromSol(wishlist));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -41,20 +39,20 @@ public class WishlistSolidity {
         return Optional.ofNullable(list);
     }
 
-    public Optional<Wishlist> getMemberWishListDetail(Long id){
-        Wishlist wishlist = null;
+    public Optional<WishlistSol> getMemberWishListDetail(Long id){
+        WishlistSol wishlistSol = null;
         try {
-            ApplicationHandler.Wishlist response = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send();
-            wishlist = Wishlist.fromSol(response);
+            ApplicationHandler.WishlistSol response = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send();
+            wishlistSol = WishlistSol.fromSol(response);
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
-        return Optional.ofNullable(wishlist);
+        return Optional.ofNullable(wishlistSol);
     }
 
-    public void addMemberWishList(Wishlist wishlist){
+    public void addMemberWishList(WishlistSol wishlistSol){
         try {
-            contract.addMemberWishList(wishlist.toSol()).send();
+            contract.addMemberWishList(wishlistSol.toSol()).send();
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
@@ -70,11 +68,11 @@ public class WishlistSolidity {
         }
     }
 
-    public void updateMemberWishlist(Wishlist wishlist){
+    public void updateMemberWishlist(WishlistSol wishlistSol){
         try {
-            String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlist.getId())).send().seller;
-            if(!seller.equals(wishlist.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
-            contract.updateMemberWishlist(wishlist.toSol()).send();
+            String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlistSol.getId())).send().seller;
+            if(!seller.equals(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
+            contract.updateMemberWishlist(wishlistSol.toSol()).send();
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }

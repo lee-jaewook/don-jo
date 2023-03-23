@@ -75,8 +75,10 @@ const HomeDonation = () => {
             value={count}
             onChange={handleOnChangeCount}
           ></S.CountInput>
-          <DecreaseBtn />
-          <IncreaseBtn />
+          <S.RoundBtnWrapper>
+            <DecreaseBtn />
+            <IncreaseBtn />
+          </S.RoundBtnWrapper>
         </S.CounterContainer>
         <BasicTextarea
           handleOnChangeValue={handleOnChangeMsg}
