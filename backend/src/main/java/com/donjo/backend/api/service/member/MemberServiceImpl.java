@@ -5,6 +5,7 @@ import com.donjo.backend.api.dto.member.DonationSettingItem;
 import com.donjo.backend.api.dto.member.MemberInfoItem;
 import com.donjo.backend.api.dto.member.WishListItem;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
+import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("MemberService")
 @RequiredArgsConstructor
@@ -171,6 +173,17 @@ public class MemberServiceImpl implements MemberService {
 
     FindMemberPayload findMemberPayload = FindMemberPayload.builder(member).build();
     return findMemberPayload;
+  }
+
+  @Override
+  @Transactional
+  public void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond) {
+    Member member = memberRepository.findByAddress(memberAdress);
+    if (member == null) {
+      new NotFoundException("유저 정보가 없습니다.");
+    }
+    modifyMemberCond.updateMember(member);
+
   }
 
   private List<WishListItem> memberWishList(Member member) {
