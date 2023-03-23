@@ -15,7 +15,7 @@ public interface SupportService {
 
     List<SupportResponseDto> getSupports(String memberAddress, String Type, int pageNum);
 
-    SupportDetailResponseDto getSupportDetail(String type,int supportUid);
+    SupportDetailResponseDto getSupportDetail(String toAddress,Long supportUid);
 
     void changeDonation(DonationDto donationDto,String memberAddress);
 
