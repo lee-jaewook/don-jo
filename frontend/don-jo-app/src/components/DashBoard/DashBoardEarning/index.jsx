@@ -3,19 +3,41 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicTitle from "../../Common/BasicTitle";
 import DashBoardCard from "../DashBoardCard";
-const DashBoardEarning = ({ text }) => {
+import { calculateEth } from "../../../utils/calculateEth";
+import { useLocation } from "react-router-dom";
+const DashBoardEarning = ({ text, result, unit }) => {
+  const location = useLocation();
+  // const [all = "", period30 = "", period90 = ""] = result;
+
   return (
     <S.EarningWrapper>
       <BasicTitle text={text} />
       <S.CardWrapper>
         <DashBoardCard
           className="first-card"
-          classification="All"
-          data="1000.000"
+          classification={
+            location.pathname === "/dashboard/home" ? "All" : "Supporters"
+          }
+          data={calculateEth(result.all)}
           isFirstCard={true}
+          unit={unit}
         />
-        <DashBoardCard classification="Last 30 days" data="85.090" />
-        <DashBoardCard classification="Last 90 days" data="489.000" />
+        <DashBoardCard
+          classification={
+            location.pathname === "/dashboard/home"
+              ? "Last 30 days"
+              : "All Time"
+          }
+          data={calculateEth(result.period30)}
+        />
+        <DashBoardCard
+          classification={
+            location.pathname === "/dashboard/home"
+              ? "Last 90 days"
+              : "Last 30 days"
+          }
+          data={calculateEth(result.period90)}
+        />
       </S.CardWrapper>
     </S.EarningWrapper>
   );
@@ -25,4 +47,5 @@ export default DashBoardEarning;
 
 DashBoardEarning.protoTypes = {
   text: PropTypes.string.isRequired,
+  result: PropTypes.array.isRequired,
 };
