@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   web: null,
+  walletAddress: "",
 };
 
 export const web3Slice = createSlice({
@@ -10,6 +11,7 @@ export const web3Slice = createSlice({
   reducers: {
     setWeb3(state, action) {
       state.web = action.payload.web3;
+      state.walletAddress = action.payload.walletAddress;
     },
   },
 });
