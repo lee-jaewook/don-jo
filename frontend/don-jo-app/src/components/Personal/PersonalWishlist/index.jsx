@@ -3,6 +3,7 @@ import WishlistItem from "../../Common/WishlistItem";
 import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { wishlist } from "./dummyData";
+import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 
 //현재 로그인한 유저 더미 데이터
 const loginUser = {
@@ -35,6 +36,10 @@ const PersonalWishlist = () => {
     setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
   }, []);
 
+  const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
+    useState(false);
+  const [thisItemUID, setThisItemUId] = useState(0);
+
   return (
     <S.Container>
       <S.Title>Support My Wishlist</S.Title>
@@ -50,6 +55,7 @@ const PersonalWishlist = () => {
           return (
             <S.WishlistItemWrapper key={wishlistItem.uid}>
               <WishlistItem
+                onClick={() => setThisItemUId(wishlistItem.uid)}
                 uid={wishlistItem.uid}
                 title={wishlistItem.title}
                 imgPath={wishlistItem.imgPath}
@@ -57,11 +63,20 @@ const PersonalWishlist = () => {
                 collectedAmount={wishlistItem.collectedAmount.toFixed(3)}
                 totalAmount={wishlistItem.totalAmount.toFixed(3)}
                 thankMsg={wishlistItem.thankMsg}
+                handleSetShowModal={setIsShowWishlistDetailModal}
               />
             </S.WishlistItemWrapper>
           );
         })}
       </S.CardContainer>
+      {isShowWishlistDetailModal && (
+        <WishlistDetailModal
+          uid={thisItemUID}
+          isDashboard={false}
+          handleSetShowModal={setIsShowWishlistDetailModal}
+          handleOnClickButton={() => {}}
+        />
+      )}
     </S.Container>
   );
 };
