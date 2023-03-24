@@ -4,18 +4,22 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 import Intro from "./pages/Intro";
 import Guide from "./pages/Guide";
 import GuideDetail from "./pages/GuideDetail";
 import Personal from "./pages/Personal";
 import DashBoard from "./pages/DashBoard";
 import Error from "./pages/Error";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "./components/Common/Header";
+import { connectWallet } from "./utils/connectWallet";
 
 const AppRouter = () => {
-  // 로그인 여부 확인
+  const member = useSelector((state) => state.member);
+  const dispatch = useDispatch();
+
+  // 로그인 여부 체크
   const isLogin = useSelector((state) => state.member.isLogIn);
 
   if (!isLogin) {

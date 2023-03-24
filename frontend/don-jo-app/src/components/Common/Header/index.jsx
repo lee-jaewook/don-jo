@@ -5,8 +5,11 @@ import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
 import FullScreenModal from "../Modal/FullScreenModal";
-
+import { logIn } from "../../../utils/logIn";
+import { useDispatch } from "react-redux";
+import SignUp from "../../SignUp";
 const Header = () => {
+  const dispatch = useDispatch();
   //로그인 유저 더미데이터
   const loginUser = {
     profileImgPath:
@@ -18,7 +21,7 @@ const Header = () => {
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+  const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {
@@ -29,6 +32,14 @@ const Header = () => {
       setProfileLinkTo("/dashboard/home");
     }
   }, [location.pathname]);
+
+  const handleSignUpModalOpen = () => {
+    setIsShowSignUpModal((prev) => !prev);
+  };
+
+  const SubmitLogIn = () => {
+    logIn({ dispatch, handleModalOpen: handleSignUpModalOpen });
+  };
 
   return (
     <S.HeaderContainer>
@@ -43,23 +54,13 @@ const Header = () => {
           {isLogin ? (
             <ProfileImg width={2.5} src={profileImgSrc} to={profileLinkTo} />
           ) : (
-            <S.Startbtn
-              onClick={() => {
-                setIsShowLoginModal(true);
-              }}
-            >
-              Start
-            </S.Startbtn>
+            <S.Startbtn onClick={SubmitLogIn}>Start</S.Startbtn>
           )}
         </S.ProfileImgContainer>
       </S.Header>
 
       {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
-      {isShowLoginModal && (
-        <FullScreenModal handleSetShowModal={setIsShowLoginModal}>
-          <div></div>
-        </FullScreenModal>
-      )}
+      {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
     </S.HeaderContainer>
   );
 };

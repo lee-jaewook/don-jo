@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-
-import { colorSet } from "../../../data/dashboard";
-
 import BasicButton from "../../Common/BasicButton";
 import BasicInput from "../../Common/BasicInput";
 import BasicModal from "../../Common/Modal/BasicModal";
 import BasicTitle from "../../Common/BasicTitle";
 import CustomSelect from "../DashBoardCustomSelect";
 import EmojiPicker from "emoji-picker-react";
-import { useInput } from "../../../hooks/useInput";
 import { FiChevronDown } from "react-icons/fi";
+import { useInput } from "../../../hooks/useInput";
+import { colorSet } from "../../../data/dashboard";
 
 /**
  * 플러그인 생성기 컴포넌트
@@ -22,7 +20,7 @@ import { FiChevronDown } from "react-icons/fi";
  * @returns {JSX.Element} - 렌더링 결과
  */
 
-const GeneratorModal = ({
+const DashBoardGeneratorModal = ({
   isSearchDefault,
   isModalOpen,
   isItemsRequired = true,
@@ -101,7 +99,6 @@ const GeneratorModal = ({
         </S.ContentWrap>
 
         <S.ContentWrap>
-          {/* SearchItems Component */}
           {isItemsRequired && (
             <>
               <BasicTitle text="Search Items" />
@@ -126,9 +123,9 @@ const GeneratorModal = ({
   );
 };
 
-export default GeneratorModal;
+export default DashBoardGeneratorModal;
 
-GeneratorModal.propTypes = {
+DashBoardGeneratorModal.propTypes = {
   isSearchDefault: PropTypes.bool,
   isModalOpen: PropTypes.func.isRequired,
   isItemsRequired: PropTypes.bool,

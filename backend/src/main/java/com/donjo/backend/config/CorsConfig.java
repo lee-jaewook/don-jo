@@ -16,7 +16,8 @@ public class CorsConfig {
         config.addExposedHeader("accessToken");
         config.addExposedHeader("refreshToken");
         config.addExposedHeader("access_token");
-        config.addExposedHeader("yutae"); // test 용
+        config.addExposedHeader("x-rate-limit-retry-after"); // rate limit time
+        config.addExposedHeader("X-Rate-Limit-Remaining"); // rate limit time
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

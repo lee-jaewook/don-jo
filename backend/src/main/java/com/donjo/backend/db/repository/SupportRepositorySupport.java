@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +21,17 @@ public class SupportRepositorySupport {
 
 
     public List<Support> findEarning(String address, String type, int period) {
-
+        String oneMonthDatetime = LocalDateTime.now().minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); //어제 00:00:00
+        String threeMonthDatetime = LocalDateTime.now().minusMonths(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); //어제 00:00:00
         String jpql = "select u from Support u";
         String whereSql = " where u.toAddress = "; //support adress where u.userId = 'address'
-        whereSql+= address;
+        whereSql+= "'"+address+"'";
         List<String> whereCondition = new ArrayList<>();
+        if (type.equals("all")) {
+        }
+        else{
+            whereCondition.add(" and");
+        }
         LocalDate todayLocalDate = LocalDate.now();
         // 스위치문 수정해줘야함
         switch (type) {
@@ -38,18 +47,18 @@ public class SupportRepositorySupport {
             case "all":
                 break;
         }
-        if (type != "all" && period != 0) {
+        if (type !="all" && period != 0) {
             whereCondition.add(" and ");
         }
         switch (period) {
             case 0:
                 break;
             case 30:
-                LocalDate oneMonthBeforeDate = todayLocalDate.minusMonths(1);
-                whereCondition.add("u.date > DATE_SUB(now(), INTERVAL -1 MONTH");
+//                LocalDate oneMonthBeforeDate = todayLocalDate.minusMonths(1);
+                whereCondition.add("u.arriveTimeStamp >= "+oneMonthDatetime);
                 break;
             case 90:
-                whereCondition.add("u.date > DATE_SUB(now(), INTERVAL -3 MONTH");
+                whereCondition.add("u.arriveTimeStamp >= "+threeMonthDatetime);
                 break;
         }
         System.out.println(whereCondition);
@@ -58,22 +67,19 @@ public class SupportRepositorySupport {
 
         System.out.println(jpql);
         TypedQuery<Support> query = em.createQuery(jpql, Support.class);
-
+        System.out.println(query.getResultList());
         return query.getResultList();
     }
 
-    public List<?> findTop10() {
+    public List<Support> findTop10() {
+        String jpql = "select u from Support u";
+        String whereSql = " where u.arriveTimeStamp IS NOT NULL order by u.arriveTimeStamp desc"; //support adress where u.userId = 'address'
 
-        String jpql = "select u from Support u"; //member support로 바꿔야함
-        String whereSql = " where u.arriveTimeStamp is not null limit 10"; //support 날짜가 not null
-
-        System.out.println(whereSql);
         jpql += whereSql;
+
         System.out.println(jpql);
         TypedQuery<Support> query = em.createQuery(jpql, Support.class);
-
-        return query.getResultList();
-
+        System.out.println(query.getResultList());
+        return query.setMaxResults(10).getResultList();
     }
-
 }

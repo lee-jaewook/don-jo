@@ -3,7 +3,7 @@ package com.donjo.backend.api.service.item;
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
 import com.donjo.backend.exception.NoContentException;
-import com.donjo.backend.solidity.Item.Item;
+import com.donjo.backend.solidity.Item.ItemSol;
 import com.donjo.backend.solidity.Item.ItemSolidity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +19,10 @@ public class ItemServiceImpl implements ItemService{
     private final ItemSolidity itemSolidity;
 
     @Override
-    public List<Item> getItemList(String address, int pageNum, int pageSize) {
+    public List<ItemSol> getItemList(String address, int pageNum, int pageSize) {
         // null 체크
-        List<Item> list = itemSolidity.getMemberItemList(address).orElseThrow(()-> new NoContentException());
+        List<ItemSol> list = itemSolidity.getMemberItemList(address)
+                .orElseThrow(()-> new NoContentException());
 
         // 페이지네이션
         int startIdx = pageNum * pageSize;
@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService{
         if(list.size() == 0 || list.size() <= startIdx) {
             throw new NoContentException();
         }
-        List<Item> result = new ArrayList<>();
+        List<ItemSol> result = new ArrayList<>();
         for (int i = startIdx; i < list.size(); i++) {
             if(i > endIdx) break;
             result.add(list.get(i));
@@ -57,7 +57,10 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Optional<Item> getItemDetail(Long uid) {
-        return itemSolidity.getItemDetail(uid);
+    public ItemSol getItemDetail(Long uid) {
+        ItemSol itemSol = itemSolidity.getItemDetail(uid)
+                .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
+        if(itemSol.isDeleted()) throw new NoContentException("삭제된 아이템 입니다.");
+        return itemSol;
     }
 }

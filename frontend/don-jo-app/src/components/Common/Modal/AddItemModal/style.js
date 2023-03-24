@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  width: 100%;
+  @media (min-width: 53.75rem) {
+    width: 53.75rem;
+  }
+`;
+
 export const ContentWrap = styled.div`
   width: 100%;
-  /* margin-bottom: 3.75rem; */
   padding-bottom: 3rem;
 `;
 
@@ -25,15 +31,18 @@ export const BasicInput = styled.input`
   }
 `;
 
-export const PriceInputWrap = styled.div`
-  width: 16.75rem;
+export const SeparationContainer = styled.div`
+  /* width: 16.75rem; */
+  width: ${(props) => `${props.width}rem`};
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 export const UnitWrap = styled.div`
+  width: 2rem;
   margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
@@ -50,8 +59,6 @@ export const ImageSizeInfo = styled.div`
   font-weight: 400;
   font-size: 0.875remx;
   line-height: 1.25rem;
-  /* identical to box height, or 143% */
-
   color: #222222;
 `;
 
@@ -75,4 +82,117 @@ export const AddIcon = styled.div`
   border-radius: 50%;
   background-color: var(--color-text);
   margin: 0 auto;
+`;
+
+export const EditIconWrapper = styled.div`
+  display: none;
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .edit-icon {
+    cursor: pointer;
+  }
+`;
+
+export const UserProfileImg = styled.div`
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  margin-bottom: 3.75rem;
+  background-image: ${(props) => `url(${props.url})` || ""};
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &:hover > ${EditIconWrapper} {
+    display: flex;
+  }
+`;
+
+export const FileUpload = styled.input`
+  width: 15rem;
+  height: 2.75rem;
+  padding: 0.875rem 0 0.875rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 19px;
+  color: #222222;
+
+  &::file-selector-button {
+    display: none;
+  }
+`;
+
+export const ButtonWrap = styled.div`
+  display: flex;
+  width: 5rem;
+  height: 2.5rem;
+`;
+
+export const FileUploadButton = styled.button`
+  width: 100%;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.188rem;
+  border-radius: 1.5rem;
+  font-family: "RobotoMedium";
+  color: black;
+  border: 0.125rem solid black;
+  background-color: white;
+
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: black;
+  }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  `}
+`;
+
+export const BasicButtonWrap = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const BasicButtonContainer = styled.div`
+  width: 17.5rem;
+`;
+
+export const RequiredInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+`;
+
+export const RequiredIcon = styled.span`
+  color: red;
+  font-family: "RobotoBold";
+  font-size: 1.25rem;
+  line-height: 1.465rem;
+  padding-bottom: 0.75rem;
+  margin-left: 0.25rem;
 `;
