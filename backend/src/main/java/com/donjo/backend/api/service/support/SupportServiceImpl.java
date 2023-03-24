@@ -68,9 +68,9 @@ public class SupportServiceImpl implements SupportService{
     @Override
     public void createSupports(SupportRequestDto dto){
         System.out.println(dto);
-//        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
-//                .orElseThrow(() -> new NoContentException());
-        supportRepository.save(dto.toSupport(LocalDateTime.now()));
+        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
+                .orElseThrow(() -> new NoContentException());
+        supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
     public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum,int pageSize){
