@@ -48,7 +48,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> createSupport(@RequestBody SupportRequestDto supportRequestDto) {
+    public ResponseEntity<?> createSupport(@RequestBody @Valid SupportRequestDto supportRequestDto) {
         System.out.println(supportRequestDto);
         supportService.createSupports(supportRequestDto);
         return ResponseEntity.status(200).build();

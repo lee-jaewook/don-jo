@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,18 +14,20 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class SupportRequestDto {
+    @NotNull
     private String transactionHash;
+    @NotNull
     private String supportType;
-
+    @NotNull
     private Long supportUid;
 
     private String fromAddress;
-
+    @NotNull
     private String toAddress;
 
     private String sendMsg;
 
-    private Long amountEth;
+    private Double amountEth;
 
     public Support toSupport(LocalDateTime sendTime){
         return  Support.builder()
@@ -35,7 +38,7 @@ public class SupportRequestDto {
                 .toAddress(this.getToAddress())
                 .sendMsg(this.getSendMsg())
                 .sendTimeStamp(sendTime)
-                .amount((long) (this.getAmountEth() * Math.pow(10, 18)))
+                .amount((long) (this.getAmountEth() * Math.pow(10, 18d)))
                 .build();
     }
 }

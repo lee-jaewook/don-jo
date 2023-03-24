@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Top10ResponseDto {
-    private Long amount;
+    private Double amount;
 
     private String supportType;
 
@@ -22,7 +22,7 @@ public class Top10ResponseDto {
 
     public static Top10ResponseDto getTop10(Support support){
         Top10ResponseDto top10ResponseDto = Top10ResponseDto.builder()
-                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
+                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .supportType(support.getSupportType())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
