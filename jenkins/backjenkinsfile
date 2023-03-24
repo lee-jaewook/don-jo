@@ -6,7 +6,9 @@ pipeline{
                     stage('gradlew 권한'){
                         steps{
                               dir('backend'){
+                              dir('my-website'){
                               sh "chmod +x gradlew"
+                              }
                                     }
                                     }
                                    }
