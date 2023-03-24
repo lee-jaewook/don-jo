@@ -1,13 +1,19 @@
 import * as S from "./style";
-import { FiX } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { FiDelete } from "react-icons/fi";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 
-const PasswordModal = ({ handleSetShowModal }) => {
+const PasswordSetModal = ({ handleSetShowModal }) => {
+  const [prevPassword, setPrevPassword] = useState("init");
   const [password, setPassword] = useState("");
-  //   const PASSWORD_MAX_LENGTH = 6;
+  const [isWrong, setIsWrong] = useState(false);
+
+  //패스워드 모달 창 닫기
+  const closeModal = () => {
+    document.body.style.overflow = "auto";
+    handleSetShowModal(false);
+  };
 
   //0~9 배열
   const nums = Array.from({ length: 10 }, (v, k) => k);
@@ -33,11 +39,32 @@ const PasswordModal = ({ handleSetShowModal }) => {
   };
 
   useEffect(() => {
-    if (password.length >= 6) {
-      handleSetShowModal(false);
-      console.log(password);
-    }
     shuffle();
+  }, []);
+
+  useEffect(() => {
+    if (password.length >= 6) {
+      if (prevPassword === "init") {
+        setPrevPassword(password);
+        setPassword("");
+        shuffle();
+      }
+      // 이전 비밀번호와 일치한지
+      else if (prevPassword === password) {
+        console.log("비밀번호 일치: ", password);
+        closeModal();
+      }
+      // 이전 비밀번호와 다르다면
+      else {
+        setIsWrong(true);
+        setTimeout(() => {
+          setIsWrong(false);
+          setPrevPassword("init");
+          setPassword("");
+          shuffle();
+        }, 2000);
+      }
+    }
   }, [password]);
 
   //패스워드 업데이트
@@ -47,21 +74,41 @@ const PasswordModal = ({ handleSetShowModal }) => {
 
   //패스워드 지우기
   const deletePassword = (n) => {
-    if (password.length > 1) {
+    if (password.length > 0) {
       setPassword(password.slice(0, -1));
     }
   };
 
   return (
     <BasicModal handleSetShowModal={handleSetShowModal} width={1}>
-      <S.Title>Set Password</S.Title>
-      <S.Description>
-        Set the password to use for login and payment.
+      <S.Title isWrong={isWrong}>
+        {isWrong ? (
+          <label>Wrong Password</label>
+        ) : prevPassword === "init" ? (
+          <label>Set Password</label>
+        ) : (
+          <label>Confirm Password</label>
+        )}
+      </S.Title>
+      <S.Description isWrong={isWrong}>
+        {isWrong ? (
+          <label>Try again</label>
+        ) : prevPassword === "init" ? (
+          <label>Set the password to use for login and payment.</label>
+        ) : (
+          <label>Enter the same password as the previous one.</label>
+        )}
       </S.Description>
       <S.PasswordContainer>
         <S.PasswordWrapper>
           {[...Array(6)].map((_, index) => {
-            return <S.Circle key={index} isEnable={index < password.length} />;
+            return (
+              <S.Circle
+                key={index}
+                isEnable={index < password.length}
+                isWrong={isWrong}
+              />
+            );
           })}
         </S.PasswordWrapper>
       </S.PasswordContainer>
@@ -97,8 +144,8 @@ const PasswordModal = ({ handleSetShowModal }) => {
   );
 };
 
-export default PasswordModal;
+export default PasswordSetModal;
 
-PasswordModal.propTypes = {
+PasswordSetModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
 };
