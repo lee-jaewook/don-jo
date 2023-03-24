@@ -8,7 +8,9 @@ pipeline{
                                     steps{
                                         dir('frontend-guide')
                                         {
+                                        dir('my-website'){
                                         sh "docker build -t guide-image ."
+                                        }
                                                     }
                                         }
                 }
