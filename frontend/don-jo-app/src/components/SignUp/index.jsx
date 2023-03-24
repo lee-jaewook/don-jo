@@ -16,6 +16,8 @@ export const SignUp = ({ isModelOpen }) => {
   const [profileImgPath, setProfileImgPath] = useState(
     "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp"
   );
+
+  // validation check
   // const [isDisabled, setIsDisabled] = useState(true);
 
   // useEffect(() => {

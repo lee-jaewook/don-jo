@@ -12,8 +12,7 @@ import BasicButton from "../../BasicButton";
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
  * @param {function} transactionFunc - Create 시에 블록체인에 보낼 요청
- * @param {string} imageTitle - 아이템 추가 모달: "Featured Image"
- *                            - 위시리스트 추가 모달: "Image"
+ * @param {string} imageTitle - 아이템 추가 모달: "Featured Image", 위시리스트 추가 모달: "Image"
  * @returns
  */
 
@@ -24,7 +23,6 @@ const AddItemModal = ({
 }) => {
   // 업로드 파일 미리보기
   const profileRef = useRef();
-  const backgroundImgRef = useRef();
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemFeaturedImage, setItemFeaturedImage] = useState(null);

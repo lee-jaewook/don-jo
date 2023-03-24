@@ -1,6 +1,5 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
-import SignUp from "../components/SignUp";
 import { memberApi } from "../api/member";
 
 /**
@@ -8,8 +7,6 @@ import { memberApi } from "../api/member";
  * 메타마스크 설치 여부 + 지갑 연결 체크 + 회원 체크
  * 회원이면, 로그인
  * 회원이 아니면, 회원가입 모달
- * @param {*} param0
- * @param {}
  */
 
 export const logIn = ({ dispatch, handleModalOpen }) => {
