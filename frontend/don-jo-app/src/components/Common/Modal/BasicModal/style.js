@@ -31,6 +31,11 @@ export const ModalContainer = styled.div`
 
 export const ModalWrapper = styled.div`
   margin: auto;
+
+  @media screen and (max-width: 48rem) {
+    width: 100%;
+    min-width: 19.125rem;
+  }
 `;
 
 export const Modal = styled.div`
