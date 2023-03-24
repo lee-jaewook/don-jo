@@ -18,6 +18,10 @@ const HomeDonation = () => {
   const [btnText, setBtnText] = useState("");
   const [donationAmount, setDonationAmount] = useState(0);
 
+  useEffect(() => {
+    console.log(msg, "라는 메세지 입력됨");
+  }, [msg]);
+
   const DecreaseBtn = () => {
     return (
       <div style={{ margin: "0 auto" }}>
@@ -83,6 +87,7 @@ const HomeDonation = () => {
         <BasicTextarea
           handleOnChangeValue={handleOnChangeMsg}
           placeholder="Send a message"
+          value={msg}
         />
         <S.BasicButtonWrapper>
           <BasicButton
