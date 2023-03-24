@@ -130,7 +130,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@Valid @RequestBody DonationDto donationDto) {
+    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@RequestBody @Valid DonationDto donationDto) {
         supportService.changeDonation(donationDto,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).build();
     }

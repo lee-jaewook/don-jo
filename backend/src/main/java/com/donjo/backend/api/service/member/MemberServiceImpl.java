@@ -24,6 +24,7 @@ import com.donjo.backend.exception.NoContentException;
 
 import com.donjo.backend.solidity.support.SupportSolidity;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -254,6 +255,17 @@ public class MemberServiceImpl implements MemberService {
       }
     }
     return memberAddress.equals(addressRecovered);
+  }
+
+  @Override
+  public boolean checkPassword(String requestPassword, HttpServletRequest request) {
+    String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+    String findPassword = getMemberInfoWithToken(accessToken.substring(7)).getPassword();
+
+    if (passwordEncoder.matches(requestPassword, findPassword)) {
+      return true;
+    }
+    throw new BadRequestException("유저 정보와 비밀번호가 일치하지 않음");
   }
 
   private List<WishListItem> memberWishList(Member member) {
