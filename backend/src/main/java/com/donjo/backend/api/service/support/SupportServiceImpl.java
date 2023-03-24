@@ -138,7 +138,6 @@ public class SupportServiceImpl implements SupportService{
         return list.size();
     }
 
-
     @Override
     public DonationDto getDonationSetting(String memberAddress){
         DonationSetting donationSetting = donationSettingRepository.findById(memberAddress).get().getDonationSetting();

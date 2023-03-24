@@ -19,7 +19,5 @@ public interface SupportService {
 
     void changeDonation(DonationDto donationDto,String memberAddress);
 
-
-
     List<Top10ResponseDto> getTop10();
 }
