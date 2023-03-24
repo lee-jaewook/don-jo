@@ -2,7 +2,6 @@ package com.donjo.backend.api.dto.member.request;
 
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Social;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,8 +33,18 @@ public class ModifyMemberCond {
     member.setIntroduction(introduction);
     member.setPageName(pageName);
     member.setThemeColor(themeColor);
-    member.setSocial(socialList);
-
+    if (socialList != null) {
+      for (Social social : socialList) {
+        Social existingSocial = member.getSocial()
+            .stream()
+            .filter(s -> s.getId().equals(social.getId()))
+            .findFirst()
+            .orElse(null);
+        if (existingSocial != null) {
+          existingSocial.setSocialLink(social.getSocialLink());
+        }
+      }
+    }
   }
 
 }

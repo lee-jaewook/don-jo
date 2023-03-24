@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -63,8 +64,8 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupports(HttpServletRequest request, @RequestParam String type, @RequestParam int page_num) {
-        List<SupportResponseDto> supports = supportService.getSupports(memberService.getMemberAddress(request), type, page_num);
+    public ResponseEntity<?> getSupports(@RequestParam String memberAddress, @RequestParam String type, @RequestParam int pageNum,@RequestParam int pageSize) {
+        List<SupportResponseDto> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
         if (supports.size()>0){
             return ResponseEntity.status(200).body(supports);
         }
@@ -82,9 +83,14 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportDetail(@RequestParam String type, @RequestParam int supportUid) {
-        SupportDetailResponseDto supportDetail = supportService.getSupportDetail(type,supportUid);
-        return ResponseEntity.status(200).body(supportDetail);
+    public ResponseEntity<?> getSupportDetail(@RequestParam String toAddress, @RequestParam Long supportUid) {
+        try {
+            SupportDetailResponseDto supportDetail = supportService.getSupportDetail(toAddress,supportUid);
+            return ResponseEntity.status(200).body(supportDetail);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(404).body("정보 없음");
+        }
     }
 
     @GetMapping(path="/api/member/supporters/count")
@@ -124,13 +130,13 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request, @RequestBody DonationDto donationDto) {
+    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@Valid @RequestBody DonationDto donationDto) {
         supportService.changeDonation(donationDto,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).build();
     }
 
     @GetMapping(path="/api/main/supports")
-    @ApiOperation(value = "최근 후원 내역 10개 가져오기", notes = "example content")
+    @ApiOperation(value = "최근 후원 내역 10개 가져오기(인트로페이지)", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
