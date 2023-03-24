@@ -84,10 +84,6 @@ export const AddIcon = styled.div`
   margin: 0 auto;
 `;
 
-export const FileUploadButton = styled.input`
-  display: none;
-`;
-
 export const EditIconWrapper = styled.div`
   display: none;
   position: absolute;
@@ -122,4 +118,81 @@ export const UserProfileImg = styled.div`
   &:hover > ${EditIconWrapper} {
     display: flex;
   }
+`;
+
+export const FileUpload = styled.input`
+  width: 15rem;
+  height: 2.75rem;
+  padding: 0.875rem 0 0.875rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 19px;
+  color: #222222;
+
+  &::file-selector-button {
+    display: none;
+  }
+`;
+
+export const ButtonWrap = styled.div`
+  display: flex;
+  width: 5rem;
+  height: 2.5rem;
+`;
+
+export const FileUploadButton = styled.button`
+  width: 100%;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.188rem;
+  border-radius: 1.5rem;
+  font-family: "RobotoMedium";
+  color: black;
+  border: 0.125rem solid black;
+  background-color: white;
+
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: black;
+  }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  `}
+`;
+
+export const BasicButtonWrap = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const BasicButtonContainer = styled.div`
+  width: 17.5rem;
+`;
+
+export const RequiredInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+`;
+
+export const RequiredIcon = styled.span`
+  color: red;
+  font-family: "RobotoBold";
+  font-size: 1.25rem;
+  line-height: 1.465rem;
+  padding-bottom: 0.75rem;
+  margin-left: 0.25rem;
 `;
