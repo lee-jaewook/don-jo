@@ -15,6 +15,7 @@ const BasicTextarea = ({
   width,
   height,
   id,
+  value,
 }) => {
   return (
     <S.Textarea
@@ -25,7 +26,9 @@ const BasicTextarea = ({
       readOnly={isReadOnly}
       width={width}
       height={height}
-    />
+    >
+      {value}
+    </S.Textarea>
   );
 };
 
