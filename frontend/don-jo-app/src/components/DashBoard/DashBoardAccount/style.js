@@ -108,3 +108,18 @@ export const UploadButton = styled.input`
   overflow: hidden;
   border: 0;
 `;
+
+export const RequiredInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+`;
+
+export const RequiredICon = styled.span`
+  color: red;
+  font-family: "RobotoBold";
+  font-size: 1.25rem;
+  line-height: 1.465rem;
+  padding-bottom: 0.75rem;
+  margin-left: 0.25rem;
+`;
