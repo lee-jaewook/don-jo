@@ -4,10 +4,12 @@ import { FiDelete } from "react-icons/fi";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 
-const PasswordSetModal = ({ handleSetShowModal }) => {
-  const [prevPassword, setPrevPassword] = useState("init");
+const PasswordCheckModal = ({ handleSetShowModal }) => {
   const [password, setPassword] = useState("");
   const [isWrong, setIsWrong] = useState(false);
+
+  //임시로 설정해둔 비밀번호
+  const p = "123456";
 
   //패스워드 모달 창 닫기
   const closeModal = () => {
@@ -43,23 +45,14 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
   }, []);
 
   useEffect(() => {
-    if (password.length >= 6) {
-      if (prevPassword === "init") {
-        setPrevPassword(password);
-        setPassword("");
-        shuffle();
-      }
-      // 이전 비밀번호와 일치한지
-      else if (prevPassword === password) {
-        console.log("비밀번호 일치: ", password);
+    if (password.length === 6) {
+      // 패스워드가 맞는지 확인하는 api 호출
+      if (password === p) {
         closeModal();
-      }
-      // 이전 비밀번호와 다르다면
-      else {
+      } else {
         setIsWrong(true);
         setTimeout(() => {
           setIsWrong(false);
-          setPrevPassword("init");
           setPassword("");
           shuffle();
         }, 2000);
@@ -84,17 +77,13 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
       <S.Title isWrong={isWrong}>
         {isWrong ? (
           <label>Wrong Password</label>
-        ) : prevPassword === "init" ? (
-          <label>Set Password</label>
         ) : (
-          <label>Confirm Password</label>
+          <label>Enter Password</label>
         )}
       </S.Title>
       <S.Description isWrong={isWrong}>
         {isWrong ? (
           <label>Try again</label>
-        ) : prevPassword === "init" ? (
-          <label>Set the password to use for login and payment.</label>
         ) : (
           <label>Enter the same password as the previous one.</label>
         )}
@@ -144,8 +133,8 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
   );
 };
 
-export default PasswordSetModal;
+export default PasswordCheckModal;
 
-PasswordSetModal.propTypes = {
+PasswordCheckModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
 };
