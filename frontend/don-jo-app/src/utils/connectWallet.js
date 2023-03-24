@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
-
+import { setLogOut } from "../stores/member";
 /**
  * 지갑연결 함수
  * 메타마스크 설치 여부 + 지갑 연결 체크
@@ -39,9 +39,11 @@ export const connectWallet = (dispatch) => {
                 )
               );
               newWeb3.setProvider(infuraWeb3.currentProvider);
+
               dispatch(
                 setWeb3({ web3: newWeb3, walletAddress: newAccounts[0] })
               );
+              dispatch(setLogOut());
               console.log("MetaMask account changed: ");
             });
           } else {
