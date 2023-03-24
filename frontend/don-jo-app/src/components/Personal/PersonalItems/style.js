@@ -55,7 +55,8 @@ export const AddCard = styled.div`
 `;
 
 export const IconWrapper = styled.div`
-  background-color: ${(props) => (props.color ? props.color : "black")};
+  background-color: ${(props) =>
+    props.color ? props.color : "var(--color-primary)"};
   height: 3.75rem;
   width: 3.75rem;
   border-radius: 50%;

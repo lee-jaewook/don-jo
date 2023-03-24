@@ -77,12 +77,12 @@ export const RadioButton = styled.input`
   height: 2.75rem;
   border-radius: 50%;
   background-color: white;
-  border: 0.0625rem solid black;
+  border: 0.0625rem solid var(--color-primary);
   margin: 0;
   cursor: pointer;
 
   &:checked {
-    background-color: black;
+    background-color: var(--color-primary);
   }
 
   &:checked + ${RadioLabel} {

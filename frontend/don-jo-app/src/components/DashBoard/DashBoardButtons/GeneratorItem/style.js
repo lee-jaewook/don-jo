@@ -53,11 +53,12 @@ export const generateButton = styled.button`
   width: 7.5rem;
   height: 3rem;
   border-radius: 1.5rem;
-  border: 0.125rem solid black;
+  border: 0.125rem solid var(--color-primary);
   font-size: 1rem;
   line-height: 1.1875rem;
   text-align: center;
   margin-left: 1.25rem;
+  color: var(--color-primary);
   padding: 0 1.6875rem;
   @media (max-width: 768px) {
     width: 100%;

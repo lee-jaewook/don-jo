@@ -10,6 +10,6 @@ export const Input = styled.input`
   margin-bottom: 0.75rem;
   border: 1px solid transparent;
   &:focus {
-    border-color: black;
+    border-color: var(--color-primary);
   }
 `;
