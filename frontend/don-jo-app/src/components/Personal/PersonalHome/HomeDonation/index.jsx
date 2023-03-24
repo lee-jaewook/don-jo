@@ -83,6 +83,7 @@ const HomeDonation = () => {
         <BasicTextarea
           handleOnChangeValue={handleOnChangeMsg}
           placeholder="Send a message"
+          value={msg}
         />
         <S.BasicButtonWrapper>
           <BasicButton
