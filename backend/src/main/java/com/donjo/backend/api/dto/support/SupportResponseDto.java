@@ -30,7 +30,7 @@ public class SupportResponseDto {
 
     private String replyMsg;
 
-    private Long amount;
+    private Double amount;
 
     private LocalDateTime arriveTimeStamp;
 
@@ -82,7 +82,7 @@ public class SupportResponseDto {
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
                 .toAddress(toMemberAddress)
-                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
+                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
@@ -93,7 +93,7 @@ public class SupportResponseDto {
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .toAddress(toMemberAddress)
-                .amount((long) (support.getAmount()/ Math.pow(10, 18)))
+                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
