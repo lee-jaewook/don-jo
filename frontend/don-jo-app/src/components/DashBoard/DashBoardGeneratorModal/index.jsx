@@ -114,7 +114,7 @@ const DashBoardGeneratorModal = ({
               handleOnClickButton={handleGeneratePlugIn}
               isBackground={true}
               isDisabled={false}
-              color="black"
+              color="var(--color-primary)"
             />
           </S.ButtonContent>
         </S.ButtonWrap>

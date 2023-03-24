@@ -9,7 +9,7 @@ export const Container = styled.div`
   background-color: white;
   padding: 2rem 1.5rem;
   &:first-child {
-    background-color: black;
+    background-color: var(--color-primary);
   }
 
   @media (max-width: 1280px) {

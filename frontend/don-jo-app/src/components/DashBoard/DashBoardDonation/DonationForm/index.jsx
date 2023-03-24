@@ -128,7 +128,7 @@ const DonationForm = () => {
         <BasicButton
           text="Save"
           handleOnClickButton={handleOnClickButton}
-          color="black"
+          color="var(--color-primary)"
         />
       </S.ButtonWrapper>
     </S.FormWrapper>

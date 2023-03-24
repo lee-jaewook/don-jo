@@ -90,7 +90,7 @@ export const SignUp = ({ isModelOpen }) => {
 
       <BasicButton
         text="Submit"
-        color="black"
+        color="var(--color-primary)"
         // isDisabled={isDisabled}
         handleOnClickButton={handleSubmit}
       />

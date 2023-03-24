@@ -21,7 +21,7 @@ export const BackgroundImgEdit = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: var(--color-primary);
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@ export const EditIcon = styled.div`
   width: 3.75rem;
   height: 3.75rem;
   border-radius: 100%;
-  background-color: black;
+  background-color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +69,7 @@ export const ProfileImgEdit = styled.div`
   width: 11.25rem;
   height: 11.25rem;
   border-radius: 100%;
-  background-color: black;
+  background-color: var(--color-primary);
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -107,6 +107,7 @@ export const Nickname = styled.div`
   font-size: 1.875rem;
   line-height: 2.1875rem;
   margin-bottom: 0.75rem;
+  color: var(--color-primary);
 `;
 
 export const SupporterContainer = styled.div`

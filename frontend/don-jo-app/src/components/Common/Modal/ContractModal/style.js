@@ -35,7 +35,8 @@ export const ProgressWrapper = styled.div`
 export const Bar = styled.div`
   width: 48%;
   height: 0.5rem;
-  background-color: ${(props) => (props.isEnable ? "black" : "#DDDDDD")};
+  background-color: ${(props) =>
+    props.isEnable ? "var(--color-primary)" : "#DDDDDD"};
   position: absolute;
   top: 50%;
   transform: translate(${(props) => (props.isFirst ? "5%" : "105%")}, -14px);
@@ -51,7 +52,8 @@ export const ProfileContainer = styled.div`
 export const ProfileWrapper = styled.div`
   width: 3.75rem;
   height: 3.75rem;
-  background-color: ${(props) => (props.isEnable ? "black" : "#DDDDDD")};
+  background-color: ${(props) =>
+    props.isEnable ? "var(--color-primary)" : "#DDDDDD"};
   border-radius: 50%;
   display: flex;
   justify-content: center;

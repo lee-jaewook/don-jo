@@ -52,7 +52,7 @@ const ItemDetailModal = ({
         <S.ButtonWrapper>
           <BasicButton
             text={idDashboard ? "Edit" : "Buy"}
-            color="black"
+            color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={handleOnClickButton}
           />

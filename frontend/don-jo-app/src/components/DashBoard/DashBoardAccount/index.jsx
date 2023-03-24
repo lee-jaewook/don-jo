@@ -281,7 +281,7 @@ const DashBoardAccount = () => {
       <S.ButtonWrapper>
         <BasicButton
           text="Save"
-          color="black"
+          color="var(--color-primary)"
           handleOnClickButton={handleSaveAccount}
         />
       </S.ButtonWrapper>
