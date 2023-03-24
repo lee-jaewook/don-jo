@@ -22,7 +22,7 @@ public class SupportDetailResponseDto {
 
     private Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
 
-    private Long amount;
+    private Double amount;
 
     private LocalDateTime sendTimeStamp ;
 
@@ -34,7 +34,7 @@ public class SupportDetailResponseDto {
         SupportDetailResponseDto supportDetailResponseDto = SupportDetailResponseDto.builder()
                 .id(supportSol.get().getId())
                 .supportType(supportSol.get().getSupportType())
-                .amount(supportSol.get().getAmount())
+                .amount(Double.valueOf(supportSol.get().getAmount()))
                 .sendTimeStamp(supportSol.get().getSendTimestamp())
                 .supportStatus(supportSol.get().getSupportStatus())
                 .build();
