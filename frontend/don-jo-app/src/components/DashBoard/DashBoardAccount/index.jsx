@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import BasicButton from "../../Common/BasicButton";
@@ -6,39 +6,62 @@ import BasicInput from "../../Common/BasicInput";
 import BasicTitle from "../../Common/BasicTitle";
 import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
+import { memberApi } from "../../../api/member";
+import { useSelector } from "react-redux";
 
 const DashBoardAccount = () => {
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
+  const user = useSelector((state) => state.member.user);
 
   // 업로드 파일 미리보기
   const backgroundImgRef = useRef();
   const profileRef = useRef();
 
+  // 사용자의 기본 배경 설정
   const [backgroundImgFile, setBackgroundImgFile] = useState({
     previewImgUrl: "",
     file: {},
-  }); // 사용자의 기본 배경 설정
+  });
+
+  // 사용자의 기본 프로필 설정
   const [profileImgFile, setProfileImgFile] = useState({
     previewImgUrl: "",
     file: {},
-  }); // 사용자의 기본 프로필 설정
-  const [account, setAccount] = useState({
-    nickname: "HyunJu",
-    pageName: "songo427",
-    colorIndex: "#F02C7E",
-    link1: "",
-    link2: "",
-    link3: "",
   });
 
-  const { nickname, pageName, colorIndex, link1, link2, link3 } = account;
+  // 계정 정보 저장 및 비구조분해 할당으로 가져옴
+  const [message, setMessage] = useState("");
+  const [account, setAccount] = useState({});
+  const {
+    nickname,
+    pageName,
+    themeColor,
+    link1,
+    link2,
+    link3,
+    profileImgPath,
+  } = account;
 
+  // 입력 변경 처리
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
+
     setAccount({
       ...account,
       [id]: value,
+    });
+  };
+
+  // 라디오 버튼 값 변경 처리
+  const handleOnChangeRadioButton = (e) => {
+    const { value } = e.target;
+
+    setAccount({
+      ...account,
+      themeColor: Number(value),
     });
   };
 
@@ -53,35 +76,57 @@ const DashBoardAccount = () => {
     reader.onloadend = () => {
       if (id === "bg-file") {
         setBackgroundImgFile({ previewImgUrl: reader.result, file: files[0] });
+        setAccount({ ...account, backgroundImgPath: undefined });
         return;
       } else if (id === "profile-file") {
         setProfileImgFile({ previewImgUrl: reader.result, file: files[0] });
+        setAccount({ ...account, profileImgPath: undefined });
         return;
       }
     };
   };
 
   const handleSaveAccount = async () => {
-    // 프로필 이미지 업로드
-    const profileImgPath = await handleUploadFile(
-      profileImgFile.file,
-      PROFILE_TYPE
-    );
-    // 배경 이미지 업로드
-    const backgroundImgPath = await handleUploadFile(
-      backgroundImgFile.file,
-      BACKGROUND_TYPE
-    );
+    // 필수 입력 확인
+    if (!nickname || !pageName) {
+      alert("필수값 확인 안내");
+      return;
+    }
 
-    const myAccount = {
+    // 페이지 이름 중복 여부 확인
+    if (!handleCheckPageName()) return;
+
+    let myAccount = {
       ...account,
-      profileImgPath,
-      backgroundImgPath,
     };
-    // account 객체에 모든 내용이 있는지 확인하고 수정 API 호출
-    console.log("[API 호출 시점] account : ", myAccount);
+
+    // 프로필 이미지 업로드
+    if (account.profileImgPath === undefined) {
+      let profileImgPath = await handleUploadFile(
+        profileImgFile.file,
+        PROFILE_TYPE
+      );
+      myAccount = { ...myAccount, profileImgPath };
+    }
+
+    // 배경 이미지 업로드
+    if (account.backgroundImgPath === undefined) {
+      let backgroundImgPath = await handleUploadFile(
+        backgroundImgFile.file,
+        BACKGROUND_TYPE
+      );
+      myAccount = { ...myAccount, backgroundImgPath };
+    }
+
+    try {
+      const data = await memberApi.updateUserInfo(myAccount);
+      console.log("data:", data);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
+  // 파일 업로드를 위한 API 호출
   const handleUploadFile = async (file, type) => {
     const formData = new FormData();
     formData.append("multipartFile", file);
@@ -93,6 +138,38 @@ const DashBoardAccount = () => {
       console.log("error: ", error);
     }
   };
+
+  // 기본 정보 조회 API 연결
+  const handleGetAccountInfo = async () => {
+    try {
+      const { data } = await memberApi.getUserInfo();
+      setAccount({
+        ...data,
+      });
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  // 페이지 이름 중복 검사 API 연결
+  const handleCheckPageName = async () => {
+    if (user.pageName !== pageName) {
+      try {
+        await memberApi.checkPageName(pageName);
+        return true;
+      } catch (error) {
+        if (error.response.status === 409) {
+          setMessage("This page name is already taken.");
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    handleGetAccountInfo();
+  }, []);
 
   return (
     <S.AccountWrapper>
@@ -108,11 +185,18 @@ const DashBoardAccount = () => {
             type="file"
             accept="image/*"
             onChange={handleMakePreviewImg}
+            defaultValue=""
           />
         </S.EditIconWrapper>
       </S.BackgroundImg>
       <BasicTitle text="Profile Photo" />
-      <S.UserProfileImg url={profileImgFile.previewImgUrl || ""}>
+      <S.UserProfileImg
+        url={
+          profileImgPath !== undefined
+            ? `${S3URL}`
+            : profileImgFile.previewImgUrl || ""
+        }
+      >
         <S.EditIconWrapper>
           <label htmlFor="profile-file">
             <FiEdit className="edit-icon" size="24px" color="white" />
@@ -123,16 +207,20 @@ const DashBoardAccount = () => {
             type="file"
             accept="image/*"
             onChange={handleMakePreviewImg}
+            defaultValue=""
           />
         </S.EditIconWrapper>
       </S.UserProfileImg>
-      <BasicTitle text="Nickname" />
 
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Nickname" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.InputWrapper size="15rem">
         <BasicInput
           id="nickname"
           type="text"
-          value={nickname}
+          value={nickname || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
@@ -141,29 +229,37 @@ const DashBoardAccount = () => {
         <BasicInput
           id="link1"
           type="text"
-          value={link1}
+          value={link1 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
         <BasicInput
           id="link2"
           type="text"
-          value={link2}
+          value={link2 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
+
         <BasicInput
           id="link3"
           type="text"
-          value={link3}
+          value={link3 || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
-      <BasicTitle text="Page Name" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Page Name" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
+
       <S.InputWrapper>
         <BasicInput
+          id="pageName"
           type="text"
-          value={pageName}
+          value={pageName || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
+
+        {message.length > 0 && <label>{message}</label>}
       </S.InputWrapper>
       <BasicTitle text="Theme Color" />
       <S.ColorPalette>
@@ -175,9 +271,10 @@ const DashBoardAccount = () => {
               type="radio"
               name="color"
               key={color}
-              value={color}
-              defaultChecked={color === colorIndex}
-              onChange={handleOnChangeInput}
+              value={index}
+              color={color}
+              checked={index === themeColor}
+              onChange={handleOnChangeRadioButton}
             />
           ))}
       </S.ColorPalette>
