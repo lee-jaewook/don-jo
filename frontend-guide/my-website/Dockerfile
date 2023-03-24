@@ -20,7 +20,7 @@ RUN npm install
 # Switch to the node user vs. root
 USER node
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 80
 # Start the app in debug mode so we can attach the debugger
 CMD ["npm", "start"]
 
