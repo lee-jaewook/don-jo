@@ -184,7 +184,7 @@ public class MemberServiceImpl implements MemberService {
     return findPageInfoPayload;
   }
 
-  @Override
+//  @Override
   public FindMemberPayload getMemberInfo(String memberAddress) {
     Member member = memberRepository.findByAddress(memberAddress);
     if (member == null) {
