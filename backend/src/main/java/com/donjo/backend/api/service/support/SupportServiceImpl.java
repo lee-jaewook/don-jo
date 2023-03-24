@@ -56,21 +56,17 @@ public class SupportServiceImpl implements SupportService{
         for (Support support : supportList) {
             result=result.add(BigInteger.valueOf(support.getAmount()));
         }
-        Double resultETH = result.doubleValue();
-        resultETH=resultETH/Math.pow(10,18d);
-//        resultETH = result.divide(BigInteger.valueOf((double) Math.pow(10,18d)));
-//        Double resultETH = result.doubleValue();
+        double resultETH = result.doubleValue() /Math.pow(10,18d);
+
         return resultETH;
-
-
     }
 
     @Override
     public void createSupports(SupportRequestDto dto){
         System.out.println(dto);
-//        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
-//                .orElseThrow(() -> new NoContentException());
-        supportRepository.save(dto.toSupport(LocalDateTime.now()));
+        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
+                .orElseThrow(() -> new NoContentException());
+        supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
     public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum,int pageSize){
