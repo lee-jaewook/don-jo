@@ -9,7 +9,7 @@ pipeline{
                                         dir('frontend-guide')
                                         {
                                         dir('my-website'){
-                                        sh "docker build -t guide-image ."
+                                        sh "docker build -t guide-image2 ."
                                         }
                                                     }
                                         }
@@ -24,7 +24,7 @@ pipeline{
 
                             stage('컨테이너 생성') {
                               steps {
-                                sh "docker run -d -p 3100:80 --name guide guide-image"
+                                sh "docker run -d -p 3100:80 --name guide guide-image2"
                               }
                             }
             }
