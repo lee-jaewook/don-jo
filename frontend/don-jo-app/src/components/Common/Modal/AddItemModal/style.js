@@ -43,13 +43,8 @@ export const UnitWrap = styled.div`
   width: 2rem;
   margin-bottom: 0.75rem;
   padding-left: 0.5rem;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 400;
   font-size: 0.875rem;
   line-height: 1rem;
-
-  color: #999999;
 `;
 
 export const ImageSizeInfo = styled.div`

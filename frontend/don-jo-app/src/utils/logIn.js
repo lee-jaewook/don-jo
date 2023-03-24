@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
 import { memberApi } from "../api/member";
+import { setLogIn, setLogOut } from "../stores/member";
 
 /**
  * 로그인 함수
@@ -39,11 +40,12 @@ export const logIn = ({ dispatch, handleModalOpen }) => {
                 window.ethereum
                   .request({
                     method: "personal_sign",
-                    params: [accounts[0], accounts[0], "Example password"],
+                    params: ["don jo log in test", accounts[0], accounts[0]],
                   })
                   .then((signature) => {
                     const loginMemberCond = {
                       memberAddress: accounts[0],
+                      signMessage: "don jo log in test",
                       memberSignature: signature,
                     };
                     // 로그인
@@ -59,6 +61,7 @@ export const logIn = ({ dispatch, handleModalOpen }) => {
                           "refreshtoken",
                           res.headers.refreshtoken
                         );
+                        dispatch(setLogIn({ pageName: res.data.pageName }));
                       })
                       .catch((error) => {
                         console.log("login로그인 실패: ", error);
