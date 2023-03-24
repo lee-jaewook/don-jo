@@ -29,7 +29,7 @@ public interface MemberService {
 
   FindPageInfoPayload getPageInfoByPageName(String pageName);
 
-  FindMemberPayload getMemberInfo(String memberAddress);
+//  FindMemberPayload getMemberInfo(String memberAddress);
 
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
 

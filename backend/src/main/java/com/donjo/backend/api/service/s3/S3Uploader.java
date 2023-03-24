@@ -33,7 +33,6 @@ public class S3Uploader {
         objectMetaData.setContentLength(multipartFile.getSize());
 
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, multipartFile.getInputStream(), objectMetaData));
-
         return fileName;
     }
 //    public void deleteImage(String fileName) {

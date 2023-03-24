@@ -20,6 +20,8 @@ public interface SupportRepository extends JpaRepository<Support, String> {
     @Transactional(readOnly = true)
     List<Support> findByFromAddress(Member member);
 
+    Support findByToAddressAndSupportUid(String toAddress,Long supportUid);
+
     List<Support> findAllBySupportTypeAndToAddress(String supportType, String toAddress, Pageable pageable);
 
     List<Support> findAllByToAddress(String toAddress, Pageable pageable);
