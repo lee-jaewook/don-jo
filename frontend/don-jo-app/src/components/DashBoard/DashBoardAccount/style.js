@@ -115,7 +115,7 @@ export const RequiredInputWrapper = styled.div`
   background-color: transparent;
 `;
 
-export const RequiredICon = styled.span`
+export const RequiredIcon = styled.span`
   color: red;
   font-family: "RobotoBold";
   font-size: 1.25rem;

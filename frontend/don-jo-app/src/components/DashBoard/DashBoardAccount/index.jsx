@@ -214,7 +214,7 @@ const DashBoardAccount = () => {
 
       <S.RequiredInputWrapper>
         <BasicTitle text="Nickname" />
-        <S.RequiredICon>*</S.RequiredICon>
+        <S.RequiredIcon>*</S.RequiredIcon>
       </S.RequiredInputWrapper>
       <S.InputWrapper size="15rem">
         <BasicInput
@@ -248,7 +248,7 @@ const DashBoardAccount = () => {
       </S.InputWrapper>
       <S.RequiredInputWrapper>
         <BasicTitle text="Page Name" />
-        <S.RequiredICon>*</S.RequiredICon>
+        <S.RequiredIcon>*</S.RequiredIcon>
       </S.RequiredInputWrapper>
 
       <S.InputWrapper>
