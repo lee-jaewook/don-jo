@@ -104,7 +104,7 @@ const WishlistDetailModal = ({
           )}
           <BasicButton
             text={isDashboard ? "Edit" : "Donate"}
-            color="black"
+            color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={handleOnClickButton}
           />

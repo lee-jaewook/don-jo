@@ -78,12 +78,15 @@ export const BuyBtn = styled.button`
   color: white;
   border: 0.0625rem solid;
 
-  border-color: ${(props) => (props.color ? props.color : "2px solid black")};
-  background-color: ${(props) => (props.color ? props.color : "black")};
+  border-color: ${(props) =>
+    props.color ? props.color : "2px solid var(--color-primary)"};
+  background-color: ${(props) =>
+    props.color ? props.color : "var(--color-primary)"};
 
   &:hover {
-    border-color: ${(props) => (props.color ? props.color : "black")};
-    color: ${(props) => (props.color ? props.color : "black")};
+    border-color: ${(props) =>
+      props.color ? props.color : "var(--color-primary)"};
+    color: ${(props) => (props.color ? props.color : "var(--color-primary)")};
     background-color: white;
   }
 

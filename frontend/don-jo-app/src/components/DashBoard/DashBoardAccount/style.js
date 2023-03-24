@@ -18,7 +18,7 @@ export const EditIconWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: black;
+  background-color: var(--color-primary);
   border-radius: 50%;
   justify-content: center;
   align-items: center;

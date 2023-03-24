@@ -35,7 +35,7 @@ export const LogIn = ({ isModelOpen }) => {
         />
         <BasicButton
           text="Submit"
-          color="black"
+          color="var(--color-primary)"
           handleOnClickButton={handleSubmit}
         />
       </>
