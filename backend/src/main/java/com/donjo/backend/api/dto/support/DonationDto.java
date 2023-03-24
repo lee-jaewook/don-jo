@@ -22,7 +22,7 @@ public class DonationDto {
     @NotNull
     private String donationName;
 
-    @Min(1)
+    @NotNull
     private String thankMsg;
 
     public DonationDto getDonation(DonationSetting donationSetting){

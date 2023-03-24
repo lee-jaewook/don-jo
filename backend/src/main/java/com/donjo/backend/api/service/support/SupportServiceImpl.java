@@ -158,18 +158,15 @@ public class SupportServiceImpl implements SupportService{
         donationSetting.setThankMsg(donationDto.getThankMsg());
     }
 
-
-
     @Override
     public List<Top10ResponseDto> getTop10(){
         List<Support> supportList = supportRepositorySupport.findTop10();
         List<Top10ResponseDto> top10ResponseDtoList = new ArrayList<>();
 
-        for (int i = 0; i < supportList.size(); i++) {
-            Top10ResponseDto top10ResponseDto = Top10ResponseDto.getTop10(supportList.get(i));
+        for (Support support : supportList) {
+            Top10ResponseDto top10ResponseDto = Top10ResponseDto.getTop10(support);
             top10ResponseDtoList.add(top10ResponseDto);
         }
-
         return top10ResponseDtoList;
     }
 }
