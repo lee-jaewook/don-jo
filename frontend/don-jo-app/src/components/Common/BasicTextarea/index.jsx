@@ -26,9 +26,8 @@ const BasicTextarea = ({
       readOnly={isReadOnly}
       width={width}
       height={height}
-    >
-      {value}
-    </S.Textarea>
+      defaultValue={value}
+    />
   );
 };
 
