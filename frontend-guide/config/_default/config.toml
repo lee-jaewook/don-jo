@@ -1,4 +1,4 @@
-baseurl = "http://localhost:1313/"
+baseurl = "https://j8a209.p.ssafy.io/"
 canonifyURLs = false
 disableAliases = true
 disableHugoGeneratorInject = true
