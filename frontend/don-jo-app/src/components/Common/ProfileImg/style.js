@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Circle = styled.div`
   width: ${(props) => props.width}rem;
@@ -8,4 +9,8 @@ export const Circle = styled.div`
 
   background-size: cover;
   background-image: url("${(props) => props.src}");
+`;
+
+export const LinkCustom = styled(Link)`
+  cursor: ${(props) => (props.to === "#" ? "default" : "cursor")};
 `;

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
 const WishlistItem = ({
@@ -11,11 +11,6 @@ const WishlistItem = ({
   collectedAmount,
   totalAmount,
 }) => {
-  // wishlist item 수정 모달 관리를 위한 함수
-  const handleOpenEditModal = useCallback((e) => {
-    e.stopPropagation(); // event bubbling 방지
-  }, []);
-
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
     if (Number(collectedAmount) >= Number(totalAmount)) {
@@ -30,7 +25,6 @@ const WishlistItem = ({
       isDashboard={isDashboard}
       onClick={isDashboard ? handleSetShowModal : undefined}
     >
-      {/* {isDashboard && <S.EditButton onClick={handleOpenEditModal} />} */}
       <S.ItemContent>
         <S.ItemImg src={imgPath} />
         <S.ItemInformation>

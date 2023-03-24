@@ -38,6 +38,7 @@ export const ModalBody = styled.div`
 
 export const ContentCardWrapper = styled.div`
   margin: auto;
+  max-width: 100%;
 `;
 
 export const ContentCard = styled.div`
@@ -48,6 +49,7 @@ export const ContentCard = styled.div`
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
   margin: 0.75rem;
+  box-sizing: border-box;
 `;
 
 export const ButtonContainer = styled.div`

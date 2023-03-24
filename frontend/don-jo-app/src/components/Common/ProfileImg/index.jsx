@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 const ProfileImg = ({ width, src, to }) => {
   return (
-    <Link to={to === undefined ? "#" : to}>
+    <S.LinkCustom to={to === undefined ? "#" : to}>
       <S.Circle width={width} src={src} />
-    </Link>
+    </S.LinkCustom>
   );
 };
 
