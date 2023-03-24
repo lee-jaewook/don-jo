@@ -19,12 +19,8 @@ const AppRouter = () => {
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    connectWallet(dispatch);
-  }, []);
-
   // 로그인 여부 체크
-  let isLogin = true;
+  const isLogin = useSelector((state) => state.member.isLogIn);
 
   if (!isLogin) {
     return (
