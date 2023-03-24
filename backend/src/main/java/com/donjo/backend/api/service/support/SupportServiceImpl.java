@@ -8,6 +8,7 @@ import com.donjo.backend.db.repository.DonationSettingRepository;
 import com.donjo.backend.db.repository.MemberRepository;
 import com.donjo.backend.db.repository.SupportRepository;
 import com.donjo.backend.db.repository.SupportRepositorySupport;
+import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.support.SupportSolidity;
 import com.donjo.backend.util.Web3jUtil;
@@ -79,34 +80,29 @@ public class SupportServiceImpl implements SupportService{
         else{
             list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
         }
-        System.out.println(list.get(0).getFromAddress());
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFromAddress()==null || list.get(i).getFromAddress().isEmpty()){
-                Member findToMember = memberRepository.findById(list.get(i).getToAddress()).get();
+        for (Support support : list) {
+            if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
+                Member findToMember = memberRepository.findById(support.getToAddress()).get();
                 SupportResponseDto.toMember toMember = SupportResponseDto.getToMember(findToMember);
-                SupportResponseDto supportResponseDto = SupportResponseDto.getSomeoneSupport(list.get(i),toMember);
+                SupportResponseDto supportResponseDto = SupportResponseDto.getSomeoneSupport(support,toMember);
                 supportResponseDtoList.add(supportResponseDto);
             }
             else {
-                Member findFromMember = memberRepository.findById(list.get(i).getFromAddress()).get();
-                Member findToMember = memberRepository.findById(list.get(i).getToAddress()).get();
+                Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
+                Member findToMember = memberRepository.findById(support.getToAddress()).get();
                 SupportResponseDto.fromMember fromMember = SupportResponseDto.getFromMember(findFromMember);
                 SupportResponseDto.toMember toMember = SupportResponseDto.getToMember(findToMember);
-                SupportResponseDto supportResponseDto = SupportResponseDto.getSupport(list.get(i), fromMember,toMember);
+                SupportResponseDto supportResponseDto = SupportResponseDto.getSupport(support, fromMember,toMember);
                 supportResponseDtoList.add(supportResponseDto);
             }
-
         }
         return supportResponseDtoList;
     }
 
     @Override
     public SupportDetailResponseDto getSupportDetail(String toAddress,Long supportUid ){
-        System.out.println("여기옴3?");
         Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid);
-        System.out.println("여기옴?");
         Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
-        System.out.println("여기옴2?");
         SupportDetailResponseDto supportDetailResponseDto = SupportDetailResponseDto.fromSupport(supportSol);
 
         Web3j web3 = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
@@ -127,7 +123,7 @@ public class SupportServiceImpl implements SupportService{
             }
         } catch (IOException e) {
             System.out.println("못찾음");
-            throw new RuntimeException(e);
+            throw new BadRequestException("정보가 존재 하지 않습니다.");
         }
     }
     @Override
@@ -139,7 +135,6 @@ public class SupportServiceImpl implements SupportService{
         else{
             list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress);
         }
-
         return list.size();
     }
 

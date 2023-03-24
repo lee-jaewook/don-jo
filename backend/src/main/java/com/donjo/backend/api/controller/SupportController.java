@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -129,7 +130,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request, @RequestBody DonationDto donationDto) {
+    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@Valid @RequestBody DonationDto donationDto) {
         supportService.changeDonation(donationDto,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).build();
     }
