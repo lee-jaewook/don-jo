@@ -1,12 +1,13 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
-import PasswordModal from "../../../Common/Modal/PasswordSetModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 
 const ItemCard = ({ item, isOwner }) => {
-  const [isShowPasswordModal, setSetIsShowPasswordModal] = useState(false);
-  const handleOnClickButton = () => {
-    setSetIsShowPasswordModal(true);
+  const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
+  const doBuy = () => {
+    // 해당 아이템을 구매하는 api
+    console.log("buy");
   };
 
   return (
@@ -21,14 +22,23 @@ const ItemCard = ({ item, isOwner }) => {
             <S.Unit>eth</S.Unit>
           </S.PriceWrapper>
           {isOwner && (
-            <S.BuyBtn color="" onClick={handleOnClickButton}>
+            <S.BuyBtn
+              color=""
+              onClick={() => {
+                setIsShowItemDetailModal(true);
+              }}
+            >
               Buy
             </S.BuyBtn>
           )}
         </S.PriceBtnContainer>
       </S.DescriptionContainer>
-      {isShowPasswordModal && (
-        <PasswordModal handleSetShowModal={setSetIsShowPasswordModal} />
+      {isShowItemDetailModal && (
+        <ItemDetailModal
+          handleSetShowModal={setIsShowItemDetailModal}
+          uid={item.uid}
+          handleOnClickButton={doBuy}
+        />
       )}
     </S.Container>
   );
