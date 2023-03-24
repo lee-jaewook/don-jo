@@ -181,4 +181,17 @@ public class MemberController {
     return new ResponseEntity(HttpStatus.OK);
   }
 
+  @ApiOperation(value="비민번호 체크", notes = "AccessToken으로 인증 후 비밀번호를 체크합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/password")
+  public ResponseEntity<?> checkPassword(@RequestBody String password, HttpServletRequest request) {
+    boolean status = memberService.checkPassword(password, request);
+
+    return new ResponseEntity(status, HttpStatus.OK);
+  }
+
 }

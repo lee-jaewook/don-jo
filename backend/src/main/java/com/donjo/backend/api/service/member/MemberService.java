@@ -34,4 +34,6 @@ public interface MemberService {
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
 
   boolean verifySignature(String memberAddress, String signature, String message);
+
+  boolean checkPassword(String requestPassword, HttpServletRequest request);
 }
