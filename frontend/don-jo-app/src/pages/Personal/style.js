@@ -56,7 +56,8 @@ export const ProfileImg = styled.div`
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.src});
-  filter: drop-shadow(0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05));
+  box-shadow: 0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05);
+
   position: relative;
   margin-left: 4rem;
 

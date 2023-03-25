@@ -8,6 +8,7 @@ import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
 import { Desktop } from "../../components/Common/Template";
 import { memberApi } from "../../api/member";
+import defaultProfileImg from "../../assets/img/common/app-logo.svg";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -73,7 +74,11 @@ const Personal = () => {
       </S.BackgroundImg>
       <S.ProfileImgContainer>
         <S.ProfileImg
-          src={memberInfoItemData.profileImgPath}
+          src={
+            memberInfoItemData.profileImgPath === ""
+              ? defaultProfileImg
+              : memberInfoItemData.profileImgPath
+          }
           onMouseOver={() => setIsProfileHover(true)}
           onMouseOut={() => setIsProfileHover(false)}
         >
