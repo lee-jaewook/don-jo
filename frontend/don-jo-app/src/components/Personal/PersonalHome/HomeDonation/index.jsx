@@ -11,11 +11,15 @@ const HomeDonation = ({ donationSettingData, pageNickname }) => {
   const [btnText, setBtnText] = useState("");
   const [donationAmount, setDonationAmount] = useState(0);
 
+  // 임시 * 이 페이지가 내 페이지인지
+  const isMine = true;
+  ///////////////////////////////////
+
   const DecreaseBtn = () => {
     return (
       <div style={{ margin: "0 auto" }}>
-        <S.RoundBtn onClick={decreaseCount}>
-          <FiMinus color="white" size={22} />
+        <S.RoundBtn onClick={decreaseCount} disabled={isMine}>
+          <FiMinus color="var(--color-primary)" size={22} />
         </S.RoundBtn>
       </div>
     );
@@ -23,8 +27,8 @@ const HomeDonation = ({ donationSettingData, pageNickname }) => {
 
   const IncreaseBtn = () => {
     return (
-      <S.RoundBtn onClick={increaseCount}>
-        <FiPlus color="white" size={22} />
+      <S.RoundBtn onClick={increaseCount} disabled={isMine}>
+        <FiPlus color="var(--color-primary)" size={22} />
       </S.RoundBtn>
     );
   };
@@ -67,6 +71,7 @@ const HomeDonation = ({ donationSettingData, pageNickname }) => {
             type="number"
             value={count}
             onChange={handleOnChangeCount}
+            disabled={isMine}
           ></S.CountInput>
           <S.RoundBtnWrapper>
             <DecreaseBtn />
@@ -84,6 +89,7 @@ const HomeDonation = ({ donationSettingData, pageNickname }) => {
             color="var(--color-primary)"
             handleOnClickButton={handleOnClickDonate}
             isBackground={true}
+            isDisabled={isMine}
           />
         </S.BasicButtonWrapper>
       </S.Card>
