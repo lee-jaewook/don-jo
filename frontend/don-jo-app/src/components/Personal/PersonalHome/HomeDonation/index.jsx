@@ -82,6 +82,7 @@ const HomeDonation = ({ donationSettingData, pageNickname }) => {
           handleOnChangeValue={handleOnChangeMsg}
           placeholder="Send a message"
           value={msg}
+          disabled={isMine}
         />
         <S.BasicButtonWrapper>
           <BasicButton
