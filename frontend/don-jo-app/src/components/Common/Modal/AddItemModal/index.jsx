@@ -21,29 +21,32 @@ const AddItemModal = ({
   transactionFunc,
   imageTitle = "Image",
 }) => {
-  // 업로드 파일 미리보기
-  const profileRef = useRef();
-  const [itemName, setItemName] = useState("");
-  const [itemPrice, setItemPrice] = useState("");
-  const [itemFeaturedImage, setItemFeaturedImage] = useState(null);
+  // 아이템 프로필 설정
   const [itemFile, setItemNamFile] = useState(null);
-  const [itemDescription, setItemDescription] = useState("");
-  const [itemMessage, setItemMessage] = useState("");
+  const [itemImage, setItemImage] = useState(null);
+  // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
+  const [itemInfo, setItemInfo] = useState({});
 
-  const handleItemNameChange = (e) => {
-    setItemName(e.target.value);
+  const { itemName, itemPrice, itemDescription, itemMessage } = itemInfo;
+
+  const handleOnChangeInput = (e) => {
+    const { id, value } = e.target;
+    setItemInfo({
+      ...itemInfo,
+      [id]: value,
+    });
   };
 
-  const handleItemPriceChange = (e) => {
-    setItemPrice(e.target.value);
-  };
+  const handleImageChange = (e) => {
+    console.log(e.target.files);
+    console.log(e.target.id);
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-  const handleItemDescriptionChange = (e) => {
-    setItemDescription(e.target.value);
-  };
-
-  const handleItemMessageChange = (e) => {
-    setItemMessage(e.target.value);
+    reader.onload = () => {
+      setItemImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFileChange = (e) => {
@@ -76,10 +79,11 @@ const AddItemModal = ({
           </S.RequiredInputWrapper>
           <S.BasicInputWrap>
             <BasicInput
+              id="itemName"
               type="text"
               value={itemName}
               placeholder="Items Title"
-              handleOnChangeValue={handleItemNameChange}
+              handleOnChangeValue={handleOnChangeInput}
             />
           </S.BasicInputWrap>
         </S.ContentWrap>
@@ -91,10 +95,11 @@ const AddItemModal = ({
           </S.RequiredInputWrapper>
           <S.SeparationContainer width="16.75">
             <S.BasicInput
+              id="itemPrice"
               type="text"
               value={itemPrice}
               placeholder="1000.000"
-              onChange={handleItemPriceChange}
+              onChange={handleOnChangeInput}
             />
             <S.UnitWrap>eth</S.UnitWrap>
           </S.SeparationContainer>
@@ -108,11 +113,21 @@ const AddItemModal = ({
           <S.ImageSizeInfo>
             We recommend an image at least 460px wide and 200px tall.
           </S.ImageSizeInfo>
-          <S.AddButton>
-            <S.AddIcon>
-              <FiUpload size="20px" color="white" />
-            </S.AddIcon>
-          </S.AddButton>
+          <S.ItemProfileImg url={itemImage !== null ? itemImage : ""}>
+            <S.EditIconWrapper>
+              <label htmlFor="featured-image">
+                <FiUpload className="edit-icon" size="20px" color="white" />
+              </label>
+              <S.UploadButton
+                id="featured-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                defaultValue=""
+                placeholder="select"
+              />
+            </S.EditIconWrapper>
+          </S.ItemProfileImg>
         </S.ContentWrap>
 
         <S.ContentWrap>
@@ -122,14 +137,16 @@ const AddItemModal = ({
           </S.RequiredInputWrapper>
           <S.SeparationContainer width="20.75">
             <S.FileUpload
-              id="fileUpload"
+              id="file-upload"
               type="file"
               onChange={handleFileChange}
+              placeholder="select a file"
             />
             <S.ButtonWrap>
               <S.FileUploadButton
+                htmlFor="file-upload"
                 color="var(--color-primary)"
-                onClick={handleFileUpload}
+                // onClick={handleFileUpload}
               >
                 Open
               </S.FileUploadButton>
@@ -140,7 +157,8 @@ const AddItemModal = ({
         <S.ContentWrap>
           <BasicTitle text="Description" />
           <BasicTextarea
-            handleOnChangeValue={handleItemDescriptionChange}
+            id="itemDescription"
+            handleOnChangeValue={handleOnChangeInput}
             placeholder="Description what you are selling."
           />
         </S.ContentWrap>
@@ -151,7 +169,8 @@ const AddItemModal = ({
             <S.RequiredIcon>*</S.RequiredIcon>
           </S.RequiredInputWrapper>
           <BasicTextarea
-            handleOnChangeValue={handleItemMessageChange}
+            id="itemMessage"
+            handleOnChangeValue={handleOnChangeInput}
             placeholder="Thank you for supporting my wishlist!"
           />
         </S.ContentWrap>
@@ -160,7 +179,7 @@ const AddItemModal = ({
           <S.BasicButtonContainer>
             <BasicButton
               text="Create"
-              color="black"
+              color="var(--color-primary)"
               handleOnClickButton={handleSubmit}
             />
           </S.BasicButtonContainer>
