@@ -43,6 +43,11 @@ export const ReplyBtn = styled.button`
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   margin-top: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-text-secondary);
+  }
 `;
 
 export const InputContainer = styled.div`
