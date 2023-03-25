@@ -17,6 +17,12 @@ export const RepresentContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+  padding: 0.375rem;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: var(--color-background-secondary);
+  }
 `;
 
 export const ProfileImgContainer = styled.div`
