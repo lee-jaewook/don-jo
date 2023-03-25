@@ -5,15 +5,7 @@ import BasicButton from "../../../Common/BasicButton";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import PropTypes from "prop-types";
 
-//해당 페이지의 후원 세팅
-const donationSetting = {
-  pricePerDonation: 3,
-  donationEmoji: "🍪",
-  donationName: "MyCookie",
-  thankMsg: "Thanks for ur donation~",
-};
-
-const HomeDonation = ({ donationSettingData }) => {
+const HomeDonation = ({ donationSettingData, pageNickname }) => {
   const [count, setCount] = useState(1);
   const [msg, setMsg] = useState("");
   const [btnText, setBtnText] = useState("");
@@ -60,11 +52,11 @@ const HomeDonation = ({ donationSettingData }) => {
     const donationAmount = donationSettingData.pricePerDonation * count;
     setDonationAmount(donationAmount);
     setBtnText("Donate $" + String(donationAmount));
-  }, [count, donationSetting.pricePerDonation]);
+  }, [count, donationSettingData.pricePerDonation]);
 
   return (
     <S.Container>
-      <S.Title>Buy Robert Downy Jr.</S.Title>
+      <S.Title>Buy {pageNickname}</S.Title>
       <S.Card>
         <S.ImojiContainer>
           <S.Imoji>{donationSettingData.donationEmoji}</S.Imoji>
@@ -108,4 +100,5 @@ HomeDonation.propTypes = {
     pricePerDonation: PropTypes.number,
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
+  pageNickname: PropTypes.string.isRequired,
 };

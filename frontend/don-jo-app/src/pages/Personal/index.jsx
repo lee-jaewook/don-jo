@@ -130,6 +130,7 @@ const Personal = () => {
         <PersonalContent
           donationSettingData={donationSettingData}
           wishListData={wishListData}
+          pageNickname={memberInfoItemData.nickname}
         />
       </S.ContentsContainer>
 

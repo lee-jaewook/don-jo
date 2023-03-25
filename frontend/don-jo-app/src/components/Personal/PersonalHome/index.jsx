@@ -12,19 +12,25 @@ const DesktopTablet = ({ children }) => {
   return isTablet ? children : null;
 };
 
-const PersonalHome = ({ donationSettingData, wishListData }) => {
+const PersonalHome = ({ donationSettingData, wishListData, pageNickname }) => {
   return (
     <S.Container>
       <DesktopTablet>
         <HomeRecentSupport />
         <S.Wrapper>
-          <HomeDonation donationSettingData={donationSettingData} />
+          <HomeDonation
+            donationSettingData={donationSettingData}
+            pageNickname={pageNickname}
+          />
           <HomeWishlist wishListData={wishListData} />
         </S.Wrapper>
       </DesktopTablet>
 
       <Mobile>
-        <HomeDonation donationSettingData={donationSettingData} />
+        <HomeDonation
+          donationSettingData={donationSettingData}
+          pageNickname={pageNickname}
+        />
         <HomeRecentSupport />
         <HomeWishlist wishListData={wishListData} />
       </Mobile>
@@ -42,4 +48,5 @@ PersonalHome.propTypes = {
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
   wishListData: PropTypes.array,
+  pageNickname: PropTypes.string.isRequired,
 };
