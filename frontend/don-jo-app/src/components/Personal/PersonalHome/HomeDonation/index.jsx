@@ -3,6 +3,7 @@ import * as S from "./style";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import BasicButton from "../../../Common/BasicButton";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import PropTypes from "prop-types";
 
 //해당 페이지의 후원 세팅
 const donationSetting = {
@@ -12,7 +13,7 @@ const donationSetting = {
   thankMsg: "Thanks for ur donation~",
 };
 
-const HomeDonation = () => {
+const HomeDonation = ({ donationSettingData }) => {
   const [count, setCount] = useState(1);
   const [msg, setMsg] = useState("");
   const [btnText, setBtnText] = useState("");
@@ -56,7 +57,7 @@ const HomeDonation = () => {
   const handleOnClickDonate = () => {};
 
   useEffect(() => {
-    const donationAmount = donationSetting.pricePerDonation * count;
+    const donationAmount = donationSettingData.pricePerDonation * count;
     setDonationAmount(donationAmount);
     setBtnText("Donate $" + String(donationAmount));
   }, [count, donationSetting.pricePerDonation]);
@@ -66,8 +67,8 @@ const HomeDonation = () => {
       <S.Title>Buy Robert Downy Jr.</S.Title>
       <S.Card>
         <S.ImojiContainer>
-          <S.Imoji>{donationSetting.donationEmoji}</S.Imoji>
-          <S.ImojiTitle>{donationSetting.donationName}</S.ImojiTitle>
+          <S.Imoji>{donationSettingData.donationEmoji}</S.Imoji>
+          <S.ImojiTitle>{donationSettingData.donationName}</S.ImojiTitle>
         </S.ImojiContainer>
         <S.CounterContainer>
           <S.CountInput
@@ -99,3 +100,12 @@ const HomeDonation = () => {
 };
 
 export default HomeDonation;
+
+HomeDonation.propTypes = {
+  donationSettingData: PropTypes.shape({
+    donationEmoji: PropTypes.string.isRequired,
+    donationName: PropTypes.string.isRequired,
+    pricePerDonation: PropTypes.number,
+    thankMsg: PropTypes.string.isRequired,
+  }).isRequired,
+};
