@@ -56,11 +56,11 @@ export const ProfileImg = styled.div`
   width: 11.25rem;
   height: 11.25rem;
   border-radius: 100%;
+  background-color: var(--color-background);
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.src});
   box-shadow: 0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05);
-
   position: relative;
   margin-left: 4rem;
 
