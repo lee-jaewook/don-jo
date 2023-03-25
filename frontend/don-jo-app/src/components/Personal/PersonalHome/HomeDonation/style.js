@@ -51,7 +51,7 @@ export const CountInput = styled.input`
   font-size: 1rem;
 
   &:hover {
-    border: 1px solid black;
+    border: 1px solid var(--color-primary);
   }
 
   @media screen and (max-width: 48rem) {

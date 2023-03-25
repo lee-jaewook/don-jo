@@ -101,7 +101,7 @@ export const ProgressState = styled.div`
   width: ${(props) => `${props.currentState}%` || "0%"};
   height: 0.5rem;
   border-radius: 0.25rem;
-  background-color: black;
+  background-color: var(--color-primary);
 `;
 
 export const AmountWrapper = styled.div`

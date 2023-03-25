@@ -75,7 +75,8 @@ export const MenuItem = styled.li`
   width: 100%;
   height: 3.25rem;
   display: block;
-  background-color: ${(props) => (props.current ? "black" : "transparent")};
+  background-color: ${(props) =>
+    props.current ? "var(--color-primary)" : "transparent"};
   border-radius: 1.875rem;
   line-height: 3.25rem;
 `;

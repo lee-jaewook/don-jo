@@ -19,7 +19,7 @@ const IntroductionEdit = ({ handleSetShowModal }) => {
         <BasicButton
           text="Submit"
           handleOnClickButton={handleOnClick}
-          color="black"
+          color="var(--color-primary)"
           isBackground={true}
         />
       </S.BasicButtonWrapper>
