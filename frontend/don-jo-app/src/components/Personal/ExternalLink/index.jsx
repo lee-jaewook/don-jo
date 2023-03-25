@@ -83,10 +83,14 @@ const ExternalLink = ({ socialList }) => {
   //해당 사이트에 맞는 로고 저장
   const matchLogo = () => {
     for (let socialListIndex in socialList) {
-      for (let websiteIndex in website) {
-        if (socialList[socialListIndex].includes(website[websiteIndex].name)) {
-          setIconList((prev) => [...prev, website[websiteIndex].logo]);
-          break;
+      if (socialList[socialListIndex] !== "") {
+        for (let websiteIndex in website) {
+          if (
+            socialList[socialListIndex].includes(website[websiteIndex].name)
+          ) {
+            setIconList((prev) => [...prev, website[websiteIndex].logo]);
+            break;
+          }
         }
       }
     }
@@ -102,7 +106,7 @@ const ExternalLink = ({ socialList }) => {
 
   return (
     <div>
-      {socialList.length !== 0 && (
+      {iconList.length !== 0 ? (
         <S.Container>
           {iconList.map((icon, i) => {
             return (
@@ -117,7 +121,7 @@ const ExternalLink = ({ socialList }) => {
             );
           })}
         </S.Container>
-      )}
+      ) : null}
     </div>
   );
 };
@@ -125,5 +129,5 @@ const ExternalLink = ({ socialList }) => {
 export default ExternalLink;
 
 ExternalLink.propTypes = {
-  socialList: PropTypes.array.isRequired,
+  socialList: PropTypes.array,
 };
