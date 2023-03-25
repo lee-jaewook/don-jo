@@ -6,6 +6,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  margin-bottom: 9.375rem;
 `;
 
 export const BackgroundImg = styled.div`
