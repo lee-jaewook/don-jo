@@ -14,8 +14,11 @@ export const BackgroundImg = styled.div`
   height: 15rem;
   background-size: cover;
   background-position: center;
-  background-image: url(${(props) => props.src});
   position: relative;
+  background-color: ${(props) =>
+    props.src === null ? "var(--color-primary)" : "transparent"};
+  background-image: ${(props) =>
+    props.src !== null ? `url(${props.src})` : "none"};
 `;
 
 export const BackgroundImgEdit = styled.div`
