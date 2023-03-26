@@ -17,8 +17,9 @@ import {
   IoLogoYoutube,
 } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const ExternalLink = ({ socialList }) => {
+const ExternalLink = () => {
   const website = [
     {
       name: "behance",
@@ -79,6 +80,7 @@ const ExternalLink = ({ socialList }) => {
   ];
 
   const [iconList, setIconList] = useState([]);
+  const socialList = useSelector((state) => state.memberInfo.socialList);
 
   //해당 사이트에 맞는 로고 저장
   const matchLogo = () => {
@@ -94,6 +96,7 @@ const ExternalLink = ({ socialList }) => {
         }
       }
     }
+    console.log("아이콘 리스트", iconList);
   };
 
   useEffect(() => {
@@ -127,7 +130,3 @@ const ExternalLink = ({ socialList }) => {
 };
 
 export default ExternalLink;
-
-ExternalLink.propTypes = {
-  socialList: PropTypes.array,
-};
