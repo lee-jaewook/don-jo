@@ -85,9 +85,8 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
-      console.log(data);
-      //배경사진 수정 API 나오면 붙이기
-
+      const backgroundImgSrc = S3URL + data;
+      await memberApi.updateUserBackground(backgroundImgSrc);
       getPageInfo();
     } catch (error) {
       console.log("error: ", error);
@@ -101,8 +100,8 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
-      //프로필 사진 수정 API 나오면 붙이기
-
+      const profileImgSrc = S3URL + data;
+      await memberApi.updateUserProfile(profileImgSrc);
       getPageInfo();
     } catch (error) {
       console.log("error: ", error);
@@ -202,7 +201,10 @@ const Personal = () => {
         <FullScreenModal
           handleSetShowModal={setIsShowIntroductionEdit}
           children={
-            <IntroductionEdit handleSetShowModal={setIsShowIntroductionEdit} />
+            <IntroductionEdit
+              handleSetShowModal={setIsShowIntroductionEdit}
+              getPageInfo={getPageInfo}
+            />
           }
         />
       )}
