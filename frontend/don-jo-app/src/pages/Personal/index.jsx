@@ -1,7 +1,7 @@
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import ExternalLink from "../../components/Personal/ExternalLink";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
@@ -10,6 +10,7 @@ import { Desktop } from "../../components/Common/Template";
 import { memberApi } from "../../api/member";
 import defaultProfileImg from "../../assets/img/common/app-logo.svg";
 import { useParams } from "react-router-dom";
+import { fileApi } from "../../api/file";
 
 const Personal = () => {
   //로그인 유저 더미 데이터
@@ -59,8 +60,62 @@ const Personal = () => {
     getPageInfo();
   }, []);
 
+  const PROFILE_TYPE = "img/profile";
+  const BACKGROUND_TYPE = "img/background";
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
+  const profileRef = useRef(null);
+  const backgroundImgRef = useRef(null);
+
+  // 변경 div 클릭 시 해당 input 작동
+  const handleBgImgUpload = () => {
+    console.log("배사 변경");
+    backgroundImgRef.current.click();
+  };
+  const handleProfileImgUpload = () => {
+    console.log("프사 변경");
+    profileRef.current.click();
+  };
+
+  //이미지 올리기
+  const uploadBackgroundImg = async (e) => {
+    console.log("배경이미지 업로드");
+    const file = e.target.files[0];
+    try {
+      const { data } = await fileApi.uploadFile(file, BACKGROUND_TYPE);
+      //배경사진 수정 API 나오면 붙이기
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+  const uploadProfileImg = async (e) => {
+    console.log("프로필이미지 업로드");
+    const file = e.target.files[0];
+    try {
+      const { data } = await fileApi.uploadFile(file, PROFILE_TYPE);
+      //프로필 사진 수정 API 나오면 붙이기
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
   return (
     <S.Container>
+      <S.FileInput
+        ref={backgroundImgRef}
+        type="file"
+        accept="image/*"
+        defaultValue=""
+        onChange={uploadBackgroundImg}
+      />
+      <S.FileInput
+        ref={profileRef}
+        type="file"
+        accept="image/*"
+        defaultValue=""
+        onChange={uploadProfileImg}
+      />
+
       <S.BackgroundImg
         src={memberInfoItemData.backgroundImgPath}
         onMouseOver={() => setIsBackgroundHover(true)}
@@ -68,7 +123,7 @@ const Personal = () => {
       >
         {loginUser.pageName === pageName && isBackgroundHover && (
           <S.BackgroundImgEdit>
-            <S.EditIcon>
+            <S.EditIcon onClick={handleBgImgUpload}>
               <FiEdit color="white" size={20.35} />
             </S.EditIcon>
           </S.BackgroundImgEdit>
@@ -86,7 +141,7 @@ const Personal = () => {
         >
           {loginUser.pageName === pageName && isProfileHover && (
             <S.ProfileImgEdit>
-              <S.EditIcon>
+              <S.EditIcon onClick={handleProfileImgUpload}>
                 <FiEdit color="white" size={20.35} />
               </S.EditIcon>
             </S.ProfileImgEdit>

@@ -43,6 +43,10 @@ export const EditIcon = styled.div`
   cursor: pointer;
 `;
 
+export const FileInput = styled.input`
+  display: none;
+`;
+
 export const ProfileImgContainer = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
