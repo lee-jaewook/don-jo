@@ -21,30 +21,22 @@ public class ModifyMemberCond {
   private String profileImgPath;
   private String backgroundImgPath;
   private String nickname;
-  private String introduction;
   private String pageName;
   private int themeColor;
-  private List<Social> socialList;
+  private List<String> socialList;
 
   public void updateMember(Member member) {
     member.setProfileImagePath(profileImgPath);
     member.setBackgroundImgPath(backgroundImgPath);
     member.setNickname(nickname);
-    member.setIntroduction(introduction);
     member.setPageName(pageName);
     member.setThemeColor(themeColor);
-    if (socialList != null) {
-      for (Social social : socialList) {
-        Social existingSocial = member.getSocial()
-            .stream()
-            .filter(s -> s.getId().equals(social.getId()))
-            .findFirst()
-            .orElse(null);
-        if (existingSocial != null) {
-          existingSocial.setSocialLink(social.getSocialLink());
-        }
-      }
+
+    List<Social> socials = member.getSocial();
+    for (int i = 0; i < socials.size(); i++) {
+      socials.get(i).setSocialLink(socialList.get(i));
     }
+    member.setSocial(socials);
   }
 
 }
