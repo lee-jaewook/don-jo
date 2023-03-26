@@ -217,6 +217,14 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
+  public void modifyMemberBackgroundImage(String backgroundImageSrc, HttpServletRequest request) {
+    Member member = getMemberInfoWithToken(request.getHeader(JwtFilter.ACCESS_HEADER).substring(7));
+
+    member.setBackgroundImgPath(backgroundImageSrc);
+  }
+
+  @Override
   public boolean verifySignature(String memberAddress, String signature, String message) {
     String prefix = PERSONAL_MESSAGE_PREFIX + message.length();
     byte[] msgHash = Hash.sha3((prefix + message).getBytes());

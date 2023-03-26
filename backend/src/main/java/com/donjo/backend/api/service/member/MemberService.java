@@ -33,6 +33,8 @@ public interface MemberService {
 
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
 
+  void modifyMemberBackgroundImage(String backgroundImageSrc, HttpServletRequest request);
+
   boolean verifySignature(String memberAddress, String signature, String message);
 
   boolean checkPassword(String requestPassword, HttpServletRequest request);
