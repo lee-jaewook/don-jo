@@ -8,7 +8,7 @@ import DashBoardListItem from "../DashBoardListItem";
 import { supportApi } from "../../../api/support";
 import { useSelector } from "react-redux";
 
-const DashBoardSupportList = ({ type, pageNum, pageSize }) => {
+const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
   const [result, setResult] = useState([]);
   const location = useLocation();
   const memberAddress = useSelector((state) => state.web3.walletAddress);
@@ -23,6 +23,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize }) => {
       );
       if (status === 200) {
         setResult(data);
+        setPageNum((prev) => prev + 1);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -72,6 +73,7 @@ export default DashBoardSupportList;
 
 DashBoardSupportList.propTypes = {
   type: PropTypes.string.isRequired,
-  pageNum: PropTypes.string.isRequired,
+  pageNum: PropTypes.number.isRequired,
   pageSize: PropTypes.string.isRequired,
+  setPageNum: PropTypes.func.isRequired,
 };
