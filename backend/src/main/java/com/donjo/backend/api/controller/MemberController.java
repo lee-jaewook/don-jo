@@ -186,11 +186,10 @@ public class MemberController {
           @ApiResponse(code = 200, message = "OK(배경 수정 성공)"),
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
-          @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
           @ApiResponse(code = 500, message = "서버에러")
   })
-  @PutMapping(path="/api/auth/member/backgroundimage/{background-image-src}")
-  public ResponseEntity<?> modifyMemberBackgroundImage(@PathVariable("background-image-src") String backgroundImageSrc, HttpServletRequest request) {
+  @PutMapping(path="/api/auth/member/background")
+  public ResponseEntity<?> modifyMemberBackgroundImage(@RequestBody String backgroundImageSrc, HttpServletRequest request) {
     memberService.modifyMemberBackgroundImage(backgroundImageSrc, request);
 
     return new ResponseEntity(HttpStatus.OK);
@@ -201,11 +200,10 @@ public class MemberController {
           @ApiResponse(code = 200, message = "OK(프로필 사진 수정 성공)"),
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
-          @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
           @ApiResponse(code = 500, message = "서버에러")
   })
-  @PutMapping(path="/api/auth/member/profile/{profile-image-src}")
-  public ResponseEntity<?> modifyMemberProfileImage(@PathVariable("profile-image-src") String profileImageSrc, HttpServletRequest request) {
+  @PutMapping(path="/api/auth/member/profile")
+  public ResponseEntity<?> modifyMemberProfileImage(@RequestBody String profileImageSrc, HttpServletRequest request) {
     memberService.modifyMemberProfileImage(profileImageSrc, request);
 
     return new ResponseEntity(HttpStatus.OK);
@@ -216,7 +214,6 @@ public class MemberController {
           @ApiResponse(code = 200, message = "OK(멤버 소개 수정 성공)"),
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
-          @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
           @ApiResponse(code = 500, message = "서버에러")
   })
   @PutMapping(path="/api/auth/member/introduction")
