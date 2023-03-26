@@ -35,6 +35,8 @@ public interface MemberService {
 
   void modifyMemberBackgroundImage(String backgroundImageSrc, HttpServletRequest request);
 
+  void modifyMemberProfileImage(String profileImageSrc, HttpServletRequest request);
+
   boolean verifySignature(String memberAddress, String signature, String message);
 
   boolean checkPassword(String requestPassword, HttpServletRequest request);
