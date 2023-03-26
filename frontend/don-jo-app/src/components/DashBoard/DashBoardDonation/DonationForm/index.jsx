@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useInput } from "../../../../hooks/useInput";
+import * as S from "./style";
 import BasicTitle from "../../../Common/BasicTitle";
 import EmojiPicker from "emoji-picker-react";
 import { FiChevronDown } from "react-icons/fi";
-import * as S from "./style";
 import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
 import BasicTextarea from "../../../Common/BasicTextarea";
@@ -11,7 +10,6 @@ import { supportApi } from "../../../../api/support";
 
 const DonationForm = () => {
   const PricePerData = [1, 2, 3, 4, 5];
-  const [currentPrice, setCurrentPrice] = useState(1); //// user별 default 가격 설정
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const [result, setResult] = useState({});
   const { donationEmoji, donationName, pricePerDonation, thankMsg } = result;
@@ -42,8 +40,9 @@ const DonationForm = () => {
   };
 
   const handleOnClickButton = async () => {
-    if (!donationEmoji || !donationName || !thankMsg) return;
-    console.log("result: ", result);
+    if (!donationEmoji || !donationName || !thankMsg) {
+      alert("Please enter all settings"); // 임시 처리
+    }
 
     try {
       await supportApi.updateDonationSettings(result);
@@ -55,9 +54,7 @@ const DonationForm = () => {
   const getDonationSettingsData = async () => {
     try {
       const { data } = await supportApi.getDonationSettings();
-      console.log(data);
       setResult(data);
-      setCurrentPrice(data.pricePerDonation);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -69,7 +66,10 @@ const DonationForm = () => {
 
   return (
     <S.FormWrapper>
-      <BasicTitle text="Choose your Emoji" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Choose your Emoji" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
         Replace "{donationName}" with anything you like.
       </S.FormDescription>
@@ -79,6 +79,7 @@ const DonationForm = () => {
           <FiChevronDown size="16px" />
         </S.EmojiButton>
         <BasicInput
+          id="donationName"
           type="text"
           value={donationName || ""}
           handleOnChangeValue={handleOnChangeInput}
@@ -90,7 +91,10 @@ const DonationForm = () => {
         )}
       </S.EmojiSettingWrapper>
 
-      <BasicTitle text="Price per Donation" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Price per Donation" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
         Change the default price of a coffee to an amount of your choice.
       </S.FormDescription>
@@ -111,14 +115,17 @@ const DonationForm = () => {
             </S.RadioWrapper>
           ))}
       </S.RadioGroup>
-      <BasicTitle text="Thank you message" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Thank you message" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
         This will be visible after the payment and in the receipt email. Write a
         personable thank you message, and include any rewards if you like.
       </S.FormDescription>
 
       <BasicTextarea
-        id="thanks-msg"
+        id="thankMsg"
         placeholder="Send message"
         handleOnChangeValue={handleOnChangeInput}
         value={thankMsg}
