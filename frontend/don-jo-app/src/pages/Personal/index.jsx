@@ -22,9 +22,7 @@ const Personal = () => {
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
 
   const dispatch = useDispatch();
-  const [memberInfoItemData, setMemberInfoItemData] = useState(
-    useSelector((state) => state.memberInfo)
-  );
+  const memberInfoItemData = useSelector((state) => state.memberInfo);
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
@@ -39,7 +37,6 @@ const Personal = () => {
     try {
       const { data } = await memberApi.getPageInfo(pageName);
       dispatch(updateMemberInfo(data.memberInfoItem));
-      setMemberInfoItemData(data.memberInfoItem);
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);
     } catch (error) {
