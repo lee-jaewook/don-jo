@@ -46,7 +46,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
           </S.EmojiList>
         )}
       </S.SupportListHeader>
-      <S.SupportList>
+      <S.SupportList length={result.length}>
         {result && result.length > 0 ? (
           result.map((item, index) => (
             <DashBoardListItem
@@ -59,7 +59,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
             />
           ))
         ) : (
-          <label>There are no recent sponsorships.</label>
+          <S.Message>There are no recent sponsorships.</S.Message>
         )}
         {result.length >= 10 && (
           <ShowMoreButton handleOnClickButton={handleGetSupportList} />
