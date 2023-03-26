@@ -82,8 +82,12 @@ const Personal = () => {
   const uploadBackgroundImg = async (e) => {
     console.log("배경이미지 업로드");
     const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("multipartFile", file);
+
     try {
-      const { data } = await fileApi.uploadFile(file, BACKGROUND_TYPE);
+      const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
+      console.log(data);
       //배경사진 수정 API 나오면 붙이기
     } catch (error) {
       console.log("error: ", error);
@@ -92,8 +96,11 @@ const Personal = () => {
   const uploadProfileImg = async (e) => {
     console.log("프로필이미지 업로드");
     const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("multipartFile", file);
+
     try {
-      const { data } = await fileApi.uploadFile(file, PROFILE_TYPE);
+      const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
       //프로필 사진 수정 API 나오면 붙이기
     } catch (error) {
       console.log("error: ", error);
