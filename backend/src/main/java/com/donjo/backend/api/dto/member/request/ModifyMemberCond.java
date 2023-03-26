@@ -21,7 +21,6 @@ public class ModifyMemberCond {
   private String profileImgPath;
   private String backgroundImgPath;
   private String nickname;
-  private String introduction;
   private String pageName;
   private int themeColor;
   private List<String> socialList;
@@ -30,7 +29,6 @@ public class ModifyMemberCond {
     member.setProfileImagePath(profileImgPath);
     member.setBackgroundImgPath(backgroundImgPath);
     member.setNickname(nickname);
-    member.setIntroduction(introduction);
     member.setPageName(pageName);
     member.setThemeColor(themeColor);
 
