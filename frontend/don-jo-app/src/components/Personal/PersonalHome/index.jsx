@@ -5,6 +5,7 @@ import HomeWishlist from "./HomeWishlist";
 import { Mobile } from "../../Common/Template";
 import { useMediaQuery } from "react-responsive";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 //데스크탑이거나 태블릿일 경우
 const DesktopTablet = ({ children }) => {
@@ -12,25 +13,19 @@ const DesktopTablet = ({ children }) => {
   return isTablet ? children : null;
 };
 
-const PersonalHome = ({ donationSettingData, wishListData, pageNickname }) => {
+const PersonalHome = ({ donationSettingData, wishListData }) => {
   return (
     <S.Container>
       <DesktopTablet>
         <HomeRecentSupport />
         <S.Wrapper>
-          <HomeDonation
-            donationSettingData={donationSettingData}
-            pageNickname={pageNickname}
-          />
+          <HomeDonation donationSettingData={donationSettingData} />
           <HomeWishlist wishListData={wishListData} />
         </S.Wrapper>
       </DesktopTablet>
 
       <Mobile>
-        <HomeDonation
-          donationSettingData={donationSettingData}
-          pageNickname={pageNickname}
-        />
+        <HomeDonation donationSettingData={donationSettingData} />
         <HomeRecentSupport />
         <HomeWishlist wishListData={wishListData} />
       </Mobile>
@@ -48,5 +43,4 @@ PersonalHome.propTypes = {
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
   wishListData: PropTypes.array,
-  pageNickname: PropTypes.string.isRequired,
 };

@@ -11,21 +11,20 @@ import { memberApi } from "../../api/member";
 import defaultProfileImg from "../../assets/img/common/app-logo.svg";
 import { useParams } from "react-router-dom";
 import { fileApi } from "../../api/file";
+import { useDispatch, useSelector } from "react-redux";
+import { updateMemberInfo } from "../../stores/memberInfo";
 
 const Personal = () => {
-  //로그인 유저 더미 데이터
-  const loginUser = {
-    nickname: "taehyun",
-    pageName: "taebong",
-  };
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
   const { pageName } = useParams();
 
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
+
+  const dispatch = useDispatch();
+  const [memberInfoItemData, setMemberInfoItemData] = useState(
+    useSelector((state) => state.memberInfo)
+  );
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
@@ -33,21 +32,13 @@ const Personal = () => {
     pricePerDonation: 0,
     thankMsg: "",
   });
-  const [memberInfoItemData, setMemberInfoItemData] = useState({
-    backgroundImgPath: null,
-    introduction: null,
-    memberAddress: "",
-    nickname: "",
-    numSupporters: 0,
-    profileImgPath: "",
-    socialList: ["", "", ""],
-    themeColor: 1,
-  });
+
   const [wishListData, setWishListData] = useState([]);
 
   const getPageInfo = async () => {
     try {
       const { data } = await memberApi.getPageInfo(pageName);
+      dispatch(updateMemberInfo(data.memberInfoItem));
       setMemberInfoItemData(data.memberInfoItem);
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);
@@ -59,6 +50,19 @@ const Personal = () => {
   useEffect(() => {
     getPageInfo();
   }, []);
+
+  //로그인 유저의 지갑주소 정보
+  const loginUserMemberAddress = useSelector(
+    (state) => state.web3.walletAddress
+  );
+
+  //로그인 유저가 페이지 주인인지 확인
+  const [isOwner, setIsOwner] = useState(false);
+  useEffect(() => {
+    const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
+    setIsOwner(pageMemberAddress === loginUserMemberAddress);
+    console.log(isOwner);
+  }, [memberInfoItemData]);
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
@@ -121,7 +125,7 @@ const Personal = () => {
         onMouseOver={() => setIsBackgroundHover(true)}
         onMouseOut={() => setIsBackgroundHover(false)}
       >
-        {loginUser.pageName === pageName && isBackgroundHover && (
+        {isOwner && isBackgroundHover && (
           <S.BackgroundImgEdit>
             <S.EditIcon onClick={handleBgImgUpload}>
               <FiEdit color="white" size={20.35} />
@@ -139,7 +143,7 @@ const Personal = () => {
           onMouseOver={() => setIsProfileHover(true)}
           onMouseOut={() => setIsProfileHover(false)}
         >
-          {loginUser.pageName === pageName && isProfileHover && (
+          {isOwner && isProfileHover && (
             <S.ProfileImgEdit>
               <S.EditIcon onClick={handleProfileImgUpload}>
                 <FiEdit color="white" size={20.35} />
@@ -164,7 +168,7 @@ const Personal = () => {
           <Desktop>
             <S.IntroductionContainer>
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
-              {loginUser.pageName === pageName && (
+              {isOwner && (
                 <S.IntroductionEdit
                   onClick={() => {
                     setIsShowIntroductionEdit(true);
@@ -185,7 +189,6 @@ const Personal = () => {
         <PersonalContent
           donationSettingData={donationSettingData}
           wishListData={wishListData}
-          pageNickname={memberInfoItemData.nickname}
         />
       </S.ContentsContainer>
 

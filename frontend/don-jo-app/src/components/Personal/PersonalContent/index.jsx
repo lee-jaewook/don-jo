@@ -6,11 +6,7 @@ import PersonalItems from "../PersonalItems";
 import PersonalWishlist from "../PersonalWishlist";
 import PropTypes from "prop-types";
 
-const PersonalContent = ({
-  donationSettingData,
-  wishListData,
-  pageNickname,
-}) => {
+const PersonalContent = ({ donationSettingData, wishListData }) => {
   const allTab = [
     {
       index: 0,
@@ -19,7 +15,6 @@ const PersonalContent = ({
         <PersonalHome
           donationSettingData={donationSettingData}
           wishListData={wishListData}
-          pageNickname={pageNickname}
         />
       ),
     },
@@ -55,5 +50,4 @@ PersonalContent.propTypes = {
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
   wishListData: PropTypes.array,
-  pageNickname: PropTypes.string.isRequired,
 };
