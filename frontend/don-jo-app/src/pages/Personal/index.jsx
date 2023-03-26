@@ -33,12 +33,18 @@ const Personal = () => {
 
   const [wishListData, setWishListData] = useState([]);
 
+  const [isOwner, setIsOwner] = useState(false);
+
   const getPageInfo = async () => {
     try {
       const { data } = await memberApi.getPageInfo(pageName);
       dispatch(updateMemberInfo(data.memberInfoItem));
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);
+
+      //로그인 유저가 페이지 주인인지 확인
+      const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
+      setIsOwner(pageMemberAddress === loginUserMemberAddress);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -52,14 +58,6 @@ const Personal = () => {
   const loginUserMemberAddress = useSelector(
     (state) => state.web3.walletAddress
   );
-
-  //로그인 유저가 페이지 주인인지 확인
-  const [isOwner, setIsOwner] = useState(false);
-  useEffect(() => {
-    const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
-    setIsOwner(pageMemberAddress === loginUserMemberAddress);
-    console.log(isOwner);
-  }, [memberInfoItemData]);
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
@@ -89,6 +87,8 @@ const Personal = () => {
       const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
       console.log(data);
       //배경사진 수정 API 나오면 붙이기
+
+      getPageInfo();
     } catch (error) {
       console.log("error: ", error);
     }
@@ -102,6 +102,8 @@ const Personal = () => {
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
       //프로필 사진 수정 API 나오면 붙이기
+
+      getPageInfo();
     } catch (error) {
       console.log("error: ", error);
     }
