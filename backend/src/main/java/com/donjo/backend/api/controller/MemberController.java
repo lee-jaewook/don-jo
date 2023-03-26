@@ -183,7 +183,7 @@ public class MemberController {
 
   @ApiOperation(value="멤버 배경 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 배경을 수정합니다.")
   @ApiResponses({
-          @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+          @ApiResponse(code = 200, message = "OK(배경 수정 성공)"),
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
           @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
@@ -198,7 +198,7 @@ public class MemberController {
 
   @ApiOperation(value="멤버 프로필 사진 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 프로필 사진을 수정합니다.")
   @ApiResponses({
-          @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+          @ApiResponse(code = 200, message = "OK(프로필 사진 수정 성공)"),
           @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
           @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
           @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
@@ -207,6 +207,21 @@ public class MemberController {
   @PutMapping(path="/api/auth/member/profile/{profile-image-src}")
   public ResponseEntity<?> modifyMemberProfileImage(@PathVariable("profile-image-src") String profileImageSrc, HttpServletRequest request) {
     memberService.modifyMemberProfileImage(profileImageSrc, request);
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @ApiOperation(value="멤버 소개 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 소개를 수정합니다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "OK(멤버 소개 수정 성공)"),
+          @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+          @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+          @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
+          @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/introduction")
+  public ResponseEntity<?> modifyMemberIntroduction(@RequestBody String introduction, HttpServletRequest request) {
+    memberService.modifyMemberIntroduction(introduction, request);
 
     return new ResponseEntity(HttpStatus.OK);
   }
