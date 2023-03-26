@@ -9,7 +9,7 @@ import CustomSelect from "../DashBoardCustomSelect";
 import EmojiPicker from "emoji-picker-react";
 import { FiChevronDown } from "react-icons/fi";
 import { useInput } from "../../../hooks/useInput";
-import { colorSet } from "../../../data/dashboard";
+import { generatorColorSet } from "../../../data/dashboard";
 
 /**
  * 플러그인 생성기 컴포넌트
@@ -25,7 +25,7 @@ const DashBoardGeneratorModal = ({
   isModalOpen,
   isItemsRequired = true,
 }) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("My Button Name");
   const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
   const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
@@ -50,7 +50,10 @@ const DashBoardGeneratorModal = ({
     <div>
       <BasicModal width={26.25} handleSetShowModal={isModalOpen}>
         <S.PreViewWrap>
-          <S.PreView></S.PreView>
+          <S.PreView color={colorIndex}>
+            <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
+            <S.ButtonLabel>{title}</S.ButtonLabel>
+          </S.PreView>
         </S.PreViewWrap>
 
         <S.ContentWrap>
@@ -78,9 +81,9 @@ const DashBoardGeneratorModal = ({
         <S.ContentWrap>
           <BasicTitle text="Color" />
           <S.ColorPalette>
-            {colorSet &&
-              colorSet.length > 0 &&
-              colorSet.map((color, index) => (
+            {generatorColorSet &&
+              generatorColorSet.length > 0 &&
+              generatorColorSet.map((color, index) => (
                 <S.Color
                   type="radio"
                   name="color"

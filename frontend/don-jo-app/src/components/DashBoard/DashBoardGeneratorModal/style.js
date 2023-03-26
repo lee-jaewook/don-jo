@@ -18,10 +18,14 @@ export const PreView = styled.div`
   position: absolute;
   left: 5rem;
   top: 2.25rem;
-  background-color: white;
+  background-color: ${(props) => props.color || "black"};
   border-radius: 1.5rem;
   height: 3rem;
   width: calc(100% - 156px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
 `;
 
 export const GridBox = styled.div`
@@ -96,4 +100,17 @@ export const ButtonContent = styled.div`
   width: 100%;
   height: 100%;
   max-width: 17.5rem;
+`;
+
+export const EmojiLabel = styled.label`
+  font-size: 1.5rem;
+  margin-right: 0.125rem;
+`;
+
+export const ButtonLabel = styled.label`
+  font-family: "RobotoBold";
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: white;
 `;
