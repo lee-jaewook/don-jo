@@ -17,7 +17,7 @@ const ItemsSupporter = () => {
   return (
     <div>
       <DashBoardEarning text="Data" result={result} unit="" />
-      <DashBoardSupportList />
+      <DashBoardSupportList type="item" pageNum="0" pageSize="10" />
     </div>
   );
 };

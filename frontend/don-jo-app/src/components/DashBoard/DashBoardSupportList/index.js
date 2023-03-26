@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import BasicTitle from "../../Common/BasicTitle";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
-import { supportList } from "../../../data/dashboard";
+import { supportApi } from "../../../api/support";
+import { useSelector } from "react-redux";
 
-const DashBoardSupportList = () => {
+const DashBoardSupportList = ({ type, pageNum, pageSize }) => {
+  const [result, setResult] = useState([]);
   const location = useLocation();
+  const memberAddress = useSelector((state) => state.web3.walletAddress);
 
-  const handleGetSupportList = () => {
-    console.log("handleGetSupportList()...");
+  const handleGetSupportList = async () => {
+    try {
+      const { status, data } = await supportApi.getSupportList(
+        memberAddress,
+        pageNum,
+        pageSize,
+        type
+      );
+      if (status === 200) {
+        setResult(data);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
+
+  useEffect(() => {
+    handleGetSupportList();
+  }, []);
 
   return (
     <S.SupportListWrapper>
@@ -26,8 +46,8 @@ const DashBoardSupportList = () => {
         )}
       </S.SupportListHeader>
       <S.SupportList>
-        {supportList && supportList.length > 0 ? (
-          supportList.map((item, index) => (
+        {result && result.length > 0 ? (
+          result.map((item, index) => (
             <DashBoardListItem
               key={item.uid}
               supportType={item.supportType}
@@ -40,7 +60,7 @@ const DashBoardSupportList = () => {
         ) : (
           <label>There are no recent sponsorships.</label>
         )}
-        {supportList.length >= 10 && (
+        {result.length >= 10 && (
           <ShowMoreButton handleOnClickButton={handleGetSupportList} />
         )}
       </S.SupportList>
@@ -49,3 +69,9 @@ const DashBoardSupportList = () => {
 };
 
 export default DashBoardSupportList;
+
+DashBoardSupportList.propTypes = {
+  type: PropTypes.string.isRequired,
+  pageNum: PropTypes.string.isRequired,
+  pageSize: PropTypes.string.isRequired,
+};

@@ -28,7 +28,7 @@ const DashBoardHome = () => {
   return (
     <div>
       <DashBoardEarning text="Earnings" result={result} />
-      <DashBoardSupportList />
+      <DashBoardSupportList pageNum="0" pageSize="10" type="all" />
     </div>
   );
 };

@@ -17,7 +17,7 @@ const WishlistSupporter = () => {
   return (
     <div>
       <DashBoardEarning text="Data" result={result} unit="" />
-      <DashBoardSupportList />
+      <DashBoardSupportList type="wishlist" pageNum="0" pageSize="10" />
     </div>
   );
 };
