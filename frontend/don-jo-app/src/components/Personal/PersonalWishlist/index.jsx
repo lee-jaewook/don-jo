@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { wishlist } from "./dummyData";
 import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
 
 const PersonalWishlist = () => {
   //로그인 유저의 지갑주소 정보
@@ -26,6 +27,10 @@ const PersonalWishlist = () => {
   const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
     useState(false);
   const [thisItemUID, setThisItemUId] = useState(0);
+
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+  };
 
   return (
     <S.Container>
@@ -57,6 +62,9 @@ const PersonalWishlist = () => {
           );
         })}
       </S.CardContainer>
+
+      <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+
       {isShowWishlistDetailModal && (
         <WishlistDetailModal
           uid={thisItemUID}

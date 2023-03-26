@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import AddItemModal from "../../Common/Modal/AddItemModal";
 import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
 
 const PersonalItems = () => {
   //로그인 유저의 지갑주소 정보
@@ -24,6 +25,9 @@ const PersonalItems = () => {
   }, []);
 
   const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+  };
 
   return (
     <S.Container>
@@ -45,6 +49,9 @@ const PersonalItems = () => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}
       </S.CardContainer>
+
+      <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+
       {isOpenAddItemModal && (
         <AddItemModal handleSetShowModal={setIsOpenAddItemModal} />
       )}
