@@ -225,10 +225,19 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
   public void modifyMemberProfileImage(String profileImageSrc, HttpServletRequest request) {
     Member member = getMemberInfoWithToken(request.getHeader(JwtFilter.ACCESS_HEADER).substring(7));
 
     member.setProfileImagePath(profileImageSrc);
+  }
+
+  @Override
+  @Transactional
+  public void modifyMemberIntroduction(String introduction, HttpServletRequest request) {
+    Member member = getMemberInfoWithToken(request.getHeader(JwtFilter.ACCESS_HEADER).substring(7));
+
+    member.setIntroduction(introduction);
   }
 
   @Override
