@@ -5,6 +5,7 @@ import PersonalHome from "../PersonalHome";
 import PersonalItems from "../PersonalItems";
 import PersonalWishlist from "../PersonalWishlist";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 const PersonalContent = ({ donationSettingData, wishListData }) => {
   const allTab = [

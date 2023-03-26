@@ -5,7 +5,6 @@ import HomeWishlist from "./HomeWishlist";
 import { Mobile } from "../../Common/Template";
 import { useMediaQuery } from "react-responsive";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 
 //데스크탑이거나 태블릿일 경우
 const DesktopTablet = ({ children }) => {
