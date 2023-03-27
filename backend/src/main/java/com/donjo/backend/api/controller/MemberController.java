@@ -9,6 +9,8 @@ import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.exception.DuplicateDataException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -189,8 +191,9 @@ public class MemberController {
           @ApiResponse(code = 500, message = "서버에러")
   })
   @PutMapping(path="/api/auth/member/background")
-  public ResponseEntity<?> modifyMemberBackgroundImage(@RequestBody String backgroundImageSrc, HttpServletRequest request) {
-    memberService.modifyMemberBackgroundImage(backgroundImageSrc, request);
+  public ResponseEntity<?> modifyMemberBackgroundImage(@RequestBody String backgroundImageSrc, HttpServletRequest request) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    memberService.modifyMemberBackgroundImage(objectMapper.readValue(backgroundImageSrc, String.class), request);
 
     return new ResponseEntity(HttpStatus.OK);
   }
@@ -203,8 +206,9 @@ public class MemberController {
           @ApiResponse(code = 500, message = "서버에러")
   })
   @PutMapping(path="/api/auth/member/profile")
-  public ResponseEntity<?> modifyMemberProfileImage(@RequestBody String profileImageSrc, HttpServletRequest request) {
-    memberService.modifyMemberProfileImage(profileImageSrc, request);
+  public ResponseEntity<?> modifyMemberProfileImage(@RequestBody String profileImageSrc, HttpServletRequest request) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    memberService.modifyMemberProfileImage(objectMapper.readValue(profileImageSrc, String.class), request);
 
     return new ResponseEntity(HttpStatus.OK);
   }
@@ -217,8 +221,9 @@ public class MemberController {
           @ApiResponse(code = 500, message = "서버에러")
   })
   @PutMapping(path="/api/auth/member/introduction")
-  public ResponseEntity<?> modifyMemberIntroduction(@RequestBody String introduction, HttpServletRequest request) {
-    memberService.modifyMemberIntroduction(introduction, request);
+  public ResponseEntity<?> modifyMemberIntroduction(@RequestBody String introduction, HttpServletRequest request) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    memberService.modifyMemberIntroduction(objectMapper.readValue(introduction, String.class), request);
 
     return new ResponseEntity(HttpStatus.OK);
   }
