@@ -52,8 +52,10 @@ public class WishlistSolidity {
 
     public void addMemberWishList(WishlistSol wishlistSol){
         try {
+            log.info("call add wishlist sol");
             contract.addMemberWishList(wishlistSol.toSol()).send();
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }
     }
