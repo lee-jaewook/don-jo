@@ -30,7 +30,7 @@ const PersonalItems = () => {
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 6;
   const [itemList, setItemList] = useState([]);
-  const [isEnd, setIsEnd] = useState(false);
+  const [hasMore, setIsEnd] = useState(true);
 
   const getItemList = async () => {
     const { data } = await itemApi.getItemList(
@@ -38,8 +38,10 @@ const PersonalItems = () => {
       pageNum,
       PAGE_SIZE
     );
+    console.log("data: ", data);
     setPageNum((prev) => prev + 1);
-    setItemList([...itemList, ...data]);
+    setItemList([...itemList, ...data.itemList]);
+    setIsEnd(data.hasMore);
     console.log(itemList);
   };
 
@@ -73,7 +75,9 @@ const PersonalItems = () => {
         })}
       </S.CardContainer>
 
-      <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+      {hasMore && (
+        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+      )}
 
       {isOpenAddItemModal && (
         <AddItemModal handleSetShowModal={setIsOpenAddItemModal} />
