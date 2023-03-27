@@ -38,6 +38,10 @@ const Personal = () => {
   const getPageInfo = async () => {
     try {
       const { data } = await memberApi.getPageInfo(pageName);
+      console.log(
+        "현재페이지 유저 지갑주소: ",
+        data.memberInfoItem.memberAddress
+      );
       dispatch(updateMemberInfo(data.memberInfoItem));
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);

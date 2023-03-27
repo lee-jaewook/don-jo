@@ -1,11 +1,12 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
-import { itemList } from "./dummyData";
+// import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import AddItemModal from "../../Common/Modal/AddItemModal";
 import { useSelector } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
+import { itemApi } from "../../../api/items";
 
 const PersonalItems = () => {
   //로그인 유저의 지갑주소 정보
@@ -25,8 +26,30 @@ const PersonalItems = () => {
   }, []);
 
   const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
+
+  const [pageNum, setPageNum] = useState(0);
+  const PAGE_SIZE = 6;
+  const [itemList, setItemList] = useState([]);
+  const [isEnd, setIsEnd] = useState(false);
+
+  const getItemList = async () => {
+    const { data } = await itemApi.getItemList(
+      pageMemberAddress,
+      pageNum,
+      PAGE_SIZE
+    );
+    setPageNum((prev) => prev + 1);
+    setItemList([...itemList, ...data]);
+    console.log(itemList);
+  };
+
+  useEffect(() => {
+    getItemList();
+  }, []);
+
   const handleOnClickShowMoreButton = () => {
     console.log("Show More");
+    getItemList();
   };
 
   return (
