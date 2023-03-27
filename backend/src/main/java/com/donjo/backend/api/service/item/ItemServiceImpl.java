@@ -3,6 +3,7 @@ package com.donjo.backend.api.service.item;
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
 import com.donjo.backend.api.dto.item.response.GetItemListPayload;
+import com.donjo.backend.api.dto.item.response.ItemDetailPayload;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.Item.ItemSol;
 import com.donjo.backend.solidity.Item.ItemSolidity;
@@ -70,12 +71,12 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ItemSol getItemDetail(Long uid) {
+    public ItemDetailPayload getItemDetail(Long uid) {
         //  getItemDetail 메소드를 사용하여 특정 아이템의 상세 정보를 가져옴
         ItemSol itemSol = itemSolidity.getItemDetail(uid)
                 .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
         // 해당 아이템이 삭제된 상태인 경우(isDeleted() 메소드가 NoContentException 예외를 발생
         if(itemSol.isDeleted()) throw new NoContentException("삭제된 아이템 입니다.");
-        return itemSol;
+        return ItemDetailPayload.from(itemSol);
     }
 }

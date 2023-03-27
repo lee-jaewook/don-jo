@@ -30,7 +30,11 @@ public class Support {
     private String supportType;
 
     @Column
+    private Long supportTypeUid;
+
+    @Column
     private Long supportUid;
+
 
     @Column
     private String fromAddress;

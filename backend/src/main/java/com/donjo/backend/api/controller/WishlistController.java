@@ -51,8 +51,7 @@ public class WishlistController {
     })
     public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull Long wishlistUid){
         return ResponseEntity.status(200)
-                .body(wishlistService.getOneWishlist(wishlistUid)
-                        .orElseThrow(()-> new NoContentException("위시리스트가 없습니다.")));
+                .body(wishlistService.getOneWishlist(wishlistUid));
     }
 
     @PostMapping("/api/auth/member/wishlist/limited")
@@ -64,6 +63,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMemberWishlist(HttpServletRequest request, @RequestBody @Valid AddWishlistCond cond){
+        if(cond.getTargetAmount() == 0) return ResponseEntity.status(400).build();
         log.info("call ADD wishlist");
         wishlistService.addWishlist(memberService.getMemberAddress(request), cond);
         log.info("Done ADD wishlist");

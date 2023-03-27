@@ -70,11 +70,12 @@ public class ItemController {
     @ApiOperation(value = "아이템 등록", notes = "<strong>아이템 정보</strong>를 입력받아 아이템을 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(등록 실패)"),
             @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMyItem(HttpServletRequest request, @RequestBody @Valid AddItemCond cond){
+        if(cond.getPrice() == 0) return ResponseEntity.status(400).build();
         String memberAddress = memberService.getMemberAddress(request);
 
         itemService.addItem(memberAddress, cond);
