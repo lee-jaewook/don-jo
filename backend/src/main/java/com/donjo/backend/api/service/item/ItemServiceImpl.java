@@ -58,6 +58,11 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
+    public boolean isPurchased(String memberAddress, Long itemUid) {
+        return itemSolidity.isPurchased(memberAddress, itemUid);
+    }
+
+    @Override
     public ItemSol getItemDetail(Long uid) {
         ItemSol itemSol = itemSolidity.getItemDetail(uid)
                 .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
