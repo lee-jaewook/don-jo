@@ -15,6 +15,7 @@ public class GetWishlistsPayload {
     int size;
     int pageNum;
     int pageSize;
+    boolean hasMore;
     List<WishlistSol> wishlists;
 
     public static GetWishlistsPayload from(int size, int pageNum, int pageSize, List<WishlistSol> itemList){
@@ -22,6 +23,7 @@ public class GetWishlistsPayload {
                 .size(size)
                 .pageNum(pageNum)
                 .pageSize(pageSize)
+                .hasMore(size > (pageNum + 1) * pageSize)
                 .wishlists(itemList)
                 .build();
     }
