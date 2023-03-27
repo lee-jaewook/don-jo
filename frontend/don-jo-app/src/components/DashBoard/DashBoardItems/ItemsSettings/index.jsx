@@ -74,7 +74,10 @@ const ItemsSettings = () => {
       )}
 
       {isAddItemModalOpen && (
-        <AddItemModal handleSetShowModal={handleAddItemModalOpen} />
+        <AddItemModal
+          handleSetShowModal={handleAddItemModalOpen}
+          whichApiChoose={true}
+        />
       )}
     </S.SettingWrapper>
   );
