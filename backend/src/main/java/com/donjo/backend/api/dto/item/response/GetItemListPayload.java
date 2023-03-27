@@ -14,6 +14,7 @@ public class GetItemListPayload {
     int size;
     int pageNum;
     int pageSize;
+    boolean hasMore;
     List<ItemSol> itemList;
 
     public static GetItemListPayload from(int size, int pageNum, int pageSize,List<ItemSol> itemList){
@@ -21,6 +22,7 @@ public class GetItemListPayload {
                 .size(size)
                 .pageNum(pageNum)
                 .pageSize(pageSize)
+                .hasMore(size > (pageNum + 1) * pageSize)
                 .itemList(itemList)
                 .build();
     }
