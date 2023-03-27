@@ -13,7 +13,7 @@ export const Circle = styled.div`
   background-size: cover;
   background-image: url("${(props) => props.src}");
   background-image: ${(props) =>
-    props.src === "" ? `url(defaultImg)` : `url(${S3URL + props.src})`};
+    props.src === "" ? `url(${defaultImg})` : `url(${S3URL + props.src})`};
 `;
 
 export const LinkCustom = styled(Link)`
