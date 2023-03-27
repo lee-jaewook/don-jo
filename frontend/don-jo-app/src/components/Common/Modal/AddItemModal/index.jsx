@@ -1,13 +1,17 @@
 import * as S from "./style";
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiUpload } from "react-icons/fi";
-
+import PropTypes from "prop-types";
 import FullScreenModal from "../FullScreenModal";
 import BasicTitle from "../../BasicTitle";
 import BasicInput from "../../BasicInput";
 import BasicTextarea from "../../BasicTextarea";
 import BasicButton from "../../BasicButton";
+import { itemApi } from "../../../../api/items";
+import { wishlistAPI } from "../../../../api/wishlist";
 
+import { useSelector, useDispatch } from "react-redux";
+import { donation } from "../../../../utils/transactionFunc/donation";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -16,18 +20,24 @@ import BasicButton from "../../BasicButton";
  * @returns
  */
 
-const AddItemModal = ({
-  handleSetShowModal,
-  transactionFunc,
-  imageTitle = "Image",
-}) => {
+const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
   // 아이템 프로필 설정
-  const [itemFile, setItemNamFile] = useState(null);
-  const [itemImage, setItemImage] = useState(null);
-  // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
-  const [itemInfo, setItemInfo] = useState({});
+  const [itemFile, setItemNamFile] = useState();
+  const [itemImageFile, setItemImageFile] = useState();
 
+  // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
+  const [itemInfo, setItemInfo] = useState({
+    itemName: "",
+    itemPrice: "",
+    itemDescription: "",
+    itemMessage: "",
+  });
   const { itemName, itemPrice, itemDescription, itemMessage } = itemInfo;
+  const Web3 = useSelector((state) => state.web3.web);
+  console.log("Web3: ", Web3);
+  useEffect(() => {
+    donation(Web3);
+  }, []);
 
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
@@ -37,35 +47,51 @@ const AddItemModal = ({
     });
   };
 
-  const handleImageChange = (e) => {
-    console.log(e.target.files);
-    console.log(e.target.id);
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      setItemImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+    if (e.target.value === "") return;
+    const {
+      target: { id, files },
+    } = e;
 
-    reader.onload = () => {
-      setItemNamFile(reader.result);
+    console.log("여기에 오나요:?");
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onloadend = () => {
+      if (id === "featured-image") {
+        setItemImageFile(reader.result);
+      } else if (id === "file-upload") {
+        setItemNamFile(reader.result);
+      }
+    };
+  };
+
+  const registerItem = () => {
+    console.log("typeof itemfile: ", typeof itemFile);
+    const cond = {
+      description: itemDescription,
+      filePath: itemFile,
+      imgPath: itemImageFile,
+      message: itemMessage,
+      price: itemPrice,
+      title: itemName,
     };
 
-    reader.readAsDataURL(file);
-  };
+    if (whichApiChoose) {
+      itemApi
+        .registerItem(cond)
+        .then(() => {
+          alert("아이템 등록 성공!");
+        })
+        .catch((error) => {
+          alert("아이템 등록 실패");
+        });
+    } else {
+      wishlistAPI
+        .registerWishlistItem(cond)
+        .then(() => {})
+        .catch((error) => {});
+    }
 
-  const handleFileUpload = () => {
-    const input = window.document.getElementById("fileUpload");
-    input.click();
-  };
-
-  const handleSubmit = () => {
     handleSetShowModal();
   };
 
@@ -113,7 +139,7 @@ const AddItemModal = ({
           <S.ImageSizeInfo>
             We recommend an image at least 460px wide and 200px tall.
           </S.ImageSizeInfo>
-          <S.ItemProfileImg url={itemImage !== null ? itemImage : ""}>
+          <S.ItemProfileImg url={itemImageFile !== null ? itemImageFile : ""}>
             <S.EditIconWrapper>
               <label htmlFor="featured-image">
                 <FiUpload className="edit-icon" size="20px" color="white" />
@@ -122,7 +148,7 @@ const AddItemModal = ({
                 id="featured-image"
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
                 defaultValue=""
                 placeholder="select"
               />
@@ -146,7 +172,6 @@ const AddItemModal = ({
               <S.FileUploadButton
                 htmlFor="file-upload"
                 color="var(--color-primary)"
-                // onClick={handleFileUpload}
               >
                 Open
               </S.FileUploadButton>
@@ -180,7 +205,7 @@ const AddItemModal = ({
             <BasicButton
               text="Create"
               color="var(--color-primary)"
-              handleOnClickButton={handleSubmit}
+              handleOnClickButton={registerItem}
             />
           </S.BasicButtonContainer>
         </S.BasicButtonWrap>
@@ -190,3 +215,13 @@ const AddItemModal = ({
 };
 
 export default AddItemModal;
+
+AddItemModal.propTypes = {
+  handleSetShowModal: PropTypes.func.isRequired,
+  // transactionFunc: PropTypes.,
+  imageTitle: PropTypes.string,
+};
+
+AddItemModal.defaultProps = {
+  imageTitle: "Image",
+};

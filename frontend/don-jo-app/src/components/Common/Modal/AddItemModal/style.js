@@ -87,13 +87,16 @@ export const ButtonWrap = styled.div`
 
 export const FileUploadButton = styled.label`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 2.5rem;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.188rem;
   border-radius: 1.5rem;
   font-family: "RobotoMedium";
-  color: black;
+  color: var(--color-primary);
   border: 0.125rem solid var(--color-primary);
   background-color: white;
 
