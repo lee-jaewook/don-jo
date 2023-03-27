@@ -1,6 +1,10 @@
 package com.donjo.backend.api.controller;
 
-import com.donjo.backend.api.dto.support.*;
+import com.donjo.backend.api.dto.support.request.AddSupportCond;
+import com.donjo.backend.api.dto.support.request.DonationSettingCond;
+import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
+import com.donjo.backend.api.dto.support.response.FindSupportPayload;
+import com.donjo.backend.api.dto.support.response.FindTop10Payload;
 import com.donjo.backend.api.service.member.MemberService;
 import com.donjo.backend.api.service.support.SupportService;
 import io.swagger.annotations.Api;
@@ -48,14 +52,13 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> createSupport(@RequestBody @Valid SupportRequestDto supportRequestDto) {
-        System.out.println(supportRequestDto);
-        supportService.createSupports(supportRequestDto);
+    public ResponseEntity<?> createSupport(@RequestBody @Valid AddSupportCond addSupportCond) {
+        supportService.createSupports(addSupportCond);
         return ResponseEntity.status(200).build();
     }
 
     @GetMapping(path="/api/member/dashboard/supports")
-    @ApiOperation(value = "대시보드 서포트 조회", notes = "example content")
+    @ApiOperation(value = "서포트 조회", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(정보 없음)"),
@@ -65,7 +68,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupports(@RequestParam String memberAddress, @RequestParam String type, @RequestParam int pageNum,@RequestParam int pageSize) {
-        List<SupportResponseDto> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
+        List<FindSupportPayload> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
         if (supports.size()>0){
             return ResponseEntity.status(200).body(supports);
         }
@@ -85,7 +88,7 @@ public class SupportController {
     })
     public ResponseEntity<?> getSupportDetail(@RequestParam String toAddress, @RequestParam Long supportUid) {
         try {
-            SupportDetailResponseDto supportDetail = supportService.getSupportDetail(toAddress,supportUid);
+            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(toAddress,supportUid);
             return ResponseEntity.status(200).body(supportDetail);
         }
         catch (Exception e){
@@ -117,8 +120,8 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getDonationSetting(HttpServletRequest request) {
-        DonationDto donationDto = supportService.getDonationSetting(memberService.getMemberAddress(request));
-        return ResponseEntity.status(200).body(donationDto);
+        DonationSettingCond donationSettingCond = supportService.getDonationSetting(memberService.getMemberAddress(request));
+        return ResponseEntity.status(200).body(donationSettingCond);
     }
 
     @PutMapping(path="/api/auth/member/donation/setting")
@@ -130,8 +133,8 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@RequestBody @Valid DonationDto donationDto) {
-        supportService.changeDonation(donationDto,memberService.getMemberAddress(request));
+    public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@RequestBody @Valid DonationSettingCond donationSettingCond) {
+        supportService.changeDonation(donationSettingCond,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).build();
     }
 
@@ -145,7 +148,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupportTop10(HttpServletRequest request) {
-        List<Top10ResponseDto> top10 = supportService.getTop10();
+        List<FindTop10Payload> top10 = supportService.getTop10();
         return ResponseEntity.status(200).body(top10);
     }
 }
