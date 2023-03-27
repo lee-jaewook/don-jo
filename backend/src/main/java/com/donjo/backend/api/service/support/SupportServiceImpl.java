@@ -40,7 +40,6 @@ import java.util.Optional;
 @Service("SupportService")
 @RequiredArgsConstructor
 public class SupportServiceImpl implements SupportService{
-
     private final MemberRepository memberRepository;
     private final SupportSolidity supportSolidity;
     private final DonationSettingRepository donationSettingRepository;
@@ -48,8 +47,10 @@ public class SupportServiceImpl implements SupportService{
     private final SupportRepositorySupport supportRepositorySupport;
 
     public Double getEarning(String address,String type,int period){
+        // Type과 Period를 변수로 넘겨 Support 리스트 가져오기
         Optional<List<Support>> supportList = Optional.ofNullable(supportRepositorySupport.findEarning(address,type,period));
 
+        // list를 돌면서 amount값을 더해주고 총값을 10^18로 나눠준다(wei를 ETH로 변환)
         return supportList.map(list -> list.stream()
                         .mapToLong(Support::getAmount)
                         .sum())
@@ -59,17 +60,23 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public void createSupports(AddSupportCond dto){
+        // contract가서 보낸시간을 가져오고, dto의 값과 가져온 sendTime값을 넣어주고 저장한다.
         LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
                 .orElseThrow(() -> new NoContentException());
         supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
     public List<FindSupportPayload> getSupports(String memberAddress, String type, int pageNum, int pageSize){
+        // Dto 리스트배열 생성
         List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
 
+        // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
 
+        // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
         for (Support support : list) {
             if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
@@ -91,10 +98,12 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid ){
+        // Address와 Uid로 Solidity[][] 가져오기
         Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid);
         Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.fromSupport(supportSol);
 
+        //
         Web3j web3 = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         try {
             EthTransaction ethTransaction = web3.ethGetTransactionByHash(support.getTransactionHash()).send();
