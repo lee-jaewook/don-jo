@@ -35,6 +35,12 @@ export const WishlistItemWrapper = styled.div`
   @media screen and (max-width: 48rem) {
     margin-bottom: unset;
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    pointer-events: none;
+  `}
 `;
 
 export const AddCard = styled.div`

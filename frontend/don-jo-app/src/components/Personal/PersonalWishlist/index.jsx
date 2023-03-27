@@ -68,7 +68,7 @@ const PersonalWishlist = () => {
         )}
         {wishlist.map((wishlistItem) => {
           return (
-            <S.WishlistItemWrapper key={wishlistItem.id}>
+            <S.WishlistItemWrapper key={wishlistItem.id} disabled={isOwner}>
               <WishlistItem
                 onClick={() => setThisItemUId(wishlistItem.id)}
                 uid={wishlistItem.id}
