@@ -1,4 +1,4 @@
-package com.donjo.backend.api.dto.support;
+package com.donjo.backend.api.dto.support.response;
 
 import com.donjo.backend.solidity.support.SupportSol;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Setter
 @Builder
 @ToString
-public class SupportDetailResponseDto {
+public class FindSupportDetailPayload {
     private Long id;
 
     private String from;
@@ -30,14 +30,14 @@ public class SupportDetailResponseDto {
 
     private Long supportStatus;
 
-    public static SupportDetailResponseDto fromSupport(Optional<SupportSol> supportSol){
-        SupportDetailResponseDto supportDetailResponseDto = SupportDetailResponseDto.builder()
+    public static FindSupportDetailPayload fromSupport(Optional<SupportSol> supportSol){
+        FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .id(supportSol.get().getId())
                 .supportType(supportSol.get().getSupportType())
                 .amount(Double.valueOf(supportSol.get().getAmount()))
                 .sendTimeStamp(supportSol.get().getSendTimestamp())
                 .supportStatus(supportSol.get().getSupportStatus())
                 .build();
-        return supportDetailResponseDto;
+        return findSupportDetailPayload;
     }
 }

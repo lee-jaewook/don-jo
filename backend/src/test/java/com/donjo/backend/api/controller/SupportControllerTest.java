@@ -1,6 +1,6 @@
 package com.donjo.backend.api.controller;
 
-import com.donjo.backend.api.dto.support.DonationDto;
+import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.service.support.SupportServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -63,13 +63,13 @@ class SupportControllerTest {
 
     @Test
     void changeDonationSetting() throws Exception {
-        DonationDto donationDto = new DonationDto();
-        donationDto.setDonationEmoji("슬픔");
-        donationDto.setDonationName("쿠키");
-        donationDto.setPricePerDonation(1);
-        donationDto.setThankMsg("감사합니다!!");
+        DonationSettingCond donationSettingCond = new DonationSettingCond();
+        donationSettingCond.setDonationEmoji("슬픔");
+        donationSettingCond.setDonationName("쿠키");
+        donationSettingCond.setPricePerDonation(1);
+        donationSettingCond.setThankMsg("감사합니다!!");
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/auth/member/donation/setting").content(objectMapper.writeValueAsString(donationDto)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                MockMvcRequestBuilders.put("/api/auth/member/donation/setting").content(objectMapper.writeValueAsString(donationSettingCond)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
     }
 

@@ -1,9 +1,8 @@
-package com.donjo.backend.api.dto.support;
+package com.donjo.backend.api.dto.support.request;
 
 import com.donjo.backend.db.entity.DonationSetting;
 import lombok.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DonationDto {
+public class DonationSettingCond {
     @NotNull
     private int pricePerDonation;
 
@@ -25,14 +24,14 @@ public class DonationDto {
     @NotNull
     private String thankMsg;
 
-    public DonationDto getDonation(DonationSetting donationSetting){
-        DonationDto donationDto = DonationDto.builder()
+    public DonationSettingCond getDonation(DonationSetting donationSetting){
+        DonationSettingCond donationSettingCond = DonationSettingCond.builder()
                 .pricePerDonation(donationSetting.getPricePerDonation())
                 .donationEmoji(donationSetting.getDonationEmoji())
                 .donationName(donationSetting.getDonationName())
                 .thankMsg(donationSetting.getThankMsg())
                 .build();
-        return donationDto;
+        return donationSettingCond;
     }
 }
 
