@@ -9,9 +9,8 @@ import BasicTextarea from "../../BasicTextarea";
 import BasicButton from "../../BasicButton";
 import { itemApi } from "../../../../api/items";
 import { wishlistAPI } from "../../../../api/wishlist";
+import { fileApi } from "../../../../api/file";
 
-import { useSelector, useDispatch } from "react-redux";
-import { donation } from "../../../../utils/transactionFunc/donation";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -20,10 +19,19 @@ import { donation } from "../../../../utils/transactionFunc/donation";
  * @returns
  */
 
+const ITEM_TYPE = "item";
+const IMAGE_TYPE = "img/item";
+
 const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
   // 아이템 프로필 설정
-  const [itemFile, setItemNamFile] = useState();
-  const [itemImageFile, setItemImageFile] = useState();
+  const [itemFile, setItemNamFile] = useState({
+    previewImgUrl: "",
+    file: {},
+  });
+  const [itemImageFile, setItemImageFile] = useState({
+    previewImgUrl: "",
+    file: {},
+  });
 
   // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
   const [itemInfo, setItemInfo] = useState({
@@ -33,11 +41,6 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
     itemMessage: "",
   });
   const { itemName, itemPrice, itemDescription, itemMessage } = itemInfo;
-  const Web3 = useSelector((state) => state.web3.web);
-  console.log("Web3: ", Web3);
-  useEffect(() => {
-    donation(Web3);
-  }, []);
 
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
@@ -53,27 +56,41 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
       target: { id, files },
     } = e;
 
-    console.log("여기에 오나요:?");
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = () => {
       if (id === "featured-image") {
-        setItemImageFile(reader.result);
+        setItemImageFile({ previewImgUrl: reader.result, file: files[0] });
       } else if (id === "file-upload") {
-        setItemNamFile(reader.result);
+        setItemNamFile({ previewImgUrl: reader.result, file: files[0] });
       }
     };
   };
 
-  const registerItem = () => {
-    console.log("typeof itemfile: ", typeof itemFile);
+  // 파일 업로드를 위한 API 호출
+  const handleUploadFile = async (file, type) => {
+    const formData = new FormData();
+    formData.append("multipartFile", file);
+
+    try {
+      const { data } = await fileApi.uploadFile(formData, type);
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  const registerItem = async () => {
+    let imgPath = await handleUploadFile(itemImageFile.file, IMAGE_TYPE);
+    let filePath = await handleUploadFile(itemFile.file, ITEM_TYPE);
+
     const cond = {
       description: itemDescription,
-      filePath: itemFile,
-      imgPath: itemImageFile,
       message: itemMessage,
-      price: itemPrice,
+      price: parseFloat(itemPrice),
       title: itemName,
+      imgPath: imgPath,
+      filePath: filePath,
     };
 
     if (whichApiChoose) {
@@ -83,16 +100,19 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
           alert("아이템 등록 성공!");
         })
         .catch((error) => {
-          alert("아이템 등록 실패");
+          alert("아이템 등록 실패!");
         });
     } else {
       wishlistAPI
         .registerWishlistItem(cond)
-        .then(() => {})
-        .catch((error) => {});
+        .then(() => {
+          alert("위시리스트 등록 성공!");
+        })
+        .catch((error) => {
+          alert("위시리스트 등록 실패!");
+        });
     }
-
-    handleSetShowModal();
+    setTimeout(handleSetShowModal, 2000);
   };
 
   return (
@@ -139,7 +159,13 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
           <S.ImageSizeInfo>
             We recommend an image at least 460px wide and 200px tall.
           </S.ImageSizeInfo>
-          <S.ItemProfileImg url={itemImageFile !== null ? itemImageFile : ""}>
+          <S.ItemProfileImg
+            url={
+              itemImageFile.previewImgUrl !== null
+                ? itemImageFile.previewImgUrl
+                : ""
+            }
+          >
             <S.EditIconWrapper>
               <label htmlFor="featured-image">
                 <FiUpload className="edit-icon" size="20px" color="white" />
