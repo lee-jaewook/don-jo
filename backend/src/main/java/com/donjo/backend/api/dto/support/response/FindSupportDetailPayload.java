@@ -22,6 +22,8 @@ public class FindSupportDetailPayload {
 
     private Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
 
+    private Long supportTypeUid;
+
     private Double amount;
 
     private LocalDateTime sendTimeStamp ;
