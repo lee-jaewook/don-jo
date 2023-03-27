@@ -29,7 +29,7 @@ const PersonalItems = () => {
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 6;
   const [itemList, setItemList] = useState([]);
-  const [hasMore, setIsEnd] = useState(true);
+  const [hasMore, setIsEnd] = useState(false);
 
   const getItemList = async () => {
     const { data } = await itemApi.getItemList(

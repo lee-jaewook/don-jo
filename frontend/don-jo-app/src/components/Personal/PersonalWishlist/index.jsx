@@ -31,7 +31,7 @@ const PersonalWishlist = () => {
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 6;
   const [wishlist, setWishlist] = useState([]);
-  const [hasMore, setIsEnd] = useState(true);
+  const [hasMore, setIsEnd] = useState(false);
 
   const getWishList = async () => {
     const { data } = await wishlistAPI.getWishList(
