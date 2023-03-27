@@ -2,6 +2,7 @@ package com.donjo.backend.api.service.item;
 
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
+import com.donjo.backend.api.dto.item.response.GetItemListPayload;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.Item.ItemSol;
 import com.donjo.backend.solidity.Item.ItemSolidity;
@@ -19,10 +20,12 @@ public class ItemServiceImpl implements ItemService{
     private final ItemSolidity itemSolidity;
 
     @Override
-    public List<ItemSol> getItemList(String address, int pageNum, int pageSize) {
+    public GetItemListPayload getItemList(String address, int pageNum, int pageSize) {
         // null 체크
         List<ItemSol> list = itemSolidity.getMemberItemList(address)
                 .orElseThrow(()-> new NoContentException());
+
+        Collections.reverse(list);
 
         // 페이지네이션
         int startIdx = pageNum * pageSize;
@@ -36,9 +39,7 @@ public class ItemServiceImpl implements ItemService{
             result.add(list.get(i));
         }
 
-        // 정렬
-        Collections.reverse(result);
-        return result;
+        return GetItemListPayload.from(list.size(), pageNum, pageSize, result);
     }
 
     @Override

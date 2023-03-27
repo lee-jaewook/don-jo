@@ -39,7 +39,7 @@ public class SupportController {
                         .getEarning(memberService.getMemberAddress(request), type, period));
     }
 
-    @PostMapping(path="/api/auth/member/supports")
+    @PostMapping(path="/api/member/supports")
     @ApiOperation(value = "후원내역 저장", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -54,7 +54,7 @@ public class SupportController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping(path="/api/auth/member/dashboard/supports")
+    @GetMapping(path="/api/member/dashboard/supports")
     @ApiOperation(value = "대시보드 서포트 조회", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
