@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div`
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
   width: 100vw;
   z-index: 10;
   position: fixed;
@@ -31,16 +31,23 @@ export const CloseBtnContainer = styled.div`
 export const ModalBody = styled.div`
   flex: 1; //헤더를 제외한 높이를 이 div의 높이로 설정
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
+  overflow-y: auto;
+`;
+
+export const ContentCardWrapper = styled.div`
+  margin: auto;
 `;
 
 export const ContentCard = styled.div`
-  width: 53.75rem;
+  min-width: 10px;
+  max-width: 100%;
   min-height: 20rem;
   background-color: var(--color-modal);
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
+  margin: 0.75rem;
 `;
 
 export const ButtonContainer = styled.div`

@@ -16,4 +16,7 @@ public class LoginMemberCond {
   @NotNull
   private String memberSignature;
 
+  @NotNull
+  private String signMessage;
+
 }

@@ -3,7 +3,7 @@ package com.donjo.backend.api.controller;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-//import com.donjo.backend.api.dto.member.response.FindMemberPayload;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
@@ -148,21 +148,21 @@ public class MemberController {
     return new ResponseEntity(result, HttpStatus.OK);
   }
 
-//  @ApiOperation(value="멤버 정보 요청", notes = "AccessToken을 사용해서 페이지 정보를 요청합니다.")
-//  @ApiResponses({
-//      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
-//      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
-//      @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
-//      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
-//      @ApiResponse(code = 500, message = "서버에러")
-//  })
-//  @GetMapping(path="/api/auth/member/info")
-//  public ResponseEntity<?> getMemberInfo(HttpServletRequest request) {
-//    String memberAddress = memberService.getMemberAddress(request);
-//    FindMemberPayload findMemberPayload = memberService.getMemberInfo(memberAddress);
+  @ApiOperation(value="멤버 정보 요청", notes = "AccessToken을 사용해서 페이지 정보를 요청합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+      @ApiResponse(code = 404, message = "NOT FOUND(페이지 없음)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @GetMapping(path="/api/auth/member/info")
+  public ResponseEntity<?> getMemberInfo(HttpServletRequest request) {
+    String memberAddress = memberService.getMemberAddress(request);
+    FindMemberPayload findMemberPayload = memberService.getMemberInfo(memberAddress);
 
-//    return new ResponseEntity(findMemberPayload, HttpStatus.OK);
-//  }
+    return new ResponseEntity(findMemberPayload, HttpStatus.OK);
+  }
 
   @ApiOperation(value="멤버 정보 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 페이지를 수정합니다.")
   @ApiResponses({
@@ -179,6 +179,61 @@ public class MemberController {
     memberService.modifyMemberInfo(memberAddress, memberCond);
 
     return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @ApiOperation(value="멤버 배경 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 배경을 수정합니다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "OK(배경 수정 성공)"),
+          @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+          @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+          @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/background")
+  public ResponseEntity<?> modifyMemberBackgroundImage(@RequestBody String backgroundImageSrc, HttpServletRequest request) {
+    memberService.modifyMemberBackgroundImage(backgroundImageSrc, request);
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @ApiOperation(value="멤버 프로필 사진 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 프로필 사진을 수정합니다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "OK(프로필 사진 수정 성공)"),
+          @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+          @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+          @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/profile")
+  public ResponseEntity<?> modifyMemberProfileImage(@RequestBody String profileImageSrc, HttpServletRequest request) {
+    memberService.modifyMemberProfileImage(profileImageSrc, request);
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @ApiOperation(value="멤버 소개 수정", notes = "AccessToken을 사용해서 멤버 주소를 확인한 후 멤버 소개를 수정합니다.")
+  @ApiResponses({
+          @ApiResponse(code = 200, message = "OK(멤버 소개 수정 성공)"),
+          @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+          @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
+          @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/introduction")
+  public ResponseEntity<?> modifyMemberIntroduction(@RequestBody String introduction, HttpServletRequest request) {
+    memberService.modifyMemberIntroduction(introduction, request);
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @ApiOperation(value="비민번호 체크", notes = "AccessToken으로 인증 후 비밀번호를 체크합니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK(로그인 성공)"),
+      @ApiResponse(code = 400, message = "BAD REQUEST(요청 실패)"),
+      @ApiResponse(code = 500, message = "서버에러")
+  })
+  @PutMapping(path="/api/auth/member/password")
+  public ResponseEntity<?> checkPassword(@RequestBody String password, HttpServletRequest request) {
+    boolean status = memberService.checkPassword(password, request);
+
+    return new ResponseEntity(status, HttpStatus.OK);
   }
 
 }

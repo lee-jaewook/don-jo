@@ -3,6 +3,7 @@ package com.donjo.backend.api.service.member;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
+import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
 import com.donjo.backend.db.entity.Member;
 
@@ -32,5 +33,13 @@ public interface MemberService {
 
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
 
+  void modifyMemberBackgroundImage(String backgroundImageSrc, HttpServletRequest request);
+
+  void modifyMemberProfileImage(String profileImageSrc, HttpServletRequest request);
+
+  void modifyMemberIntroduction(String introduction, HttpServletRequest request);
+
   boolean verifySignature(String memberAddress, String signature, String message);
+
+  boolean checkPassword(String requestPassword, HttpServletRequest request);
 }

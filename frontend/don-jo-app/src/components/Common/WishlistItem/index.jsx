@@ -30,7 +30,7 @@ const WishlistItem = ({
       isDashboard={isDashboard}
       onClick={isDashboard ? handleSetShowModal : undefined}
     >
-      {isDashboard && <S.EditButton onClick={handleOpenEditModal} />}
+      {/* {isDashboard && <S.EditButton onClick={handleOpenEditModal} />} */}
       <S.ItemContent>
         <S.ItemImg src={imgPath} />
         <S.ItemInformation>

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 export const ItemWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   height: 6.25rem;
+  align-items: center;
+  justify-content: space-between;
   background-color: white;
   border-radius: 0.5rem;
   padding: 0 1.25rem;
@@ -19,8 +19,6 @@ export const ItemInfoWrapper = styled.div`
 export const ItemImg = styled.img`
   width: 4.5rem;
   height: 4.5rem;
-  background-color: #ddd;
-  border-radius: #d9d9d9;
   border-radius: 0.5rem;
   margin-right: 0.75rem;
   object-fit: cover;

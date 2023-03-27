@@ -1,0 +1,35 @@
+pipeline{
+    agent any
+      stages{
+      stage('가이드 자동 배포'){
+
+                stages{
+                    stage('가이드 이미지 생성'){
+                                    steps{
+                                        dir('frontend-guide')
+                                        {
+                                        dir('my-website'){
+                                        sh "docker build -t guide-image2 ."
+                                        }
+                                                    }
+                                        }
+                }
+                    stage('가이드 컨테이너 삭제'){
+                                            steps{
+                                            catchError{
+                                                sh "docker rm --force guide"
+                                                }
+                                                                   }
+                                                               }
+
+                            stage('컨테이너 생성') {
+                              steps {
+
+                                sh "docker run -d -p 3100:80 --name guide guide-image2"
+                              }
+                            }
+            }
+            }
+
+}
+}
