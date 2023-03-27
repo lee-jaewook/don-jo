@@ -1,12 +1,14 @@
 import styled from "styled-components";
 
 export const PreViewWrap = styled.div`
+  display: flex;
   width: 100%;
   margin-bottom: 2rem;
   height: 7.5rem;
   background-color: black;
   border-radius: 1.25rem;
-  position: relative;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentWrap = styled.div`
@@ -14,18 +16,19 @@ export const ContentWrap = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const PreView = styled.div`
-  position: absolute;
-  left: 5rem;
-  top: 2.25rem;
-  background-color: ${(props) => props.color || "black"};
-  border-radius: 1.5rem;
-  height: 3rem;
-  width: calc(100% - 156px);
+export const PreView = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.75rem 1.5rem;
+  display: flex;
+  width: 217px;
+  height: 48px;
+  background-color: ${(props) => props.color || "#F02C7E"};
+  border-radius: 24px;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const GridBox = styled.div`
