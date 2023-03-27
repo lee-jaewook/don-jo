@@ -51,9 +51,8 @@ const PersonalItems = () => {
     getItemList();
   };
 
-  return (
-    <S.Container>
-      <S.Title>This is my Items</S.Title>
+  const OwnerOrHasItemList = () => {
+    return (
       <S.CardContainer>
         {isOwner && (
           <S.AddCard
@@ -71,6 +70,17 @@ const PersonalItems = () => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no items 🥲</S.Nothing>;
+  };
+
+  return (
+    <S.Container>
+      <S.Title>This is my Items</S.Title>
+      {isOwner || itemList.length !== 0 ? <OwnerOrHasItemList /> : <Nothing />}
 
       {hasMore && (
         <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />

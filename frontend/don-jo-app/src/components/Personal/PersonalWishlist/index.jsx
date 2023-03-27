@@ -55,9 +55,8 @@ const PersonalWishlist = () => {
 
   const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
-  return (
-    <S.Container>
-      <S.Title>Support My Wishlist</S.Title>
+  const OwnerOrHasWishList = () => {
+    return (
       <S.CardContainer>
         {isOwner && (
           <S.AddCard>
@@ -85,6 +84,18 @@ const PersonalWishlist = () => {
           );
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no wishlists 🥲</S.Nothing>;
+  };
+
+  return (
+    <S.Container>
+      <S.Title>Support My Wishlist</S.Title>
+
+      {isOwner || wishlist.length !== 0 ? <OwnerOrHasWishList /> : <Nothing />}
 
       {hasMore && (
         <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
