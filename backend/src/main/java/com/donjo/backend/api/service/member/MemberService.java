@@ -29,9 +29,17 @@ public interface MemberService {
 
   FindPageInfoPayload getPageInfoByPageName(String pageName);
 
-  FindMemberPayload getMemberInfo(String memberAddress);
+//  FindMemberPayload getMemberInfo(String memberAddress);
 
   void modifyMemberInfo(String memberAdress, ModifyMemberCond modifyMemberCond);
 
+  void modifyMemberBackgroundImage(String backgroundImageSrc, HttpServletRequest request);
+
+  void modifyMemberProfileImage(String profileImageSrc, HttpServletRequest request);
+
+  void modifyMemberIntroduction(String introduction, HttpServletRequest request);
+
   boolean verifySignature(String memberAddress, String signature, String message);
+
+  boolean checkPassword(String requestPassword, HttpServletRequest request);
 }

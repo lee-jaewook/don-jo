@@ -1,35 +1,43 @@
 package com.donjo.backend.api.dto.support;
 
+import com.donjo.backend.solidity.support.SupportSol;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 @Setter
 @Builder
 @ToString
 public class SupportDetailResponseDto {
+    private Long id;
 
-    private String firstTransactionHash;
+    private String from;
 
-    private String secondTransactionHash;
+    private String to;
 
-    private String supportType;
+    private Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
 
-//    private FromMember fromMember; 맴버 객체
+    private Double amount;
 
-//    private ToMember toMember 맴버 객체
+    private LocalDateTime sendTimeStamp ;
 
-    private Double amountEth;
+    private LocalDateTime arriveTimeStamp ;
 
-    private String sendTimeStamp ;
+    private Long supportStatus;
 
-    private String arriveTimeStamp ;
-
-    private String sendMsg;
-
-    public static SupportDetailResponseDto fromSupport(){
-        return SupportDetailResponseDto.builder().build();
+    public static SupportDetailResponseDto fromSupport(Optional<SupportSol> supportSol){
+        SupportDetailResponseDto supportDetailResponseDto = SupportDetailResponseDto.builder()
+                .id(supportSol.get().getId())
+                .supportType(supportSol.get().getSupportType())
+                .amount(Double.valueOf(supportSol.get().getAmount()))
+                .sendTimeStamp(supportSol.get().getSendTimestamp())
+                .supportStatus(supportSol.get().getSupportStatus())
+                .build();
+        return supportDetailResponseDto;
     }
 }

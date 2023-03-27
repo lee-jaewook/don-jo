@@ -26,11 +26,11 @@ public class SupportResponseDto {
 
     private fromMember fromMember;
 
-    private String toAddress;
+    private toMember toAddress;
 
     private String replyMsg;
 
-    private Long amount;
+    private Double amount;
 
     private LocalDateTime arriveTimeStamp;
 
@@ -49,25 +49,51 @@ public class SupportResponseDto {
         private String fromMemberNickname;
 
     }
-    @Nullable
-    public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress){
+    @Getter
+    @Setter
+    @ToString
+    public static class toMember {
+        private String toMemberAddress;
+
+        private String toMemberNickname;
+
+        private String toMemberProfileImagePath;
+
+    }
+
+    public static SupportResponseDto.fromMember getFromMember(Member member){
+        SupportResponseDto.fromMember newFromMember = new SupportResponseDto.fromMember();
+        newFromMember.setFromMemberAddress(member.getAddress());
+        newFromMember.setFromMemberPageName(member.getPageName());
+        newFromMember.setFromMemberProfileImagePath(member.getProfileImagePath());
+        newFromMember.setFromMemberNickname(member.getNickname());
+        return newFromMember;
+    }
+    public static SupportResponseDto.toMember getToMember(Member member){
+        SupportResponseDto.toMember newToMember = new SupportResponseDto.toMember();
+        newToMember.setToMemberAddress(member.getAddress());
+        newToMember.setToMemberNickname(member.getNickname());
+        newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
+        return newToMember;
+    }
+    public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress,toMember toMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
-                .toAddress(support.getToAddress())
-                .amount(support.getAmount())
+                .toAddress(toMemberAddress)
+                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return supportResponseDto;
     }
-    public static SupportResponseDto getSomeoneSupport(Support support){
+    public static SupportResponseDto getSomeoneSupport(Support support,toMember toMemberAddress){
         SupportResponseDto supportResponseDto = SupportResponseDto.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
-                .toAddress(support.getToAddress())
-                .amount(support.getAmount())
+                .toAddress(toMemberAddress)
+                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
