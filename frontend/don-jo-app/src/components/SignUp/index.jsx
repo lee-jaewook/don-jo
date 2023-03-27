@@ -13,9 +13,16 @@ export const SignUp = ({ isModelOpen }) => {
   const [nickName, setNickName] = useState("");
   const [pageName, setPageName] = useState("");
   const [password, setPassword] = useState("");
-  const [profileImgPath, setProfileImgPath] = useState(
-    "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp"
-  );
+
+  const [userInfo, setUserInfo] = useState({
+    nickName: "",
+    pageName: "",
+    password: "",
+  });
+  const [profileImgPath, setProfileImgPath] = useState({
+    previewImgUrl: "",
+    file: {},
+  });
 
   // validation check
   // const [isDisabled, setIsDisabled] = useState(true);
@@ -43,6 +50,16 @@ export const SignUp = ({ isModelOpen }) => {
 
   const handlePageNameChange = (e) => {
     setPageName(e.target.value);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.value === "") return;
+    const files = e.target.files;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImgPath({ previewImgUrl: reader.result, file: files[0] });
+    };
   };
 
   const handleSubmit = () => {
