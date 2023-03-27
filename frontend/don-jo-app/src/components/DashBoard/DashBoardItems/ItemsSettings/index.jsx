@@ -8,6 +8,8 @@ import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import AddItemModal from "../../../Common/Modal/AddItemModal";
 
+import SignUp from "../../../SignUp";
+
 const ItemsSettings = () => {
   const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
   const [isShowItemModal, setShowItemModal] = useState(false);
@@ -74,10 +76,11 @@ const ItemsSettings = () => {
       )}
 
       {isAddItemModalOpen && (
-        <AddItemModal
-          handleSetShowModal={handleAddItemModalOpen}
-          whichApiChoose={true}
-        />
+        <SignUp isModelOpen={handleAddItemModalOpen} />
+        // <AddItemModal
+        //   handleSetShowModal={handleAddItemModalOpen}
+        //   whichApiChoose={true}
+        // />
       )}
     </S.SettingWrapper>
   );

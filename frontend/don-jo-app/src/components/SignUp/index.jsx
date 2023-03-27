@@ -10,15 +10,15 @@ import { memberApi } from "../../api/member";
 
 export const SignUp = ({ isModelOpen }) => {
   const memberAddress = useSelector((state) => state.web3.walletAddress);
-  const [nickName, setNickName] = useState("");
-  const [pageName, setPageName] = useState("");
-  const [password, setPassword] = useState("");
 
   const [userInfo, setUserInfo] = useState({
     nickName: "",
     pageName: "",
     password: "",
   });
+
+  const { nickName, pageName, password } = userInfo;
+
   const [profileImgPath, setProfileImgPath] = useState({
     previewImgUrl: "",
     file: {},
@@ -40,16 +40,12 @@ export const SignUp = ({ isModelOpen }) => {
   //   }
   // }, [nickName, pageName, password, profileImgPath]);
 
-  const handleNicknameChange = (e) => {
-    setNickName(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handlePageNameChange = (e) => {
-    setPageName(e.target.value);
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setUserInfo({
+      ...userInfo,
+      [id]: value,
+    });
   };
 
   const handleFileChange = (e) => {
@@ -64,45 +60,48 @@ export const SignUp = ({ isModelOpen }) => {
 
   const handleSubmit = () => {
     // 페이지 네임 중복 검사 후
-    const signUpMemberCond = {
-      address: memberAddress,
-      nickname: nickName,
-      pageName: pageName,
-      password: password,
-      profileImgPath: profileImgPath,
-    };
-    memberApi
-      .signUp(signUpMemberCond)
-      .then((res) => {
-        console.log("회원가입 성공: ", res);
-        localStorage.setItem("accesstoken", res.headers.accesstoken);
-        sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
-      })
-      .catch((error) => {
-        console.log("회원가입 실패");
-      });
+    // const signUpMemberCond = {
+    //   address: memberAddress,
+    //   nickname: nickName,
+    //   pageName: pageName,
+    //   password: password,
+    //   profileImgPath: profileImgPath,
+    // };
+    // memberApi
+    //   .signUp(signUpMemberCond)
+    //   .then((res) => {
+    //     console.log("회원가입 성공: ", res);
+    //     localStorage.setItem("accesstoken", res.headers.accesstoken);
+    //     sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
+    //   })
+    //   .catch((error) => {
+    //     console.log("회원가입 실패");
+    //   });
     isModelOpen();
   };
 
   return (
     <FullScreenModal handleSetShowModal={isModelOpen}>
       <BasicInput
+        id="nickName"
         type="text"
         value={nickName}
-        handleOnChangeValue={handleNicknameChange}
-        placeholder="아이디를 입력해주세요."
+        handleOnChangeValue={handleInputChange}
+        placeholder="Nickname"
       />
       <BasicInput
+        id="password"
         type="password"
         value={password}
-        handleOnChangeValue={handlePasswordChange}
-        placeholder="비밀번호를 입력해주세요."
+        handleOnChangeValue={handleInputChange}
+        placeholder="Password"
       />
       <BasicInput
+        id="pageName"
         type="text"
         value={pageName}
-        handleOnChangeValue={handlePageNameChange}
-        placeholder="페이지 이름을 설정해주세요."
+        handleOnChangeValue={handleInputChange}
+        placeholder="PageName"
       />
 
       <BasicButton

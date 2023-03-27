@@ -1,5 +1,5 @@
 import * as S from "./style";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import PropTypes from "prop-types";
 import FullScreenModal from "../FullScreenModal";

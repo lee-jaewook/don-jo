@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
 import { memberApi } from "../api/member";
-import { setLogIn, setLogOut } from "../stores/member";
+import { setLogIn } from "../stores/member";
 import { isMobile } from "react-device-detect";
 
 /**
