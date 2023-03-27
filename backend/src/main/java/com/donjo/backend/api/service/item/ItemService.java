@@ -13,4 +13,5 @@ public interface ItemService {
     void addItem(String address, AddItemCond cond);
     void deleteMemberItem(String address, Long uid);
     void updateMemberItem(String address, UpdateItemCond cond);
+    boolean isPurchased(String memberAddress, Long itemUid);
 }

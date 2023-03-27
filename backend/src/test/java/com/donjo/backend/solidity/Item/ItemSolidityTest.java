@@ -22,6 +22,12 @@ class ItemSolidityTest {
     private ItemSolidity itemSolidity;
 
     @Test
+    public void isPurchasedTest() {
+        String seller = "0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7";
+        System.out.println(itemSolidity.isPurchased(seller, 1L));
+    }
+
+    @Test
     public void itemBuildTest(){
         String seller = "0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7";
         int size = itemSolidity.getMemberItemList(seller).get().size();

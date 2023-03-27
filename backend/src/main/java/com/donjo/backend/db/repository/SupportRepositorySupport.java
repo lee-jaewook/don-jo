@@ -61,7 +61,6 @@ public class SupportRepositorySupport {
         jpql += whereSql;
         jpql += String.join("", whereCondition);
 
-        System.out.println(jpql);
         TypedQuery<Support> query = em.createQuery(jpql, Support.class);
         return query.getResultList();
     }
@@ -71,7 +70,6 @@ public class SupportRepositorySupport {
         String whereSql = " where u.arriveTimeStamp IS NOT NULL order by u.arriveTimeStamp desc";
 
         jpql += whereSql;
-        System.out.println(jpql);
 
         TypedQuery<Support> query = em.createQuery(jpql, Support.class);
         return query.setMaxResults(10).getResultList();
