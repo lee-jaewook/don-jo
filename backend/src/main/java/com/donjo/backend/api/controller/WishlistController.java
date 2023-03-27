@@ -63,6 +63,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMemberWishlist(HttpServletRequest request, @RequestBody @Valid AddWishlistCond cond){
+        if(cond.getTargetAmount() == 0) return ResponseEntity.status(400).build();
         log.info("call ADD wishlist");
         wishlistService.addWishlist(memberService.getMemberAddress(request), cond);
         log.info("Done ADD wishlist");
