@@ -1,117 +1,186 @@
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
 import ExternalLink from "../../components/Personal/ExternalLink";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
 import { Desktop } from "../../components/Common/Template";
+import { memberApi } from "../../api/member";
+import defaultProfileImg from "../../assets/img/common/app-logo.svg";
+import { useParams } from "react-router-dom";
+import { fileApi } from "../../api/file";
+import { useDispatch, useSelector } from "react-redux";
+import { updateMemberInfo } from "../../stores/memberInfo";
 
 const Personal = () => {
-  //로그인 유저 더미 데이터
-  const loginUser = {
-    memberAddress: "memberaddress",
-    nickname: "taehyun",
-  };
-
-  //해당 페이지 사람 더미 데이터
-  const pageOwner = {
-    memberAddress: "memberaddress",
-    profileImgPath:
-      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-    backgroundImgPath:
-      "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
-    nickname: "Robert Downey Jr.",
-    introduction: `# Its me
-
-Hi, My name is Robert Downy Jr.
-
-> This is my personal page for sponsorship.
-
-Please take a look at my work and send me a message of support. 
-
-—————
-- item 1
-- item 2
-- item 3  
-—————
-
-\`\`\`java
-public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-\`\`\`
-
-
-**Thank you.**
-
-![image](https://i.ytimg.com/vi/FZhIEzWjb5w/maxresdefault.jpg)`,
-    numSupporters: 16000,
-    socialList: [
-      "https://www.youtube.com/@SamsungKorea",
-      "https://velog.io/@taebong1012",
-      "https://github.com/taebong1012",
-    ],
-  };
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const { pageName } = useParams();
 
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
 
+  const dispatch = useDispatch();
+  const memberInfoItemData = useSelector((state) => state.memberInfo);
+
+  const [donationSettingData, setDonationSettingData] = useState({
+    donationEmoji: "",
+    donationName: "",
+    pricePerDonation: 0,
+    thankMsg: "",
+  });
+
+  const [wishListData, setWishListData] = useState([]);
+
+  const [isOwner, setIsOwner] = useState(false);
+
+  const getPageInfo = async () => {
+    try {
+      const { data } = await memberApi.getPageInfo(pageName);
+      console.log(
+        "현재페이지 유저 지갑주소: ",
+        data.memberInfoItem.memberAddress
+      );
+      dispatch(updateMemberInfo(data.memberInfoItem));
+      setDonationSettingData(data.donationSetting);
+      setWishListData(data.wishList);
+
+      //로그인 유저가 페이지 주인인지 확인
+      const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
+      setIsOwner(pageMemberAddress === loginUserMemberAddress);
+      console.log(data.memberInfoItem.profileImgPath);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getPageInfo();
+  }, []);
+
+  //로그인 유저의 지갑주소 정보
+  const loginUserMemberAddress = useSelector(
+    (state) => state.web3.walletAddress
+  );
+
+  const PROFILE_TYPE = "img/profile";
+  const BACKGROUND_TYPE = "img/background";
+  // const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
+  const profileRef = useRef(null);
+  const backgroundImgRef = useRef(null);
+
+  // 변경 div 클릭 시 해당 input 작동
+  const handleBgImgUpload = () => {
+    console.log("배사 변경");
+    backgroundImgRef.current.click();
+  };
+  const handleProfileImgUpload = () => {
+    console.log("프사 변경");
+    profileRef.current.click();
+  };
+
+  //이미지 올리기
+  const uploadBackgroundImg = async (e) => {
+    console.log("배경이미지 업로드");
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("multipartFile", file);
+
+    try {
+      const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
+      const backgroundImgSrc = data;
+      await memberApi.updateUserBackground(backgroundImgSrc);
+      getPageInfo();
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+  const uploadProfileImg = async (e) => {
+    console.log("프로필이미지 업로드");
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("multipartFile", file);
+
+    try {
+      const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
+      console.log("파일 URL: ", data);
+      console.log("쌍다옴표가 있니?: ", data.includes('"'));
+      console.log(typeof data);
+      await memberApi.updateUserProfile(data);
+      getPageInfo();
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
   return (
     <S.Container>
+      <S.FileInput
+        ref={backgroundImgRef}
+        type="file"
+        accept="image/*"
+        defaultValue=""
+        onChange={uploadBackgroundImg}
+      />
+      <S.FileInput
+        ref={profileRef}
+        type="file"
+        accept="image/*"
+        defaultValue=""
+        onChange={uploadProfileImg}
+      />
+
       <S.BackgroundImg
-        src={pageOwner.backgroundImgPath}
+        src={memberInfoItemData.backgroundImgPath}
         onMouseOver={() => setIsBackgroundHover(true)}
         onMouseOut={() => setIsBackgroundHover(false)}
       >
-        {loginUser.memberAddress === pageOwner.memberAddress &&
-          isBackgroundHover && (
-            <S.BackgroundImgEdit>
-              <S.EditIcon>
-                <FiEdit color="white" size={20.35} />
-              </S.EditIcon>
-            </S.BackgroundImgEdit>
-          )}
+        {isOwner && isBackgroundHover && (
+          <S.BackgroundImgEdit>
+            <S.EditIcon onClick={handleBgImgUpload}>
+              <FiEdit color="white" size={20.35} />
+            </S.EditIcon>
+          </S.BackgroundImgEdit>
+        )}
       </S.BackgroundImg>
       <S.ProfileImgContainer>
         <S.ProfileImg
-          src={pageOwner.profileImgPath}
+          src={
+            memberInfoItemData.profileImgPath === ""
+              ? defaultProfileImg
+              : memberInfoItemData.profileImgPath
+          }
           onMouseOver={() => setIsProfileHover(true)}
           onMouseOut={() => setIsProfileHover(false)}
         >
-          {loginUser.memberAddress === pageOwner.memberAddress &&
-            isProfileHover && (
-              <S.ProfileImgEdit>
-                <S.EditIcon>
-                  <FiEdit color="white" size={20.35} />
-                </S.EditIcon>
-              </S.ProfileImgEdit>
-            )}
+          {isOwner && isProfileHover && (
+            <S.ProfileImgEdit>
+              <S.EditIcon onClick={handleProfileImgUpload}>
+                <FiEdit color="white" size={20.35} />
+              </S.EditIcon>
+            </S.ProfileImgEdit>
+          )}
         </S.ProfileImg>
       </S.ProfileImgContainer>
 
       <S.ContentsContainer>
         <S.UserInfo>
-          <S.Nickname>{pageOwner.nickname}</S.Nickname>
+          <S.Nickname>{memberInfoItemData.nickname}</S.Nickname>
           <S.SupporterContainer>
             <S.NumSupporter>
-              {pageOwner.numSupporters
+              {memberInfoItemData.numSupporters
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </S.NumSupporter>
             supporter
           </S.SupporterContainer>
-          <ExternalLink socialList={pageOwner.socialList} />
+          <ExternalLink socialList={memberInfoItemData.socialList} />
           <Desktop>
             <S.IntroductionContainer>
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
-              {loginUser.memberAddress === pageOwner.memberAddress && (
+              {isOwner && (
                 <S.IntroductionEdit
                   onClick={() => {
                     setIsShowIntroductionEdit(true);
@@ -122,20 +191,27 @@ public class HelloWorld {
               )}
               <S.Introduction>
                 <MDEditor.Markdown
-                  source={pageOwner.introduction}
+                  source={memberInfoItemData.introduction}
+                  data-color-mode="light"
                 ></MDEditor.Markdown>
               </S.Introduction>
             </S.IntroductionContainer>
           </Desktop>
         </S.UserInfo>
-        <PersonalContent />
+        <PersonalContent
+          donationSettingData={donationSettingData}
+          wishListData={wishListData}
+        />
       </S.ContentsContainer>
 
       {isShowIntroductionEdit && (
         <FullScreenModal
           handleSetShowModal={setIsShowIntroductionEdit}
           children={
-            <IntroductionEdit handleSetShowModal={setIsShowIntroductionEdit} />
+            <IntroductionEdit
+              handleSetShowModal={setIsShowIntroductionEdit}
+              getPageInfo={getPageInfo}
+            />
           }
         />
       )}

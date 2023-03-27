@@ -94,7 +94,8 @@ const RecentSupportBlock = ({ supportContent }) => {
             {loginUser.memberAddress === pageOwner.memberAddress &&
               Object.keys(supportContent.comments).length === 0 && (
                 <S.ReplyBtn
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setIsShowReplyInput((prev) => !prev);
                   }}
                 >

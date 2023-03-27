@@ -3,37 +3,34 @@ import WishlistItem from "../../Common/WishlistItem";
 import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { wishlist } from "./dummyData";
-
-//현재 로그인한 유저 더미 데이터
-const loginUser = {
-  memberAddress: "memberaddress",
-  nickname: "taehyun",
-};
-
-//해당 페이지 사람 더미 데이터
-const pageOwner = {
-  memberAddress: "memberaddress",
-  profileImgPath:
-    "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-  backgroundImgPath:
-    "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
-  nickname: "Robert Downey Jr.",
-  introduction:
-    "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
-  numSupporters: 16000,
-  socialList: [
-    "https://www.youtube.com/@SamsungKorea",
-    "https://velog.io/@taebong1012",
-    "https://github.com/taebong1012",
-  ],
-};
+import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
+import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
 
 const PersonalWishlist = () => {
+  //로그인 유저의 지갑주소 정보
+  const loginUserMemberAddress = useSelector(
+    (state) => state.web3.walletAddress
+  );
+
+  //현재 페이지의 멤버 지갑주소 정보
+  const pageMemberAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  ).toLowerCase();
+
   //로그인 유저가 페이지 주인인지 확인
   const [isOwner, setIsOwner] = useState(false);
   useEffect(() => {
-    setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
+    setIsOwner(pageMemberAddress === loginUserMemberAddress);
   }, []);
+
+  const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
+    useState(false);
+  const [thisItemUID, setThisItemUId] = useState(0);
+
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+  };
 
   return (
     <S.Container>
@@ -50,6 +47,7 @@ const PersonalWishlist = () => {
           return (
             <S.WishlistItemWrapper key={wishlistItem.uid}>
               <WishlistItem
+                onClick={() => setThisItemUId(wishlistItem.uid)}
                 uid={wishlistItem.uid}
                 title={wishlistItem.title}
                 imgPath={wishlistItem.imgPath}
@@ -57,11 +55,24 @@ const PersonalWishlist = () => {
                 collectedAmount={wishlistItem.collectedAmount.toFixed(3)}
                 totalAmount={wishlistItem.totalAmount.toFixed(3)}
                 thankMsg={wishlistItem.thankMsg}
+                handleSetShowModal={setIsShowWishlistDetailModal}
+                isDashboard={isOwner}
               />
             </S.WishlistItemWrapper>
           );
         })}
       </S.CardContainer>
+
+      <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+
+      {isShowWishlistDetailModal && (
+        <WishlistDetailModal
+          uid={thisItemUID}
+          isDashboard={false}
+          handleSetShowModal={setIsShowWishlistDetailModal}
+          handleOnClickButton={() => {}}
+        />
+      )}
     </S.Container>
   );
 };

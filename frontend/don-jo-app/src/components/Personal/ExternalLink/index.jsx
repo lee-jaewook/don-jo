@@ -17,8 +17,9 @@ import {
   IoLogoYoutube,
 } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const ExternalLink = ({ socialList }) => {
+const ExternalLink = () => {
   const website = [
     {
       name: "behance",
@@ -79,17 +80,23 @@ const ExternalLink = ({ socialList }) => {
   ];
 
   const [iconList, setIconList] = useState([]);
+  const socialList = useSelector((state) => state.memberInfo.socialList);
 
   //해당 사이트에 맞는 로고 저장
   const matchLogo = () => {
     for (let socialListIndex in socialList) {
-      for (let websiteIndex in website) {
-        if (socialList[socialListIndex].includes(website[websiteIndex].name)) {
-          setIconList((prev) => [...prev, website[websiteIndex].logo]);
-          break;
+      if (socialList[socialListIndex] !== "") {
+        for (let websiteIndex in website) {
+          if (
+            socialList[socialListIndex].includes(website[websiteIndex].name)
+          ) {
+            setIconList((prev) => [...prev, website[websiteIndex].logo]);
+            break;
+          }
         }
       }
     }
+    console.log("아이콘 리스트", iconList);
   };
 
   useEffect(() => {
@@ -102,7 +109,7 @@ const ExternalLink = ({ socialList }) => {
 
   return (
     <div>
-      {socialList.length !== 0 && (
+      {iconList.length !== 0 ? (
         <S.Container>
           {iconList.map((icon, i) => {
             return (
@@ -117,13 +124,9 @@ const ExternalLink = ({ socialList }) => {
             );
           })}
         </S.Container>
-      )}
+      ) : null}
     </div>
   );
 };
 
 export default ExternalLink;
-
-ExternalLink.propTypes = {
-  socialList: PropTypes.array.isRequired,
-};

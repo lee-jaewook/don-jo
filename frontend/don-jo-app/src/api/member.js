@@ -25,4 +25,16 @@ export const memberApi = {
 
   // 페이지 정보 조회 API
   getPageInfo: (pageName) => api.get(`/pages/${pageName}`),
+
+  // 사용자 배경사진 수정 API
+  updateUserBackground: (backgroundImgSrc) =>
+    api.put(`/auth/member/background`, backgroundImgSrc),
+
+  // 사용자 프로필사진 수정 API
+  updateUserProfile: (profileImgSrc) =>
+    api.put(`/auth/member/profile`, profileImgSrc),
+
+  // 사용자 자기소개 수정 API
+  updateUserIntroduction: (introduction) =>
+    api.put(`/auth/member/introduction`, introduction),
 };
