@@ -6,7 +6,7 @@ import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
 import FullScreenModal from "../Modal/FullScreenModal";
 import { logIn } from "../../../utils/logIn";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,10 +17,11 @@ const Header = () => {
     memberAddress: "taehyun",
   };
 
+  const isLogin = useSelector((state) => state.member.isLogIn);
+
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
 
   useEffect(() => {
