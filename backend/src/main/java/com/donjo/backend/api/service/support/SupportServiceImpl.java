@@ -51,19 +51,26 @@ public class SupportServiceImpl implements SupportService{
     private final SupportRepositorySupport supportRepositorySupport;
 
     public Double getEarning(String address,String type,int period){
-        List<Support> supportList = supportRepositorySupport.findEarning(address,type,period);
-        BigInteger result = BigInteger.ZERO;
-        for (Support support : supportList) {
-            result=result.add(BigInteger.valueOf(support.getAmount()));
-        }
-        double resultETH = result.doubleValue() /Math.pow(10,18d);
+        Optional<List<Support>> supportList = Optional.ofNullable(supportRepositorySupport.findEarning(address,type,period));
 
-        return resultETH;
+        return supportList.map(list -> list.stream()
+                        .mapToLong(Support::getAmount)
+                        .sum())
+                .map(result -> result.doubleValue() / Math.pow(10, 18d))
+                .orElse(0.0);
+
+//        List<Support> supportList = supportRepositorySupport.findEarning(address,type,period);
+//        BigInteger result = BigInteger.ZERO;
+//        for (Support support : supportList) {
+//            result=result.add(BigInteger.valueOf(support.getAmount()));
+//        }
+//        double resultETH = result.doubleValue() /Math.pow(10,18d);
+//
+//        return resultETH;
     }
 
     @Override
     public void createSupports(SupportRequestDto dto){
-        System.out.println(dto);
         LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
                 .orElseThrow(() -> new NoContentException());
         supportRepository.save(dto.toSupport(sendTime));
