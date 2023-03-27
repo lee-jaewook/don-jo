@@ -1,6 +1,5 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
-// import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import AddItemModal from "../../Common/Modal/AddItemModal";
@@ -38,11 +37,9 @@ const PersonalItems = () => {
       pageNum,
       PAGE_SIZE
     );
-    console.log("data: ", data);
     setPageNum((prev) => prev + 1);
     setItemList([...itemList, ...data.itemList]);
     setIsEnd(data.hasMore);
-    console.log(itemList);
   };
 
   useEffect(() => {

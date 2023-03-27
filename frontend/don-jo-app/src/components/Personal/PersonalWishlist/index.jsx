@@ -2,10 +2,10 @@ import * as S from "./style";
 import WishlistItem from "../../Common/WishlistItem";
 import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { wishlist } from "./dummyData";
 import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 import { useSelector } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
+import { wishlistAPI } from "../../../api/wishlist";
 
 const PersonalWishlist = () => {
   //로그인 유저의 지갑주소 정보
@@ -28,9 +28,32 @@ const PersonalWishlist = () => {
     useState(false);
   const [thisItemUID, setThisItemUId] = useState(0);
 
+  const [pageNum, setPageNum] = useState(0);
+  const PAGE_SIZE = 6;
+  const [wishlist, setWishlist] = useState([]);
+  const [hasMore, setIsEnd] = useState(true);
+
+  const getWishList = async () => {
+    const { data } = await wishlistAPI.getWishList(
+      pageMemberAddress,
+      pageNum,
+      PAGE_SIZE
+    );
+    setPageNum((prev) => prev + 1);
+    setWishlist([...wishlist, ...data.wishlists]);
+    setIsEnd(data.hasMore);
+  };
+
+  useEffect(() => {
+    getWishList();
+  }, []);
+
   const handleOnClickShowMoreButton = () => {
     console.log("Show More");
+    getWishList();
   };
+
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
   return (
     <S.Container>
@@ -45,15 +68,15 @@ const PersonalWishlist = () => {
         )}
         {wishlist.map((wishlistItem) => {
           return (
-            <S.WishlistItemWrapper key={wishlistItem.uid}>
+            <S.WishlistItemWrapper key={wishlistItem.id}>
               <WishlistItem
-                onClick={() => setThisItemUId(wishlistItem.uid)}
-                uid={wishlistItem.uid}
+                onClick={() => setThisItemUId(wishlistItem.id)}
+                uid={wishlistItem.id}
                 title={wishlistItem.title}
-                imgPath={wishlistItem.imgPath}
+                imgPath={S3URL + wishlistItem.imgPath}
                 description={wishlistItem.description}
-                collectedAmount={wishlistItem.collectedAmount.toFixed(3)}
-                totalAmount={wishlistItem.totalAmount.toFixed(3)}
+                collectedAmount={wishlistItem.collectedAmount.toString()}
+                totalAmount={wishlistItem.targetAmount.toString()}
                 thankMsg={wishlistItem.thankMsg}
                 handleSetShowModal={setIsShowWishlistDetailModal}
                 isDashboard={isOwner}
@@ -63,7 +86,9 @@ const PersonalWishlist = () => {
         })}
       </S.CardContainer>
 
-      <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+      {hasMore && (
+        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+      )}
 
       {isShowWishlistDetailModal && (
         <WishlistDetailModal

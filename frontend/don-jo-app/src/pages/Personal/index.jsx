@@ -106,7 +106,7 @@ const Personal = () => {
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
       console.log("파일 URL: ", data);
-      console.log("쌍다옴표가 있니?: ", data.includes('"'));
+      console.log("쌍따옴표가 있니?: ", data.includes('"'));
       console.log(typeof data);
       await memberApi.updateUserProfile(data);
       getPageInfo();
