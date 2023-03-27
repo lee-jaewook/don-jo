@@ -1,6 +1,5 @@
-package com.donjo.backend.api.dto.support;
+package com.donjo.backend.api.dto.support.response;
 
-import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Support;
 
@@ -8,16 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Getter
 @Setter
 @ToString
 @Builder
-public class SupportResponseDto {
+public class FindSupportPayload {
 
     private long uid;
 
@@ -61,23 +58,23 @@ public class SupportResponseDto {
 
     }
 
-    public static SupportResponseDto.fromMember getFromMember(Member member){
-        SupportResponseDto.fromMember newFromMember = new SupportResponseDto.fromMember();
+    public static FindSupportPayload.fromMember getFromMember(Member member){
+        FindSupportPayload.fromMember newFromMember = new FindSupportPayload.fromMember();
         newFromMember.setFromMemberAddress(member.getAddress());
         newFromMember.setFromMemberPageName(member.getPageName());
         newFromMember.setFromMemberProfileImagePath(member.getProfileImagePath());
         newFromMember.setFromMemberNickname(member.getNickname());
         return newFromMember;
     }
-    public static SupportResponseDto.toMember getToMember(Member member){
-        SupportResponseDto.toMember newToMember = new SupportResponseDto.toMember();
+    public static FindSupportPayload.toMember getToMember(Member member){
+        FindSupportPayload.toMember newToMember = new FindSupportPayload.toMember();
         newToMember.setToMemberAddress(member.getAddress());
         newToMember.setToMemberNickname(member.getNickname());
         newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
         return newToMember;
     }
-    public static SupportResponseDto getSupport(Support support, fromMember fromMemberAddress,toMember toMemberAddress){
-        SupportResponseDto supportResponseDto = SupportResponseDto.builder()
+    public static FindSupportPayload getSupport(Support support, fromMember fromMemberAddress, toMember toMemberAddress){
+        FindSupportPayload findSupportPayload = FindSupportPayload.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
@@ -86,10 +83,10 @@ public class SupportResponseDto {
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
-        return supportResponseDto;
+        return findSupportPayload;
     }
-    public static SupportResponseDto getSomeoneSupport(Support support,toMember toMemberAddress){
-        SupportResponseDto supportResponseDto = SupportResponseDto.builder()
+    public static FindSupportPayload getSomeoneSupport(Support support, toMember toMemberAddress){
+        FindSupportPayload findSupportPayload = FindSupportPayload.builder()
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .toAddress(toMemberAddress)
@@ -97,6 +94,6 @@ public class SupportResponseDto {
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .replyMsg(support.getReplyMsg())
                 .build();
-        return supportResponseDto;
+        return findSupportPayload;
     }
 }
