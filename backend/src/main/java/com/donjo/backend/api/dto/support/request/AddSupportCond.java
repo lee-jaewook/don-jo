@@ -16,8 +16,13 @@ import java.time.LocalDateTime;
 public class AddSupportCond {
     @NotNull
     private String transactionHash;
+
     @NotNull
     private String supportType;
+
+    @NotNull
+    private Long supportTypeUid;
+
     @NotNull
     private Long supportUid;
 
@@ -33,6 +38,7 @@ public class AddSupportCond {
         return  Support.builder()
                 .transactionHash(this.getTransactionHash())
                 .supportType(this.getSupportType())
+                .supportTypeUid(this.getSupportTypeUid())
                 .supportUid(this.getSupportUid())
                 .fromAddress(this.getFromAddress())
                 .toAddress(this.getToAddress())
