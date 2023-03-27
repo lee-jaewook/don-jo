@@ -40,7 +40,7 @@ const PersonalWishlist = () => {
       PAGE_SIZE
     );
     setPageNum((prev) => prev + 1);
-    setWishlist([...wishlist, ...data.wishlists]);
+    setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
     setIsEnd(data.hasMore);
   };
 

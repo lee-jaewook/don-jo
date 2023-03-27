@@ -38,7 +38,7 @@ const PersonalItems = () => {
       PAGE_SIZE
     );
     setPageNum((prev) => prev + 1);
-    setItemList([...itemList, ...data.itemList]);
+    setItemList((prev) => [...prev, ...(data.itemList || [])]);
     setIsEnd(data.hasMore);
   };
 
