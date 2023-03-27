@@ -3,6 +3,7 @@ package com.donjo.backend.api.service.wishlist;
 import com.donjo.backend.api.dto.wishlist.request.AddWishlistCond;
 import com.donjo.backend.api.dto.wishlist.request.UpdateWishlistCond;
 import com.donjo.backend.api.dto.wishlist.response.GetWishlistsPayload;
+import com.donjo.backend.api.dto.wishlist.response.WishlistDetailPayload;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
@@ -47,8 +48,9 @@ public class WishlistServiceImpl implements WishlistService{
 
     @Override
     //  uid를 기반으로 특정 WishlistSol 반환합니다
-    public Optional<WishlistSol> getOneWishlist(Long uid) {
-        return wishlistSolidity.getMemberWishListDetail(uid);
+    public WishlistDetailPayload getOneWishlist(Long uid) {
+        WishlistSol sol = wishlistSolidity.getMemberWishListDetail(uid).orElseThrow(()-> new NoContentException());
+        return WishlistDetailPayload.from(sol);
     }
 
     @Override

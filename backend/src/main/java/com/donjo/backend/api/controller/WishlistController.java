@@ -51,8 +51,7 @@ public class WishlistController {
     })
     public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull Long wishlistUid){
         return ResponseEntity.status(200)
-                .body(wishlistService.getOneWishlist(wishlistUid)
-                        .orElseThrow(()-> new NoContentException("위시리스트가 없습니다.")));
+                .body(wishlistService.getOneWishlist(wishlistUid));
     }
 
     @PostMapping("/api/auth/member/wishlist/limited")
