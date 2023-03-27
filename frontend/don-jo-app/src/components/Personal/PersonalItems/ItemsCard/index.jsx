@@ -28,8 +28,8 @@ export default ItemCard;
 
 ItemCard.propTypes = {
   item: PropTypes.shape({
-    imgPath: PropTypes.string,
-    description: PropTypes.string,
+    imgPath: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }).isRequired,
   isOwner: PropTypes.bool,

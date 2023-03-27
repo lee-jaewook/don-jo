@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import * as S from "./style";
 import { FiEdit } from "react-icons/fi";
-import { useInput } from "../../../hooks/useInput";
 import BasicButton from "../../Common/BasicButton";
 import BasicInput from "../../Common/BasicInput";
 import BasicTitle from "../../Common/BasicTitle";
@@ -12,11 +11,27 @@ const DashBoardAccount = () => {
   const backgroundImgRef = useRef();
   const profileRef = useRef();
 
-  const [nickname, onChangeNickname] = useInput("HyunJu"); // 사용자의 현재 이름 설정
-  const [pageName, onChangePageName] = useInput("songo427"); // 사용자의 현재 페이지 이름 설정
-  const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [backgroundImgFile, setBackgroundImgFile] = useState(""); // 사용자의 기본 배경 설정
   const [profileImgFile, setProfileImgFile] = useState(""); // 사용자의 기본 프로필 설정
+  const [account, setAccount] = useState({
+    nickname: "HyunJu",
+    pageName: "songo427",
+    colorIndex: "#F02C7E",
+    link1: "",
+    link2: "",
+    link3: "",
+  });
+
+  const { nickname, pageName, colorIndex, link1, link2, link3 } = account;
+
+  const handleOnChangeInput = (e) => {
+    const { id, value } = e.target;
+
+    setAccount({
+      ...account,
+      [id]: value,
+    });
+  };
 
   const handleSaveImgFile = (e) => {
     const {
@@ -83,27 +98,31 @@ const DashBoardAccount = () => {
 
       <S.InputWrapper size="15rem">
         <BasicInput
+          id="nickname"
           type="text"
           value={nickname}
-          handleOnChangeValue={onChangeNickname}
+          handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
       <BasicTitle text="Social Link" />
       <S.InputWrapper>
         <BasicInput
+          id="link1"
           type="text"
-          value="link1"
-          handleOnChangeValue={() => console.log("link1")}
+          value={link1}
+          handleOnChangeValue={handleOnChangeInput}
         />
         <BasicInput
+          id="link2"
           type="text"
-          value="link2"
-          handleOnChangeValue={() => console.log("link2")}
+          value={link2}
+          handleOnChangeValue={handleOnChangeInput}
         />
         <BasicInput
+          id="link3"
           type="text"
-          value="link3"
-          handleOnChangeValue={() => console.log("link3")}
+          value={link3}
+          handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
       <BasicTitle text="Page Name" />
@@ -111,7 +130,7 @@ const DashBoardAccount = () => {
         <BasicInput
           type="text"
           value={pageName}
-          handleOnChangeValue={onChangePageName}
+          handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
       <BasicTitle text="Theme Color" />
@@ -120,12 +139,13 @@ const DashBoardAccount = () => {
           colorSet.length > 0 &&
           colorSet.map((color, index) => (
             <S.Color
+              id={`color${index}`}
               type="radio"
               name="color"
               key={color}
               value={color}
               defaultChecked={color === colorIndex}
-              onChange={(e) => setColorIndex(e.target.value)}
+              onChange={handleOnChangeInput}
             />
           ))}
       </S.ColorPalette>
