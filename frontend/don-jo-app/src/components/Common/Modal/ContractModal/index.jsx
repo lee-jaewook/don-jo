@@ -65,7 +65,7 @@ const ContractInfo = ({ supportContent }) => {
           {/* 컨트랙트 */}
           <S.ProfileContainer isMiddle={true}>
             <S.ProfileWrapper isEnable={true}>
-              <ProfileImg width={3} src={blockchain} />
+              <ProfileImg width={3} src={blockchain} isLocalSrc={true} />
             </S.ProfileWrapper>
             <S.Tag>Contract</S.Tag>
           </S.ProfileContainer>
