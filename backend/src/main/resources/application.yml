@@ -3,6 +3,7 @@ spring:
     url: jdbc:mysql://donjodb.ctvdncgwhc2a.ap-northeast-2.rds.amazonaws.com:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: admin
     password: donjoroot
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
