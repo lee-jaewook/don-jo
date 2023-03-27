@@ -20,7 +20,6 @@ public class FindSupportPayload {
 
     private String supportType;
 
-
     private fromMember fromMember;
 
     private toMember toAddress;

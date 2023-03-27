@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -68,7 +69,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupports(@RequestParam String memberAddress, @RequestParam String type, @RequestParam int pageNum,@RequestParam int pageSize) {
-        List<FindSupportPayload> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
+        Map<String, Object> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
         if (supports.size()>0){
             return ResponseEntity.status(200).body(supports);
         }

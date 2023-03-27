@@ -32,9 +32,7 @@ import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service("SupportService")
@@ -66,15 +64,23 @@ public class SupportServiceImpl implements SupportService{
         supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
-    public List<FindSupportPayload> getSupports(String memberAddress, String type, int pageNum, int pageSize){
+    public Map<String, Object> getSupports(String memberAddress, String type, int pageNum, int pageSize){
         // Dto 리스트배열 생성
         List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
+
+        boolean hashMore = true;
 
         // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
+
+        Pageable tmppageable = PageRequest.of(pageNum+1, pageSize);
+
+        if (supportRepository.findAllBySupport(type,memberAddress,tmppageable).isEmpty()){
+            hashMore=false;
+        }
 
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
         for (Support support : list) {
@@ -93,7 +99,16 @@ public class SupportServiceImpl implements SupportService{
                 findSupportPayloadList.add(findSupportPayload);
             }
         }
-        return findSupportPayloadList;
+//        Map<String,Boolean> resultMap = new HashMap<>();
+//        resultMap.put("supportList", findSupportPayloadList);
+//        resultMap.put("hasMore", hashMore);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("hashMore", hashMore);
+        resultMap.put("supportList", findSupportPayloadList);
+
+        return resultMap;
+//        return findSupportPayloadList;
     }
 
     @Override
@@ -140,7 +155,6 @@ public class SupportServiceImpl implements SupportService{
     public int getSupportCount(String type, String memberAddress){
         // 조건에 맞는 SupportList 가져오기
         List<Support> list = supportRepository.findAllBySupportCount(type,memberAddress);
-
         // SupportList 길이 반환
         return list.size();
     }
@@ -162,10 +176,7 @@ public class SupportServiceImpl implements SupportService{
         DonationSetting donationSetting = donationSettingRepository.findById(memberAddress).get().getDonationSetting();
 
         // 가져온 엔티티에 Dto에 있는 Request값 넣어주기 @Transactional로 엔티티 변화가 있으면 자동저장
-        donationSetting.setPricePerDonation(donationSettingCond.getPricePerDonation());
-        donationSetting.setDonationEmoji(donationSettingCond.getDonationEmoji());
-        donationSetting.setDonationName(donationSettingCond.getDonationName());
-        donationSetting.setThankMsg(donationSettingCond.getThankMsg());
+        donationSettingCond.updateDonationSetting(donationSetting);
     }
 
     @Override
