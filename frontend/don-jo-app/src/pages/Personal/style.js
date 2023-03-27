@@ -63,7 +63,8 @@ export const ProfileImg = styled.div`
   background-color: var(--color-background);
   background-size: cover;
   background-position: center;
-  background-image: url(${(props) => props.src});
+  background-image: ${(props) =>
+    `url(https://don-jo.s3.ap-northeast-2.amazonaws.com/${props.src})`};
   box-shadow: 0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05);
   position: relative;
   margin-left: 4rem;

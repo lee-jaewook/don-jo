@@ -49,6 +49,7 @@ const Personal = () => {
       //로그인 유저가 페이지 주인인지 확인
       const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
       setIsOwner(pageMemberAddress === loginUserMemberAddress);
+      console.log(data.memberInfoItem.profileImgPath);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -65,7 +66,7 @@ const Personal = () => {
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+  // const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
   const profileRef = useRef(null);
   const backgroundImgRef = useRef(null);
@@ -89,7 +90,7 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
-      const backgroundImgSrc = S3URL + data;
+      const backgroundImgSrc = data;
       await memberApi.updateUserBackground(backgroundImgSrc);
       getPageInfo();
     } catch (error) {
@@ -104,8 +105,10 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
-      const profileImgSrc = S3URL + data;
-      await memberApi.updateUserProfile(profileImgSrc);
+      console.log("파일 URL: ", data);
+      console.log("쌍다옴표가 있니?: ", data.includes('"'));
+      console.log(typeof data);
+      await memberApi.updateUserProfile(data);
       getPageInfo();
     } catch (error) {
       console.log("error: ", error);
