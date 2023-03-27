@@ -24,6 +24,7 @@ pipeline{
 
                             stage('컨테이너 생성') {
                               steps {
+
                                 sh "docker run -d -p 3100:80 --name guide guide-image2"
                               }
                             }
