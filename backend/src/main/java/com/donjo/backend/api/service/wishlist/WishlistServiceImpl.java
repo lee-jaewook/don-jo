@@ -2,6 +2,7 @@ package com.donjo.backend.api.service.wishlist;
 
 import com.donjo.backend.api.dto.wishlist.request.AddWishlistCond;
 import com.donjo.backend.api.dto.wishlist.request.UpdateWishlistCond;
+import com.donjo.backend.api.dto.wishlist.response.GetWishlistsPayload;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
@@ -20,9 +21,12 @@ public class WishlistServiceImpl implements WishlistService{
     private final WishlistSolidity wishlistSolidity;
 
     @Override
-    public List<WishlistSol> getAllWishlist(String address, int pageNum, int pageSize) {
+    public GetWishlistsPayload getAllWishlist(String address, int pageNum, int pageSize) {
         // null 체크
         List<WishlistSol> list = wishlistSolidity.getMemberWishLists(address).orElseThrow(()-> new NoContentException());
+
+        // 정렬
+        Collections.reverse(list);
 
         // 페이지네이션
         int startIdx = pageNum * pageSize;
@@ -36,9 +40,7 @@ public class WishlistServiceImpl implements WishlistService{
             result.add(list.get(i));
         }
 
-        // 정렬
-        Collections.reverse(result);
-        return result;
+        return GetWishlistsPayload.from(list.size(), pageNum, pageSize, result);
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.donjo.backend.api.service.support;
 
-import com.donjo.backend.api.dto.support.*;
+import com.donjo.backend.api.dto.support.request.AddSupportCond;
+import com.donjo.backend.api.dto.support.request.DonationSettingCond;
+import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
+import com.donjo.backend.api.dto.support.response.FindSupportPayload;
+import com.donjo.backend.api.dto.support.response.FindTop10Payload;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Support;
@@ -11,22 +15,15 @@ import com.donjo.backend.db.repository.SupportRepositorySupport;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.support.SupportSolidity;
-import com.donjo.backend.util.Web3jUtil;
-import jnr.a64asm.Mem;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.donjo.backend.solidity.support.SupportSolidity;
 import com.donjo.backend.solidity.support.SupportSol;
-import org.web3j.applicationhandler.ApplicationHandler;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.response.EthBlock;
-import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthTransaction;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 
 import javax.transaction.Transactional;
@@ -51,63 +48,52 @@ public class SupportServiceImpl implements SupportService{
     private final SupportRepositorySupport supportRepositorySupport;
 
     public Double getEarning(String address,String type,int period){
-        List<Support> supportList = supportRepositorySupport.findEarning(address,type,period);
-        BigInteger result = BigInteger.ZERO;
-        for (Support support : supportList) {
-            result=result.add(BigInteger.valueOf(support.getAmount()));
-        }
-        Double resultETH = result.doubleValue();
-        resultETH=resultETH/Math.pow(10,18d);
-//        resultETH = result.divide(BigInteger.valueOf((double) Math.pow(10,18d)));
-//        Double resultETH = result.doubleValue();
-        return resultETH;
+        Optional<List<Support>> supportList = Optional.ofNullable(supportRepositorySupport.findEarning(address,type,period));
 
-
+        return supportList.map(list -> list.stream()
+                        .mapToLong(Support::getAmount)
+                        .sum())
+                .map(result -> result.doubleValue() / Math.pow(10, 18d))
+                .orElse(0.0);
     }
 
     @Override
-    public void createSupports(SupportRequestDto dto){
-        System.out.println(dto);
+    public void createSupports(AddSupportCond dto){
         LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
                 .orElseThrow(() -> new NoContentException());
         supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
-    public List<SupportResponseDto> getSupports(String memberAddress, String type, int pageNum,int pageSize){
-        List<SupportResponseDto> supportResponseDtoList = new ArrayList<>();
-        List<Support> list = new ArrayList<>();
+    public List<FindSupportPayload> getSupports(String memberAddress, String type, int pageNum, int pageSize){
+        List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
 
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        if (type.equals("all")) {
-            list = supportRepository.findAllByToAddress(memberAddress,pageable);
-        }
-        else{
-            list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress, pageable);
-        }
+        List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
+
         for (Support support : list) {
             if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                SupportResponseDto.toMember toMember = SupportResponseDto.getToMember(findToMember);
-                SupportResponseDto supportResponseDto = SupportResponseDto.getSomeoneSupport(support,toMember);
-                supportResponseDtoList.add(supportResponseDto);
+                FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
+                FindSupportPayload findSupportPayload = FindSupportPayload.getSomeoneSupport(support,toMember);
+                findSupportPayloadList.add(findSupportPayload);
             }
             else {
                 Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                SupportResponseDto.fromMember fromMember = SupportResponseDto.getFromMember(findFromMember);
-                SupportResponseDto.toMember toMember = SupportResponseDto.getToMember(findToMember);
-                SupportResponseDto supportResponseDto = SupportResponseDto.getSupport(support, fromMember,toMember);
-                supportResponseDtoList.add(supportResponseDto);
+                FindSupportPayload.fromMember fromMember = FindSupportPayload.getFromMember(findFromMember);
+                FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
+                FindSupportPayload findSupportPayload = FindSupportPayload.getSupport(support, fromMember,toMember);
+                findSupportPayloadList.add(findSupportPayload);
             }
         }
-        return supportResponseDtoList;
+        return findSupportPayloadList;
     }
 
     @Override
-    public SupportDetailResponseDto getSupportDetail(String toAddress,Long supportUid ){
+    public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid ){
         Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid);
         Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
-        SupportDetailResponseDto supportDetailResponseDto = SupportDetailResponseDto.fromSupport(supportSol);
+        FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.fromSupport(supportSol);
 
         Web3j web3 = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         try {
@@ -116,14 +102,14 @@ public class SupportServiceImpl implements SupportService{
             EthBlock ethBlock = web3.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), true).send();
             BigInteger timeStamp = ethBlock.getBlock().getTimestamp();
             if(timeStamp==null){
-                return supportDetailResponseDto;
+                return findSupportDetailPayload;
             }
             else {
                 Instant instant = Instant.ofEpochSecond(timeStamp.longValue());
                 LocalDateTime transactionTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
                 support.setArriveTimeStamp(transactionTime);
-                supportDetailResponseDto.setArriveTimeStamp(transactionTime);
-                return supportDetailResponseDto;
+                findSupportDetailPayload.setArriveTimeStamp(transactionTime);
+                return findSupportDetailPayload;
             }
         } catch (IOException e) {
             System.out.println("못찾음");
@@ -132,44 +118,40 @@ public class SupportServiceImpl implements SupportService{
     }
     @Override
     public int getSupportCount(String type, String memberAddress){
-        List<Support> list = new ArrayList<>();
-        if (type.equals("all")){
-            list = supportRepository.findAllByToAddress(memberAddress);
-        }
-        else{
-            list = supportRepository.findAllBySupportTypeAndToAddress(type, memberAddress);
-        }
+        List<Support> list = supportRepository.findAllBySupportCount(type,memberAddress);
+
         return list.size();
     }
 
     @Override
-    public DonationDto getDonationSetting(String memberAddress){
+    public DonationSettingCond getDonationSetting(String memberAddress){
         DonationSetting donationSetting = donationSettingRepository.findById(memberAddress).get().getDonationSetting();
-        DonationDto donationDto = new DonationDto();
+        DonationSettingCond donationSettingCond = new DonationSettingCond();
 
-        return donationDto.getDonation(donationSetting);
+        return donationSettingCond.getDonation(donationSetting);
     }
 
     @Override
     @Transactional
-    public void changeDonation(DonationDto donationDto,String memberAddress){
+    public void changeDonation(DonationSettingCond donationSettingCond, String memberAddress){
         DonationSetting donationSetting = donationSettingRepository.findById(memberAddress).get().getDonationSetting();
 
-        donationSetting.setPricePerDonation(donationDto.getPricePerDonation());
-        donationSetting.setDonationEmoji(donationDto.getDonationEmoji());
-        donationSetting.setDonationName(donationDto.getDonationName());
-        donationSetting.setThankMsg(donationDto.getThankMsg());
+        donationSetting.setPricePerDonation(donationSettingCond.getPricePerDonation());
+        donationSetting.setDonationEmoji(donationSettingCond.getDonationEmoji());
+        donationSetting.setDonationName(donationSettingCond.getDonationName());
+        donationSetting.setThankMsg(donationSettingCond.getThankMsg());
     }
 
     @Override
-    public List<Top10ResponseDto> getTop10(){
+    public List<FindTop10Payload> getTop10(){
         List<Support> supportList = supportRepositorySupport.findTop10();
-        List<Top10ResponseDto> top10ResponseDtoList = new ArrayList<>();
+        List<FindTop10Payload> findTop10PayloadList = new ArrayList<>();
 
         for (Support support : supportList) {
-            Top10ResponseDto top10ResponseDto = Top10ResponseDto.getTop10(support);
-            top10ResponseDtoList.add(top10ResponseDto);
+            FindTop10Payload findTop10Payload = FindTop10Payload.getTop10(support);
+            findTop10PayloadList.add(findTop10Payload);
         }
-        return top10ResponseDtoList;
+
+        return findTop10PayloadList;
     }
 }

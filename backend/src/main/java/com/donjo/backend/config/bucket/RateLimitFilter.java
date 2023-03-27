@@ -18,7 +18,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private final Bucket bucket;
 
     public RateLimitFilter() {
-        Bandwidth limit = Bandwidth.simple(5, Duration.ofHours(5));
+        Bandwidth limit = Bandwidth.simple(1000, Duration.ofHours(1));
         this.bucket = Bucket4j.builder().addLimit(limit).build();
     }
 

@@ -1,4 +1,4 @@
-package com.donjo.backend.api.dto.support;
+package com.donjo.backend.api.dto.support.request;
 
 import com.donjo.backend.db.entity.Support;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-public class SupportRequestDto {
+public class AddSupportCond {
     @NotNull
     private String transactionHash;
     @NotNull
