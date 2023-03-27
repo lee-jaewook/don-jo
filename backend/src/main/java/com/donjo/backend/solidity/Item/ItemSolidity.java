@@ -85,4 +85,12 @@ public class ItemSolidity {
             throw new BadRequestException(e.getMessage());
         }
     }
+
+    public boolean isPurchased(String memberAddress, Long uid){
+        try {
+            return contract.purchasedItems(memberAddress, BigInteger.valueOf(uid)).send();
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
 }
