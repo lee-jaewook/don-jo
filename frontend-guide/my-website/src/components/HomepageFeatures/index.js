@@ -4,32 +4,35 @@ import styles from "./styles.module.css";
 
 const FeatureList = [
   {
-    title: "Easy to Use",
+    title: "Decentralized Fundraising",
     Svg: require("@site/static/img/undraw_ether.svg").default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Our platform enables decentralized fundraising for developers,
+        eliminating the need for intermediaries. Direct donations from
+        supporters to developers empower both parties and foster trust.
       </>
     ),
   },
   {
-    title: "Focus on What Matters",
+    title: "Easy Integration",
     Svg: require("@site/static/img/undraw_button.svg").default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Our donation button is designed for easy integration into any website or
+        application. It allows developers to receive support with minimal setup
+        and maintenance efforts.
       </>
     ),
   },
   {
-    title: "Powered by React",
+    title: "Transparent Transactions",
     Svg: require("@site/static/img/undraw_transaction.svg").default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        By leveraging the Ethereum blockchain, we ensure that all transactions
+        are transparent and publicly verifiable. This openness increases
+        accountability and fosters donor confidence.
       </>
     ),
   },
