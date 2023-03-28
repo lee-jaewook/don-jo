@@ -24,6 +24,7 @@ const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
   const handleOnClick = () => {
     updateIntroduction();
     handleSetShowModal(false);
+    document.body.style.overflow = "auto";
   };
 
   return (
