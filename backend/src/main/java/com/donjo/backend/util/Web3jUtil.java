@@ -11,6 +11,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthEstimateGas;
 import org.web3j.protocol.core.methods.response.EthGasPrice;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
@@ -31,6 +32,8 @@ public class Web3jUtil {
     String url;
     @Value("${eth.applicationAddress}")
     String contractAddress;
+    @Value("${eth.chainId}")
+    int chainId;
 
     public ApplicationHandler getContractApi(){
         Web3j web3j = Web3j.build(new HttpService(url));
@@ -44,8 +47,10 @@ public class Web3jUtil {
             gasProvider = new DefaultGasProvider();
         }
 
+        RawTransactionManager transactionManager = new RawTransactionManager(web3j, credentials, chainId);
+
         // 자동 생성된 Wrapper 클래스를 사용하여 스마트 컨트랙트 인스턴스를 생성합니다.
-        return ApplicationHandler.load(contractAddress, web3j, credentials, gasProvider);
+        return ApplicationHandler.load(contractAddress, web3j, transactionManager, gasProvider);
     }
 
     public StaticGasProvider getGasEstimate(Web3j web3j) throws Exception{
