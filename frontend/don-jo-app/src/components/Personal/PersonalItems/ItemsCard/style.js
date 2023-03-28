@@ -19,7 +19,9 @@ export const ItemImg = styled.div`
   background-image: ${(props) => {
     return props.imgPath === ""
       ? "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTJtcqqYSIbVJbT4MV6mWW50ICsYn3azyn0w&usqp=CAU)"
-      : "url(" + props.imgPath + ")";
+      : "url(https://don-jo.s3.ap-northeast-2.amazonaws.com/" +
+          props.imgPath +
+          ")";
   }};
   width: 100%;
   height: 11.25rem;

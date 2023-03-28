@@ -6,7 +6,7 @@ import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
 import FullScreenModal from "../Modal/FullScreenModal";
 import { logIn } from "../../../utils/logIn";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,18 +17,22 @@ const Header = () => {
     memberAddress: "taehyun",
   };
 
+  const isLogin = useSelector((state) => state.member.isLogIn);
+
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
+  const [isLocalSrc, setIsLocalSrc] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
+      setIsLocalSrc(true);
       setProfileLinkTo(`/${loginUser.memberAddress}`);
     } else {
       setProfileImgSrc(loginUser.profileImgPath);
+      setIsLocalSrc(false);
       setProfileLinkTo("/dashboard/home");
     }
   }, [location.pathname]);
@@ -52,7 +56,12 @@ const Header = () => {
         </S.GuideSelect>
         <S.ProfileImgContainer>
           {isLogin ? (
-            <ProfileImg width={2.5} src={profileImgSrc} to={profileLinkTo} />
+            <ProfileImg
+              width={2.5}
+              src={profileImgSrc}
+              to={profileLinkTo}
+              isLocalSrc={isLocalSrc}
+            />
           ) : (
             <S.Startbtn onClick={SubmitLogIn}>Start</S.Startbtn>
           )}

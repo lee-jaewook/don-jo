@@ -5,6 +5,8 @@ import member from "./member/index.js";
 import items from "./items/index.js";
 import web3 from "./web3/index.js";
 import donation from "./donation";
+import memberInfo from "./memberInfo/index.js";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -16,6 +18,7 @@ const reducers = combineReducers({
   items,
   web3,
   donation,
+  memberInfo,
 });
 
 export default persistReducer(persistConfig, reducers);

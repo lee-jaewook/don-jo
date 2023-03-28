@@ -21,7 +21,7 @@ const ItemCard = ({ item, isOwner }) => {
             <S.Price>{item.price.toFixed(3)}</S.Price>
             <S.Unit>eth</S.Unit>
           </S.PriceWrapper>
-          {isOwner && (
+          {!isOwner && (
             <S.BuyBtn
               color=""
               onClick={() => {

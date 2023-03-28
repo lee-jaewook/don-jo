@@ -52,7 +52,17 @@ export const Card = styled.div`
   background-color: var(--color-modal);
   border-radius: 1.25rem;
   padding: 2rem 1.5rem 1.75rem 1.5rem;
+  padding: 1.25rem 0.75rem 1rem 0.75rem;
+`;
 
-  /* 임시 영역 설정 */
-  min-height: 500px;
+export const Nothing = styled.div`
+  width: 100%;
+  height: 18.75rem;
+  border-radius: 1.25rem;
+  background-color: var(--color-modal);
+  font-family: "RobotoMedium";
+  font-size: 1.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

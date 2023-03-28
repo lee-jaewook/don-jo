@@ -13,4 +13,11 @@ export const Textarea = styled.textarea`
   &:hover {
     border: 0.0625rem solid var(--color-primary);
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: 0.5;
+    pointer-events: none;
+  `}
 `;
