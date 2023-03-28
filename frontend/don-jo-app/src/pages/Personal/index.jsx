@@ -45,7 +45,6 @@ const Personal = () => {
       //로그인 유저가 페이지 주인인지 확인
       const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
       setIsOwner(pageMemberAddress === loginUserMemberAddress);
-      console.log(data.memberInfoItem.profileImgPath);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -62,7 +61,6 @@ const Personal = () => {
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
-  // const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
   const profileRef = useRef(null);
   const backgroundImgRef = useRef(null);

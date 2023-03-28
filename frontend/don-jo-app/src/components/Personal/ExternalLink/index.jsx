@@ -96,7 +96,6 @@ const ExternalLink = () => {
         }
       }
     }
-    console.log("아이콘 리스트", iconList);
   };
 
   useEffect(() => {
