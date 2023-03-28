@@ -56,6 +56,13 @@ public class MemberServiceImpl implements MemberService {
   private final PasswordEncoder passwordEncoder;
   private final TokenProvider tokenProvider;
   private final String PAGE_NAME = "pageName";
+
+  private final String NICK_NAME = "nickName";
+
+  private final String THEME_COLOR = "themeColor";
+
+  private final String IMAGE_PATH = "imagePath";
+
   private final WishlistSolidity wishlistSolidity;
 
   @Override
@@ -118,18 +125,17 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
-    // 주어진 서명 데이터가 실제로 서명된 메시지와 일치하는지 확인
     boolean check = verifySignature(loginMemberCond.getMemberAddress(), loginMemberCond.getMemberSignature(), loginMemberCond.getSignMessage());
     if (check) {
       Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new UnAuthorizationException("아이디가 존재하지 않습니다."));
-      //  회원 정보를 기반으로 토큰을 생성
-      Map<String, Object> result = returnToken(member);
-      // result 맵에 PAGE_NAME이라는 키를 추가하고, 회원의 페이지 이름을 값으로 설정합니다. result 맵을 반환합니다.
-      result.put(PAGE_NAME, member.getPageName());
-      result.put("nickName", member.getNickname());
-      result.put("themeColor",member.getThemeColor());
-      result.put("profileImagePath",member.getProfileImagePath());
 
+      Map<String, Object> result = returnToken(member);
+      result.put(PAGE_NAME, member.getPageName());
+      result.put(NICK_NAME, member.getNickname());
+      result.put(THEME_COLOR, member.getThemeColor());
+      result.put(IMAGE_PATH, member.getProfileImagePath());
+
+//       추가 정보를 포함한 결과값 반환
       return result;
     }
 
