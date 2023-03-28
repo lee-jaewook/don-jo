@@ -26,7 +26,7 @@ public class FindSupportDetailPayload {
 
     private String supportType; //  Donation : 0, Item : 1, Wishlist : 2
 
-    private Long supportTypeUid;
+//    private Long supportTypeUid;
 
     private Double amount;
 
