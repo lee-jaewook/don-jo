@@ -1,6 +1,7 @@
 package com.donjo.backend.solidity.Item;
 
 import com.donjo.backend.exception.BadRequestException;
+import com.donjo.backend.util.Web3jUtil;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

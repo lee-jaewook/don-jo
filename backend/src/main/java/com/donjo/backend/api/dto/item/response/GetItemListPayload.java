@@ -4,6 +4,7 @@ import com.donjo.backend.solidity.Item.ItemSol;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class GetItemListPayload {
     int pageNum;
     int pageSize;
     boolean hasMore;
-    List<ItemSol> itemList;
+    List<ItemDetailPayload> itemList;
 
     public static GetItemListPayload from(int size, int pageNum, int pageSize,List<ItemSol> itemList){
         return GetItemListPayload.builder()
@@ -23,7 +24,7 @@ public class GetItemListPayload {
                 .pageNum(pageNum)
                 .pageSize(pageSize)
                 .hasMore(size > (pageNum + 1) * pageSize)
-                .itemList(itemList)
+                .itemList(itemList.stream().map(itemSol -> ItemDetailPayload.from(itemSol)).collect(Collectors.toList()))
                 .build();
     }
 }
