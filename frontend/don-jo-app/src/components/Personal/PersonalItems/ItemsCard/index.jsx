@@ -1,12 +1,13 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
-
+import { buyItemDonation } from "../../../../utils/transactionFunc/buyItemDonation";
 const ItemCard = ({ item, isOwner }) => {
   const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
   const doBuy = () => {
     // 해당 아이템을 구매하는 api
+    buyItemDonation(item);
     console.log("buy");
   };
 
@@ -35,8 +36,8 @@ const ItemCard = ({ item, isOwner }) => {
       </S.DescriptionContainer>
       {isShowItemDetailModal && (
         <ItemDetailModal
+          uid={item.id}
           handleSetShowModal={setIsShowItemDetailModal}
-          uid={item.uid}
           handleOnClickButton={doBuy}
         />
       )}

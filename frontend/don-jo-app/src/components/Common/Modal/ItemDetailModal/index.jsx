@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import BasicButton from "../../BasicButton";
 import FullScreenModal from "../FullScreenModal";
 import { useMediaQuery } from "react-responsive";
+import { itemApi } from "../../../../api/items";
 
 const ItemDetailModal = ({
   uid,
@@ -17,20 +18,42 @@ const ItemDetailModal = ({
   const [result, setResult] = useState({});
 
   useEffect(() => {
-    // uid를 통해 아이템 상세 조회 API 호출 및 세팅
-    setResult({
-      id: uid,
-      title: "This is my project",
-      imgPath: "ImgPath 5634481689157267798",
-      description:
-        "Inspirational designs, illustrations, and graphic elements from the world’s best designers. Want more inspiration? Browse our search results. Inspirational designs, illustrations, and graphic elements.",
-      price: "1000.000",
-      message: "Thanks",
-      filePath: "",
-      seller: "0x288fb136c9291a4b62f1620bee5901beb2b0ffd7",
-      deleted: false,
-    });
+    itemApi
+      .getItemDetail(uid)
+      .then((res) => {
+        console.log("res: ", res);
+        setResult({
+          id: res.data.id,
+          title: res.data.title,
+          imgPath: res.data.imgPath,
+          description: res.data.description,
+          price: res.data.price,
+          message: res.data.message,
+          filePath: res.data.filePath,
+          seller: res.data.seller,
+          deleted: res.data.deleted,
+        });
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
   }, []);
+
+  // useEffect(() => {
+  //   // uid를 통해 아이템 상세 조회 API 호출 및 세팅
+  //   setResult({
+  //     id: uid,
+  //     title: "This is my project",
+  //     imgPath: "ImgPath 5634481689157267798",
+  //     description:
+  //       "Inspirational designs, illustrations, and graphic elements from the world’s best designers. Want more inspiration? Browse our search results. Inspirational designs, illustrations, and graphic elements.",
+  //     price: "1000.000",
+  //     message: "Thanks",
+  //     filePath: "",
+  //     seller: "0x288fb136c9291a4b62f1620bee5901beb2b0ffd7",
+  //     deleted: false,
+  //   });
+  // }, []);
 
   const handleMakeModalContent = () => {
     return (

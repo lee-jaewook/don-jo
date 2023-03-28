@@ -14,7 +14,6 @@ export const connectWallet = (dispatch) => {
     window.ethereum
       .request({ method: "eth_requestAccounts" })
       .then((accounts) => {
-        console.log("Account: ", accounts);
         const web3 = new Web3(window.ethereum);
         web3.eth.net.getId().then((chainId) => {
           const infuraWeb3 = new Web3(
@@ -26,39 +25,6 @@ export const connectWallet = (dispatch) => {
           dispatch(setWeb3({ web3: web3, walletAddress: accounts[0] }));
         });
         console.log("MetaMask is connected");
-
-        // MetaMask 계정 변경 및 로그아웃 시, Redux Store 업데이트
-        window.ethereum.on("accountsChanged", (newAccounts) => {
-          if (newAccounts.length > 0) {
-            // 계정 변경 시, 계정 정보 업데이트
-            const newWeb3 = new Web3(window.ethereum);
-            newWeb3.eth.net.getId().then((chainId) => {
-              const infuraWeb3 = new Web3(
-                new Web3.providers.HttpProvider(
-                  "https://sepolia.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
-                )
-              );
-              newWeb3.setProvider(infuraWeb3.currentProvider);
-
-              dispatch(
-                setWeb3({ web3: newWeb3, walletAddress: newAccounts[0] })
-              );
-              dispatch(setLogOut());
-              console.log("MetaMask account changed: ");
-            });
-          } else {
-            // 로그아웃 시, Web3 객체 및 계정 정보 초기화
-            const newWeb3 = new Web3(window.ethereum);
-            const infuraWeb3 = new Web3(
-              new Web3.providers.HttpProvider(
-                "https://sepolia.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
-              )
-            );
-            newWeb3.setProvider(infuraWeb3.currentProvider);
-            dispatch(setWeb3({ web3: newWeb3, walletAddress: "" }));
-            console.log("MetaMask account disconnected");
-          }
-        });
       })
       .catch((error) => {
         console.log("error: ", error);

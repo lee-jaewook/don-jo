@@ -19,8 +19,10 @@ export const supportApi = {
     api.put(`/auth/member/donation/setting`, donationDto),
 
   // 후원내역 저장 API
-  saveSponsorshipDetail: (supportRequestDto) =>
-    api.post(`/auth/member/supports`, supportRequestDto),
+  saveSponsorshipDetail: (supportRequestDto) => {
+    console.log("supportRequestDto", supportRequestDto);
+    return api.post(`/member/supports`, supportRequestDto);
+  },
 
   // 서포트 수 조회 API
   getSupportCount: (type) => api.get(`/member/supporters/count?type=${type}`),

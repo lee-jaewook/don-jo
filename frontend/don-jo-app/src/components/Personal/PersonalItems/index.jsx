@@ -87,7 +87,10 @@ const PersonalItems = () => {
       )}
 
       {isOpenAddItemModal && (
-        <AddItemModal handleSetShowModal={setIsOpenAddItemModal} />
+        <AddItemModal
+          handleSetShowModal={setIsOpenAddItemModal}
+          whichApiChoose={true}
+        />
       )}
     </S.Container>
   );
