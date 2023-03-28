@@ -4,7 +4,7 @@ import BasicModal from "../../Common/Modal/BasicModal";
 import { QRCode } from "react-qrcode-logo";
 import BasicButton from "../../Common/BasicButton";
 import { toPng } from "html-to-image";
-
+import Logo from "../../../assets/img/dashboard/qr-logo.svg";
 const QRCodeModal = ({ handleSetShowModal }) => {
   const ref = useRef(null);
 
@@ -32,13 +32,15 @@ const QRCodeModal = ({ handleSetShowModal }) => {
           <QRCode
             value="https://j8a209.p.ssafy.io"
             size="200"
-            fgColor="black"
-            logoWidth="42"
+            fgColor="#222"
+            logoWidth="48"
+            quietZone={10}
             qrStyle="dots"
             eyeRadius={10}
             enableCORS={true}
-            logoPadding={4}
+            logoImage={Logo}
             logoPaddingStyle={"square"}
+            removeQrCodeBehindLogo={true}
           />
         </div>
         <S.ButtonWrapper>
