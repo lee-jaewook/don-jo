@@ -7,10 +7,10 @@ import BasicModal from "../../Common/Modal/BasicModal";
 import BasicTitle from "../../Common/BasicTitle";
 import CustomSelect from "../DashBoardCustomSelect";
 import EmojiPicker from "emoji-picker-react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiCopy } from "react-icons/fi";
 import { useInput } from "../../../hooks/useInput";
 import { generatorColorSet } from "../../../data/dashboard";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
 
 /**
@@ -27,12 +27,14 @@ const DashBoardGeneratorModal = ({
   isModalOpen,
   isItemsRequired = true,
 }) => {
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const ref = useRef(null);
   const [title, setTitle] = useState("My Button Name");
   const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
   const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
-
+  const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
+  const pageName = "dondon";
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
@@ -56,8 +58,7 @@ const DashBoardGeneratorModal = ({
   const handleUploadFile = async (formData, type) => {
     try {
       const { data } = await fileApi.uploadFile(formData, type);
-      console.log("data???", data);
-      return data;
+      handleGeneratorCode(data);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -68,42 +69,27 @@ const DashBoardGeneratorModal = ({
       return;
     }
 
-    handleGeneratorCode();
-
     toBlob(ref.current).then(function (blob) {
-      handleUploadFile(blob);
       const formData = blobToFormData(blob);
-
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
       handleUploadFile(formData, "img/profile");
     });
+  }, [ref]);
+
+  const handleGeneratorCode = (url) => {
+    setClickedGenerateButton(true);
 
     toPng(ref.current)
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.download = `${title}-button.png`;
         link.href = dataUrl;
-
-        console.log("dataURL,", dataUrl);
-        console.log("dataURL,", dataUrl);
-        handleUploadFile(dataUrl);
-
         link.click();
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [ref]);
 
-  const handleGeneratorCode = () => {
-    const code = `<a href="user-link" style="background-color: ${colorIndex}; width: 200px; height: 48px;">
-              <label>${selectedEmoji}</label>
-              <label>${title}</label>
-            </a>`;
-
+    const code = `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${url}" alt="dong-jo"/></a>`;
     console.log("code:", code);
   };
 
@@ -111,15 +97,14 @@ const DashBoardGeneratorModal = ({
     <div>
       <BasicModal width={26.25} handleSetShowModal={isModalOpen}>
         <S.PreViewWrap>
-          <S.PreView
-            id="don-jo-link"
-            color={colorIndex}
-            ref={ref}
-            href="user-link"
-          >
+          <S.PreView id="don-jo-link" color={colorIndex} ref={ref} href="#">
             <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
             <S.ButtonLabel>{title}</S.ButtonLabel>
           </S.PreView>
+          <S.CopyButton isClicked={isClickedGenerateButton}>
+            <FiCopy />
+            <label>copy code</label>
+          </S.CopyButton>
         </S.PreViewWrap>
 
         <S.ContentWrap>

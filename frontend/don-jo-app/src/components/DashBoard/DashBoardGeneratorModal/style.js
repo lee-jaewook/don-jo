@@ -1,12 +1,15 @@
 import styled from "styled-components";
+import { FiClipboard } from "react-icons/fi";
 
 export const PreViewWrap = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   margin-bottom: 2rem;
-  height: 7.5rem;
+  height: 9.625rem;
   background-color: black;
   border-radius: 1.25rem;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
@@ -116,4 +119,18 @@ export const ButtonLabel = styled.label`
   line-height: 19px;
   text-align: center;
   color: white;
+`;
+
+export const CopyButton = styled.button`
+  display: ${(props) => (props.isClicked ? "flex" : "none")};
+  width: 6rem;
+  font-family: "RobotoMedium";
+  font-size: 16px;
+  color: var(--color-text-third);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  &:hover {
+    color: white;
+  }
 `;
