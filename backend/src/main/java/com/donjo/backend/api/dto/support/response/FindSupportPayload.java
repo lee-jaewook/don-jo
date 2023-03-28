@@ -32,6 +32,8 @@ public class FindSupportPayload {
 
     private String sendMsg;
 
+    private String transactionHash;
+
 //    private LocalDateTime sendTimeStamp;
 
     @Getter
@@ -76,6 +78,7 @@ public class FindSupportPayload {
     }
     public static FindSupportPayload getSupport(Support support, fromMember fromMemberAddress, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
+                .transactionHash(support.getTransactionHash())
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
@@ -89,6 +92,7 @@ public class FindSupportPayload {
     }
     public static FindSupportPayload getSomeoneSupport(Support support, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
+                .transactionHash(support.getTransactionHash())
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .toAddress(toMemberAddress)
