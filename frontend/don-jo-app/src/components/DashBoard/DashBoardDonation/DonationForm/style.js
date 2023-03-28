@@ -94,3 +94,18 @@ export const ButtonWrapper = styled.div`
   max-width: 17.5rem;
   margin: 3.75rem auto 1.875rem auto;
 `;
+
+export const RequiredInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+`;
+
+export const RequiredIcon = styled.span`
+  color: red;
+  font-family: "RobotoBold";
+  font-size: 1.25rem;
+  line-height: 1.465rem;
+  padding-bottom: 0.75rem;
+  margin-left: 0.25rem;
+`;

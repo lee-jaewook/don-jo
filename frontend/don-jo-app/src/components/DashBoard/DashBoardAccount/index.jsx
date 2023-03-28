@@ -14,7 +14,7 @@ const DashBoardAccount = () => {
   const BACKGROUND_TYPE = "img/background";
   const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
-  const user = useSelector((state) => state.member.user);
+  const userPageName = useSelector((state) => state.member.pageName);
 
   // 업로드 파일 미리보기
   const backgroundImgRef = useRef();
@@ -43,6 +43,7 @@ const DashBoardAccount = () => {
     link2,
     link3,
     profileImgPath,
+    backgroundImgPath,
   } = account;
 
   // 입력 변경 처리
@@ -71,16 +72,20 @@ const DashBoardAccount = () => {
       target: { id, files },
     } = e;
 
+    if (files.length <= 0) {
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = () => {
       if (id === "bg-file") {
         setBackgroundImgFile({ previewImgUrl: reader.result, file: files[0] });
-        setAccount({ ...account, backgroundImgPath: undefined });
+        setAccount({ ...account, backgroundImgPath: null });
         return;
       } else if (id === "profile-file") {
         setProfileImgFile({ previewImgUrl: reader.result, file: files[0] });
-        setAccount({ ...account, profileImgPath: undefined });
+        setAccount({ ...account, profileImgPath: null });
         return;
       }
     };
@@ -93,6 +98,8 @@ const DashBoardAccount = () => {
       return;
     }
 
+    console.log("??account?", account);
+
     // 페이지 이름 중복 여부 확인
     if (!handleCheckPageName()) return;
 
@@ -101,7 +108,7 @@ const DashBoardAccount = () => {
     };
 
     // 프로필 이미지 업로드
-    if (account.profileImgPath === undefined) {
+    if (account.profileImgPath === null) {
       let profileImgPath = await handleUploadFile(
         profileImgFile.file,
         PROFILE_TYPE
@@ -110,7 +117,7 @@ const DashBoardAccount = () => {
     }
 
     // 배경 이미지 업로드
-    if (account.backgroundImgPath === undefined) {
+    if (account.backgroundImgPath === null) {
       let backgroundImgPath = await handleUploadFile(
         backgroundImgFile.file,
         BACKGROUND_TYPE
@@ -146,6 +153,8 @@ const DashBoardAccount = () => {
       setAccount({
         ...data,
       });
+
+      console.log(data);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -153,7 +162,7 @@ const DashBoardAccount = () => {
 
   // 페이지 이름 중복 검사 API 연결
   const handleCheckPageName = async () => {
-    if (user.pageName !== pageName) {
+    if (userPageName !== pageName) {
       try {
         await memberApi.checkPageName(pageName);
         return true;
@@ -174,7 +183,13 @@ const DashBoardAccount = () => {
   return (
     <S.AccountWrapper>
       <BasicTitle text="Background Photo" />
-      <S.BackgroundImg url={backgroundImgFile.previewImgUrl || ""}>
+      <S.BackgroundImg
+        url={
+          backgroundImgPath
+            ? `${S3URL}${backgroundImgPath}`
+            : backgroundImgFile.previewImgUrl || ""
+        }
+      >
         <S.EditIconWrapper>
           <label htmlFor="bg-file">
             <FiEdit className="edit-icon" size="24px" color="white" />
@@ -192,8 +207,8 @@ const DashBoardAccount = () => {
       <BasicTitle text="Profile Photo" />
       <S.UserProfileImg
         url={
-          profileImgPath !== undefined
-            ? `${S3URL}`
+          profileImgPath
+            ? `${S3URL}${profileImgPath}`
             : profileImgFile.previewImgUrl || ""
         }
       >

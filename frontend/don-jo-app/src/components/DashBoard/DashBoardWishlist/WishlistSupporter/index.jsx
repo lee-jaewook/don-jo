@@ -3,6 +3,7 @@ import { getEarningDataByType } from "../../../../utils/getEarningDataByType";
 import DashBoardEarning from "../../DashBoardEarning";
 import DashBoardSupportList from "../../DashBoardSupportList";
 const WishlistSupporter = () => {
+  const [pageNum, setPageNum] = useState(0);
   const [result, setResult] = useState([]);
 
   const handleGetEarning = async () => {
@@ -17,7 +18,12 @@ const WishlistSupporter = () => {
   return (
     <div>
       <DashBoardEarning text="Data" result={result} unit="" />
-      <DashBoardSupportList />
+      <DashBoardSupportList
+        type="wishlist"
+        pageNum={pageNum}
+        pageSize="10"
+        setPageNum={setPageNum}
+      />
     </div>
   );
 };

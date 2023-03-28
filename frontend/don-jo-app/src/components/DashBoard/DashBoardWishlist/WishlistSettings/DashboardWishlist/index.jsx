@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import WishlistItem from "../WishlistItem";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
-import { wishlist } from "../../../data/common";
-import WishlistDetailModal from "../Modal/WishlistDetailModal";
+import { useSelector } from "react-redux";
+import WishlistItem from "../../../../Common/WishlistItem";
+import { wishlist } from "../../../../../data/common";
+import WishlistDetailModal from "../../../../Common/Modal/WishlistDetailModal";
+import { wishlistAPI } from "../../../../../api/wishlist";
 
-const Wishlist = () => {
+const DashboardWishlist = () => {
+  const memberAddress = useSelector((state) => state.web3.walletAddress);
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
+  const [result, setResult] = useState([]);
   const [uid, setUid] = useState(0);
+  const [pageNum, setPageNum] = useState(0);
 
   const handleOpenModal = (id) => {
     setShowWishlistModal(true);
@@ -17,10 +22,32 @@ const Wishlist = () => {
     console.log("edit wishlist");
   };
 
+  const handleGetWishlist = async () => {
+    try {
+      const { status, data } = await wishlistAPI.getWishList(
+        memberAddress,
+        pageNum,
+        10
+      );
+      console.log("success: ", data);
+      if (status === 200) {
+        setResult(data);
+        setPageNum((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("???");
+    handleGetWishlist();
+  }, []);
+
   return (
     <S.WishlistContainer isDashboard={true}>
-      {wishlist && wishlist.length > 0 ? (
-        wishlist.map((item) => (
+      {result && result.length > 0 ? (
+        result.map((item) => (
           <WishlistItem
             key={item.id}
             isDashboard={true}
@@ -50,4 +77,4 @@ const Wishlist = () => {
   );
 };
 
-export default Wishlist;
+export default DashboardWishlist;
