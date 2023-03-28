@@ -82,6 +82,9 @@ export const SignUp = ({ isModelOpen }) => {
 
   return (
     <FullScreenModal handleSetShowModal={isModelOpen}>
+      {/* <S.ItemProfileImg>
+        <S.EditIconWrapper></S.EditIconWrapper>
+      </S.ItemProfileImg> */}
       <BasicInput
         id="nickName"
         type="text"
