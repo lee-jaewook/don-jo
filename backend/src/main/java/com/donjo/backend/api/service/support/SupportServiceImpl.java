@@ -68,18 +68,19 @@ public class SupportServiceImpl implements SupportService{
         // Dto 리스트배열 생성
         List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
 
+        // next 페이지를 알려주는 값 설정
         boolean hashMore = true;
 
         // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Pageable nextpageable = PageRequest.of(pageNum+1, pageSize);
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
 
-        Pageable tmppageable = PageRequest.of(pageNum+1, pageSize);
-
-        if (supportRepository.findAllBySupport(type,memberAddress,tmppageable).isEmpty()){
-            hashMore=false;
+        // 다음 페이지에 값이 있는지 확인
+        if (supportRepository.findAllBySupport(type,memberAddress,nextpageable).isEmpty()){
+            hashMore= false;
         }
 
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
@@ -99,16 +100,13 @@ public class SupportServiceImpl implements SupportService{
                 findSupportPayloadList.add(findSupportPayload);
             }
         }
-//        Map<String,Boolean> resultMap = new HashMap<>();
-//        resultMap.put("supportList", findSupportPayloadList);
-//        resultMap.put("hasMore", hashMore);
 
+        // supportList와 next페이지가 있는지 hashMore 던져줌
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("hashMore", hashMore);
         resultMap.put("supportList", findSupportPayloadList);
 
         return resultMap;
-//        return findSupportPayloadList;
     }
 
     @Override
