@@ -1,5 +1,6 @@
 package com.donjo.backend.api.service.support;
 
+import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
@@ -206,5 +207,25 @@ public class SupportServiceImpl implements SupportService{
         }
 
         return findTop10PayloadList;
+    }
+
+    @Override
+    @Transactional
+    public void saveReply(AddReplyCond dto){
+        // transactionHash로 Support 가지고 오기
+        Support support = supportRepository.findById(dto.getTransactionHash()).get();
+
+        // 댓글 저장
+        support.setReplyMsg(dto.getReplyMsg());
+    }
+
+    @Override
+    @Transactional
+    public void deleteReply(String transactionHash){
+        // transactionHash로 Support 가지고 오기
+        Support support = supportRepository.findById(transactionHash).get();
+
+        // 댓글 삭제
+        support.setReplyMsg(null);
     }
 }

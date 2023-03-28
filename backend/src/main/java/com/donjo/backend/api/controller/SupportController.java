@@ -1,5 +1,6 @@
 package com.donjo.backend.api.controller;
 
+import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
@@ -151,5 +152,33 @@ public class SupportController {
     public ResponseEntity<?> getSupportTop10(HttpServletRequest request) {
         List<FindTop10Payload> top10 = supportService.getTop10();
         return ResponseEntity.status(200).body(top10);
+    }
+
+    @PostMapping(path="/api/auth/support/reply")
+    @ApiOperation(value = "댓글 저장,수정", notes = "example content")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(작성,수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(작성,수정 실패)"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+
+    })
+    public ResponseEntity<?> saveReply(@RequestBody AddReplyCond dto) {
+        supportService.saveReply(dto);
+        return ResponseEntity.status(200).body("저장 성공");
+    }
+
+    @DeleteMapping(path="/api/auth/support/reply")
+    @ApiOperation(value = "댓글 삭제", notes = "example content")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(삭제 실패)"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+
+    })
+    public ResponseEntity<?> deleteReply(@RequestParam String transactionHash) {
+        supportService.deleteReply(transactionHash);
+        return ResponseEntity.status(200).body("삭제 성공");
     }
 }

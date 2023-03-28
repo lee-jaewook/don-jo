@@ -1,5 +1,6 @@
 package com.donjo.backend.api.service.support;
 
+import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
@@ -24,4 +25,8 @@ public interface SupportService {
     void changeDonation(DonationSettingCond donationSettingCond, String memberAddress);
 
     List<FindTop10Payload> getTop10();
+
+    void saveReply(AddReplyCond dto);
+
+    void deleteReply(String transactionHash);
 }

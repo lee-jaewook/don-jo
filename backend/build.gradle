@@ -88,6 +88,9 @@ dependencies {
 	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:4.10.0'
 	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-jcache:4.10.0'
 
+	// StringUtils 클래스를 사용
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+
 }
 
 tasks.named('test') {
