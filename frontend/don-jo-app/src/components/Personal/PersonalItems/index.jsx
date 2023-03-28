@@ -1,6 +1,5 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
-// import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import AddItemModal from "../../Common/Modal/AddItemModal";
@@ -33,7 +32,7 @@ const PersonalItems = () => {
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 6;
   const [itemList, setItemList] = useState([]);
-  const [hasMore, setIsEnd] = useState(true);
+  const [hasMore, setIsEnd] = useState(false);
 
   const getItemList = async () => {
     const { data } = await itemApi.getItemList(
@@ -41,11 +40,9 @@ const PersonalItems = () => {
       pageNum,
       PAGE_SIZE
     );
-    console.log("data: ", data);
     setPageNum((prev) => prev + 1);
-    setItemList([...itemList, ...data.itemList]);
+    setItemList((prev) => [...prev, ...(data.itemList || [])]);
     setIsEnd(data.hasMore);
-    console.log(itemList);
   };
 
   useEffect(() => {
@@ -57,9 +54,8 @@ const PersonalItems = () => {
     getItemList();
   };
 
-  return (
-    <S.Container>
-      <S.Title>This is my Items</S.Title>
+  const OwnerOrHasItemList = () => {
+    return (
       <S.CardContainer>
         {isOwner && (
           <S.AddCard
@@ -77,6 +73,17 @@ const PersonalItems = () => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no items 🥲</S.Nothing>;
+  };
+
+  return (
+    <S.Container>
+      <S.Title>This is my Items</S.Title>
+      {isOwner || itemList.length !== 0 ? <OwnerOrHasItemList /> : <Nothing />}
 
       {hasMore && (
         <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />

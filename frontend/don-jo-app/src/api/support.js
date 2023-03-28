@@ -6,8 +6,10 @@ export const supportApi = {
     api.get(`/auth/member/dashboard/earning?period=${period}&type=${type}`),
 
   // 대시보드 서포트 조회 API
-  getSupportList: (pageNum, type) =>
-    api.get(`/auth/member/dashboard/supports?pageNum=${pageNum}&type=${type}`),
+  getSupportList: (memberAddress, pageNum, pageSize, type) =>
+    api.get(
+      `/auth/member/dashboard/supports?memberAddress=${memberAddress}&pageNum=${pageNum}&pageSize=${pageSize}&type=${type}`
+    ),
 
   // 도네이션 설정 조회 API
   getDonationSettings: () => api.get(`/auth/member/donation/setting`),

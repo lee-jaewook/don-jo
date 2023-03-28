@@ -21,7 +21,7 @@ export const SelectBox = styled.div`
         position: absolute;
         top: 0.5rem;
         right: 1rem;
-        color: #49c181;
+        color: var(--text-color-third);
         font-size: 1.25rem;
       }
     `}

@@ -1,12 +1,17 @@
 import styled from "styled-components";
+import { FiClipboard } from "react-icons/fi";
 
 export const PreViewWrap = styled.div`
+  position: relative;
+  display: flex;
   width: 100%;
   margin-bottom: 2rem;
-  height: 7.5rem;
+  height: 9.625rem;
   background-color: black;
   border-radius: 1.25rem;
-  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentWrap = styled.div`
@@ -14,14 +19,19 @@ export const ContentWrap = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const PreView = styled.div`
-  position: absolute;
-  left: 5rem;
-  top: 2.25rem;
-  background-color: white;
-  border-radius: 1.5rem;
-  height: 3rem;
-  width: calc(100% - 156px);
+export const PreView = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  width: 217px;
+  height: 48px;
+  background-color: ${(props) => props.color || "#F02C7E"};
+  border-radius: 24px;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const GridBox = styled.div`
@@ -96,4 +106,31 @@ export const ButtonContent = styled.div`
   width: 100%;
   height: 100%;
   max-width: 17.5rem;
+`;
+
+export const EmojiLabel = styled.label`
+  font-size: 1.5rem;
+  margin-right: 0.125rem;
+`;
+
+export const ButtonLabel = styled.label`
+  font-family: "RobotoBold";
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: white;
+`;
+
+export const CopyButton = styled.button`
+  display: ${(props) => (props.isClicked ? "flex" : "none")};
+  width: 6rem;
+  font-family: "RobotoMedium";
+  font-size: 16px;
+  color: var(--color-text-third);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  &:hover {
+    color: white;
+  }
 `;

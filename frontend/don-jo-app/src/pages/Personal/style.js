@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 export const Container = styled.div`
   width: 100vw;
   display: flex;
@@ -18,7 +20,7 @@ export const BackgroundImg = styled.div`
   background-color: ${(props) =>
     props.src === null ? "var(--color-primary)" : "transparent"};
   background-image: ${(props) =>
-    props.src !== null ? `url(${props.src})` : "none"};
+    props.src !== null ? `url(${S3URL + props.src})` : "none"};
 `;
 
 export const BackgroundImgEdit = styled.div`

@@ -38,10 +38,6 @@ const Personal = () => {
   const getPageInfo = async () => {
     try {
       const { data } = await memberApi.getPageInfo(pageName);
-      console.log(
-        "현재페이지 유저 지갑주소: ",
-        data.memberInfoItem.memberAddress
-      );
       dispatch(updateMemberInfo(data.memberInfoItem));
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);
@@ -83,31 +79,25 @@ const Personal = () => {
 
   //이미지 올리기
   const uploadBackgroundImg = async (e) => {
-    console.log("배경이미지 업로드");
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("multipartFile", file);
 
     try {
       const { data } = await fileApi.uploadFile(formData, BACKGROUND_TYPE);
-      const backgroundImgSrc = data;
-      await memberApi.updateUserBackground(backgroundImgSrc);
+      await memberApi.updateUserBackground(data);
       getPageInfo();
     } catch (error) {
       console.log("error: ", error);
     }
   };
   const uploadProfileImg = async (e) => {
-    console.log("프로필이미지 업로드");
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("multipartFile", file);
 
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
-      console.log("파일 URL: ", data);
-      console.log("쌍다옴표가 있니?: ", data.includes('"'));
-      console.log(typeof data);
       await memberApi.updateUserProfile(data);
       getPageInfo();
     } catch (error) {
