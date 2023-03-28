@@ -8,7 +8,7 @@ export const supportApi = {
   // 대시보드 서포트 조회 API
   getSupportList: (memberAddress, pageNum, pageSize, type) =>
     api.get(
-      `/auth/member/dashboard/supports?memberAddress=${memberAddress}&pageNum=${pageNum}&pageSize=${pageSize}&type=${type}`
+      `/member/dashboard/supports?memberAddress=${memberAddress}&pageNum=${pageNum}&pageSize=${pageSize}&type=${type}`
     ),
 
   // 도네이션 설정 조회 API

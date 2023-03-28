@@ -6,6 +6,7 @@ const initialState = {
   pageName: "",
   nickName: "",
   color: "",
+  walletAddress: "",
 };
 
 export const memberSlice = createSlice({
@@ -17,12 +18,14 @@ export const memberSlice = createSlice({
       state.pageName = action.payload.pageName;
       state.nickName = action.payload.nickName;
       state.color = action.payload.color;
+      state.walletAddress = action.payload.walletAddress;
     },
     setLogOut(state, action) {
       state.isLogIn = false;
       state.pageName = "";
       state.nickName = "";
       state.color = "";
+      state.walletAddress = "";
     },
   },
 });
