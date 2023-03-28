@@ -3,6 +3,7 @@ import { setWeb3 } from "../stores/web3";
 import { memberApi } from "../api/member";
 import { setLogIn } from "../stores/member";
 import { isMobile } from "react-device-detect";
+import { useSelector } from "react-redux";
 
 /**
  * 로그인 함수
@@ -66,7 +67,9 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
                             setLogIn({
                               pageName: res.data.pageName,
                               nickName: res.data.nickName,
-                              color: res.data.color,
+                              themeColor: res.data.themeColor,
+                              profileImagePath: res.data.profileImagePath,
+                              walletAddress: accounts[0],
                             })
                           );
                         })

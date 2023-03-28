@@ -5,7 +5,9 @@ const initialState = {
   isLogIn: false,
   pageName: "",
   nickName: "",
-  color: "",
+  themeColor: 0,
+  profileImagePath: "",
+  walletAddress: "",
 };
 
 export const memberSlice = createSlice({
@@ -16,13 +18,17 @@ export const memberSlice = createSlice({
       state.isLogIn = true;
       state.pageName = action.payload.pageName;
       state.nickName = action.payload.nickName;
-      state.color = action.payload.color;
+      state.themeColor = action.payload.themeColor;
+      state.profileImagePath = action.payload.profileImagePath;
+      state.walletAddress = action.payload.walletAddress;
     },
     setLogOut(state, action) {
       state.isLogIn = false;
       state.pageName = "";
       state.nickName = "";
-      state.color = "";
+      state.color = 0;
+      state.profileImagePath = "";
+      state.walletAddress = "";
     },
   },
 });
