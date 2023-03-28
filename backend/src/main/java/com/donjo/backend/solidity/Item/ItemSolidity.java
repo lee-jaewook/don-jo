@@ -30,6 +30,7 @@ public class ItemSolidity {
     public void addMemberItem(ItemSol cond){
         ApplicationHandler.ItemSol item = cond.toSol();
         try {
+            System.out.println("?????");
             contract.addMemberItem(item).send();
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
