@@ -12,8 +12,7 @@ const Header = () => {
   const dispatch = useDispatch();
   //로그인 유저 더미데이터
   const loginUser = {
-    profileImgPath:
-      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
+    profileImgPath: "",
     memberAddress: "taehyun",
   };
 
