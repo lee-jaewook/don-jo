@@ -71,6 +71,7 @@ const GlobalStyle = createGlobalStyle`
   --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;
   --color-placeholder: #BBBBBB;
+  --color-disabled : #DDDDDD;
 
   font-size: 1rem;
 }
