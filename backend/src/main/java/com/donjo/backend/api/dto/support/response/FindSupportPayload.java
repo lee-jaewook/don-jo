@@ -20,7 +20,6 @@ public class FindSupportPayload {
 
     private String supportType;
 
-
     private fromMember fromMember;
 
     private toMember toAddress;
@@ -30,6 +29,8 @@ public class FindSupportPayload {
     private Double amount;
 
     private LocalDateTime arriveTimeStamp;
+
+    private String sendMsg;
 
 //    private LocalDateTime sendTimeStamp;
 
@@ -81,6 +82,7 @@ public class FindSupportPayload {
                 .toAddress(toMemberAddress)
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
+                .sendMsg(support.getSendMsg())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportPayload;
@@ -92,6 +94,7 @@ public class FindSupportPayload {
                 .toAddress(toMemberAddress)
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
+                .sendMsg(support.getSendMsg())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportPayload;

@@ -1,9 +1,12 @@
 package com.donjo.backend.api.dto.support.request;
 
 import com.donjo.backend.db.entity.DonationSetting;
+import com.donjo.backend.db.entity.Member;
+import com.donjo.backend.db.entity.Social;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,5 +36,14 @@ public class DonationSettingCond {
                 .build();
         return donationSettingCond;
     }
+
+    public void updateDonationSetting(DonationSetting donationSetting){
+        donationSetting.setDonationName(donationName);
+        donationSetting.setPricePerDonation(pricePerDonation);
+        donationSetting.setThankMsg(thankMsg);
+        donationSetting.setDonationEmoji(donationEmoji);
+    }
+
+
 }
 
