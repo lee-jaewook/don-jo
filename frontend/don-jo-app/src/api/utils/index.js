@@ -8,10 +8,7 @@ const instance = axios.create({
   },
 });
 
-// interceptor 설정 필요
-
 instance.interceptors.request.use(function (config) {
-  console.log("interceptor request");
   const accesstoken = localStorage.getItem("accesstoken");
 
   if (!accesstoken) {
@@ -27,7 +24,6 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
-    console.log("interceptor response 200");
     return response;
   },
 
@@ -59,8 +55,6 @@ instance.interceptors.response.use(
         return axios(originalRequest);
       }
     }
-
-    console.log("refreshToken 발급 에러: ", error);
     return Promise.reject(error);
   }
 );

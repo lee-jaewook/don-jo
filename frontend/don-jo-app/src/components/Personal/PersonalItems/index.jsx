@@ -24,6 +24,9 @@ const PersonalItems = () => {
     setIsOwner(pageMemberAddress === loginUserMemberAddress);
   }, []);
 
+  console.log("item/현재페이지지갑주소: ", pageMemberAddress);
+  console.log("item/로그인유저지갑주소: ", loginUserMemberAddress);
+
   const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
 
   const [pageNum, setPageNum] = useState(0);
@@ -87,7 +90,10 @@ const PersonalItems = () => {
       )}
 
       {isOpenAddItemModal && (
-        <AddItemModal handleSetShowModal={setIsOpenAddItemModal} />
+        <AddItemModal
+          handleSetShowModal={setIsOpenAddItemModal}
+          whichApiChoose={true}
+        />
       )}
     </S.Container>
   );

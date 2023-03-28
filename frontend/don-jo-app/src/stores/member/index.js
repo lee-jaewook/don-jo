@@ -4,7 +4,8 @@ const initialState = {
   connected: false,
   isLogIn: false,
   pageName: "",
-  user: null,
+  nickName: "",
+  color: "",
 };
 
 export const memberSlice = createSlice({
@@ -14,10 +15,14 @@ export const memberSlice = createSlice({
     setLogIn(state, action) {
       state.isLogIn = true;
       state.pageName = action.payload.pageName;
+      state.nickName = action.payload.nickName;
+      state.color = action.payload.color;
     },
     setLogOut(state, action) {
       state.isLogIn = false;
       state.pageName = "";
+      state.nickName = "";
+      state.color = "";
     },
   },
 });

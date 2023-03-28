@@ -137,6 +137,7 @@ const DashBoardAccount = () => {
   const handleUploadFile = async (file, type) => {
     const formData = new FormData();
     formData.append("multipartFile", file);
+    console.log("file: ", file);
 
     try {
       const { data } = await fileApi.uploadFile(formData, type);
