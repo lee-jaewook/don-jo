@@ -3,18 +3,40 @@ import MDEditor from "@uiw/react-md-editor";
 import BasicButton from "../../Common/BasicButton";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { memberApi } from "../../../api/member";
+import { useSelector } from "react-redux";
 
-const IntroductionEdit = ({ handleSetShowModal }) => {
-  const [md, setMd] = useState("");
+const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
+  const originIntroduction = useSelector(
+    (state) => state.memberInfo.introduction
+  );
+  const [md, setMd] = useState(originIntroduction);
+
+  const updateIntroduction = async () => {
+    console.log(md);
+
+    try {
+      await memberApi.updateUserIntroduction(md);
+      getPageInfo();
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
 
   const handleOnClick = () => {
     console.log(md, "등록");
+    updateIntroduction();
     handleSetShowModal(false);
   };
 
   return (
     <S.Container>
-      <MDEditor height={600} value={md} onChange={setMd} />
+      <MDEditor
+        height={600}
+        value={md}
+        onChange={setMd}
+        data-color-mode="light"
+      />
       <S.BasicButtonWrapper>
         <BasicButton
           text="Submit"

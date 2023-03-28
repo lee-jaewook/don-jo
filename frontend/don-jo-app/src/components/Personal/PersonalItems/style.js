@@ -64,3 +64,15 @@ export const IconWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Nothing = styled.div`
+  width: 100%;
+  height: 18.75rem;
+  border-radius: 1.25rem;
+  background-color: var(--color-modal);
+  font-family: "RobotoMedium";
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

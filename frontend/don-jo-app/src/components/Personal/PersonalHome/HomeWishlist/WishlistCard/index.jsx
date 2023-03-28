@@ -9,10 +9,12 @@ const WishlistCard = ({ content }) => {
     setPercentage((content.collectedAmount / content.totalAmount) * 100);
   }, []);
 
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
   return (
     <S.Container>
       <S.TitleContainer>
-        <S.Img imgPath={content.imgPath} />
+        <S.Img imgPath={S3URL + content.imgPath} />
         <S.TitleText>{content.title}</S.TitleText>
       </S.TitleContainer>
       <S.GaugeBarContainer>

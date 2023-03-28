@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage/session";
 import member from "./member/index.js";
 import items from "./items/index.js";
 import web3 from "./web3/index.js";
+import memberInfo from "./memberInfo/index.js";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   member,
   items,
   web3,
+  memberInfo,
 });
 
 export default persistReducer(persistConfig, reducers);

@@ -16,6 +16,7 @@ const BasicTextarea = ({
   height,
   id,
   value,
+  disabled = false,
 }) => {
   return (
     <S.Textarea
@@ -27,6 +28,7 @@ const BasicTextarea = ({
       width={width}
       height={height}
       defaultValue={value}
+      disabled={disabled}
     />
   );
 };
@@ -40,4 +42,5 @@ BasicTextarea.propTypes = {
   isReadOnly: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
+  disabled: PropTypes.bool,
 };

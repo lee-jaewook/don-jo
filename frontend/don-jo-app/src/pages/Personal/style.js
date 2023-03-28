@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 export const Container = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  margin-bottom: 9.375rem;
 `;
 
 export const BackgroundImg = styled.div`
@@ -13,8 +16,11 @@ export const BackgroundImg = styled.div`
   height: 15rem;
   background-size: cover;
   background-position: center;
-  background-image: url(${(props) => props.src});
   position: relative;
+  background-color: ${(props) =>
+    props.src === null ? "var(--color-primary)" : "transparent"};
+  background-image: ${(props) =>
+    props.src !== null ? `url(${S3URL + props.src})` : "none"};
 `;
 
 export const BackgroundImgEdit = styled.div`
@@ -39,6 +45,10 @@ export const EditIcon = styled.div`
   cursor: pointer;
 `;
 
+export const FileInput = styled.input`
+  display: none;
+`;
+
 export const ProfileImgContainer = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
@@ -52,10 +62,12 @@ export const ProfileImg = styled.div`
   width: 11.25rem;
   height: 11.25rem;
   border-radius: 100%;
+  background-color: var(--color-background);
   background-size: cover;
   background-position: center;
-  background-image: url(${(props) => props.src});
-  filter: drop-shadow(0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05));
+  background-image: ${(props) =>
+    `url(https://don-jo.s3.ap-northeast-2.amazonaws.com/${props.src})`};
+  box-shadow: 0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05);
   position: relative;
   margin-left: 4rem;
 
