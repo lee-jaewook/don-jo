@@ -126,6 +126,9 @@ public class MemberServiceImpl implements MemberService {
       Map<String, Object> result = returnToken(member);
       // result 맵에 PAGE_NAME이라는 키를 추가하고, 회원의 페이지 이름을 값으로 설정합니다. result 맵을 반환합니다.
       result.put(PAGE_NAME, member.getPageName());
+      result.put("nickName", member.getNickname());
+      result.put("themeColor",member.getThemeColor());
+      result.put("profileImagePath",member.getProfileImagePath());
 
       return result;
     }
