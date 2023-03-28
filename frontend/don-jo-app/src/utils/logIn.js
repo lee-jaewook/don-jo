@@ -54,7 +54,6 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
                       memberApi
                         .login(loginMemberCond)
                         .then((res) => {
-                          console.log("로그인 성공: ", res);
                           localStorage.setItem(
                             "accesstoken",
                             res.headers.accesstoken
@@ -63,29 +62,32 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
                             "refreshtoken",
                             res.headers.refreshtoken
                           );
-                          dispatch(setLogIn({ pageName: res.data.pageName }));
+                          dispatch(
+                            setLogIn({
+                              pageName: res.data.pageName,
+                              nickName: res.data.nickName,
+                              color: res.data.color,
+                            })
+                          );
                         })
                         .catch((error) => {
-                          console.log("login로그인 실패: ", error);
+                          alert("LogIn Failed");
                         });
                     })
                     .catch((error) => {
-                      console.error("error ㅠㅠ: ", error);
+                      alert("LogIn Failed");
                     });
                 } else if (status === 204) {
-                  console.log("비회원입니다: ", status);
                   handleModalOpen();
                 }
               })
               .catch((error) => {
-                console.log("error: ", error);
-                alert("다시 로그인 해주세요.");
+                alert("LogIn Failed");
               });
           });
         })
         .catch((error) => {
-          console.log("error: ", error);
-          alert("MetaMask에 로그인하지 않았습니다.");
+          alert("MetaMask is not logged in.");
         });
     } else {
       // Metamask를 설치할 수 있도록 코드 추가...
@@ -98,8 +100,6 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
       }
     }
   } else {
-    const web3 = new Web3(window.ethereum);
-    await window.ethereum.enable();
-    alert("로그인");
+    alert("We do not support Mobile devices");
   }
 };
