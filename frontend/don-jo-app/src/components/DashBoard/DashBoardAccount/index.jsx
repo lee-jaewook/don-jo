@@ -35,20 +35,18 @@ const DashBoardAccount = () => {
   // 계정 정보 저장 및 비구조분해 할당으로 가져옴
   const [message, setMessage] = useState("");
   const [account, setAccount] = useState({});
-  const {
-    nickname,
-    pageName,
-    themeColor,
-    link1,
-    link2,
-    link3,
-    profileImgPath,
-    backgroundImgPath,
-  } = account;
+  const [social, setSocial] = useState({});
+  const { nickname, pageName, themeColor, profileImgPath, backgroundImgPath } =
+    account;
 
   // 입력 변경 처리
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
+
+    if (id.includes("link")) {
+      setSocial({ ...social, [id]: value });
+      return;
+    }
 
     setAccount({
       ...account,
@@ -91,6 +89,15 @@ const DashBoardAccount = () => {
     };
   };
 
+  const handleMakeSocialList = () => {
+    const dataMap = [];
+
+    for (let i = 1; i <= 3; i++) {
+      dataMap.push(social[`link${i}`]);
+    }
+    return dataMap;
+  };
+
   const handleSaveAccount = async () => {
     // 필수 입력 확인
     if (!nickname || !pageName) {
@@ -98,17 +105,24 @@ const DashBoardAccount = () => {
       return;
     }
 
-    console.log("??account?", account);
-
     // 페이지 이름 중복 여부 확인
-    if (!handleCheckPageName()) return;
+    if (!handleCheckPageName()) {
+      alert("Duplicate page name.");
+      return;
+    }
+
+    let socialList = handleMakeSocialList();
 
     let myAccount = {
       ...account,
+      socialList: socialList,
     };
 
     // 프로필 이미지 업로드
-    if (account.profileImgPath === null) {
+    if (
+      account.profileImgPath === null &&
+      profileImgFile.previewImgUrl !== ""
+    ) {
       let profileImgPath = await handleUploadFile(
         profileImgFile.file,
         PROFILE_TYPE
@@ -116,8 +130,12 @@ const DashBoardAccount = () => {
       myAccount = { ...myAccount, profileImgPath };
     }
 
+
     // 배경 이미지 업로드
-    if (account.backgroundImgPath === null) {
+    if (
+      account.backgroundImgPath === null &&
+      backgroundImgFile.previewImgUrl !== ""
+    ) {
       let backgroundImgPath = await handleUploadFile(
         backgroundImgFile.file,
         BACKGROUND_TYPE
@@ -126,8 +144,10 @@ const DashBoardAccount = () => {
     }
 
     try {
-      const data = await memberApi.updateUserInfo(myAccount);
-      console.log("data:", data);
+      const { status } = await memberApi.updateUserInfo(myAccount);
+      if (status === 200) {
+        alert("Success");
+      }
     } catch (error) {
       console.log("error: ", error);
     }
@@ -154,7 +174,12 @@ const DashBoardAccount = () => {
         ...data,
       });
 
-      console.log(data);
+      let socialData = {};
+      for (let i = 1; i <= 3; i++) {
+        socialData[`link${i}`] = data.socialList[i - 1];
+      }
+      setSocial(socialData);
+
     } catch (error) {
       console.log("error: ", error);
     }
@@ -244,20 +269,20 @@ const DashBoardAccount = () => {
         <BasicInput
           id="link1"
           type="text"
-          value={link1 || ""}
+          value={social["link1"] || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
         <BasicInput
           id="link2"
           type="text"
-          value={link2 || ""}
+          value={social["link2"] || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
 
         <BasicInput
           id="link3"
           type="text"
-          value={link3 || ""}
+          value={social["link3"] || ""}
           handleOnChangeValue={handleOnChangeInput}
         />
       </S.InputWrapper>
