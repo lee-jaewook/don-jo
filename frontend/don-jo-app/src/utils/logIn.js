@@ -67,6 +67,8 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
                               pageName: res.data.pageName,
                               nickName: res.data.nickName,
                               color: res.data.color,
+                              profileImgPath: res.data.profileImgPath,
+                              walletAddress: accounts[0],
                             })
                           );
                         })
