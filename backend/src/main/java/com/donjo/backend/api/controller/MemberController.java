@@ -34,6 +34,11 @@ public class MemberController {
   private final MemberServiceImpl memberService;
   private final String PAGE_NAME = "pageName";
 
+  private final String NICK_NAME = "nickName";
+
+  private final String THEME_COLOR = "themeColor";
+  private final String IMAGE_PATH = "imagePath";
+
   @ApiOperation(value="기존 유저 정보 확인", notes = "기존 유저 정보를 확인합니다.")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK(가입한 유저)"),
@@ -95,6 +100,9 @@ public class MemberController {
 
     return new ResponseEntity<Object>(new HashMap<String, Object>() {{
       put(PAGE_NAME, result.get(PAGE_NAME));
+      put(NICK_NAME, result.get(NICK_NAME));
+      put(THEME_COLOR, result.get(THEME_COLOR));
+      put(IMAGE_PATH, result.get(IMAGE_PATH));
     }}, headers, HttpStatus.OK);
   }
 
