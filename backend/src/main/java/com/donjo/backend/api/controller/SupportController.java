@@ -41,9 +41,9 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getEarning(HttpServletRequest request, @RequestParam @NotNull String type, @RequestParam @NotNull int period) {
+        // type과 period를 조건으로 수익금 조회
         return ResponseEntity.status(200)
-                .body(supportService
-                        .getEarning(memberService.getMemberAddress(request), type, period));
+                .body(supportService.getEarning(memberService.getMemberAddress(request), type, period));
     }
 
     @PostMapping(path="/api/member/supports")
@@ -56,6 +56,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> createSupport(@RequestBody @Valid AddSupportCond addSupportCond) {
+        // 후원 저장
         supportService.createSupports(addSupportCond);
         return ResponseEntity.status(200).build();
     }
@@ -71,13 +72,10 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupports(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull String type, @RequestParam @NotNull int pageNum,@RequestParam @NotNull int pageSize) {
+        // type으로 support를 조회하고 pagination
         Map<String, Object> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
-        if (supports.size()>0){
-            return ResponseEntity.status(200).body(supports);
-        }
-        else {
-            return ResponseEntity.status(204).body(supports);
-        }
+        // 값이 들어있지 않다면 204 정보없음
+        return ResponseEntity.status(supports.size() > 0 ? 200 : 204).body(supports);
     }
 
     @GetMapping(path="/api/member/supports")
@@ -90,6 +88,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String toAddress, @RequestParam @NotNull Long supportUid) {
+        // Address와 supportUid로 SupportDetail을 조회합니다.
         try {
             FindSupportDetailPayload supportDetail = supportService.getSupportDetail(toAddress,supportUid);
             return ResponseEntity.status(200).body(supportDetail);
@@ -109,6 +108,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupportCount(HttpServletRequest request,@RequestParam @NotNull String type) {
+        // type을 조건으로 서포트 개수 조회
         int countSupport = supportService.getSupportCount(type,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).body(countSupport);
     }
@@ -123,6 +123,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getDonationSetting(HttpServletRequest request) {
+        // Header에 있는 토큰값으로 Address를 조회한 후 도네이션 정보 가져오기
         DonationSettingCond donationSettingCond = supportService.getDonationSetting(memberService.getMemberAddress(request));
         return ResponseEntity.status(200).body(donationSettingCond);
     }
@@ -137,6 +138,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> changeDonationSetting(HttpServletRequest request,@RequestBody @Valid DonationSettingCond donationSettingCond) {
+        // Header에 있는 토큰값으로 Address를 조회한 후 도네이션 정보 업데이트
         supportService.changeDonation(donationSettingCond,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).build();
     }
@@ -151,6 +153,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> getSupportTop10() {
+        // 최근 후원 10개 불러오기
         List<FindTop10Payload> top10 = supportService.getTop10();
         return ResponseEntity.status(200).body(top10);
     }
@@ -165,6 +168,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> saveReply(@RequestBody @Valid AddReplyCond dto) {
+        // 댓글 저장,수정
         supportService.saveReply(dto);
         return ResponseEntity.status(200).body("저장 성공");
     }
@@ -179,6 +183,7 @@ public class SupportController {
 
     })
     public ResponseEntity<?> deleteReply(@RequestParam @NotNull String transactionHash) {
+        // transactionHash값으로 support에 있는 댓글 삭제
         supportService.deleteReply(transactionHash);
         return ResponseEntity.status(200).body("삭제 성공");
     }
