@@ -21,7 +21,7 @@ export const Header = styled.div`
 `;
 
 export const Logo = styled.img`
-  height: 2rem;
+  height: 1.5rem;
   object-fit: contain;
   cursor: pointer;
 `;
