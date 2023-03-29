@@ -16,11 +16,14 @@ import java.util.List;
 @Repository
 public interface SupportRepository extends JpaRepository<Support, String> {
 
+    // Address와 supportUid로 Support 조회
     Support findByToAddressAndSupportUid(String toAddress,Long supportUid);
 
+    // type이 all일 경우 memberAddress만 조회 type과 address로 List<Support> 반환
     @Query("SELECT s FROM Support s WHERE (:type = 'all' OR s.supportType = :type) AND s.toAddress = :memberAddress")
     List<Support> findAllBySupportCount(@Param("type") String type, @Param("memberAddress") String memberAddress);
 
+    // type이 all일 경우 memberAddress만 조회 type과 address로 List<Support> 반환
     @Query("SELECT s FROM Support s WHERE (:type = 'all' OR s.supportType = :type) AND s.toAddress = :memberAddress ORDER BY s.arriveTimeStamp DESC NULLS FIRST ")
     List<Support> findAllBySupport(@Param("type") String type, @Param("memberAddress") String memberAddress, Pageable pageable);
 }
