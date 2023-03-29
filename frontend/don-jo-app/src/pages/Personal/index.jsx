@@ -8,7 +8,6 @@ import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
 import { Desktop } from "../../components/Common/Template";
 import { memberApi } from "../../api/member";
-import defaultProfileImg from "../../assets/img/common/app-logo.svg";
 import { useParams } from "react-router-dom";
 import { fileApi } from "../../api/file";
 import { useDispatch, useSelector } from "react-redux";
@@ -142,11 +141,7 @@ const Personal = () => {
       </S.BackgroundImg>
       <S.ProfileImgContainer>
         <S.ProfileImg
-          src={
-            memberInfoItemData.profileImgPath === ""
-              ? defaultProfileImg
-              : memberInfoItemData.profileImgPath
-          }
+          src={memberInfoItemData.profileImgPath}
           onMouseOver={() => setIsProfileHover(true)}
           onMouseOut={() => setIsProfileHover(false)}
         >

@@ -25,6 +25,9 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
         setSupportText(" buys from ");
         setEmoji("📁");
         break;
+      default:
+        console.log("Support type Wrong");
+        break;
     }
   }, []);
 
@@ -76,7 +79,7 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
                 {supportContent.toAddress.toMemberNickname}
               </S.Nickname>
             </S.TitleContent>
-            {isOwner && !!supportContent.replyMsg === true && (
+            {isOwner && (
               <S.ReplyBtn
                 onClick={(e) => {
                   e.stopPropagation();
@@ -104,12 +107,14 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
-              src={supportContent.fromMember.profileImgPath}
-              to={`/${supportContent.fromMember.pageName}`}
+              src={supportContent.fromMember.fromMemberProfileImagePath}
+              to={`/${supportContent.fromMember.fromMemberPageName}`}
             />
           </S.ProfileImgContainer>
           <div>
-            <S.Nickname>{supportContent.fromMember.nickname}</S.Nickname>
+            <S.Nickname>
+              {supportContent.fromMember.fromMemberNickname}
+            </S.Nickname>
             <S.Comment>{supportContent.sendMsg}</S.Comment>
             <S.SupportMsgText>Support message</S.SupportMsgText>
           </div>

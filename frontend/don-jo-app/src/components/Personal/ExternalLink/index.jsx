@@ -1,5 +1,4 @@
 import * as S from "./style";
-import PropTypes from "prop-types";
 import { IoIosLink } from "react-icons/io";
 import {
   IoLogoBehance,
