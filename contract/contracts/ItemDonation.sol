@@ -2,49 +2,42 @@
 pragma solidity >= 0.6.0 <0.9.0;
 
 import "./SupportHistory.sol";
+import "./BasicDonation.sol";
 
-contract ItemDonation is SupportHistory {
+contract ItemDonation is SupportHistory, BasicDonation {
     struct ItemSol {
-        uint256 id;
+        uint64 id;
         bytes title;
         bytes imgPath;
         bytes description;
-        uint price; // wei
+        uint256 price; // wei
+        uint64 salesCount;
         bytes message;
         bytes filePath;
         bool isDeleted;
         address seller;
     }
 
-    mapping(uint256 => ItemSol) public items;
-    mapping(address => uint256[]) public myItems;
-    uint256 internal itemCount;
-    mapping(address => mapping(uint256 => bool)) public purchasedItems;
+    mapping(uint64 => ItemSol) public items;
+    mapping(address => uint64[]) public myItems;
+    uint64 internal itemCount;
+    mapping(address => mapping(uint64 => bool)) public purchasedItems;
 
     // event ItemPurchased(address indexed buyer, address indexed seller, uint256 itemId);
 
-    function _buyItem(address _address, uint256 _itemId, uint256 _value) internal returns(uint256){
+    function _buyItem(address payable _seller, uint64 _itemId, uint256 _value, address payable _owner) internal returns(uint64){
         require(_value <= address(this).balance, "Insufficient balance");
-        // 요청이 왔음을 기록.
-        uint256 _id = recordSupport(msg.sender, _address, _value, SupportType.Item);
-
         ItemSol memory item = items[_itemId];
-        
         require(_value >= item.price, "Insufficient payment");
         require(!item.isDeleted, "Insufficient payment");
-        require(item.seller == _address, "This address is not the item's seller.");
+        require(item.seller == _seller, "This address is not the item's seller.");
         require(!purchasedItems[msg.sender][_itemId], "This item has already been purchased.");
-        // emit ItemPurchased(msg.sender, item.seller, _itemId);
 
-        (bool success, ) = _address.call{value: _value}("");
+        uint64 supportId = _transfer(_seller, _value, SupportType.Item, _owner);
 
-        if (!success) {
-            updateSupportStatus(msg.sender, _address, _id, SupportStatus.Failed);
-            revert("Transfer to wishlistOwner failed");
-        }
-        updateSupportStatus(msg.sender, _address, _id, SupportStatus.Success);
         purchasedItems[msg.sender][_itemId] = true;
-        return _id;
+        items[_itemId].salesCount += 1;
+        return supportId;
     }
 
     function _createItem(ItemSol memory _item) internal {
@@ -53,7 +46,7 @@ contract ItemDonation is SupportHistory {
         items[itemCount] = _item;
         myItems[_item.seller].push(itemCount);
     }
-    function _getItemList(uint256[] memory indexes) internal view returns (ItemSol[] memory) {
+    function _getItemList(uint64[] memory indexes) internal view returns (ItemSol[] memory) {
         ItemSol[] memory result = new ItemSol[](indexes.length);
         for (uint i = 0; i < indexes.length; i++) {
             require(indexes[i] <= itemCount, "Invalid index");
@@ -63,15 +56,15 @@ contract ItemDonation is SupportHistory {
         return result;
     }
 
-    function _getItemDetail(uint256 id) internal view returns (ItemSol memory) {
+    function _getItemDetail(uint64 id) internal view returns (ItemSol memory) {
         require(id <= itemCount, "Invalid index");
         require(id != 0, "Invalid index");
-        ItemSol storage item = items[id];
-        // require(!item.isDeleted, "Item does not exist");
+        ItemSol memory item = items[id];
+        require(!item.isDeleted, "Item does not exist");
         return item;
     }
 
-    function _deleteItem(address _address, uint256 id) internal {
+    function _deleteItem(address _address, uint64 id) internal {
         require(id <= itemCount, "Invalid index");
         ItemSol memory item = items[id];
         require(!item.isDeleted, "Item does not exist");

@@ -52,8 +52,10 @@ public class WishlistSolidity {
 
     public void addMemberWishList(WishlistSol wishlistSol){
         try {
+            log.info("call add wishlist sol");
             contract.addMemberWishList(wishlistSol.toSol()).send();
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }
     }
@@ -61,9 +63,13 @@ public class WishlistSolidity {
     public void deleteMemberWishlist(String address, Long id){
         try {
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send().seller;
-            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다");
+            if(!seller.equalsIgnoreCase(address)) throw new UnAuthorizationException("판매자가 아닙니다");
             contract.deleteMemberWishlist(address, BigInteger.valueOf(id)).send();
-        } catch (Exception e) {
+        }
+        catch (UnAuthorizationException e1){
+            throw new UnAuthorizationException(e1.getMessage());
+        }
+        catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
     }
@@ -71,9 +77,13 @@ public class WishlistSolidity {
     public void updateMemberWishlist(WishlistSol wishlistSol){
         try {
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlistSol.getId())).send().seller;
-            if(!seller.equals(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
+            if(!seller.equalsIgnoreCase(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
             contract.updateMemberWishlist(wishlistSol.toSol()).send();
-        } catch (Exception e) {
+        }
+        catch (UnAuthorizationException e1){
+            throw new UnAuthorizationException(e1.getMessage());
+        }
+        catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
     }
