@@ -1,9 +1,4 @@
-import {
-  fileSizeValidator,
-  imageSizeValidator,
-  titleValidator,
-  priceValidator,
-} from "./Validator/fileSizeValidator";
+import { titleValidator, priceValidator } from "./validator";
 
 /**
  * validation check list
@@ -14,24 +9,16 @@ import {
  * 5. message => default 값이 존재. 할필요없음
  */
 
-const checkItemValidation = ({ name, price, image, file }) => {
+export const checkItemValidation = ({ name, price, image }) => {
   if (!titleValidator(name)) {
-    alert("Name을 다시 입력해주세요.");
+    alert("Name is not the correct format.");
     return false;
   }
 
   if (!priceValidator(price)) {
-    alert("가격을 다시 입력해주세요.");
+    alert("Price is not the correct format.");
     return false;
   }
 
-  if (!imageSizeValidator(image)) {
-    alert("Image의 용량을 초과했습니다.");
-    return false;
-  }
-
-  if (!fileSizeValidator(file)) {
-    alert("파일의 용량을 초과했습니다.");
-    return false;
-  }
+  return true;
 };
