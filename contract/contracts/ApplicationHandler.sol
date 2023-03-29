@@ -2,10 +2,9 @@
 pragma solidity >= 0.6.0 <0.9.0;
 
 import "./ItemDonation.sol";
-import "./BasicDonation.sol";
 import "./WishlistDonation.sol";
 
-contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
+contract ApplicationHandler is ItemDonation, WishlistDonation {
   address owner;
 
   constructor(){
@@ -14,15 +13,15 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
 
   // ================= Frontend Call =================
   // 기본 도네이션 실행
-  function callBasicDonation(address payable _to) external payable returns(uint256) {
-    return _transfer(_to, msg.value);
+  function callBasicDonation(address payable _to) external payable returns(uint64) {
+    return _transfer(_to, msg.value, SupportType.Donation);
   }
   // 아이템 구매
-  function buyItemDonation(address payable _to, uint256 _itemId) external payable returns(uint256) {
+  function buyItemDonation(address payable _to, uint64 _itemId) external payable returns(uint64) {
     return _buyItem(_to, _itemId, msg.value);
   }
   // 위시 리스트 구매
-  function buyWishilistDonation(address payable _to, uint256 _wishlistId) external payable returns(uint256) {
+  function buyWishlistDonation(address payable _to, uint64 _wishlistId) external payable returns(uint64) {
     return _buyWishlist(_to, _wishlistId, msg.value);
   }
 
@@ -33,7 +32,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 특정 아이템 상세 조회하기
-  function getItemDetail(uint256 _id) external view returns(ItemSol memory){
+  function getItemDetail(uint64 _id) external view returns(ItemSol memory){
     return _getItemDetail(_id);
   }
 
@@ -43,7 +42,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 아이템 삭제하기
-  function deleteMemberItem(address _address, uint256 _id) external {
+  function deleteMemberItem(address _address, uint64 _id) external {
     _deleteItem(_address, _id);
   }
 
@@ -58,7 +57,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 위시리스트 상제 조회하기
-  function getMemberWishListDetail(uint256 _id) external view returns(WishlistSol memory){
+  function getMemberWishListDetail(uint64 _id) external view returns(WishlistSol memory){
     return _getWishlistDetail(_id);
   }
 
@@ -68,7 +67,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 멤버의 위시리스트 삭제하기
-  function deleteMemberWishlist(address _address, uint256 _id) external {
+  function deleteMemberWishlist(address _address, uint64 _id) external {
     _deleteWishlist(_address, _id);
   }
 
@@ -78,7 +77,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 후원 상세 정보 조회
-  function getSupportDetail(address _address, uint256 _id) external view returns(SupportSol memory){
+  function getSupportDetail(address _address, uint64 _id) external view returns(SupportSol memory){
     return _getSupportDetail(_address, _id);
   }
 
@@ -88,7 +87,7 @@ contract ApplicationHandler is ItemDonation, BasicDonation, WishlistDonation {
   }
 
   // 후원 요청 시간 조회
-  function getSupportSendTime(address _address, uint256 _id) external view returns(uint256){
+  function getSupportSendTime(address _address, uint64 _id) external view returns(uint256){
     return _getSupportDetail(_address, _id).sendTimestamp;
   }
 }
