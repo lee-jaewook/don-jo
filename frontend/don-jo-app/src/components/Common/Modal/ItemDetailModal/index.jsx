@@ -6,6 +6,8 @@ import BasicButton from "../../BasicButton";
 import FullScreenModal from "../FullScreenModal";
 import { useMediaQuery } from "react-responsive";
 import { itemApi } from "../../../../api/items";
+import { useDispatch } from "react-redux";
+import { setCurrentItem } from "../../../../stores/items";
 
 const ItemDetailModal = ({
   uid,
@@ -14,13 +16,15 @@ const ItemDetailModal = ({
   handleOnClickButton,
 }) => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
-
   const [result, setResult] = useState({});
+  const dispatch = useDispatch();
 
   const handleGetItemDetail = async () => {
     try {
       const { data } = await itemApi.getItemDetail(uid);
       setResult(data);
+      console.log("data?>", data);
+      dispatch(setCurrentItem(data));
     } catch (error) {
       console.log("error: ", error);
     }
@@ -35,9 +39,9 @@ const ItemDetailModal = ({
       <S.ContentWrapper>
         <S.ContentImg
           src={
-            !result.filePath
+            !result.imgPath
               ? ""
-              : `https://don-jo.s3.ap-northeast-2.amazonaws.com/${result.filePath}`
+              : `https://don-jo.s3.ap-northeast-2.amazonaws.com/${result.imgPath}`
           }
           alt="item-img"
         />

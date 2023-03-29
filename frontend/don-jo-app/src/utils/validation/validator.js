@@ -1,4 +1,4 @@
-const maxFileSize = 1 * 1024;
+const maxFileSize = 100 * 1024 * 1024;
 
 export const fileSizeValidator = (file) => {
   if (file.size > maxFileSize) {

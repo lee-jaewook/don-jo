@@ -10,19 +10,24 @@ import { useSelector } from "react-redux";
 
 const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
   const [result, setResult] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
   const location = useLocation();
   const memberAddress = useSelector((state) => state.web3.walletAddress);
 
   const handleGetSupportList = async () => {
     try {
-      const { status, data } = await supportApi.getSupportList(
+      const {
+        status,
+        data: { supportList, hasMore },
+      } = await supportApi.getSupportList(
         memberAddress,
         pageNum,
         pageSize,
         type
       );
       if (status === 200) {
-        setResult(data);
+        setResult(supportList);
+        setHasMore(hasMore);
         setPageNum((prev) => prev + 1);
       }
     } catch (error) {
@@ -61,7 +66,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
         ) : (
           <S.Message>There are no recent sponsorships.</S.Message>
         )}
-        {result.length >= 10 && (
+        {hasMore && (
           <ShowMoreButton handleOnClickButton={handleGetSupportList} />
         )}
       </S.SupportList>

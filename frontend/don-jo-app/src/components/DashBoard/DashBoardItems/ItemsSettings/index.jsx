@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BasicTitle from "../../../Common/BasicTitle";
 import { FiPlus } from "react-icons/fi";
 import ListItem from "./ListItem";
@@ -8,9 +8,11 @@ import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import AddItemModal from "../../../Common/Modal/AddItemModal";
 import { itemApi } from "../../../../api/items";
+import { setCurrentItem } from "../../../../stores/items";
 
+const PAGE_SIZE = 6;
 const ItemsSettings = () => {
-  const PAGE_SIZE = 6;
+  const dispatch = useDispatch();
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
   const [isShowItemModal, setShowItemModal] = useState(false);
@@ -18,6 +20,7 @@ const ItemsSettings = () => {
   const [pageNum, setPageNum] = useState(0);
   const [result, setResult] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
+  const [isClickedEdit, setClickedEdit] = useState(false);
 
   const handleGetMyItemList = async () => {
     const {
@@ -29,6 +32,7 @@ const ItemsSettings = () => {
   };
 
   const handleAddItemModalOpen = () => {
+    setClickedEdit(false);
     setIsAddItemModalOpen((prev) => !prev);
   };
 
@@ -46,6 +50,12 @@ const ItemsSettings = () => {
       setIsAddItemModalOpen((prev) => !prev);
     });
   }, []);
+
+  useEffect(() => {
+    if (!isClickedEdit) {
+      dispatch(setCurrentItem({}));
+    }
+  }, [isClickedEdit]);
 
   return (
     <S.SettingWrapper>
@@ -81,12 +91,16 @@ const ItemsSettings = () => {
           uid={uid}
           idDashboard={true}
           handleSetShowModal={setShowItemModal}
-          handleOnClickButton={() => setIsAddItemModalOpen(true)}
+          handleOnClickButton={() => {
+            setClickedEdit(true);
+            setIsAddItemModalOpen(true);
+          }}
         />
       )}
 
       {isAddItemModalOpen && (
         <AddItemModal
+          isModify={isClickedEdit}
           handleSetShowModal={handleAddItemModalOpen}
           whichApiChoose={true}
         />

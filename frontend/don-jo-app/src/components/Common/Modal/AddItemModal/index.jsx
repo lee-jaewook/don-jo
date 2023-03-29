@@ -8,10 +8,11 @@ import BasicInput from "../../BasicInput";
 import BasicTextarea from "../../BasicTextarea";
 import BasicButton from "../../BasicButton";
 import { itemApi } from "../../../../api/items";
-import { wishlistAPI } from "../../../../api/wishlist";
 import { fileApi } from "../../../../api/file";
 import { fileSizeValidator } from "../../../../utils/validation/validator";
 import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 /**
  * 아이템 추가/수정 모달
@@ -23,8 +24,16 @@ import { checkItemValidation } from "../../../../utils/validation/checkItemValid
 
 const ITEM_TYPE = "item";
 const IMAGE_TYPE = "img/item";
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
-const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
+const AddItemModal = ({
+  handleSetShowModal,
+  whichApiChoose,
+  imageTitle,
+  isModify,
+}) => {
+  const currentItem = useSelector((state) => state.items.currentItem);
+
   // 아이템 프로필 설정
   const [itemFile, setItemNamFile] = useState({
     previewImgUrl: "",
@@ -37,12 +46,15 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
 
   // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
   const [itemInfo, setItemInfo] = useState({
-    itemName: "",
-    itemPrice: "",
-    itemDescription: "",
-    itemMessage: "",
+    uid: "",
+    title: "",
+    price: "",
+    description: "",
+    message: "",
+    imgPath: null,
+    filePath: null,
   });
-  const { itemName, itemPrice, itemDescription, itemMessage } = itemInfo;
+  const { title, price, description, message, imgPath, filePath } = itemInfo;
 
   const handleOnChangeInput = (e) => {
     const { id, value } = e.target;
@@ -54,9 +66,9 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
 
   const setFileChange = async (id, previewImgUrl, file) => {
     if (id === "featured-image") {
-      setItemImageFile({ previewImgUrl: "", file: {} });
+      setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
     } else if (id === "file-upload") {
-      setItemNamFile({ previewImgUrl: "", file: {} });
+      setItemNamFile({ previewImgUrl: previewImgUrl, file: file });
     }
   };
 
@@ -95,50 +107,79 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
     }
   };
 
-  const registerItem = async () => {
-    if (!checkItemValidation({ name: itemName, price: itemPrice })) return;
-    if (itemImageFile.previewImgUrl === "") {
-      alert("Please upload an image file.");
-      return;
-    }
-    if (itemFile.previewImgUrl === "") {
-      alert("Please upload an file.");
+  const handleUploadItem = async () => {
+    // 필수 입력값 확인
+    // 아이템 이름, 가격, 이미지, 파일, 감사 메세지
+
+    console.log("itemInfo", itemInfo);
+
+    // 필수 입력 확인
+    if (!title || !price || !message) {
+      alert("필수값 확인 안내");
       return;
     }
 
-    let imgPath = await handleUploadFile(itemImageFile.file, IMAGE_TYPE);
-    let filePath = await handleUploadFile(itemFile.file, ITEM_TYPE);
-
-    const cond = {
-      description: itemDescription,
-      message: itemMessage,
-      price: parseFloat(itemPrice),
-      title: itemName,
-      imgPath: imgPath,
-      filePath: filePath,
+    let itemData = {
+      ...itemInfo,
     };
 
-    if (whichApiChoose) {
-      itemApi
-        .registerItem(cond)
-        .then(() => {
-          alert("아이템 등록 성공!");
-        })
-        .catch((error) => {
-          alert("아이템 등록 실패!");
-        });
-    } else {
-      wishlistAPI
-        .registerWishlistItem(cond)
-        .then(() => {
-          alert("위시리스트 등록 성공!");
-        })
-        .catch((error) => {
-          alert("위시리스트 등록 실패!");
-        });
+    console.log("item Data 입력 여부 확인, ", itemData);
+
+    // 아이템 이미지 업로드 확인
+    if (itemInfo.imgPath === "" && itemImageFile.previewImgUrl !== null) {
+      let createdItemPath = await handleUploadFile(
+        itemImageFile.file,
+        IMAGE_TYPE
+      );
+      itemData = { ...itemData, itemPath: createdItemPath };
     }
-    setTimeout(handleSetShowModal, 2000);
+    console.log("itemFile, ", itemFile);
+    console.log("itemInfo.filePath , ", itemInfo.filePath);
+
+    // 아이템 파일 업로드 확인
+    if (itemInfo.filePath === "" && itemFile.previewImgUrl !== null) {
+      let createdItemFilePath = await handleUploadFile(
+        itemFile.file,
+        ITEM_TYPE
+      );
+      itemData = { ...itemData, filePath: createdItemFilePath };
+    }
+
+    // API 호출
+
+    if (isModify) {
+      itemData = { ...itemData, uid: currentItem.id };
+      console.log("itemData", itemData);
+      try {
+        const data = await itemApi.updateItem(itemData);
+        console.log("수정 성공:: ", data);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (isModify) {
+      setItemInfo({
+        uid: currentItem.id,
+        title: currentItem.title,
+        price: currentItem.price,
+        description: currentItem.description,
+        filePath: currentItem.filePath,
+        imgPath: currentItem.imgPath,
+        message: currentItem.message,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("isModify", isModify);
+  }, [isModify]);
+
+  useEffect(() => {
+    console.log("뭐야 시발 두ㅗㅠㅓㅎ", itemInfo);
+  }, [itemInfo]);
 
   return (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
@@ -150,9 +191,9 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
           </S.RequiredInputWrapper>
           <S.BasicInputWrap>
             <BasicInput
-              id="itemName"
+              id="title"
               type="text"
-              value={itemName}
+              value={title}
               placeholder="Items Title"
               handleOnChangeValue={handleOnChangeInput}
             />
@@ -166,9 +207,9 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
           </S.RequiredInputWrapper>
           <S.SeparationContainer width="16.75">
             <S.BasicInput
-              id="itemPrice"
+              id="price"
               type="text"
-              value={itemPrice}
+              value={price}
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
@@ -186,9 +227,7 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
           </S.ImageSizeInfo>
           <S.ItemProfileImg
             url={
-              itemImageFile.previewImgUrl !== null
-                ? itemImageFile.previewImgUrl
-                : ""
+              imgPath ? `${S3URL}${imgPath}` : itemImageFile.previewImgUrl || ""
             }
           >
             <S.EditIconWrapper>
@@ -199,8 +238,8 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
                 id="featured-image"
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
                 defaultValue=""
+                onChange={handleFileChange}
                 placeholder="select"
               />
             </S.EditIconWrapper>
@@ -212,28 +251,48 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
             <BasicTitle text="File Upload" />
             <S.RequiredIcon>*</S.RequiredIcon>
           </S.RequiredInputWrapper>
-          <S.SeparationContainer width="20.75">
-            <S.FileUpload
-              id="file-upload"
-              type="file"
-              onChange={handleFileChange}
-              placeholder="select a file"
-            />
-            <S.ButtonWrap>
-              <S.FileUploadButton
-                htmlFor="file-upload"
-                color="var(--color-primary)"
+          {isModify && filePath ? (
+            <>
+              <a
+                href={`${S3URL}${filePath}`}
+                style={{ textDecoration: "underline" }}
               >
-                Open
-              </S.FileUploadButton>
-            </S.ButtonWrap>
-          </S.SeparationContainer>
+                Download File
+              </a>
+              <S.DeleteButton
+                onClick={() => {
+                  setItemNamFile({ previewImgUrl: null, file: {} });
+                  setItemInfo({ ...itemInfo, filePath: "" });
+                }}
+              >
+                Delete File
+              </S.DeleteButton>
+            </>
+          ) : (
+            <S.SeparationContainer width="20.75">
+              <S.FileUpload
+                id="file-upload"
+                type="file"
+                onChange={handleFileChange}
+                placeholder="select a file"
+              />
+              <S.ButtonWrap>
+                <S.FileUploadButton
+                  htmlFor="file-upload"
+                  color="var(--color-primary)"
+                >
+                  Open
+                </S.FileUploadButton>
+              </S.ButtonWrap>
+            </S.SeparationContainer>
+          )}
         </S.ContentWrap>
 
         <S.ContentWrap>
           <BasicTitle text="Description" />
           <BasicTextarea
-            id="itemDescription"
+            id="description"
+            value={description}
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Description what you are selling."
           />
@@ -245,7 +304,8 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
             <S.RequiredIcon>*</S.RequiredIcon>
           </S.RequiredInputWrapper>
           <BasicTextarea
-            id="itemMessage"
+            id="message"
+            value={message}
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Thank you for supporting my wishlist!"
           />
@@ -256,7 +316,7 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
             <BasicButton
               text="Create"
               color="var(--color-primary)"
-              handleOnClickButton={registerItem}
+              handleOnClickButton={handleUploadItem}
             />
           </S.BasicButtonContainer>
         </S.BasicButtonWrap>
@@ -269,8 +329,8 @@ export default AddItemModal;
 
 AddItemModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
-  // transactionFunc: PropTypes.,
   imageTitle: PropTypes.string,
+  isModify: PropTypes.bool,
 };
 
 AddItemModal.defaultProps = {
