@@ -4,7 +4,7 @@ import { FiDelete } from "react-icons/fi";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 
-const PasswordSetModal = ({ handleSetShowModal, setPassword }) => {
+const PasswordSetModal = ({ handleSetShowModal, setPassword, doSignUp }) => {
   const [prevPassword, setPrevPassword] = useState("init");
   const [inputPassword, setInputPassword] = useState("");
   const [isWrong, setIsWrong] = useState(false);
@@ -149,4 +149,5 @@ export default PasswordSetModal;
 PasswordSetModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
+  doSignUp: PropTypes.func.isRequired,
 };

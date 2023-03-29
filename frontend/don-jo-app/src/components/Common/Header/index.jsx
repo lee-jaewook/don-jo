@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
 import { FiExternalLink } from "react-icons/fi";
+import PasswordSetModal from "../Modal/PasswordSetModal";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const Header = () => {
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
+  const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
@@ -46,6 +49,10 @@ const Header = () => {
 
   const SubmitLogIn = () => {
     logIn({ dispatch, handleModalOpen: handleSignUpModalOpen });
+  };
+
+  const doSignUp = () => {
+    //회원가입하는 함수
   };
 
   return (
@@ -75,9 +82,15 @@ const Header = () => {
           )}
         </S.ProfileImgContainer>
       </S.Header>
-
       {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
       {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
+      {isShowPasswordSetModal && (
+        <PasswordSetModal
+          handleSetShowModal={setIsShowPasswordSetModal}
+          setPassword={setPassword}
+          doSignUp={doSignUp}
+        />
+      )}
     </S.HeaderContainer>
   );
 };
