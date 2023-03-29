@@ -159,7 +159,7 @@ public class SupportController {
     }
 
     @PostMapping(path="/api/auth/support/reply")
-    @ApiOperation(value = "댓글 저장,수정", notes = "example content")
+    @ApiOperation(value = "댓글 저장", notes = "example content")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(작성,수정 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(작성,수정 실패)"),
@@ -168,10 +168,26 @@ public class SupportController {
 
     })
     public ResponseEntity<?> saveReply(@RequestBody @Valid AddReplyCond dto) {
-        // 댓글 저장,수정
+        // 댓글 저장
         supportService.saveReply(dto);
         return ResponseEntity.status(200).body("저장 성공");
     }
+
+    @PutMapping(path="/api/auth/support/reply")
+    @ApiOperation(value = "댓글 수정", notes = "example content")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(작성,수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(작성,수정 실패)"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+
+    })
+    public ResponseEntity<?> changeReply(@RequestBody @Valid AddReplyCond dto) {
+        // 댓글 수정
+        supportService.saveReply(dto);
+        return ResponseEntity.status(200).body("수정 성공");
+    }
+
 
     @DeleteMapping(path="/api/auth/support/reply")
     @ApiOperation(value = "댓글 삭제", notes = "example content")
