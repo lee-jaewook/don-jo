@@ -13,8 +13,6 @@ const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
   const [md, setMd] = useState(originIntroduction);
 
   const updateIntroduction = async () => {
-    console.log(md);
-
     try {
       await memberApi.updateUserIntroduction(md);
       getPageInfo();
@@ -24,9 +22,9 @@ const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
   };
 
   const handleOnClick = () => {
-    console.log(md, "등록");
     updateIntroduction();
     handleSetShowModal(false);
+    document.body.style.overflow = "auto";
   };
 
   return (

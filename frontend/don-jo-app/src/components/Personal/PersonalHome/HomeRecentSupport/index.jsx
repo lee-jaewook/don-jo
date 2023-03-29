@@ -8,30 +8,9 @@ import { useSelector } from "react-redux";
 const HomeRecentSupport = () => {
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 5;
+  const TYPE = "all";
   const [supportList, setSupportList] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-
-  const getSupportList = async () => {
-    // !!!!API 다시 나오면 세팅 후 부착!!!!!
-    // const { data } = await supportApi.getWishList(
-    //   pageMemberAddress,
-    //   pageNum,
-    //   PAGE_SIZE
-    // );
-    const data = {};
-    setPageNum((prev) => prev + 1);
-    setSupportList((prev) => [...prev, ...(data.supportList || [])]);
-    setHasMore(data.hasMore);
-  };
-
-  useEffect(() => {
-    getSupportList();
-  }, []);
-
-  const handleOnClickShowMoreButton = () => {
-    console.log("Show More");
-    getSupportList();
-  };
 
   //로그인 유저의 지갑주소 정보
   const loginUserMemberAddress = useSelector(
@@ -48,6 +27,28 @@ const HomeRecentSupport = () => {
   useEffect(() => {
     setIsOwner(pageMemberAddress === loginUserMemberAddress);
   }, []);
+
+  const getSupportList = async () => {
+    // !!!!API 다시 나오면 세팅 후 부착!!!!!
+    const { data } = await supportApi.getSupportList(
+      pageMemberAddress,
+      pageNum,
+      PAGE_SIZE,
+      TYPE
+    );
+    setPageNum((prev) => prev + 1);
+    setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+    setHasMore(data.hasMore);
+  };
+
+  useEffect(() => {
+    if (!!pageMemberAddress) getSupportList();
+  }, [pageMemberAddress]);
+
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+    getSupportList();
+  };
 
   return (
     <S.Container>
@@ -76,7 +77,7 @@ const HomeRecentSupport = () => {
           )}
         </S.Card>
       ) : (
-        <S.Nothing>There's no Recent Support 🥲</S.Nothing>
+        <S.Nothing>There's no Recent Support 😥</S.Nothing>
       )}
     </S.Container>
   );

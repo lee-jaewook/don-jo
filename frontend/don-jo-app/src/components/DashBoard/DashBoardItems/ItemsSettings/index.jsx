@@ -81,7 +81,7 @@ const ItemsSettings = () => {
           uid={uid}
           idDashboard={true}
           handleSetShowModal={setShowItemModal}
-          handleOnClickButton={() => console.log("show Edit Modal", uid)}
+          handleOnClickButton={() => setIsAddItemModalOpen(true)}
         />
       )}
 

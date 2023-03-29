@@ -8,13 +8,14 @@ import FullScreenModal from "../Modal/FullScreenModal";
 import { logIn } from "../../../utils/logIn";
 import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
+import LogoImg from "../../../assets/img/common/app-logo.svg";
+
 const Header = () => {
   const dispatch = useDispatch();
-  //로그인 유저 더미데이터
-  const loginUser = {
-    profileImgPath: "",
-    memberAddress: "taehyun",
-  };
+  const pageName = useSelector((state) => state.member.pageName);
+  const profileImagePath = useSelector(
+    (state) => state.member.profileImagePath
+  );
 
   const isLogin = useSelector((state) => state.member.isLogIn);
 
@@ -25,12 +26,16 @@ const Header = () => {
   const [isLocalSrc, setIsLocalSrc] = useState(false);
 
   useEffect(() => {
+    setProfileImgSrc(profileImagePath);
+  }, [profileImagePath]);
+
+  useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
       setIsLocalSrc(true);
-      setProfileLinkTo(`/${loginUser.memberAddress}`);
+      setProfileLinkTo(`/${pageName}`);
     } else {
-      setProfileImgSrc(loginUser.profileImgPath);
+      setProfileImgSrc(profileImagePath);
       setIsLocalSrc(false);
       setProfileLinkTo("/dashboard/home");
     }
@@ -48,7 +53,7 @@ const Header = () => {
     <S.HeaderContainer>
       <S.Header>
         <Link to="/">
-          <S.Logo />
+          <S.Logo src={LogoImg} />
         </Link>
         <S.GuideSelect>
           <SelectBox />
