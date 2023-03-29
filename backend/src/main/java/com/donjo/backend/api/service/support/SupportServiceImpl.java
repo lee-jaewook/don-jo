@@ -112,9 +112,10 @@ public class SupportServiceImpl implements SupportService{
     public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
         // Address와 Uid로 Solidity[][] 가져오기
         FindSupportDetailPayload findSupportDetailPayload;
-        Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
 //        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
-        //        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
+        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
+        System.out.println(supportSol.get());
+        Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
@@ -128,7 +129,7 @@ public class SupportServiceImpl implements SupportService{
             findSupportDetailPayload = FindSupportDetailPayload.fromSupport(support,fromMember,toMember);
         }
 
-        // Web3j 객체를 생성하고, Infura 노드를 사용하여 Ethereum 네트워크에 연결합니다
+        // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다
         Web3j web3 = Web3j.build(new HttpService("https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         try {
 
