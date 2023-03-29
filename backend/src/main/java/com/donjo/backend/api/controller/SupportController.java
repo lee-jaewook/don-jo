@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getEarning(HttpServletRequest request, @RequestParam String type, @RequestParam int period) {
+    public ResponseEntity<?> getEarning(HttpServletRequest request, @RequestParam @NotNull String type, @RequestParam @NotNull int period) {
         return ResponseEntity.status(200)
                 .body(supportService
                         .getEarning(memberService.getMemberAddress(request), type, period));
@@ -69,7 +70,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupports(@RequestParam String memberAddress, @RequestParam String type, @RequestParam int pageNum,@RequestParam int pageSize) {
+    public ResponseEntity<?> getSupports(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull String type, @RequestParam @NotNull int pageNum,@RequestParam @NotNull int pageSize) {
         Map<String, Object> supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
         if (supports.size()>0){
             return ResponseEntity.status(200).body(supports);
@@ -88,7 +89,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportDetail(@RequestParam String toAddress, @RequestParam Long supportUid) {
+    public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String toAddress, @RequestParam @NotNull Long supportUid) {
         try {
             FindSupportDetailPayload supportDetail = supportService.getSupportDetail(toAddress,supportUid);
             return ResponseEntity.status(200).body(supportDetail);
@@ -107,7 +108,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportCount(HttpServletRequest request,@RequestParam String type) {
+    public ResponseEntity<?> getSupportCount(HttpServletRequest request,@RequestParam @NotNull String type) {
         int countSupport = supportService.getSupportCount(type,memberService.getMemberAddress(request));
         return ResponseEntity.status(200).body(countSupport);
     }
@@ -149,7 +150,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportTop10(HttpServletRequest request) {
+    public ResponseEntity<?> getSupportTop10() {
         List<FindTop10Payload> top10 = supportService.getTop10();
         return ResponseEntity.status(200).body(top10);
     }
@@ -163,7 +164,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> saveReply(@RequestBody AddReplyCond dto) {
+    public ResponseEntity<?> saveReply(@RequestBody @Valid AddReplyCond dto) {
         supportService.saveReply(dto);
         return ResponseEntity.status(200).body("저장 성공");
     }
@@ -177,7 +178,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> deleteReply(@RequestParam String transactionHash) {
+    public ResponseEntity<?> deleteReply(@RequestParam @NotNull String transactionHash) {
         supportService.deleteReply(transactionHash);
         return ResponseEntity.status(200).body("삭제 성공");
     }
