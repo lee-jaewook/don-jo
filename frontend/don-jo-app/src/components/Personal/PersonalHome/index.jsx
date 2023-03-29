@@ -12,20 +12,26 @@ const DesktopTablet = ({ children }) => {
   return isTablet ? children : null;
 };
 
-const PersonalHome = ({ donationSettingData, wishListData }) => {
+const PersonalHome = ({ donationSettingData, wishListData, isOwner }) => {
   return (
     <S.Container>
       <DesktopTablet>
-        <HomeRecentSupport />
+        <HomeRecentSupport isOwner={isOwner} />
         <S.Wrapper>
-          <HomeDonation donationSettingData={donationSettingData} />
+          <HomeDonation
+            donationSettingData={donationSettingData}
+            isOwner={isOwner}
+          />
           <HomeWishlist wishListData={wishListData} />
         </S.Wrapper>
       </DesktopTablet>
 
       <Mobile>
-        <HomeDonation donationSettingData={donationSettingData} />
-        <HomeRecentSupport />
+        <HomeDonation
+          donationSettingData={donationSettingData}
+          isOwner={isOwner}
+        />
+        <HomeRecentSupport isOwner={isOwner} />
         <HomeWishlist wishListData={wishListData} />
       </Mobile>
     </S.Container>
@@ -42,4 +48,5 @@ PersonalHome.propTypes = {
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
   wishListData: PropTypes.array,
+  isOwner: PropTypes.bool,
 };

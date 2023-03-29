@@ -24,6 +24,7 @@ const Personal = () => {
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
+  const loginUserAddress = useSelector((state) => state.member.walletAddress);
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
@@ -42,14 +43,17 @@ const Personal = () => {
       dispatch(updateMemberInfo(data.memberInfoItem));
       setDonationSettingData(data.donationSetting);
       setWishListData(data.wishList);
-
-      //로그인 유저가 페이지 주인인지 확인
-      const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
-      setIsOwner(pageMemberAddress === loginUserMemberAddress);
     } catch (error) {
       console.log("error: ", error);
     }
   };
+
+  //로그인 유저가 페이지 주인인지 확인
+  useEffect(() => {
+    setIsOwner(
+      memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
+    );
+  }, [memberInfoItemData]);
 
   useEffect(() => {
     getPageInfo();
@@ -105,11 +109,6 @@ const Personal = () => {
       console.log("error: ", error);
     }
   };
-
-  const headerProfile = useSelector((state) => state.member.profileImagePath);
-  useEffect(() => {
-    console.log("헤더 프로필 경로: ", headerProfile);
-  }, [headerProfile]);
 
   return (
     <S.Container>
@@ -197,6 +196,7 @@ const Personal = () => {
         <PersonalContent
           donationSettingData={donationSettingData}
           wishListData={wishListData}
+          isOwner={isOwner}
         />
       </S.ContentsContainer>
 

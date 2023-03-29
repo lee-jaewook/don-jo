@@ -5,9 +5,8 @@ import PersonalHome from "../PersonalHome";
 import PersonalItems from "../PersonalItems";
 import PersonalWishlist from "../PersonalWishlist";
 import PropTypes from "prop-types";
-import { useEffect } from "react";
 
-const PersonalContent = ({ donationSettingData, wishListData }) => {
+const PersonalContent = ({ donationSettingData, wishListData, isOwner }) => {
   const allTab = [
     {
       index: 0,
@@ -16,18 +15,19 @@ const PersonalContent = ({ donationSettingData, wishListData }) => {
         <PersonalHome
           donationSettingData={donationSettingData}
           wishListData={wishListData}
+          isOwner={isOwner}
         />
       ),
     },
     {
       index: 1,
       name: "Items",
-      component: <PersonalItems />,
+      component: <PersonalItems isOwner={isOwner} />,
     },
     {
       index: 2,
       name: "Wishlist",
-      component: <PersonalWishlist />,
+      component: <PersonalWishlist isOwner={isOwner} />,
     },
   ];
 
@@ -51,4 +51,5 @@ PersonalContent.propTypes = {
     thankMsg: PropTypes.string.isRequired,
   }).isRequired,
   wishListData: PropTypes.array,
+  isOwner: PropTypes.bool,
 };
