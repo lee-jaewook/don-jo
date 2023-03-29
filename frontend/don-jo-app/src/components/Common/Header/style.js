@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import LogoImg from "../../../assets/img/common/app-logo.svg";
 
 export const HeaderContainer = styled.div`
   width: 100%;
@@ -21,11 +20,9 @@ export const Header = styled.div`
   width: 80rem;
 `;
 
-export const Logo = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-size: cover;
-  background-image: url(${LogoImg});
+export const Logo = styled.img`
+  height: 2rem;
+  object-fit: contain;
   cursor: pointer;
 `;
 

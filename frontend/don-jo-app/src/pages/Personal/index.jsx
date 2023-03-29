@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { fileApi } from "../../api/file";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
+import { setProfileImg } from "../../stores/member";
 
 const Personal = () => {
   const { pageName } = useParams();
@@ -45,7 +46,6 @@ const Personal = () => {
       //로그인 유저가 페이지 주인인지 확인
       const pageMemberAddress = memberInfoItemData.memberAddress.toLowerCase();
       setIsOwner(pageMemberAddress === loginUserMemberAddress);
-      console.log(data.memberInfoItem.profileImgPath);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -62,7 +62,6 @@ const Personal = () => {
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
-  // const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
   const profileRef = useRef(null);
   const backgroundImgRef = useRef(null);
@@ -98,12 +97,19 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
+      console.log("받아온 이미지 파일 경로: ", data);
       await memberApi.updateUserProfile(data);
+      dispatch(setProfileImg({ profileImagePath: data }));
       getPageInfo();
     } catch (error) {
       console.log("error: ", error);
     }
   };
+
+  const headerProfile = useSelector((state) => state.member.profileImagePath);
+  useEffect(() => {
+    console.log("헤더 프로필 경로: ", headerProfile);
+  }, [headerProfile]);
 
   return (
     <S.Container>
