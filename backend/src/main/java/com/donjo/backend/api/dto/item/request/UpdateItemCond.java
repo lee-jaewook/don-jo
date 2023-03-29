@@ -1,5 +1,6 @@
 package com.donjo.backend.api.dto.item.request;
 
+import com.donjo.backend.api.dto.item.response.ItemDetailPayload;
 import com.donjo.backend.solidity.Item.ItemSol;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class UpdateItemCond {
     private String description;
 
     @NotNull
-    private double price;
+    private Double price;
 
     @NotNull
     private String message;
@@ -34,13 +35,15 @@ public class UpdateItemCond {
     @NotNull
     private String filePath;
 
-    public ItemSol from(String address){
+    public ItemSol from(String address, ItemDetailPayload item){
         return ItemSol.builder()
                 .id(this.getUid())
                 .title(this.getTitle())
                 .imgPath(this.getImgPath())
                 .description(this.getDescription())
                 .price((long) (this.getPrice()*Math.pow(10, 18)))
+                .salesCount(item.getSalesCount())
+                .salesAmount((long)(item.getSalesAmount() * Math.pow(10,18)))
                 .message(this.getMessage())
                 .filePath(this.getFilePath())
                 .isDeleted(false)
