@@ -88,6 +88,9 @@ dependencies {
 	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:4.10.0'
 	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-jcache:4.10.0'
 
+	// jaxson
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
 }
 
 tasks.named('test') {

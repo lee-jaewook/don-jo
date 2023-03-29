@@ -113,7 +113,7 @@ export const EmojiLabel = styled.label`
 `;
 
 export const ButtonLabel = styled.label`
-  font-family: "RobotoBold";
+  font-family: ${(props) => props.font || "RobotoMedium"};
   font-size: 16px;
   line-height: 19px;
   text-align: center;
@@ -124,7 +124,8 @@ export const CopyButton = styled.button`
   display: flex;
   width: 6rem;
   font-family: "RobotoMedium";
-  font-size: 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
   color: var(--color-text-third);
   align-items: center;
   justify-content: space-between;

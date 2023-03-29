@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiLogOut } from "react-icons/fi";
 import { memberApi } from "../../../api/member";
 import { setLogOut } from "../../../stores/member";
+import Logo from "../../../assets/img/common/app-logo.svg";
 
 const NavBar = () => {
   const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
@@ -35,7 +36,7 @@ const NavBar = () => {
           <S.User>
             <S.UserImg
               alt="user-profile-img"
-              src={profileImgPath !== "" && `${S3URL}${profileImgPath}`}
+              src={profileImgPath !== "" ? `${S3URL}${profileImgPath}` : Logo}
             />
             <S.UseName>{userName}</S.UseName>
           </S.User>

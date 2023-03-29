@@ -130,7 +130,6 @@ const DashBoardAccount = () => {
       myAccount = { ...myAccount, profileImgPath };
     }
 
-
     // 배경 이미지 업로드
     if (
       account.backgroundImgPath === null &&
@@ -180,7 +179,6 @@ const DashBoardAccount = () => {
         socialData[`link${i}`] = data.socialList[i - 1];
       }
       setSocial(socialData);
-
     } catch (error) {
       console.log("error: ", error);
     }

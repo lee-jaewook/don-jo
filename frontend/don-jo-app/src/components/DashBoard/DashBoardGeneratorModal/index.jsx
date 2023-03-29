@@ -40,11 +40,20 @@ const DashBoardGeneratorModal = ({
   const pageName = useSelector((state) => state.member.pageName);
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [fontStyle, setFontStyle] = useState("Noto Sans Korean");
+  const [searchItem, setSearchItem] = useState("");
 
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
+  const handleFontChange = (e) => {
+    setFontStyle(e.target.innerText);
+  };
+
+  const handleSearchItemChange = (e) => {
+    setSearchItem(e.target.innerText);
+  };
+
   const handleOnClickEmoji = (item) => {
-    console.log(item);
     setSelectedEmoji(item.emoji);
     setShowEmojiPicker(false);
   };
@@ -122,7 +131,7 @@ const DashBoardGeneratorModal = ({
           {!isClickedGenerateButton ? (
             <S.PreView id="don-jo-link" color={colorIndex} ref={ref} href="#">
               <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
-              <S.ButtonLabel>{title}</S.ButtonLabel>
+              <S.ButtonLabel font={fontStyle}>{title}</S.ButtonLabel>
             </S.PreView>
           ) : (
             <>
@@ -183,14 +192,22 @@ const DashBoardGeneratorModal = ({
 
         <S.ContentWrap>
           <BasicTitle text="Font" />
-          <CustomSelect isBefore={true} />
+          <CustomSelect
+            isBefore={true}
+            selectValue={fontStyle}
+            handleOptionChange={handleFontChange}
+          />
         </S.ContentWrap>
 
         <S.ContentWrap>
           {isItemsRequired && (
             <>
               <BasicTitle text="Search Items" />
-              <CustomSelect isBefore={false} />
+              <CustomSelect
+                isBefore={false}
+                selectValue={searchItem}
+                handleOptionChange={handleSearchItemChange}
+              />
             </>
           )}
         </S.ContentWrap>

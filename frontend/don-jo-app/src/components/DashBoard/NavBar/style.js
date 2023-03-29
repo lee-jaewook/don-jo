@@ -58,6 +58,8 @@ export const UserImg = styled.img`
   box-shadow: 0rem 0.625rem 0.938rem 0.063rem rgba(0, 0, 0, 0.05);
   margin-right: 0.75rem;
   background-color: #f1f1f1;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 export const UseName = styled.h2`
