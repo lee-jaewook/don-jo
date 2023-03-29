@@ -1,16 +1,16 @@
 import * as S from "./style";
-import { wishlistList } from "../dummyData";
 import WishlistCard from "./WishlistCard";
+import PropTypes from "prop-types";
 
-const HomeWishList = () => {
+const HomeWishList = ({ wishListData }) => {
   return (
     <S.Container>
       <S.Title>Wishlist</S.Title>
       <S.Card>
-        {wishlistList.length === 0 ? (
+        {wishListData.length === 0 ? (
           <S.NoWishlistText>No Wishlist</S.NoWishlistText>
         ) : (
-          wishlistList.map((content, i) => {
+          wishListData.map((content, i) => {
             return <WishlistCard key={i} content={content} />;
           })
         )}
@@ -20,3 +20,7 @@ const HomeWishList = () => {
 };
 
 export default HomeWishList;
+
+HomeWishList.propTypes = {
+  wishListData: PropTypes.array,
+};

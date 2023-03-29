@@ -52,7 +52,7 @@ export const GaugeBarActive = styled.div`
   max-width: 100%;
   height: 0.375rem;
   background-color: ${(props) => {
-    return props.color === "" ? "black" : props.color;
+    return props.color === "" ? "var(--color-primary)" : props.color;
   }};
   border-radius: 0.25rem;
 `;

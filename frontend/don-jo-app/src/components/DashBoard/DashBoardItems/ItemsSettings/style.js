@@ -31,3 +31,13 @@ export const AddIcon = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export const Message = styled.p`
+  width: 100%;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  justify-items: center;
+  background-color: transparent;
+  text-align: center;
+  line-height: 6.25rem;
+`;

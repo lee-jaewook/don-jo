@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./style";
-import { FiArrowRight } from "react-icons/fi";
 
 const Intro = () => {
   return (
@@ -14,7 +13,7 @@ const Intro = () => {
           <S.Indicator />
           <S.EthValue>982.9273 ETH</S.EthValue>
         </S.CurrentEthInfoItem>
-        <S.CurrentEthInfoItem>
+        {/* <S.CurrentEthInfoItem>
           <S.StandardDate> Mar 23 2023</S.StandardDate>
           <S.Indicator />
           <S.EthValue>ITEMS</S.EthValue>
@@ -27,7 +26,7 @@ const Intro = () => {
           <S.EthValue>WISHLIST</S.EthValue>
           <S.Indicator />
           <S.EthValue>982.9273 ETH</S.EthValue>
-        </S.CurrentEthInfoItem>
+        </S.CurrentEthInfoItem> */}
       </S.CurrentEthInfoWrapper>
 
       <S.Background>
@@ -35,9 +34,7 @@ const Intro = () => {
         <S.InputWrapper>
           <S.InputLabel>don-jo.co/</S.InputLabel>
           <S.Input type="text" placeholder="your page name" />
-          <S.ArrowIconWrapper>
-            <FiArrowRight size="60px" />
-          </S.ArrowIconWrapper>
+          <S.FiArrowRightIcon />
         </S.InputWrapper>
       </S.Background>
     </S.Container>

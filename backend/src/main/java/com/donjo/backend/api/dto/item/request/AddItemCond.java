@@ -38,6 +38,8 @@ public class AddItemCond {
                 .imgPath(this.getImgPath())
                 .description(this.getDescription())
                 .price((long) (this.getPrice()*Math.pow(10, 18)))
+                .salesCount(0L)
+                .salesAmount(0L)
                 .message(this.getMessage())
                 .filePath(this.getFilePath())
                 .isDeleted(false)

@@ -25,7 +25,7 @@ public class SupportSol {
 
     public Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
 
-    public Long supportStatus;
+    public Long supportStatus; // 1 ok
 
     public ApplicationHandler.SupportSol toSol(){
         return new ApplicationHandler.SupportSol(
@@ -34,8 +34,7 @@ public class SupportSol {
                 to,
                 BigInteger.valueOf(amount),
                 TimeConvertUtil.convertToUint256Timestamp(sendTimestamp),
-                BigInteger.valueOf(supportType),
-                BigInteger.valueOf(supportStatus)
+                BigInteger.valueOf(supportType)
         );
     }
 
@@ -47,7 +46,7 @@ public class SupportSol {
                 .amount(s.amount.longValue())
                 .sendTimestamp(TimeConvertUtil.convertToLocalDateTime(s.sendTimestamp))
                 .supportType(s.supportType.longValue())
-                .supportStatus(s.supportStatus.longValue())
+                .supportStatus(1L)
                 .build();
     }
 }

@@ -18,7 +18,6 @@ export const SupportListHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   background-color: transparent;
-  margin-bottom: 0.75rem;
   @media (max-width: 1280px) {
     align-items: flex-start;
     flex-direction: column;
@@ -46,4 +45,14 @@ export const EmojiItem = styled.li`
 export const SupportList = styled.div`
   width: 100%;
   background-color: transparent;
+  margin-top: ${(props) => (props.length > 0 ? "0.75rem" : "0rem")};
+`;
+
+export const Message = styled.p`
+  width: 100%;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  background-color: transparent;
+  text-align: center;
+  line-height: 6.25rem;
 `;

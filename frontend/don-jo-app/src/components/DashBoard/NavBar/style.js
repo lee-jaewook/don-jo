@@ -46,7 +46,7 @@ export const UserImg = styled.img`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background-color: #ddd;
+  background-color: white;
   border: 0.063rem solid #f1f1f1;
   box-shadow: 0rem 0.625rem 0.938rem 0.063rem rgba(0, 0, 0, 0.05);
   /* margin-left: 2.5rem; */
@@ -75,7 +75,8 @@ export const MenuItem = styled.li`
   width: 100%;
   height: 3.25rem;
   display: block;
-  background-color: ${(props) => (props.current ? "black" : "transparent")};
+  background-color: ${(props) =>
+    props.current ? "var(--color-primary)" : "transparent"};
   border-radius: 1.875rem;
   line-height: 3.25rem;
 `;

@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
-import BasicTitle from "../../../Common/BasicTitle";
 import * as S from "./style";
+import { useSelector } from "react-redux";
+import BasicTitle from "../../../Common/BasicTitle";
 import { FiPlus } from "react-icons/fi";
 import ListItem from "./ListItem";
-import { itemList } from "../../../../data/dashboard";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import AddItemModal from "../../../Common/Modal/AddItemModal";
+import { itemApi } from "../../../../api/items";
 
 const ItemsSettings = () => {
+  const PAGE_SIZE = 6;
+  const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
   const [isShowItemModal, setShowItemModal] = useState(false);
   const [uid, setUid] = useState(0);
+  const [pageNum, setPageNum] = useState(0);
+  const [result, setResult] = useState([]);
+  const [hasMore, setIsEnd] = useState(false);
 
-  const handleGetMyItemList = () => {
-    console.log("handleGetMyItemList");
+  const handleGetMyItemList = async () => {
+    const {
+      data: { itemList, hasMore },
+    } = await itemApi.getItemList(memberAddress, pageNum, PAGE_SIZE);
+    setPageNum((prev) => prev + 1);
+    setResult((prev) => [...prev, ...(itemList || [])]);
+    setIsEnd(hasMore);
   };
 
   const handleAddItemModalOpen = () => {
@@ -26,6 +37,7 @@ const ItemsSettings = () => {
   };
 
   useEffect(() => {
+    // handleGetMyItemList();
     const addButton = document.getElementById("add-button");
 
     if (!addButton) return;
@@ -43,11 +55,11 @@ const ItemsSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Items List" />
-      {itemList && itemList.length > 0 ? (
-        itemList.map((item, index) => (
+      {result && result.length > 0 ? (
+        result.map((item, index) => (
           <ListItem
-            key={index + item.uid}
-            uid={item.uid}
+            key={index + item.id}
+            uid={item.id}
             setUid={setUid}
             imgPath={item.imgPath}
             supportCount={item.supportCount}
@@ -58,9 +70,9 @@ const ItemsSettings = () => {
           />
         ))
       ) : (
-        <label>There are no items registered.</label>
+        <S.Message>There are no items registered.</S.Message>
       )}
-      {itemList.length > 4 && (
+      {hasMore && (
         <ShowMoreButton handleOnClickButton={handleShowItemDetailModal} />
       )}
 
@@ -69,12 +81,15 @@ const ItemsSettings = () => {
           uid={uid}
           idDashboard={true}
           handleSetShowModal={setShowItemModal}
-          handleOnClickButton={() => console.log("show Edit Modal", uid)}
+          handleOnClickButton={() => setIsAddItemModalOpen(true)}
         />
       )}
 
       {isAddItemModalOpen && (
-        <AddItemModal handleSetShowModal={handleAddItemModalOpen} />
+        <AddItemModal
+          handleSetShowModal={handleAddItemModalOpen}
+          whichApiChoose={true}
+        />
       )}
     </S.SettingWrapper>
   );

@@ -66,11 +66,12 @@ const GlobalStyle = createGlobalStyle`
   --color-text: #222222;
   --color-text-secondary: #666666;
   --color-text-third: #999999;
-  --color-primary: #222222;
+  --color-primary: #9042DD;
   --color-background: #FFFFFF;
   --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;
   --color-placeholder: #BBBBBB;
+  --color-disabled : #DDDDDD;
 
   font-size: 1rem;
 }

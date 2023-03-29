@@ -9,13 +9,13 @@ export const Button = styled.button`
   border-radius: 1.5rem;
   font-family: "RobotoMedium";
   border: ${(props) =>
-    props.isBackground ? "transparent" : "2px solid black"};
+    props.isBackground ? "transparent" : "2px solid var(--color-primary)"};
   color: ${(props) => (props.isBackground ? "white" : props.color)};
   background-color: ${(props) => (props.isBackground ? props.color : "white")};
 
   &:hover {
     border: ${(props) =>
-      !props.isBackground ? "transparent" : "2px solid black"};
+      !props.isBackground ? "transparent" : "2px solid var(--color-primary)"};
     color: ${(props) => (!props.isBackground ? "white" : props.color)};
     background-color: ${(props) =>
       !props.isBackground ? props.color : "white"};
@@ -24,7 +24,7 @@ export const Button = styled.button`
   ${(props) =>
     props.disabled &&
     `
-    opacity: 0.5;
+    background-color: var(--color-disabled);
     cursor: not-allowed;
     pointer-events: none;
   `}
