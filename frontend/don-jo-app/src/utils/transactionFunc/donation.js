@@ -32,6 +32,7 @@ export const donation = () => {
             const tx = myContract.methods.callBasicDonation(
               "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12"
             );
+
             window.ethereum
               .request({
                 method: "eth_sendTransaction",

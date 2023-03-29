@@ -21,7 +21,7 @@ const AppRouter = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && window.ethereum) {
       window.ethereum.on("accountsChanged", (newAccounts) => {
         handleWalletChange(newAccounts, dispatch);
       });
