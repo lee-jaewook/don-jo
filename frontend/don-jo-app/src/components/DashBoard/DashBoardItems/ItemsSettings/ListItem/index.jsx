@@ -14,6 +14,7 @@ const ListItem = ({
   supportCount,
   handleShowItemDetailModal,
 }) => {
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const isMobile = useMediaQuery({ maxWidth: 578 });
 
   return (
@@ -24,7 +25,7 @@ const ListItem = ({
       }}
     >
       <S.ItemInfoWrapper>
-        <S.ItemImg src={imgPath} alt="item-img" />
+        <S.ItemImg src={`${S3URL}${imgPath}`} alt="item-img" />
         <S.ItemInfo>
           <S.InfoText size="0.875rem">{title}</S.InfoText>
           <S.InfoText>

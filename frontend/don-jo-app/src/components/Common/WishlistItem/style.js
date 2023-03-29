@@ -7,10 +7,10 @@ export const ItemWrapper = styled.div`
   width: 100%;
   max-width: 27.5rem;
   padding: 1.25rem;
-  background-color: ${(props) =>
-    props.isDashboard ? "white" : "var(--color-modal)"};
+  background-color: ${(props) => props.bgColor};
   border-radius: 1.25rem;
   cursor: default;
+  opacity: ${(props) => props.isClosed && 0.7};
 `;
 
 export const ItemContent = styled.div`
@@ -21,7 +21,7 @@ export const ItemContent = styled.div`
 export const ItemImg = styled.img`
   width: 6.25rem;
   height: 6.25rem;
-  background-color: #ddd;
+  background-color: white;
   border-radius: 0.5rem;
 `;
 

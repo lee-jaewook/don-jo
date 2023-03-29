@@ -26,7 +26,8 @@ export const memberSlice = createSlice({
       state.isLogIn = false;
       state.pageName = "";
       state.nickName = "";
-      state.color = 0;
+      state.walletAddress = "";
+      state.themeColor = 0;
       state.profileImagePath = "";
       state.walletAddress = "";
     },

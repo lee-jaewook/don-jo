@@ -12,7 +12,6 @@ import LogoImg from "../../../assets/img/common/app-logo.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
-
   const pageName = useSelector((state) => state.member.pageName);
   const profileImagePath = useSelector(
     (state) => state.member.profileImagePath

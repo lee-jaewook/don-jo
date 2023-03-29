@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
-import TestUserImg from "../../../assets/img/common/img-test-user.jpg";
 import { Desktop } from "../../../components/Common/Template";
+import { useSelector } from "react-redux";
+
 const NavBar = () => {
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const location = useLocation();
+  const userName = useSelector((state) => state.member.nickName);
+  const profileImgPath = useSelector((state) => state.member.profileImgPath);
+
+  useEffect(() => {
+    console.log("userName:", userName);
+  }, [userName]);
 
   return (
     <S.NavBar>
       <Desktop>
         <S.UserWrapper>
-          <S.UserImg alt="user-profile-img" src={TestUserImg} />
-          <S.UseName>HyunJu</S.UseName>
+          <S.UserImg
+            alt="user-profile-img"
+            src={!profileImgPath ? "" : `${S3URL}/${profileImgPath}`}
+          />
+          <S.UseName>{userName === undefined ? "songo427" : ""}</S.UseName>
         </S.UserWrapper>
       </Desktop>
       <S.MenuWrapper>
