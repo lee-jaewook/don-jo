@@ -18,7 +18,7 @@ public class AddWishlistCond {
     @NotNull
     private String description;
     @NotNull
-    private Long targetAmount; // ETH
+    private Double targetAmount; // ETH
     @NotNull
     private String message;
 
@@ -28,8 +28,10 @@ public class AddWishlistCond {
                 .title(title)
                 .imgPath(imgPath)
                 .description(description)
-                .targetAmount(targetAmount)
+                .collectedAmount(0L) // 1 Ether in wei
+                .targetAmount((long) (targetAmount * Math.pow(10, 18))) // 5 Ether in wei
                 .message(message)
+                .isClosed(false)
                 .seller(memberAddress)
                 .build();
     }
