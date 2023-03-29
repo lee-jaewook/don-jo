@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import { FiClipboard } from "react-icons/fi";
 
 export const PreViewWrap = styled.div`
   position: relative;
   display: flex;
   width: 100%;
+  min-height: 12.5rem;
   margin-bottom: 2rem;
-  height: 9.625rem;
   background-color: black;
   border-radius: 1.25rem;
   flex-direction: column;
@@ -25,10 +24,10 @@ export const PreView = styled.a`
   align-items: center;
   padding: 0.75rem 1.5rem;
   display: flex;
-  width: 217px;
-  height: 48px;
+  width: 13.5625rem;
+  height: 3rem;
   background-color: ${(props) => props.color || "#F02C7E"};
-  border-radius: 24px;
+  border-radius: 1.5rem;
   text-decoration: none;
   justify-content: center;
   align-items: center;
@@ -122,15 +121,30 @@ export const ButtonLabel = styled.label`
 `;
 
 export const CopyButton = styled.button`
-  display: ${(props) => (props.isClicked ? "flex" : "none")};
+  display: flex;
   width: 6rem;
   font-family: "RobotoMedium";
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--color-text-third);
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.25rem;
+  margin-bottom: 1rem;
   &:hover {
     color: white;
   }
+`;
+
+export const CodeBox = styled.textarea`
+  font-family: "RobotoRegular";
+  width: calc(100% - 2.5rem);
+  margin: 1.25rem;
+  border-radius: 1.25rem;
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  background-color: #333333;
+  padding: 1rem;
+  border: none;
+  overflow: auto;
+  /* resize: none; */
 `;

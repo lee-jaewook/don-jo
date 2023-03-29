@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicButton from "../../Common/BasicButton";
@@ -12,6 +12,8 @@ import { useInput } from "../../../hooks/useInput";
 import { generatorColorSet } from "../../../data/dashboard";
 import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
+import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 /**
  * 플러그인 생성기 컴포넌트
@@ -29,19 +31,21 @@ const DashBoardGeneratorModal = ({
 }) => {
   const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const ref = useRef(null);
+  const codeRef = useRef(null);
   const [title, setTitle] = useState("My Button Name");
   const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
-  const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
   const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
-  const pageName = "dondon";
+  const [code, setCode] = useState("");
+  const pageName = useSelector((state) => state.member.pageName);
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
   const handleOnClickEmoji = (item) => {
     console.log(item);
     setSelectedEmoji(item.emoji);
-    onChangeEmojiName(item.names[0]);
     setShowEmojiPicker(false);
   };
 
@@ -58,7 +62,10 @@ const DashBoardGeneratorModal = ({
   const handleUploadFile = async (formData, type) => {
     try {
       const { data } = await fileApi.uploadFile(formData, type);
-      handleGeneratorCode(data);
+      setCode(
+        `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`
+      );
+      handleDownloadButtonImg();
     } catch (error) {
       console.log("error: ", error);
     }
@@ -75,7 +82,7 @@ const DashBoardGeneratorModal = ({
     });
   }, [ref]);
 
-  const handleGeneratorCode = (url) => {
+  const handleDownloadButtonImg = () => {
     setClickedGenerateButton(true);
 
     toPng(ref.current)
@@ -88,23 +95,50 @@ const DashBoardGeneratorModal = ({
       .catch((err) => {
         console.log(err);
       });
-
-    const code = `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${url}" alt="dong-jo"/></a>`;
-    console.log("code:", code);
   };
+
+  const handleCopyCode = () => {
+    let copyText = document.getElementById("code-field");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+  };
+
+  // 내용에 따른 높이 조절 감지
+  const handleOnChangeTextareaHeight = () => {
+    codeRef.current.style.height = "auto";
+    codeRef.current.style.height = codeRef.current.scrollHeight + "px";
+  };
+
+  useEffect(() => {
+    if (codeRef.current === null) return;
+    handleOnChangeTextareaHeight();
+  }, [code]);
 
   return (
     <div>
-      <BasicModal width={26.25} handleSetShowModal={isModalOpen}>
+      <BasicModal width={isMobile ? 1 : 26.25} handleSetShowModal={isModalOpen}>
         <S.PreViewWrap>
-          <S.PreView id="don-jo-link" color={colorIndex} ref={ref} href="#">
-            <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
-            <S.ButtonLabel>{title}</S.ButtonLabel>
-          </S.PreView>
-          <S.CopyButton isClicked={isClickedGenerateButton}>
-            <FiCopy />
-            <label>copy code</label>
-          </S.CopyButton>
+          {!isClickedGenerateButton ? (
+            <S.PreView id="don-jo-link" color={colorIndex} ref={ref} href="#">
+              <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
+              <S.ButtonLabel>{title}</S.ButtonLabel>
+            </S.PreView>
+          ) : (
+            <>
+              <S.CodeBox
+                ref={codeRef}
+                id="code-field"
+                value={code}
+                readOnly
+                rows={1}
+              />
+              <S.CopyButton onClick={handleCopyCode}>
+                <FiCopy />
+                <label>copy code</label>
+              </S.CopyButton>
+            </>
+          )}
         </S.PreViewWrap>
 
         <S.ContentWrap>
