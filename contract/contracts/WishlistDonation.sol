@@ -2,12 +2,12 @@
 pragma solidity >= 0.6.0 <0.9.0;
 
 import "./SupportHistory.sol";
+import "./BasicDonation.sol";
 
-contract WishlistDonation is SupportHistory {
-    enum wishlistStatus { complete, Deleted}
+contract WishlistDonation is SupportHistory, BasicDonation {
 
     struct WishlistSol {
-        uint256 id;
+        uint64 id;
         bytes imgPath;
         bytes title;
         bytes description;
@@ -19,31 +19,21 @@ contract WishlistDonation is SupportHistory {
     }
 
     mapping(uint =>  WishlistSol) public wishlists;
-    mapping(address => uint256[]) public myWishlists;
-    uint256 internal wishlistCount;
+    mapping(address => uint64[]) public myWishlists;
+    uint64 internal wishlistCount;
 
     // event WishlistCreated(address indexed creator, uint256 wishlistId);
 
-    function _buyWishlist(address _address, uint256 _wishlistId, uint256 _value) internal returns(uint256){
+    function _buyWishlist(address payable _to, uint64 _wishlistId, uint256 _value, address payable _owner) internal returns(uint64){
         require(_value <= address(this).balance, "Insufficient balance");
-        // 요청이 왔음을 기록.
-        uint256 _id = recordSupport(msg.sender, _address, _value, SupportType.Wishlist);
-
         WishlistSol memory wishlist = wishlists[_wishlistId];
-
         require(!wishlist.isClosed, "This fundraising campaign for the wishlist has closed.");
+
+        uint64 supportId = _transfer(_to, _value, SupportType.Wishlist, _owner);
+        
         // require(!purchasedItems[msg.sender][_wishlistId], "This address is not the item's seller.");
         // emit ItemPurchased(msg.sender, item.seller, _itemId);
-
-        (bool success, ) = _address.call{value: _value}("");
-
-        if (!success) {
-            updateSupportStatus(msg.sender, _address, _id, SupportStatus.Failed);
-            revert("Transfer to wishlistOwner failed");
-        }
-        updateSupportStatus(msg.sender, _address, _id, SupportStatus.Success);
-
-        return _id;
+        return supportId;
     }
 
     function _createWishlist(WishlistSol memory _wishlist) internal {
@@ -53,7 +43,7 @@ contract WishlistDonation is SupportHistory {
         myWishlists[_wishlist.seller].push(wishlistCount);
     }
 
-    function _getWishlists(uint256[] memory indexes) internal view returns (WishlistSol[] memory) {
+    function _getWishlists(uint64[] memory indexes) internal view returns (WishlistSol[] memory) {
         WishlistSol[] memory result = new WishlistSol[](indexes.length);
         for (uint i = 0; i < indexes.length; i++) {
             require(indexes[i] <= wishlistCount, "Invalid index");
@@ -63,7 +53,7 @@ contract WishlistDonation is SupportHistory {
         return result;
     }
 
-    function _getWishlistDetail(uint256 id) internal view returns (WishlistSol memory) {
+    function _getWishlistDetail(uint64 id) internal view returns (WishlistSol memory) {
         require(id <= wishlistCount, "Invalid index");
         require(id != 0, "Invalid index");
         WishlistSol memory wishlist = wishlists[id];

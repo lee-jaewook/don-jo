@@ -70,20 +70,16 @@ public class SupportServiceImpl implements SupportService{
         // Dto 리스트배열 생성
         List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
 
-        // next 페이지를 알려주는 값 설정
-        boolean hashMore = true;
-
         // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         Pageable nextpageable = PageRequest.of(pageNum+1, pageSize);
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
+        List<Support> nextlist=supportRepository.findAllBySupport(type,memberAddress,nextpageable);
 
         // 다음 페이지에 값이 있는지 확인
-        if (supportRepository.findAllBySupport(type,memberAddress,nextpageable).isEmpty()){
-            hashMore= false;
-        }
+        boolean hashMore = !nextlist.isEmpty();
 
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
         for (Support support : list) {
@@ -116,7 +112,7 @@ public class SupportServiceImpl implements SupportService{
     public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid ){
         // Address와 Uid로 Solidity[][] 가져오기
         FindSupportDetailPayload findSupportDetailPayload;
-        Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid);
+        Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
 //        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
@@ -141,7 +137,7 @@ public class SupportServiceImpl implements SupportService{
             BigInteger blockNumber = ethTransaction.getTransaction().get().getBlockNumber();
             // web3 객체를 사용하여, 특정 블록의 정보를 가져옵니다.DefaultBlockParameter.valueOf(blockNumber)는 가져올 블록의 번호를 나타냅니다.
             EthBlock ethBlock = web3.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), true).send();
-            System.out.println(ethBlock.getBlock().toString());
+
             // 가져온 블록 정보에서 블록 생성 시간 정보를 가져옵니다.
             BigInteger timeStamp = ethBlock.getBlock().getTimestamp();
             // 블록 생성 시간 정보가 없을 경우, 기본값인 findSupportDetailPayload를 반환하고 함수를 종료합니다
@@ -196,9 +192,11 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public List<FindTop10Payload> getTop10(){
+        //배열 생성
+        List<FindTop10Payload> findTop10PayloadList = new ArrayList<>();
+
         // arriveTimeStamp가 null값이 아닌, 최신 후원 10개 가져옴
         List<Support> supportList = supportRepositorySupport.findTop10();
-        List<FindTop10Payload> findTop10PayloadList = new ArrayList<>();
 
         // Dto에 담아서 리턴
         for (Support support : supportList) {
