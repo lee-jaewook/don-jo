@@ -24,14 +24,18 @@ const PersonalWishlist = ({ isOwner }) => {
   const [hasMore, setIsEnd] = useState(false);
 
   const getWishList = async () => {
-    const { data } = await wishlistAPI.getWishList(
-      pageMemberAddress,
-      pageNum,
-      PAGE_SIZE
-    );
-    setPageNum((prev) => prev + 1);
-    setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
-    setIsEnd(data.hasMore);
+    try {
+      const { data } = await wishlistAPI.getWishList(
+        pageMemberAddress,
+        pageNum,
+        PAGE_SIZE
+      );
+      setPageNum((prev) => prev + 1);
+      setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+      setIsEnd(data.hasMore);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {

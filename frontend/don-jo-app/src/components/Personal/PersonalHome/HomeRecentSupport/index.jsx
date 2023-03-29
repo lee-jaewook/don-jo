@@ -19,15 +19,19 @@ const HomeRecentSupport = ({ isOwner }) => {
   ).toLowerCase();
 
   const getSupportList = async () => {
-    const { data } = await supportApi.getSupportList(
-      pageMemberAddress,
-      pageNum,
-      PAGE_SIZE,
-      TYPE
-    );
-    setPageNum((prev) => prev + 1);
-    setSupportList((prev) => [...prev, ...(data.supportList || [])]);
-    setHasMore(data.hasMore);
+    try {
+      const { data } = await supportApi.getSupportList(
+        pageMemberAddress,
+        pageNum,
+        PAGE_SIZE,
+        TYPE
+      );
+      setPageNum((prev) => prev + 1);
+      setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {
