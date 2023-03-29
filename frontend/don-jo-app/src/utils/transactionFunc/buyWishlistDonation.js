@@ -16,24 +16,21 @@ export const buyWishlistDonation = (item) => {
           web3.eth.net.getId().then((chainId) => {
             const infuraWeb3 = new Web3(
               new Web3.providers.HttpProvider(
-                "https://sepolia.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
+                "https://polygon-mumbai.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
-            const valueInWei = web3.utils.toWei(
-              (item.price * Math.pow(10, -3)).toString(),
-              "ether"
-            );
-            // const valueInWei = item.price;
-            console.log("valueInWei: ", valueInWei);
-            // const myWallet = web3.walletAddress;
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
+
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
               "0xc45694392A301B63a1FD0A1b2762521915a78f44" // contract 주소
             );
 
-            const tx = myContract.methods.buyItemDonation(item.seller, item.id);
+            const tx = myContract.methods.buyWishilistDonation(
+              item.seller,
+              item.id
+            );
 
             window.ethereum
               .request({
@@ -43,7 +40,6 @@ export const buyWishlistDonation = (item) => {
                     from: accounts[0],
                     to: item.seller,
                     value: valueInWei.toString(),
-                    // gas: "100000000000000000",
                     data: tx.encodeABI(),
                   },
                 ],
@@ -84,7 +80,7 @@ export const buyWishlistDonation = (item) => {
       // Metamask를 설치할 수 있도록 코드 추가...
       const downloadLink = "https://metamask.io/download.html";
       const message =
-        "MetaMask 확장 프로그램이 설치되어 있지 않습니다. 다운로드 페이지로 이동하시겠습니까?";
+        "MetaMask extension is not installed. Do you want to go to the download page?";
 
       if (window.confirm(message)) {
         window.open(downloadLink, "_blank");
