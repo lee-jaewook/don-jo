@@ -10,6 +10,8 @@ import BasicButton from "../../BasicButton";
 import { itemApi } from "../../../../api/items";
 import { wishlistAPI } from "../../../../api/wishlist";
 import { fileApi } from "../../../../api/file";
+import { fileSizeValidator } from "../../../../utils/validation/validator";
+import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
 
 /**
  * 아이템 추가/수정 모달
@@ -50,20 +52,33 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
     });
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.value === "") return;
+  const setFileChange = async (id, previewImgUrl, file) => {
+    if (id === "featured-image") {
+      setItemImageFile({ previewImgUrl: "", file: {} });
+    } else if (id === "file-upload") {
+      setItemNamFile({ previewImgUrl: "", file: {} });
+    }
+  };
+
+  const handleFileChange = async (e) => {
     const {
       target: { id, files },
     } = e;
 
+    if (e.target.value === "") {
+      setFileChange(id, "", {});
+      return;
+    }
+
+    if (!fileSizeValidator(files[0])) {
+      setFileChange(id, "", {});
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = () => {
-      if (id === "featured-image") {
-        setItemImageFile({ previewImgUrl: reader.result, file: files[0] });
-      } else if (id === "file-upload") {
-        setItemNamFile({ previewImgUrl: reader.result, file: files[0] });
-      }
+      setFileChange(id, reader.result, files[0]);
     };
   };
 
@@ -81,6 +96,16 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
   };
 
   const registerItem = async () => {
+    if (!checkItemValidation({ name: itemName, price: itemPrice })) return;
+    if (itemImageFile.previewImgUrl === "") {
+      alert("Please upload an image file.");
+      return;
+    }
+    if (itemFile.previewImgUrl === "") {
+      alert("Please upload an file.");
+      return;
+    }
+
     let imgPath = await handleUploadFile(itemImageFile.file, IMAGE_TYPE);
     let filePath = await handleUploadFile(itemFile.file, ITEM_TYPE);
 
