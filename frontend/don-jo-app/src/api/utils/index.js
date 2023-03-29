@@ -47,7 +47,7 @@ instance.interceptors.response.use(
             },
           }
         );
-
+        console.log("data: ", data);
         const accesstoken = data;
         await localStorage.setItem("accesstoken", accesstoken);
 
