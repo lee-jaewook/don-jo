@@ -25,6 +25,9 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
         setSupportText(" buys from ");
         setEmoji("📁");
         break;
+      default:
+        console.log("Support type Wrong");
+        break;
     }
   }, []);
 
