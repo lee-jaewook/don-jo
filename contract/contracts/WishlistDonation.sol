@@ -24,12 +24,12 @@ contract WishlistDonation is SupportHistory, BasicDonation {
 
     // event WishlistCreated(address indexed creator, uint256 wishlistId);
 
-    function _buyWishlist(address payable _to, uint64 _wishlistId, uint256 _value) internal returns(uint64){
+    function _buyWishlist(address payable _to, uint64 _wishlistId, uint256 _value, address payable _owner) internal returns(uint64){
         require(_value <= address(this).balance, "Insufficient balance");
         WishlistSol memory wishlist = wishlists[_wishlistId];
         require(!wishlist.isClosed, "This fundraising campaign for the wishlist has closed.");
 
-        uint64 supportId = _transfer(_to, _value, SupportType.Wishlist);
+        uint64 supportId = _transfer(_to, _value, SupportType.Wishlist, _owner);
         
         // require(!purchasedItems[msg.sender][_wishlistId], "This address is not the item's seller.");
         // emit ItemPurchased(msg.sender, item.seller, _itemId);

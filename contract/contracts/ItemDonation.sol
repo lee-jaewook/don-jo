@@ -25,14 +25,16 @@ contract ItemDonation is SupportHistory, BasicDonation {
 
     // event ItemPurchased(address indexed buyer, address indexed seller, uint256 itemId);
 
-    function _buyItem(address payable _seller, uint64 _itemId, uint256 _value) internal returns(uint64){
+    function _buyItem(address payable _seller, uint64 _itemId, uint256 _value, address payable _owner) internal returns(uint64){
         require(_value <= address(this).balance, "Insufficient balance");
         ItemSol memory item = items[_itemId];
         require(_value >= item.price, "Insufficient payment");
         require(!item.isDeleted, "Insufficient payment");
         require(item.seller == _seller, "This address is not the item's seller.");
         require(!purchasedItems[msg.sender][_itemId], "This item has already been purchased.");
-        uint64 supportId = _transfer(_seller, _value, SupportType.Item);
+
+        uint64 supportId = _transfer(_seller, _value, SupportType.Item, _owner);
+
         purchasedItems[msg.sender][_itemId] = true;
         items[_itemId].salesCount += 1;
         return supportId;

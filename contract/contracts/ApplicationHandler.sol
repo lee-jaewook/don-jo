@@ -5,24 +5,24 @@ import "./ItemDonation.sol";
 import "./WishlistDonation.sol";
 
 contract ApplicationHandler is ItemDonation, WishlistDonation {
-  address owner;
+  address payable public owner;
 
   constructor(){
-    owner = msg.sender;
+    owner = payable(msg.sender);
   }
 
   // ================= Frontend Call =================
   // 기본 도네이션 실행
   function callBasicDonation(address payable _to) external payable returns(uint64) {
-    return _transfer(_to, msg.value, SupportType.Donation);
+    return _transfer(_to, msg.value, SupportType.Donation, owner);
   }
   // 아이템 구매
   function buyItemDonation(address payable _to, uint64 _itemId) external payable returns(uint64) {
-    return _buyItem(_to, _itemId, msg.value);
+    return _buyItem(_to, _itemId, msg.value, owner);
   }
   // 위시 리스트 구매
   function buyWishlistDonation(address payable _to, uint64 _wishlistId) external payable returns(uint64) {
-    return _buyWishlist(_to, _wishlistId, msg.value);
+    return _buyWishlist(_to, _wishlistId, msg.value, owner);
   }
 
   // ================= Backend Call =================
