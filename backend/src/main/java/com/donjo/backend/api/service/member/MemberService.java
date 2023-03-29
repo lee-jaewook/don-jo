@@ -13,10 +13,13 @@ import java.util.Optional;
 
 public interface MemberService {
 
+  // 가입 된 유저 확인
   Optional<Member> findMember(String memberAddress);
 
+  // 페이지이름 중복 확인
   Optional<Member> isPageNameDuplicate(String pageName);
 
+  //
   Map<String, Object> signUpMember(SignUpMemberCond signUpMemberCond);
 
   Map<String, Object> loginMember(LoginMemberCond loginMemberCond);
