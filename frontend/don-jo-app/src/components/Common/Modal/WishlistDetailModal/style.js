@@ -20,7 +20,7 @@ export const WishlistContent = styled.div`
   }
 `;
 
-export const wishlistImg = styled.div`
+export const wishlistImg = styled.img`
   width: 11.25rem;
   height: 11.25rem;
   background-color: #d9d9d9;

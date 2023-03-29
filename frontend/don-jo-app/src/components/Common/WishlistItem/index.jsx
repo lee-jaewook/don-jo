@@ -10,7 +10,10 @@ const WishlistItem = ({
   description,
   collectedAmount,
   totalAmount,
+  isClosed,
 }) => {
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
     if (Number(collectedAmount) >= Number(totalAmount)) {
@@ -23,10 +26,11 @@ const WishlistItem = ({
     <S.ItemWrapper
       id={uid}
       isDashboard={isDashboard}
-      onClick={isDashboard ? handleSetShowModal : undefined}
+      bgColor={isClosed ? "#EFEFEF" : "white"}
+      onClick={isDashboard ? () => handleSetShowModal(uid) : undefined}
     >
       <S.ItemContent>
-        <S.ItemImg src={imgPath} />
+        <S.ItemImg src={`${S3URL}${imgPath}`} />
         <S.ItemInformation>
           <S.Title>{title}</S.Title>
           <S.Description>
