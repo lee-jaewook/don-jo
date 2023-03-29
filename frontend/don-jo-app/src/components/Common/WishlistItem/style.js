@@ -7,10 +7,10 @@ export const ItemWrapper = styled.div`
   width: 100%;
   max-width: 27.5rem;
   padding: 1.25rem;
-  background-color: ${(props) =>
-    props.isDashboard ? "white" : "var(--color-modal)"};
+  background-color: ${(props) => props.bgColor};
   border-radius: 1.25rem;
   cursor: default;
+  opacity: ${(props) => props.isClosed && 0.7};
 `;
 
 export const ItemContent = styled.div`
@@ -21,7 +21,7 @@ export const ItemContent = styled.div`
 export const ItemImg = styled.img`
   width: 6.25rem;
   height: 6.25rem;
-  background-color: #ddd;
+  background-color: white;
   border-radius: 0.5rem;
 `;
 
@@ -81,7 +81,7 @@ export const SupportButton = styled.button`
   color: white;
   border-radius: 1.25rem;
   margin-top: 0.625rem;
-  background-color: var(--color-text);
+  background-color: var(--color-primary);
   align-self: flex-end;
 `;
 
@@ -106,7 +106,7 @@ export const ProgressState = styled.div`
   width: ${(props) => `${props.currentState}%` || "0%"};
   height: 0.5rem;
   border-radius: 0.25rem;
-  background-color: black;
+  background-color: var(--color-primary);
 `;
 
 export const AmountWrapper = styled.div`

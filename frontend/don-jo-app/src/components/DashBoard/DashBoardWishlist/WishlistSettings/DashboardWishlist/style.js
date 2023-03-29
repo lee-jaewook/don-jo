@@ -19,7 +19,6 @@ export const WishlistContainer = styled.div`
 export const Message = styled.label`
   width: 100%;
   font-size: 1rem;
-  line-height: 1.125rem;
   color: var(--color-text-secondary);
   justify-items: center;
   background-color: transparent;

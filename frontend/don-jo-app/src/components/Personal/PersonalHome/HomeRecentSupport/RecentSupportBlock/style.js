@@ -17,6 +17,12 @@ export const RepresentContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+  padding: 0.375rem;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: var(--color-background-secondary);
+  }
 `;
 
 export const ProfileImgContainer = styled.div`
@@ -43,6 +49,11 @@ export const ReplyBtn = styled.button`
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   margin-top: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-text-secondary);
+  }
 `;
 
 export const InputContainer = styled.div`
@@ -65,10 +76,10 @@ export const ReplyInput = styled.input`
   background-color: white;
   border: 1px solid transparent;
   &:hover {
-    border-color: black;
+    border-color: var(--color-primary);
   }
   &:focus {
-    border-color: black;
+    border-color: var(--color-primary);
   }
 `;
 
@@ -82,13 +93,16 @@ export const RegistBtn = styled.button`
   border-radius: 1.5rem;
   font-family: "RobotoMedium";
   border: 0.125rem solid;
-  border-color: ${(props) => (props.color ? props.color : "2px solid black")};
-  color: ${(props) => (props.color ? props.color : "black")};
+  border-color: ${(props) =>
+    props.color ? props.color : "2px solid var(--color-primary)"};
+  color: ${(props) => (props.color ? props.color : "var(--color-primary)")};
   background-color: white;
 
   &:hover {
-    background-color: ${(props) => (!props.color ? "black" : props.color)};
-    border-color: ${(props) => (!props.color ? "black" : props.color)};
+    background-color: ${(props) =>
+      !props.color ? "var(--color-primary)" : props.color};
+    border-color: ${(props) =>
+      !props.color ? "var(--color-primary)" : props.color};
     color: white;
   }
 `;

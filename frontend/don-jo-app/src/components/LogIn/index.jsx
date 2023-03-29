@@ -4,7 +4,7 @@ import BasicInput from "../Common/BasicInput";
 import BasicModal from "../Common/Modal/BasicModal";
 import BasicButton from "../Common/BasicButton";
 
-const LogIn = ({ isModelOpen }) => {
+export const LogIn = ({ isModelOpen }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,7 +35,7 @@ const LogIn = ({ isModelOpen }) => {
         />
         <BasicButton
           text="Submit"
-          color="black"
+          color="var(--color-primary)"
           handleOnClickButton={handleSubmit}
         />
       </>
@@ -48,8 +48,6 @@ const LogIn = ({ isModelOpen }) => {
     </div>
   );
 };
-
-export default LogIn;
 
 LogIn.propTypes = {
   isModelOpen: PropTypes.func.isRequired,

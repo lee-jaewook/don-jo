@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
 const WishlistItem = ({
@@ -10,11 +10,9 @@ const WishlistItem = ({
   description,
   collectedAmount,
   totalAmount,
+  isClosed,
 }) => {
-  // wishlist item 수정 모달 관리를 위한 함수
-  const handleOpenEditModal = useCallback((e) => {
-    e.stopPropagation(); // event bubbling 방지
-  }, []);
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
@@ -28,11 +26,11 @@ const WishlistItem = ({
     <S.ItemWrapper
       id={uid}
       isDashboard={isDashboard}
-      onClick={isDashboard ? handleSetShowModal : undefined}
+      bgColor={isClosed ? "#EFEFEF" : "white"}
+      onClick={isDashboard ? () => handleSetShowModal(uid) : undefined}
     >
-      {/* {isDashboard && <S.EditButton onClick={handleOpenEditModal} />} */}
       <S.ItemContent>
-        <S.ItemImg src={imgPath} />
+        <S.ItemImg src={`${S3URL}${imgPath}`} />
         <S.ItemInformation>
           <S.Title>{title}</S.Title>
           <S.Description>

@@ -1,46 +1,55 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
-import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
+import AddItemModal from "../../Common/Modal/AddItemModal";
+import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
+import { itemApi } from "../../../api/items";
+import PropTypes from "prop-types";
 
-//현재 로그인한 유저 더미 데이터
-const loginUser = {
-  memberAddress: "memberaddress",
-  nickname: "taehyun",
-};
+const PersonalItems = ({ isOwner }) => {
+  //현재 페이지의 멤버 지갑주소 정보
+  const pageMemberAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  ).toLowerCase();
 
-//해당 페이지 사람 더미 데이터
-const pageOwner = {
-  memberAddress: "memberaddress",
-  profileImgPath:
-    "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-  backgroundImgPath:
-    "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
-  nickname: "Robert Downey Jr.",
-  introduction:
-    "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
-  numSupporters: 16000,
-  socialList: [
-    "https://www.youtube.com/@SamsungKorea",
-    "https://velog.io/@taebong1012",
-    "https://github.com/taebong1012",
-  ],
-};
+  const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
 
-const PersonalItems = () => {
-  //로그인 유저가 페이지 주인인지 확인
-  const [isOwner, setIsOwner] = useState(false);
+  const [pageNum, setPageNum] = useState(0);
+  const PAGE_SIZE = 6;
+  const [itemList, setItemList] = useState([]);
+  const [hasMore, setIsEnd] = useState(false);
+
+  const getItemList = async () => {
+    const { data } = await itemApi.getItemList(
+      pageMemberAddress,
+      pageNum,
+      PAGE_SIZE
+    );
+    setPageNum((prev) => prev + 1);
+    setItemList((prev) => [...prev, ...(data.itemList || [])]);
+    setIsEnd(data.hasMore);
+  };
+
   useEffect(() => {
-    setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
+    getItemList();
   }, []);
 
-  return (
-    <S.Container>
-      <S.Title>This is my Items</S.Title>
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+    getItemList();
+  };
+
+  const OwnerOrHasItemList = () => {
+    return (
       <S.CardContainer>
         {isOwner && (
-          <S.AddCard onClick={() => {}}>
+          <S.AddCard
+            onClick={() => {
+              setIsOpenAddItemModal(true);
+            }}
+          >
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
             </S.IconWrapper>
@@ -51,8 +60,34 @@ const PersonalItems = () => {
           return <ItemCard key={i} item={item} isOwner={isOwner} />;
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no items 🥲</S.Nothing>;
+  };
+
+  return (
+    <S.Container>
+      <S.Title>This is my Items</S.Title>
+      {isOwner || itemList.length !== 0 ? <OwnerOrHasItemList /> : <Nothing />}
+
+      {hasMore && (
+        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+      )}
+
+      {isOpenAddItemModal && (
+        <AddItemModal
+          handleSetShowModal={setIsOpenAddItemModal}
+          whichApiChoose={true}
+        />
+      )}
     </S.Container>
   );
 };
 
 export default PersonalItems;
+
+PersonalItems.propTypes = {
+  isOwner: PropTypes.bool,
+};

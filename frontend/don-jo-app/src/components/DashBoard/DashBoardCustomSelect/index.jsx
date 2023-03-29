@@ -23,7 +23,6 @@ const CustomSelect = ({
   data = datum,
   fontStyle = "RobotoRegular",
   isBefore = true,
-  isItemsRequired = true,
 }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
@@ -45,7 +44,6 @@ const CustomSelect = ({
 
 export default CustomSelect;
 
-// data에 담겨있는 객체에 대한 propType 지정 필요
 CustomSelect.propTypes = {
   data: PropTypes.array,
   fontStyle: PropTypes.string,

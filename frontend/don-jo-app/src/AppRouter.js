@@ -13,18 +13,23 @@ import DashBoard from "./pages/DashBoard";
 import Error from "./pages/Error";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./components/Common/Header";
-import { connectWallet } from "./utils/connectWallet";
+import { handleWalletChange } from "./utils/handleWalletChange";
+import { isMobile } from "react-device-detect";
 
 const AppRouter = () => {
   const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    connectWallet(dispatch);
+    if (!isMobile) {
+      window.ethereum.on("accountsChanged", (newAccounts) => {
+        handleWalletChange(newAccounts, dispatch);
+      });
+    }
   }, []);
 
   // 로그인 여부 체크
-  let isLogin = true;
+  const isLogin = useSelector((state) => state.member.isLogIn);
 
   if (!isLogin) {
     return (

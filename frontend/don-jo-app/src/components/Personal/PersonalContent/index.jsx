@@ -4,27 +4,35 @@ import { useTabs } from "../../../hooks/useTabs";
 import PersonalHome from "../PersonalHome";
 import PersonalItems from "../PersonalItems";
 import PersonalWishlist from "../PersonalWishlist";
+import PropTypes from "prop-types";
 
-const allTab = [
-  {
-    index: 0,
-    name: "Home",
-    component: <PersonalHome />,
-  },
-  {
-    index: 1,
-    name: "Items",
-    component: <PersonalItems />,
-  },
-  {
-    index: 2,
-    name: "Wishlist",
-    component: <PersonalWishlist />,
-  },
-];
+const PersonalContent = ({ donationSettingData, wishListData, isOwner }) => {
+  const allTab = [
+    {
+      index: 0,
+      name: "Home",
+      component: (
+        <PersonalHome
+          donationSettingData={donationSettingData}
+          wishListData={wishListData}
+          isOwner={isOwner}
+        />
+      ),
+    },
+    {
+      index: 1,
+      name: "Items",
+      component: <PersonalItems isOwner={isOwner} />,
+    },
+    {
+      index: 2,
+      name: "Wishlist",
+      component: <PersonalWishlist isOwner={isOwner} />,
+    },
+  ];
 
-const PersonalContent = () => {
   const { currentItem, changeItem } = useTabs(0, allTab);
+
   return (
     <S.Container>
       <PersonalTab currentItem={currentItem} changeItem={changeItem} />
@@ -34,3 +42,14 @@ const PersonalContent = () => {
 };
 
 export default PersonalContent;
+
+PersonalContent.propTypes = {
+  donationSettingData: PropTypes.shape({
+    donationEmoji: PropTypes.string.isRequired,
+    donationName: PropTypes.string.isRequired,
+    pricePerDonation: PropTypes.number.isRequired,
+    thankMsg: PropTypes.string.isRequired,
+  }).isRequired,
+  wishListData: PropTypes.array,
+  isOwner: PropTypes.bool,
+};

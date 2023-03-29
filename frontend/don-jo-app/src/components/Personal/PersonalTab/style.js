@@ -40,7 +40,7 @@ export const Indicator = styled.hr`
   position: absolute;
   bottom: -0.625rem;
   width: 100%;
-  border: 0.125rem solid var(--color-text);
+  border: 0.125rem solid var(--color-primary);
   border-radius: 0.25rem;
   opacity: ${(props) => (props.current ? 1 : 0)};
 `;

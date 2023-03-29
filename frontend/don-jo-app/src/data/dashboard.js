@@ -95,7 +95,22 @@ export const itemList = [
   },
 ];
 
-export const colorSet = ["#F02C7E", "#F96D1F", "#14A985", "#2966DD", "#9042DD"];
+export const colorSet = [
+  "#000000",
+  "#F02C7E",
+  "#F96D1F",
+  "#14A985",
+  "#2966DD",
+  "#9042DD",
+];
+
+export const generatorColorSet = [
+  "#F02C7E",
+  "#F96D1F",
+  "#14A985",
+  "#2966DD",
+  "#9042DD",
+];
 
 export const supportList = [
   {
