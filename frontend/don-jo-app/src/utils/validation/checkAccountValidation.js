@@ -5,4 +5,4 @@
  *  themeColor
  */
 
-export const checkAccountValidation = ({ previewImgUrl }) => {};
+export const checkAccountValidation = async () => {};
