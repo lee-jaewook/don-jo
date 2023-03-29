@@ -52,15 +52,30 @@ public class ItemController {
                 .body(itemService.getItemDetail(itemUid));
     }
 
+
+    @GetMapping("/api/member/item/purchased")
+    @ApiOperation(value = "아이템 구매 여부 조회", notes = "<strong>아이템의 uid와 멤버의 주소</strong>를 입력받아 해당 유저가 아이템을 구매했는지 ")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "NO CONTENT(정보 없음)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull Long itemUid){
+        return ResponseEntity.status(200)
+                .body(itemService.isPurchased(memberAddress, itemUid));
+    }
+
     @PostMapping("/api/auth/member/item/limited")
     @ApiOperation(value = "아이템 등록", notes = "<strong>아이템 정보</strong>를 입력받아 아이템을 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(등록 실패)"),
             @ApiResponse(code = 401, message = "UNAUTHORIZED(권한 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMyItem(HttpServletRequest request, @RequestBody @Valid AddItemCond cond){
+        if(cond.getPrice() == 0) return ResponseEntity.status(400).build();
         String memberAddress = memberService.getMemberAddress(request);
 
         itemService.addItem(memberAddress, cond);
