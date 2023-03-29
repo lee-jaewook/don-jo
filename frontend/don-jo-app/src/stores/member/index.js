@@ -30,10 +30,13 @@ export const memberSlice = createSlice({
       state.profileImagePath = "";
       state.walletAddress = "";
     },
+    setProfileImg(state, action) {
+      state.profileImagePath = action.payload.profileImagePath;
+    },
   },
 });
 
-export const { setLogIn, setLogOut, setLoading, setConnected } =
+export const { setLogIn, setLogOut, setLoading, setConnected, setProfileImg } =
   memberSlice.actions;
 
 export default memberSlice.reducer;

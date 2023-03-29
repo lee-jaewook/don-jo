@@ -27,6 +27,10 @@ const Header = () => {
   const [isLocalSrc, setIsLocalSrc] = useState(false);
 
   useEffect(() => {
+    setProfileImgSrc(profileImagePath);
+  }, [profileImagePath]);
+
+  useEffect(() => {
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
       setIsLocalSrc(true);
