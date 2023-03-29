@@ -4,9 +4,9 @@ import { FiDelete } from "react-icons/fi";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 
-const PasswordSetModal = ({ handleSetShowModal }) => {
+const PasswordSetModal = ({ handleSetShowModal, setPassword }) => {
   const [prevPassword, setPrevPassword] = useState("init");
-  const [password, setPassword] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
   const [isWrong, setIsWrong] = useState(false);
 
   //패스워드 모달 창 닫기
@@ -43,15 +43,15 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
   }, []);
 
   useEffect(() => {
-    if (password.length >= 6) {
+    if (inputPassword.length >= 6) {
       if (prevPassword === "init") {
-        setPrevPassword(password);
-        setPassword("");
+        setPrevPassword(inputPassword);
+        setInputPassword("");
         shuffle();
       }
       // 이전 비밀번호와 일치한지
-      else if (prevPassword === password) {
-        console.log("비밀번호 일치: ", password);
+      else if (prevPassword === inputPassword) {
+        setPassword(inputPassword);
         closeModal();
       }
       // 이전 비밀번호와 다르다면
@@ -60,22 +60,22 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
         setTimeout(() => {
           setIsWrong(false);
           setPrevPassword("init");
-          setPassword("");
+          setInputPassword("");
           shuffle();
         }, 2000);
       }
     }
-  }, [password]);
+  }, [inputPassword]);
 
   //패스워드 업데이트
   const updatePassword = (n) => {
-    setPassword(password + n.toString());
+    setInputPassword(inputPassword + n.toString());
   };
 
   //패스워드 지우기
   const deletePassword = (n) => {
-    if (password.length > 0) {
-      setPassword(password.slice(0, -1));
+    if (inputPassword.length > 0) {
+      setInputPassword(inputPassword.slice(0, -1));
     }
   };
 
@@ -105,7 +105,7 @@ const PasswordSetModal = ({ handleSetShowModal }) => {
             return (
               <S.Circle
                 key={index}
-                isEnable={index < password.length}
+                isEnable={index < inputPassword.length}
                 isWrong={isWrong}
               />
             );
@@ -148,4 +148,5 @@ export default PasswordSetModal;
 
 PasswordSetModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
 };

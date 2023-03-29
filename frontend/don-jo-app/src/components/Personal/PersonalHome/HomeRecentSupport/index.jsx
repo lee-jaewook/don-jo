@@ -26,7 +26,6 @@ const HomeRecentSupport = ({ isOwner }) => {
         PAGE_SIZE,
         TYPE
       );
-      console.log("이게왔어", data);
       setPageNum((prev) => prev + 1);
       setHasMore(data.hasMore);
       setSupportList((prev) => [...prev, ...(data.supportList || [])]);
