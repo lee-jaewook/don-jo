@@ -3,7 +3,7 @@ import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
 
-export const buyWishilistDonation = ({ wishlistId }) => {
+export const buyWishlistDonation = (item) => {
   // 모바일 여부 확인
   if (!isMobile) {
     // 메타마스크 설치 여부 확인
@@ -16,49 +16,62 @@ export const buyWishilistDonation = ({ wishlistId }) => {
           web3.eth.net.getId().then((chainId) => {
             const infuraWeb3 = new Web3(
               new Web3.providers.HttpProvider(
-                "https://sepolia.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
+                "https://polygon-mumbai.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
-            const valueInWei = web3.utils.toWei("0.000003", "ether");
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
 
-            // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
               "0xc45694392A301B63a1FD0A1b2762521915a78f44" // contract 주소
             );
 
             const tx = myContract.methods.buyWishilistDonation(
-              "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12",
-              wishlistId
+              item.seller,
+              item.id
             );
+
             window.ethereum
               .request({
                 method: "eth_sendTransaction",
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12",
-                    value: valueInWei,
-                    gas: "20000",
+                    to: item.seller,
+                    value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
                 ],
               })
-              .then((res) => {
-                console.log("transaction 성공");
-                console.log("res: ", res);
-                // const donationDto = {
-                //   amountEth: 0,
-                //   fromAddress: myWallet,
-                //   sendMsg: "string",
-                //   supportType: "donation",
-                //   supportUid: 0,
-                //   toAddress: "string",
-                //   transactionHash: res,
-                // };
-                // saveDonation(donationDto);
+              .then((txHash) => {
+                const receiptPromise = new Promise(function (resolve, reject) {
+                  const intervalId = setInterval(function () {
+                    web3.eth.getTransactionReceipt(txHash).then((receipt) => {
+                      if (receipt !== undefined && receipt !== null) {
+                        console.log("야옹야옹!");
+                        clearInterval(intervalId);
+                        resolve({ receipt, txHash });
+                      }
+                    });
+                  }, 1000);
+                });
+                return receiptPromise;
+              })
+              .then(({ receipt, txHash }) => {
+                console.log("Transaction successful");
+                console.log("receipt: ", receipt);
+                const donationDto = {
+                  amountEth: item.price,
+                  fromAddress: accounts[0],
+                  sendMsg: item.message,
+                  supportType: "item",
+                  supportTypeUid: item.id,
+                  supportUid: "0",
+                  toAddress: item.seller,
+                  transactionHash: txHash,
+                };
+                saveDonation(donationDto);
               })
               .catch((err) => console.log(err));
           });
@@ -67,7 +80,7 @@ export const buyWishilistDonation = ({ wishlistId }) => {
       // Metamask를 설치할 수 있도록 코드 추가...
       const downloadLink = "https://metamask.io/download.html";
       const message =
-        "MetaMask 확장 프로그램이 설치되어 있지 않습니다. 다운로드 페이지로 이동하시겠습니까?";
+        "MetaMask extension is not installed. Do you want to go to the download page?";
 
       if (window.confirm(message)) {
         window.open(downloadLink, "_blank");

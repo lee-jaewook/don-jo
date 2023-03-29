@@ -33,10 +33,22 @@ const DashBoardGeneratorModal = ({
   const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
   const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
   const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
+
   const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
   const pageName = "dondon";
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [fontStyle, setFontStyle] = useState("RobotoRegular");
+  const [searchItem, setSearchItem] = useState("RobotoRegular");
+
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
+
+  const handleFontChange = (e) => {
+    setFontStyle(e.target.innerText);
+  };
+
+  const handleSearchItemChange = (e) => {
+    setSearchItem(e.target.innerText);
+  };
 
   const handleOnClickEmoji = (item) => {
     console.log(item);
@@ -149,14 +161,22 @@ const DashBoardGeneratorModal = ({
 
         <S.ContentWrap>
           <BasicTitle text="Font" />
-          <CustomSelect isBefore={true} />
+          <CustomSelect
+            isBefore={true}
+            selectValue={fontStyle}
+            handleOptionChange={handleFontChange}
+          />
         </S.ContentWrap>
 
         <S.ContentWrap>
           {isItemsRequired && (
             <>
               <BasicTitle text="Search Items" />
-              <CustomSelect isBefore={false} />
+              <CustomSelect
+                isBefore={false}
+                selectValue={searchItem}
+                handleOptionChange={handleSearchItemChange}
+              />
             </>
           )}
         </S.ContentWrap>
