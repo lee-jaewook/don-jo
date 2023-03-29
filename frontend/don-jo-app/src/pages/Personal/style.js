@@ -4,12 +4,12 @@ import defaultProfileImg from "../../assets/img/common/app-logo.svg";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 export const Container = styled.div`
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   margin-bottom: 9.375rem;
+  overflow-x: hidden;
 `;
 
 export const BackgroundImg = styled.div`
