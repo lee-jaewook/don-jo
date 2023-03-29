@@ -48,6 +48,8 @@ class ItemSolidityTest {
                 .imgPath(imgPath)
                 .description(description)
                 .price(price)
+                .salesAmount(0L)
+                .salesCount(0L)
                 .message(message)
                 .filePath(filePath)
                 .isDeleted(isDeleted)
@@ -55,6 +57,9 @@ class ItemSolidityTest {
         System.out.println("하이하이");
         itemSolidity.addMemberItem(itemSol);
     }
+
+
+
 
 //    @Test
 //    public void getItemListTest(){

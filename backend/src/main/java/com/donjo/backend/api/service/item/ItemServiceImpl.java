@@ -61,7 +61,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public void updateMemberItem(String address, UpdateItemCond cond) {
         //  cond 객체에 address를 추가한 결과를 Solidity 스마트 컨트랙트에 업데이트
-        itemSolidity.updateMemberItem(cond.from(address));
+        itemSolidity.updateMemberItem(cond.from(address, getItemDetail(cond.getUid())));
     }
 
     @Override
