@@ -26,9 +26,10 @@ const HomeRecentSupport = ({ isOwner }) => {
         PAGE_SIZE,
         TYPE
       );
+      console.log("이게왔어", data);
       setPageNum((prev) => prev + 1);
-      setSupportList((prev) => [...prev, ...(data.supportList || [])]);
       setHasMore(data.hasMore);
+      setSupportList((prev) => [...prev, ...(data.supportList || [])]);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -39,7 +40,6 @@ const HomeRecentSupport = ({ isOwner }) => {
   }, [pageMemberAddress]);
 
   const handleOnClickShowMoreButton = () => {
-    console.log("Show More");
     getSupportList();
   };
 
