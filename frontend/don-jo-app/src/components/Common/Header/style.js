@@ -21,14 +21,18 @@ export const Header = styled.div`
 `;
 
 export const Logo = styled.img`
-  height: 2rem;
+  height: 1.5rem;
   object-fit: contain;
   cursor: pointer;
 `;
 
-export const GuideSelect = styled.button`
+export const Guide = styled.button`
   margin-left: auto;
   font-size: 1rem;
+  font-family: "RobotoMedium";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ProfileImgContainer = styled.div`

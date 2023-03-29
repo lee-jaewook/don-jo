@@ -22,14 +22,18 @@ const PersonalItems = ({ isOwner }) => {
   const [hasMore, setIsEnd] = useState(false);
 
   const getItemList = async () => {
-    const { data } = await itemApi.getItemList(
-      pageMemberAddress,
-      pageNum,
-      PAGE_SIZE
-    );
-    setPageNum((prev) => prev + 1);
-    setItemList((prev) => [...prev, ...(data.itemList || [])]);
-    setIsEnd(data.hasMore);
+    try {
+      const { data } = await itemApi.getItemList(
+        pageMemberAddress,
+        pageNum,
+        PAGE_SIZE
+      );
+      setPageNum((prev) => prev + 1);
+      setItemList((prev) => [...prev, ...(data.itemList || [])]);
+      setIsEnd(data.hasMore);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {

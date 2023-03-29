@@ -1,14 +1,14 @@
 import * as S from "./style";
 import ProfileImg from "../ProfileImg";
-import SelectBox from "./SelectBox";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import FullScreenModal from "../Modal/FullScreenModal";
 import { logIn } from "../../../utils/logIn";
 import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
+import { FiExternalLink } from "react-icons/fi";
+import PasswordSetModal from "../Modal/PasswordSetModal";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,8 @@ const Header = () => {
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
+  const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
@@ -49,15 +51,24 @@ const Header = () => {
     logIn({ dispatch, handleModalOpen: handleSignUpModalOpen });
   };
 
+  const doSignUp = () => {
+    //회원가입하는 함수
+  };
+
   return (
     <S.HeaderContainer>
       <S.Header>
         <Link to="/">
           <S.Logo src={LogoImg} />
         </Link>
-        <S.GuideSelect>
-          <SelectBox />
-        </S.GuideSelect>
+        <S.Guide
+          onClick={() => {
+            window.open("https://j8a209.p.ssafy.io/guides/");
+          }}
+        >
+          <FiExternalLink size="14" color="var(--color-text)" />
+          &nbsp;Guide
+        </S.Guide>
         <S.ProfileImgContainer>
           {isLogin ? (
             <ProfileImg
@@ -71,9 +82,15 @@ const Header = () => {
           )}
         </S.ProfileImgContainer>
       </S.Header>
-
       {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
       {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
+      {isShowPasswordSetModal && (
+        <PasswordSetModal
+          handleSetShowModal={setIsShowPasswordSetModal}
+          setPassword={setPassword}
+          doSignUp={doSignUp}
+        />
+      )}
     </S.HeaderContainer>
   );
 };
