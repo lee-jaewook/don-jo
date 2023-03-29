@@ -37,7 +37,7 @@ const ItemsSettings = () => {
   };
 
   useEffect(() => {
-    // handleGetMyItemList();
+    handleGetMyItemList();
     const addButton = document.getElementById("add-button");
 
     if (!addButton) return;
@@ -62,10 +62,10 @@ const ItemsSettings = () => {
             uid={item.id}
             setUid={setUid}
             imgPath={item.imgPath}
-            supportCount={item.supportCount}
+            supportCount={item.salesCount}
             title={item.title}
-            collectedAmount={item.collectedAmount}
-            totalAmount={item.totalAmount}
+            price={item.price}
+            totalAmount={item.salesAmount.toString()}
             handleShowItemDetailModal={handleShowItemDetailModal}
           />
         ))

@@ -9,7 +9,7 @@ const ListItem = ({
   setUid,
   imgPath,
   title,
-  collectedAmount,
+  price,
   totalAmount,
   supportCount,
   handleShowItemDetailModal,
@@ -29,7 +29,7 @@ const ListItem = ({
         <S.ItemInfo>
           <S.InfoText size="0.875rem">{title}</S.InfoText>
           <S.InfoText>
-            {collectedAmount}
+            {price}
             <S.Unit>eth</S.Unit>
           </S.InfoText>
         </S.ItemInfo>
@@ -63,7 +63,6 @@ ListItem.propTypes = {
   setUid: PropTypes.func.isRequired,
   imgPath: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  collectedAmount: PropTypes.string.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
   handleShowItemDetailModal: PropTypes.func.isRequired,
