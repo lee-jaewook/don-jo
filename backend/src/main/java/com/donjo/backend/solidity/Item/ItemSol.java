@@ -17,6 +17,8 @@ public class ItemSol {
     private String imgPath;
     private String description;
     private Long price; // wei
+    private Long salesCount;
+    private Long salesAmount;
     private String message;
     private String filePath;
     private boolean isDeleted;
@@ -28,11 +30,12 @@ public class ItemSol {
         byte[] solImgPath = imgPath.getBytes(StandardCharsets.UTF_8);
         byte[] solDescription = description.getBytes(StandardCharsets.UTF_8);
         BigInteger solPrice = BigInteger.valueOf(price);
+        BigInteger solSalesCount = BigInteger.valueOf(salesCount);
         byte[] solMessage = message.getBytes(StandardCharsets.UTF_8);
         byte[] solFilePath = filePath.getBytes(StandardCharsets.UTF_8);
         Boolean solIsDeleted = isDeleted;
         String solSeller = seller;
-        return new ApplicationHandler.ItemSol(solId, solTitle, solImgPath, solDescription, solPrice, solMessage, solFilePath, solIsDeleted, solSeller);
+        return new ApplicationHandler.ItemSol(solId, solTitle, solImgPath, solDescription, solPrice, solSalesCount, solMessage, solFilePath, solIsDeleted, solSeller);
     }
 
     public static ItemSol fromSol(ApplicationHandler.ItemSol item){
@@ -42,6 +45,8 @@ public class ItemSol {
                 .imgPath(new String(item.imgPath, StandardCharsets.UTF_8))
                 .description(new String(item.description, StandardCharsets.UTF_8))
                 .price(item.price.longValue())
+                .salesCount(item.salesCount.longValue())
+                .salesAmount(item.salesCount.longValue() * item.price.longValue())
                 .message(new String(item.message, StandardCharsets.UTF_8))
                 .filePath(new String(item.filePath, StandardCharsets.UTF_8))
                 .isDeleted(item.isDeleted.booleanValue())
