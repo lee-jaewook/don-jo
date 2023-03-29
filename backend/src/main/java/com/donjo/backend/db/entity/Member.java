@@ -63,7 +63,7 @@ public class Member {
 
    @Column(length = 1)
    @Builder.Default
-   private int themeColor = 1;
+   private int themeColor = 0;
 
    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
    @JoinColumn(name = "member_address", referencedColumnName = "address")

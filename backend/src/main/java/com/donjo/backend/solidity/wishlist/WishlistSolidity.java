@@ -30,7 +30,7 @@ public class WishlistSolidity {
             List<ApplicationHandler.WishlistSol> response = contract.getMemberWishLists(address).send();
             list = new ArrayList<>();
             for (ApplicationHandler.WishlistSol wishlist : response) {
-//                if(wishlist.isClosed) continue;
+                if(wishlist.isClosed) continue;
                 list.add(WishlistSol.fromSol(wishlist));
             }
         } catch (Exception e) {

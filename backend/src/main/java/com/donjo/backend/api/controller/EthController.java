@@ -30,6 +30,7 @@ public class EthController {
   })
   @GetMapping(path="/api/ethprice")
   public ResponseEntity<?> checkExistingMember() throws JsonProcessingException {
+    // Eth 가격 불러오기
     Double ethToUsd = ethService.getUsdToEthRate();
 
     return new ResponseEntity(ethToUsd, HttpStatus.OK);
