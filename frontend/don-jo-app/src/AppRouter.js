@@ -37,8 +37,6 @@ const AppRouter = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Intro />} />
-          <Route path="/guide" element={<Guide />} />
-          <Route path="/guide/:title" element={<GuideDetail />} />
           <Route path="/dashboard" element={<Error />} />
           <Route path="/:pageName" element={<Personal />} />
           <Route path="*" element={<Error />} />
@@ -52,8 +50,6 @@ const AppRouter = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Intro />} />
-        <Route path="/guide" element={<Guide />} />
-        <Route path="/guide/:title" element={<GuideDetail />} />
         <Route
           path="/dashboard"
           element={<Navigate replace to="/dashboard/home" />}

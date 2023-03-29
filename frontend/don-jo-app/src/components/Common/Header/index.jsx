@@ -1,14 +1,13 @@
 import * as S from "./style";
 import ProfileImg from "../ProfileImg";
-import SelectBox from "./SelectBox";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import FullScreenModal from "../Modal/FullScreenModal";
 import { logIn } from "../../../utils/logIn";
 import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
+import { FiExternalLink } from "react-icons/fi";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -55,9 +54,14 @@ const Header = () => {
         <Link to="/">
           <S.Logo src={LogoImg} />
         </Link>
-        <S.GuideSelect>
-          <SelectBox />
-        </S.GuideSelect>
+        <S.Guide
+          onClick={() => {
+            window.open("https://j8a209.p.ssafy.io/guides/");
+          }}
+        >
+          <FiExternalLink size="14" color="var(--color-text)" />
+          &nbsp;Guide
+        </S.Guide>
         <S.ProfileImgContainer>
           {isLogin ? (
             <ProfileImg

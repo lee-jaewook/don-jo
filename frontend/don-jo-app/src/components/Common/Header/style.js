@@ -26,9 +26,13 @@ export const Logo = styled.img`
   cursor: pointer;
 `;
 
-export const GuideSelect = styled.button`
+export const Guide = styled.button`
   margin-left: auto;
   font-size: 1rem;
+  font-family: "RobotoMedium";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ProfileImgContainer = styled.div`
