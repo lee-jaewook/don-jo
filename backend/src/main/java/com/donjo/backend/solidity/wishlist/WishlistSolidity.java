@@ -78,6 +78,7 @@ public class WishlistSolidity {
         try {
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlistSol.getId())).send().seller;
             if(!seller.equalsIgnoreCase(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
+            System.out.println("컨트랙트 호출 !");
             contract.updateMemberWishlist(wishlistSol.toSol()).send();
         }
         catch (UnAuthorizationException e1){
