@@ -37,7 +37,7 @@ public class UpdateWishlistCond {
                 .imgPath(imgPath)
                 .description(description)
                 .collectedAmount(sol.getCollectedAmount())
-                .targetAmount(targetAmount)
+                .targetAmount((long) (targetAmount * Math.pow(10,18)))
                 .message(message)
                 .isClosed(sol.isClosed())
                 .seller(memberAddress)
