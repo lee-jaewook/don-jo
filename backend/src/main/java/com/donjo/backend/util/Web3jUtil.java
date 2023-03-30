@@ -16,6 +16,7 @@ import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
+import javax.annotation.PostConstruct;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -35,7 +36,14 @@ public class Web3jUtil {
     @Value("${eth.chainId}")
     int chainId;
 
-    public ApplicationHandler getContractApi(){
+    private ApplicationHandler applicationHandler;
+
+    @PostConstruct
+    public void init() {
+        applicationHandler = createContractApi();
+    }
+
+    private ApplicationHandler createContractApi() {
         Web3j web3j = Web3j.build(new HttpService(url));
         Credentials credentials = Credentials.create(masterPrivateKey);
 
@@ -51,6 +59,10 @@ public class Web3jUtil {
 
         // 자동 생성된 Wrapper 클래스를 사용하여 스마트 컨트랙트 인스턴스를 생성합니다.
         return ApplicationHandler.load(contractAddress, web3j, transactionManager, gasProvider);
+    }
+
+    public ApplicationHandler getContractApi() {
+        return applicationHandler;
     }
 
     public StaticGasProvider getGasEstimate(Web3j web3j) throws Exception{
@@ -74,14 +86,4 @@ public class Web3jUtil {
         // StaticGasProvider 사용하여 가스 가격 및 가스 한도 설정
         return new StaticGasProvider(gasPrice, gasLimit);
     }
-
-//    public byte[] convertToByte(String str){
-//        Utf8String utf8String = new Utf8String(str);
-//        return utf8String.getValue().getBytes(StandardCharsets.UTF_8);
-//    }
-//
-//    public String convertToString(byte[] byteArray){
-//        Utf8String result = new Utf8String(new String(byteArray, StandardCharsets.UTF_8));
-//        return result.toString();
-//    }
 }

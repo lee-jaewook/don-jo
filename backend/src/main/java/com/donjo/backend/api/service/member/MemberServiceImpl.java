@@ -135,7 +135,7 @@ public class MemberServiceImpl implements MemberService {
       result.put(THEME_COLOR, member.getThemeColor());
       result.put(IMAGE_PATH, member.getProfileImagePath());
 
-//       추가 정보를 포함한 결과값 반환
+// 추가 정보를 포함한 결과값 반환
       return result;
     }
 

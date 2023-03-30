@@ -32,9 +32,11 @@ public class FileController {
         })
         public ResponseEntity<String> upload( @RequestParam String category,
                                               @RequestPart MultipartFile multipartFile){
-            List<String> list = new ArrayList<>(Arrays.asList(new String[]{"img/profile", "img/background", "img/item", "img/wishlist", "item"}));
+            // category 변수가 list에 포함되어 있지 않으면 400에러 반환
+            List<String> list = new ArrayList<>(Arrays.asList(new String[]{"img/profile", "img/background", "img/item", "img/wishlist", "item","img/plugin"}));
             if(!list.contains(category)) return ResponseEntity.status(400).build();
 
+            // S3에 파일 업로드  return 값으로 fileName return 받음
             String fileName;
             try {
                 fileName = s3Upload.uploadFile(multipartFile,category);
