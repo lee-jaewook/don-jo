@@ -80,9 +80,19 @@ public class SupportServiceImpl implements SupportService{
 
         // 다음 페이지에 값이 있는지 확인
         boolean hasMore = !nextlist.isEmpty();
-
+        System.out.println("여기옴?");
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
         for (Support support : list) {
+            System.out.println(support.getArriveTimeStamp());
+            if (support.getArriveTimeStamp()==null){
+                try {
+                    getArriveTimeStamp(support.getTransactionHash());
+                }
+                catch (NoSuchElementException e){
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("여기옴2?");
             if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
                 FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
@@ -117,6 +127,15 @@ public class SupportServiceImpl implements SupportService{
         System.out.println("여기는 옴");
         System.out.println(supportSol.get().getTo());
         Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
+
+        if (support.getArriveTimeStamp() == null) {
+            try {
+                getArriveTimeStamp(support.getTransactionHash());
+            }
+            catch (NoSuchElementException e){
+                e.printStackTrace();
+            }
+        }
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
@@ -130,43 +149,8 @@ public class SupportServiceImpl implements SupportService{
             findSupportDetailPayload = FindSupportDetailPayload.fromSupport(support,fromMember,toMember);
         }
 
-        // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다
-        Web3j web3 = Web3j.build(new HttpService("https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
-        try {
 
-            // web3 객체를 사용하여, 특정 트랜잭션의 정보를 가져옵니다. support.getTransactionHash()는 특정 트랜잭션의 해시값을 반환합니다.
-            EthTransaction ethTransaction = web3.ethGetTransactionByHash(support.getTransactionHash()).send();
-
-            // 가져온 트랜잭션 정보에서 블록 번호를 가져옵니다.
-            BigInteger blockNumber = ethTransaction.getTransaction().get().getBlockNumber();
-
-            // web3 객체를 사용하여, 특정 블록의 정보를 가져옵니다.DefaultBlockParameter.valueOf(blockNumber)는 가져올 블록의 번호를 나타냅니다.
-            EthBlock ethBlock = web3.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), true).send();
-
-            // 가져온 블록 정보에서 블록 생성 시간 정보를 가져옵니다.
-            BigInteger timeStamp = ethBlock.getBlock().getTimestamp();
-
-            // 블록 생성 시간 정보가 없을 경우, 기본값인 findSupportDetailPayload를 반환하고 함수를 종료합니다
-            if(timeStamp==null){
-                return findSupportDetailPayload;
-            }
-            else {
-                // 블록 생성 시간 정보를 이용하여 Instant 객체를 생성합니다.
-                Instant instant = Instant.ofEpochSecond(timeStamp.longValue());
-                // Instant 객체를 이용하여 LocalDateTime 객체를 생성합니다. ZoneId.systemDefault()는 현재 시스템의 시간대를 나타냅니다.
-                LocalDateTime transactionTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                // 서포트 객체에 도착시간을 저장한다.
-                support.setArriveTimeStamp(transactionTime);
-                // Dto값에 도착시간을 넣고, Dto 리턴.
-                findSupportDetailPayload.setArriveTimeStamp(transactionTime);
-                return findSupportDetailPayload;
-            }
-            // 예외가 발생할 경우, BadRequestException 예외를 던지고 에러 메시지를 출력합니다.
-        } catch (IOException e) {
-            System.out.println("못찾음");
-            return findSupportDetailPayload;
-//            throw new BadRequestException("정보가 존재 하지 않습니다.");
-        }
+        return findSupportDetailPayload;
     }
     @Override
     public int getSupportCount(String type, String memberAddress){
@@ -231,5 +215,42 @@ public class SupportServiceImpl implements SupportService{
 
         // 댓글 삭제
         support.setReplyMsg(null);
+    }
+
+    @Transactional
+    public void getArriveTimeStamp(String transactionHash){
+        // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다
+        Web3j web3 = Web3j.build(new HttpService("https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
+        try {
+
+            // web3 객체를 사용하여, 특정 트랜잭션의 정보를 가져옵니다. support.getTransactionHash()는 특정 트랜잭션의 해시값을 반환합니다.
+            EthTransaction ethTransaction = web3.ethGetTransactionByHash(transactionHash).send();
+
+            // 가져온 트랜잭션 정보에서 블록 번호를 가져옵니다.
+            BigInteger blockNumber = ethTransaction.getTransaction().get().getBlockNumber();
+
+            // web3 객체를 사용하여, 특정 블록의 정보를 가져옵니다.DefaultBlockParameter.valueOf(blockNumber)는 가져올 블록의 번호를 나타냅니다.
+            EthBlock ethBlock = web3.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), true).send();
+
+            // 가져온 블록 정보에서 블록 생성 시간 정보를 가져옵니다.
+            BigInteger timeStamp = ethBlock.getBlock().getTimestamp();
+
+            // 블록 생성 시간 정보가 없을 경우, 기본값인 findSupportDetailPayload를 반환하고 함수를 종료합니다
+            if(timeStamp != null){
+                Instant instant = Instant.ofEpochSecond(timeStamp.longValue());
+                // Instant 객체를 이용하여 LocalDateTime 객체를 생성합니다. ZoneId.systemDefault()는 현재 시스템의 시간대를 나타냅니다.
+                LocalDateTime transactionTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                Optional<Support> support = supportRepository.findById(transactionHash);
+                if(support.isPresent()) {
+                    support.get().setArriveTimeStamp(transactionTime);
+                }
+                // 서포트 객체에 도착시간을 저장한다.
+                // Dto값에 도착시간을 넣고, Dto 리턴.
+            }
+
+        } catch (IOException e) {
+            System.out.println("못찾음");
+            throw new BadRequestException("정보가 존재 하지 않습니다.");
+        }
     }
 }

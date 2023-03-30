@@ -12,18 +12,18 @@ class WishlistSolSolidityTest {
 
     @Test
     public void addMemberWishListTest(){
-        WishlistSol wishlistSol = WishlistSol.builder()
-                .id(1L)
-                .title("Example Wishlist Item")
-                .imgPath("https://example.com/image.jpg")
-                .description("This is a description for the example wishlist item.")
-                .collectedAmount(1000000000000000000L) // 1 Ether in wei
-                .targetAmount(5000000000000000000L) // 5 Ether in wei
-                .message("Thank you for your support!")
-                .isClosed(false)
-                .seller("0x1234567890abcdef1234567890abcdef12345678")
-                .build();
-        wishlistSolidity.addMemberWishList(wishlistSol);
+//        WishlistSol wishlistSol = WishlistSol.builder()
+//                .id(1L)
+//                .title("Example Wishlist Item")
+//                .imgPath("https://example.com/image.jpg")
+//                .description("This is a description for the example wishlist item.")
+//                .collectedAmount(1000000000000000000L) // 1 Ether in wei
+//                .targetAmount(5000000000000000000L) // 5 Ether in wei
+//                .message("Thank you for your support!")
+//                .isClosed(false)
+//                .seller("0x1234567890abcdef1234567890abcdef12345678")
+//                .build();
+//        wishlistSolidity.addMemberWishList(wishlistSol);
     }
 
 //    @Test

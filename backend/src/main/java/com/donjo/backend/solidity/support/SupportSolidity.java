@@ -1,7 +1,7 @@
 package com.donjo.backend.solidity.support;
 
 import com.donjo.backend.exception.BadRequestException;
-import com.donjo.backend.util.TimeConvertUtil;
+import com.donjo.backend.util.ConvertUtil;
 import com.donjo.backend.util.Web3jUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class SupportSolidity {
         LocalDateTime result = null;
         try {
             BigInteger response = contract.getSupportSendTime(address, BigInteger.valueOf(uid)).send();
-            result = TimeConvertUtil.convertToLocalDateTime(response);
+            result = ConvertUtil.convertToLocalDateTime(response);
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }

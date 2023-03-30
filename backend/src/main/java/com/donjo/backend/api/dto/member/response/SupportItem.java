@@ -27,7 +27,7 @@ public class SupportItem {
   // 보낸 지갑 주소
   private ToMemberItem toMember;
   // 보낸 이더
-  private Long amountEth;
+  private Double amountEth;
   // 보낸 시간
   private LocalDateTime sendTimeStamp;
   // 도착 시간
