@@ -110,11 +110,12 @@ public class SupportServiceImpl implements SupportService{
     @Override
     @Transactional
     public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
-        // Address와 Uid로 Solidity[][] 가져오기
+//         Address와 Uid로 Solidity[][] 가져오기
         FindSupportDetailPayload findSupportDetailPayload;
 //        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
-        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
-        System.out.println(supportSol.get());
+        Optional<SupportSol> supportSol = Optional.ofNullable(supportSolidity.getSupportDetail(toAddress, supportUid).orElseThrow(() -> new NoContentException()));
+        System.out.println("여기는 옴");
+        System.out.println(supportSol.get().getTo());
         Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
