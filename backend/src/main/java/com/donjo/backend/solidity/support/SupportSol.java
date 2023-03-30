@@ -19,7 +19,7 @@ public class SupportSol {
 
     public String to;
 
-    public Double amount; // matic
+    public Long amount; // matic
 
     public LocalDateTime sendTimestamp;
 
