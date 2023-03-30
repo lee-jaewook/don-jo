@@ -69,10 +69,6 @@ const ItemsSettings = () => {
     }
   }, [isClickedEdit]);
 
-  useEffect(() => {
-    console.log(isClickedEdit);
-  }, [isClickedEdit]);
-
   return (
     <S.SettingWrapper>
       <S.AddButton id="add-button">
