@@ -9,7 +9,7 @@ import { titleValidator, priceValidator } from "./validator";
  * 5. message => default 값이 존재. 할필요없음
  */
 
-export const checkItemValidation = ({ name, price, image }) => {
+export const checkItemValidation = ({ name, price }) => {
   if (!titleValidator(name)) {
     alert("Name is not the correct format.");
     return false;

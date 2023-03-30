@@ -29,7 +29,8 @@ export const nicknameValidator = (nickname) => {
  */
 
 export const titleValidator = (title) => {
-  const titleRegex = /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/]{1,100}$/;
+  const titleRegex =
+    /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/ㄱ-ㅎㅏ-ㅣ가-힣]{1,100}$/;
   if (titleRegex.test(title)) {
     return true;
   }
