@@ -12,25 +12,26 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddItemCond {
+    // 아이템 제목
     @NotNull
     @Size(min = 2)
     private String title;
-
+    // 아이템 이미지 경로
     @NotNull
     private String imgPath;
-
+    // 아이템 설명
     @NotNull
     private String description;
-
+    // 아이템 가격
     @NotNull
     private Double price;
-
+    // 구매 메세지
     @NotNull
     private String message;
-
+    // 아이템 파일 경로
     @NotNull
     private String filePath;
-
+    // ItemSol 객체 생성
     public ItemSol from(String address){
         return ItemSol.builder()
                 .id(1L)
@@ -38,6 +39,8 @@ public class AddItemCond {
                 .imgPath(this.getImgPath())
                 .description(this.getDescription())
                 .price((long) (this.getPrice()*Math.pow(10, 18)))
+                .salesCount(0L)
+                .salesAmount(0L)
                 .message(this.getMessage())
                 .filePath(this.getFilePath())
                 .isDeleted(false)

@@ -1,18 +1,55 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
-import TestUserImg from "../../../assets/img/common/img-test-user.jpg";
 import { Desktop } from "../../../components/Common/Template";
+import { useDispatch, useSelector } from "react-redux";
+import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut.js";
+import { memberApi } from "../../../api/member";
+import { setLogOut } from "../../../stores/member";
+import Logo from "../../../assets/img/common/app-logo.svg";
+
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const NavBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userName = useSelector((state) => state.member.nickName);
+  const profileImgPath = useSelector((state) => state.member.profileImagePath);
+
+  const handleOnClickLogout = async () => {
+    try {
+      const { status } = await memberApi.logout();
+      if (status === 200) {
+        dispatch(setLogOut());
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("profile path ", profileImgPath);
+  }, [profileImgPath]);
 
   return (
     <S.NavBar>
       <Desktop>
         <S.UserWrapper>
-          <S.UserImg alt="user-profile-img" src={TestUserImg} />
-          <S.UseName>HyunJu</S.UseName>
+          <S.User>
+            <S.UserImg
+              alt="user-profile-img"
+              src={profileImgPath !== "" ? `${S3URL}${profileImgPath}` : Logo}
+            />
+            <S.UseName>{userName}</S.UseName>
+          </S.User>
+          <FiLogOut
+            onClick={handleOnClickLogout}
+            size="22px"
+            color="var(--color-text-secondary)"
+            style={{ cursor: "pointer" }}
+          />
         </S.UserWrapper>
       </Desktop>
       <S.MenuWrapper>
@@ -42,4 +79,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);

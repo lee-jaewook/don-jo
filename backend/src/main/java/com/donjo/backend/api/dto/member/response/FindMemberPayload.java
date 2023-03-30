@@ -19,14 +19,19 @@ import lombok.ToString;
 @Builder(builderMethodName = "MakeMemberBuilder")
 @ToString
 public class FindMemberPayload {
-
+  // 프로필 이미지 경로
   private String profileImgPath;
+  // 배경 이미지 경로
   private String backgroundImgPath;
+  // 개인 닉네임
   private String nickname;
+  // 개인 페이지 이름
   private String pageName;
+  // 개인 테마 색깔
   private int themeColor;
+  // 개인 소셜 리스트(3개)
   private List<String> socialList;
-
+  // 엔티티 Dto에 담기
   public static FindMemberPayloadBuilder builder(Member member) {
     List<String> newSocialList = new ArrayList<>();
 

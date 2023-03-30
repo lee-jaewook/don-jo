@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import * as S from "./style";
 import { useMediaQuery } from "react-responsive";
 import { useLocation } from "react-router-dom";
 import { Desktop } from "../../components/Common/Template";
 import DashBoardContent from "../../components/DashBoard/DashBoardContent";
 import NavBar from "../../components/DashBoard/NavBar";
-import * as S from "./style";
+
 const DashBoard = () => {
   const location = useLocation();
+
   const isTablet = useMediaQuery({ maxWidth: 1280 });
   const [isToggleStatus, setToggleClassName] = useState(false);
 

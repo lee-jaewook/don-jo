@@ -13,6 +13,7 @@ const DashBoardButtons = () => {
           generatorData.length > 0 &&
           generatorData.map((item, index) => (
             <GeneratorItem
+              id={`generator-item${index + 1}`}
               key={index}
               title={item.text}
               description={item.description}

@@ -1,6 +1,7 @@
 package com.donjo.backend.solidity.Item;
 
 import com.donjo.backend.exception.BadRequestException;
+import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.exception.UnAuthorizationException;
 import com.donjo.backend.util.Web3jUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,6 @@ public class ItemSolidity {
 
     @Autowired
     public ItemSolidity(Web3jUtil web3jUtil) {
-//        this.web3jUtil = web3jUtil;
         this.contract = web3jUtil.getContractApi();
     }
 
@@ -61,7 +61,7 @@ public class ItemSolidity {
             ApplicationHandler.ItemSol response = contract.getItemDetail(BigInteger.valueOf(id)).send();
             itemSol = ItemSol.fromSol(response);
         } catch (Exception e) {
-            throw new BadRequestException(e.getMessage());
+            throw new NoContentException(e.getMessage());
         }
         return Optional.ofNullable(itemSol);
     }
@@ -69,9 +69,13 @@ public class ItemSolidity {
     public void deleteMemberItem(String address, Long id){
         try {
             String seller = contract.getItemDetail(BigInteger.valueOf(id)).send().seller;
-            if(!seller.equals(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
+            if(!seller.equalsIgnoreCase(address)) throw new UnAuthorizationException("판매자가 아닙니다.");
             contract.deleteMemberItem(address, BigInteger.valueOf(id)).send();
-        } catch (Exception e) {
+        }
+        catch (UnAuthorizationException e1){
+            throw new UnAuthorizationException(e1.getMessage());
+        }
+        catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
     }
@@ -79,9 +83,16 @@ public class ItemSolidity {
     public void updateMemberItem(ItemSol cond){
         ApplicationHandler.ItemSol item = cond.toSol();
         try {
-            if(!contract.getItemDetail(item.id).send().seller.equals(cond.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다");
+            String address =  contract.getItemDetail(item.id).send().seller;
+            if(!address.equalsIgnoreCase(cond.getSeller())){
+                throw new UnAuthorizationException("판매자가 아닙니다");
+            }
             contract.updateMemberItem(item).send();
-        } catch (Exception e) {
+        }
+        catch (UnAuthorizationException e1){
+            throw new UnAuthorizationException(e1.getMessage());
+        }
+        catch (Exception e) {
             throw new BadRequestException(e.getMessage());
         }
     }

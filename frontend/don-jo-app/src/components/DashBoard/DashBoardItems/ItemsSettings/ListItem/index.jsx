@@ -1,15 +1,16 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiUser, FiCreditCard } from "react-icons/fi";
+import { FiUser } from "@react-icons/all-files/fi/FiUser.js";
+import { FiCreditCard } from "@react-icons/all-files/fi/FiCreditCard.js";
 import { useMediaQuery } from "react-responsive";
-
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const ListItem = ({
   uid,
   setUid,
   imgPath,
   title,
-  collectedAmount,
+  price,
   totalAmount,
   supportCount,
   handleShowItemDetailModal,
@@ -24,11 +25,11 @@ const ListItem = ({
       }}
     >
       <S.ItemInfoWrapper>
-        <S.ItemImg src={imgPath} alt="item-img" />
+        <S.ItemImg src={`${S3URL}${imgPath}`} alt="item-img" />
         <S.ItemInfo>
           <S.InfoText size="0.875rem">{title}</S.InfoText>
           <S.InfoText>
-            {collectedAmount}
+            {price}
             <S.Unit>eth</S.Unit>
           </S.InfoText>
         </S.ItemInfo>
@@ -62,7 +63,6 @@ ListItem.propTypes = {
   setUid: PropTypes.func.isRequired,
   imgPath: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  collectedAmount: PropTypes.string.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
   handleShowItemDetailModal: PropTypes.func.isRequired,

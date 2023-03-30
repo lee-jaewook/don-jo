@@ -15,21 +15,24 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class FindSupportPayload {
-
+    // 서포트 Uid
     private long uid;
-
+    // 서포트 타입
     private String supportType;
-
-
+    // 보내는 사람
     private fromMember fromMember;
-
+    // 받는 사람
     private toMember toAddress;
-
+    // 댓글
     private String replyMsg;
-
+    // 후원 금액
     private Double amount;
-
+    // 도착 시간
     private LocalDateTime arriveTimeStamp;
+    // 보낸 메세지
+    private String sendMsg;
+    // 트랜잭션 해쉬
+    private String transactionHash;
 
 //    private LocalDateTime sendTimeStamp;
 
@@ -75,23 +78,27 @@ public class FindSupportPayload {
     }
     public static FindSupportPayload getSupport(Support support, fromMember fromMemberAddress, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
+                .transactionHash(support.getTransactionHash())
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .fromMember(fromMemberAddress)
                 .toAddress(toMemberAddress)
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
+                .sendMsg(support.getSendMsg())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportPayload;
     }
     public static FindSupportPayload getSomeoneSupport(Support support, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
+                .transactionHash(support.getTransactionHash())
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
                 .toAddress(toMemberAddress)
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .arriveTimeStamp(support.getArriveTimeStamp())
+                .sendMsg(support.getSendMsg())
                 .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportPayload;

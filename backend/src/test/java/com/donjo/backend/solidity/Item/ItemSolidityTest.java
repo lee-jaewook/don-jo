@@ -1,6 +1,7 @@
 package com.donjo.backend.solidity.Item;
 
 import com.donjo.backend.exception.BadRequestException;
+import com.donjo.backend.util.Web3jUtil;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ class ItemSolidityTest {
                 .imgPath(imgPath)
                 .description(description)
                 .price(price)
+                .salesAmount(0L)
+                .salesCount(0L)
                 .message(message)
                 .filePath(filePath)
                 .isDeleted(isDeleted)
@@ -54,6 +57,9 @@ class ItemSolidityTest {
         System.out.println("하이하이");
         itemSolidity.addMemberItem(itemSol);
     }
+
+
+
 
 //    @Test
 //    public void getItemListTest(){

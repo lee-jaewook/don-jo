@@ -1,17 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import BasicTitle from "../../Common/BasicTitle";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
-import { supportList } from "../../../data/dashboard";
+import { supportApi } from "../../../api/support";
+import { useSelector } from "react-redux";
 
-const DashBoardSupportList = () => {
+const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
+  const [result, setResult] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
   const location = useLocation();
+  const memberAddress = useSelector((state) => state.member.walletAddress);
 
-  const handleGetSupportList = () => {
-    console.log("handleGetSupportList()...");
+  const handleGetSupportList = async () => {
+    try {
+      const {
+        status,
+        data: { supportList, hasMore },
+      } = await supportApi.getSupportList(
+        memberAddress,
+        pageNum,
+        pageSize,
+        type
+      );
+      if (status === 200) {
+        setResult(supportList);
+        setHasMore(hasMore);
+        setPageNum((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
+
+  useEffect(() => {
+    handleGetSupportList();
+  }, []);
 
   return (
     <S.SupportListWrapper>
@@ -25,22 +51,21 @@ const DashBoardSupportList = () => {
           </S.EmojiList>
         )}
       </S.SupportListHeader>
-      <S.SupportList>
-        {supportList && supportList.length > 0 ? (
-          supportList.map((item, index) => (
+      <S.SupportList length={result.length}>
+        {result && result.length > 0 ? (
+          result.map((item, index) => (
             <DashBoardListItem
-              key={item.uid}
+              key={item.uid + index}
+              uid={item.uid}
               supportType={item.supportType}
-              amountEth={item.amountEth}
-              arrivedDate={item.arrivedDate}
+              amount={item.amountEth}
               from={item.fromMember}
-              to={item.toMember}
             />
           ))
         ) : (
-          <label>There are no recent sponsorships.</label>
+          <S.Message>There are no recent sponsorships.</S.Message>
         )}
-        {supportList.length >= 10 && (
+        {hasMore && (
           <ShowMoreButton handleOnClickButton={handleGetSupportList} />
         )}
       </S.SupportList>
@@ -48,4 +73,11 @@ const DashBoardSupportList = () => {
   );
 };
 
-export default DashBoardSupportList;
+export default React.memo(DashBoardSupportList);
+
+DashBoardSupportList.propTypes = {
+  type: PropTypes.string.isRequired,
+  pageNum: PropTypes.number.isRequired,
+  pageSize: PropTypes.string.isRequired,
+  setPageNum: PropTypes.func.isRequired,
+};

@@ -20,7 +20,7 @@ export const WishlistContent = styled.div`
   }
 `;
 
-export const wishlistImg = styled.div`
+export const wishlistImg = styled.img`
   width: 11.25rem;
   height: 11.25rem;
   background-color: #d9d9d9;
@@ -101,7 +101,7 @@ export const ProgressState = styled.div`
   width: ${(props) => `${props.currentState}%` || "0%"};
   height: 0.5rem;
   border-radius: 0.25rem;
-  background-color: black;
+  background-color: var(--color-primary);
 `;
 
 export const AmountWrapper = styled.div`

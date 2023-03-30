@@ -1,0 +1,24 @@
+[
+  {
+    "uid": 0,
+    "transactionHash": "0x0a5a3abaa7c83d4e7bcbed2cf4e78217245e33c8fdc0a07fce5a9278bd758f54",
+    "supportType": "item",
+    "fromMember": {
+      "fromMemberAddress": "0x0964fb71fb405f75fd95bae71825cc2d697e4ee9",
+      "fromMemberNickname": "hyunsu",
+      "fromMemberPageName": "hyunsu",
+      "fromMemberProfileImagePath": "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp"
+    },
+
+    "amount": 0.001,
+    "arriveTimeStamp": "2023-03-28T01:53:00",
+
+    "replyMsg": null,
+    "sendMsg": "사죠",
+    "toAddress": {
+      "toMemberAddress": "0x614540203f30c0e2ffa5ba90f643e7d39e1b2600",
+      "toMemberNickname": "taehyun",
+      "toMemberProfileImagePath": "img/profile/multipartFile20230328124236"
+    }
+  }
+]

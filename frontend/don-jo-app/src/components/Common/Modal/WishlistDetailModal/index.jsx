@@ -7,36 +7,40 @@ import BasicButton from "../../BasicButton";
 import BasicTextarea from "../../BasicTextarea";
 import { useMediaQuery } from "react-responsive";
 import FullScreenModal from "../FullScreenModal";
+import { wishlistAPI } from "../../../../api/wishlist";
 
 const WishlistDetailModal = ({
   uid,
   isDashboard,
   handleSetShowModal,
+  setShowWishlistModal,
+  setIsShowWishListModifyModal,
   handleOnClickButton,
 }) => {
-  const [result, setResult] = useState({});
-
-  const [price, setPrice] = useState(0); // 확인 메세지
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+  const [result, setResult] = useState({
+    targetAmount: "0",
+    collectedAmount: "0",
+  });
+  const [price, setPrice] = useState(0);
   const [confirmationMessage, setConfirmationMessage] = useState(""); // 확인 메세지
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  const handleDeleteWishlistItem = useCallback(() => {
-    console.log("handleDeleteWishlistItem()...");
+  const handleDeleteWishlistItem = useCallback(async () => {
+    try {
+      await wishlistAPI.deleteWishlistItem(uid);
+    } catch (error) {
+      console.log("error:", error);
+    }
   }, []);
 
-  const handleGetWishlistItemDetail = () => {
-    // wishlist 상세 정보 API 호출
-    setResult({
-      id: 1,
-      title: "Title 5634481689157267798",
-      imgPath: "ImgPath 5634481689157267798",
-      description: "Description 5634481689157267798",
-      price: 1000000,
-      message: "Message 5634481689157267798",
-      filePath: "FilePath 5634481689157267798",
-      seller: "0x288fb136c9291a4b62f1620bee5901beb2b0ffd7",
-      deleted: false,
-    });
+  const handleGetWishlistItemDetail = async () => {
+    try {
+      const { data } = await wishlistAPI.getWishlistItemDetail(uid);
+      setResult(data);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {
@@ -45,28 +49,38 @@ const WishlistDetailModal = ({
 
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
-    if (Number(result.collectedAmount) >= Number(result.totalAmount)) {
+    // 초기값 처리
+    if (result.targetAmount === "0") return 0;
+
+    if (Number(result.collectedAmount) >= Number(result.targetAmount)) {
       return 100;
     }
-    return (Number(result.collectedAmount) / Number(result.totalAmount)) * 100;
+    return (Number(result.collectedAmount) / Number(result.targetAmount)) * 100;
   };
 
   const handleMakeModalContent = () => {
     return (
       <S.ContentWrapper>
         <S.WishlistContent>
-          <S.wishlistImg src={`/${result.imgPath}`} alt="" />
+          <S.wishlistImg
+            src={
+              result.imgPath !== undefined ? `${S3URL}${result.imgPath}` : ""
+            }
+            alt="wishlist-img"
+          />
           <S.Content>
             <S.Title>{result.title}</S.Title>
             <S.Description>{result.description}</S.Description>
             <S.Price>
-              {result.price} <S.Eth>eth</S.Eth>
+              {result.targetAmount} <S.Eth>eth</S.Eth>
             </S.Price>
           </S.Content>
         </S.WishlistContent>
         <S.ProgressBarWrapper isDashboard={isDashboard}>
           <S.ProgressBar>
-            <S.ProgressState currentState={handleCalcProgressState()} />
+            <S.ProgressState
+              currentState={result === {} ? 0 : handleCalcProgressState()}
+            />
           </S.ProgressBar>
           <S.AmountWrapper>
             <S.ProgressAmount>{result.collectedAmount}</S.ProgressAmount>
@@ -104,7 +118,7 @@ const WishlistDetailModal = ({
           )}
           <BasicButton
             text={isDashboard ? "Edit" : "Donate"}
-            color="black"
+            color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={handleOnClickButton}
           />
@@ -129,6 +143,6 @@ export default WishlistDetailModal;
 WishlistDetailModal.propTypes = {
   uid: PropTypes.number.isRequired,
   idDashboard: PropTypes.bool,
-  handleSetShowModal: PropTypes.func.isRequired,
+  setShowWishlistModal: PropTypes.func.isRequired,
   handleOnClickButton: PropTypes.func.isRequired,
 };
