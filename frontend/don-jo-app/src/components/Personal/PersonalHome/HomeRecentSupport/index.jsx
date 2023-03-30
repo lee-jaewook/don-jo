@@ -36,6 +36,7 @@ const HomeRecentSupport = ({ isOwner }) => {
 
   useEffect(() => {
     if (!!pageMemberAddress) getSupportList();
+    console.log(pageMemberAddress);
   }, [pageMemberAddress]);
 
   const handleOnClickShowMoreButton = () => {

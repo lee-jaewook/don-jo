@@ -3,12 +3,17 @@ import ProfileImg from "../../../../Common/ProfileImg";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ContractModal from "../../../../Common/Modal/ContractModal";
+import { supportApi } from "../../../../../api/support";
 
-const RecentSupportBlock = ({ supportContent, isOwner }) => {
+const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
-  const [commentInputText, setCommentInputText] = useState(""); //댓글 입력
+  const [isShowModifyInput, setIsShowModifyInput] = useState(false);
+  const [supportContent, setSupportContent] = useState(initContent);
+  const [commentInputText, setCommentInputText] = useState(
+    initContent.replyMsg
+  ); //댓글 입력
   const [isShowContractModal, setIsShowContractModal] = useState(false);
 
   useEffect(() => {
@@ -26,25 +31,62 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
         setEmoji("📁");
         break;
       default:
-        console.log("Support type Wrong");
+        console.log("Wrong Support type");
         break;
     }
   }, []);
-
-  useEffect(() => {
-    console.log("supportText", supportText);
-    console.log("emoji", emoji);
-  }, [supportText, emoji]);
 
   //댓글 입력 반영
   const handleOnChangeInput = (e) => {
     setCommentInputText(e.target.value);
   };
 
+  //해당 후원 block 다시 가져오기
+  const refreshRecentBlock = () => {
+    //UID 붙어서 나오게되면 후원상세조회 다시 해서 setSupportContent 하기.
+  };
+
   //댓글 등록
-  const doRegistComment = () => {
-    console.log({ commentInputText }, "댓글 등록");
+  const doRegistComment = async () => {
+    const replyDto = {
+      replyMsg: commentInputText,
+      transactionHash: supportContent.transactionHash,
+    };
+    try {
+      await supportApi.postReply(replyDto);
+      refreshRecentBlock();
+    } catch (error) {
+      console.log("error: ", error);
+    }
     setIsShowReplyInput(false);
+  };
+
+  //댓글 수정
+  const doModifyComment = async () => {
+    const replyDto = {
+      replyMsg: commentInputText,
+      transactionHash: supportContent.transactionHash,
+    };
+    try {
+      await supportApi.updateReply(replyDto);
+      refreshRecentBlock();
+    } catch (error) {
+      console.log("error: ", error);
+    }
+    setIsShowModifyInput(false);
+  };
+
+  //댓글 삭제
+  const doDeleteComment = async () => {
+    if (window.confirm("Are you sure you want to delete the comments?")) {
+      try {
+        await supportApi.deleteReply(supportContent.transactionHash);
+        window.alert("Done deleting comments");
+      } catch (error) {
+        console.log("error: ", error);
+        window.alert("Failed to delete comment");
+      }
+    }
   };
 
   return (
@@ -79,7 +121,7 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
                 {supportContent.toAddress.toMemberNickname}
               </S.Nickname>
             </S.TitleContent>
-            {isOwner && (
+            {isOwner && !supportContent.replyMsg && (
               <S.ReplyBtn
                 onClick={(e) => {
                   e.stopPropagation();
@@ -96,7 +138,7 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
         </S.RepresentContainer>
         {isOwner && isShowReplyInput && (
           <S.InputContainer>
-            <S.ReplyInput handleOnChangeValue={handleOnChangeInput} />
+            <S.ReplyInput onChange={handleOnChangeInput} />
             <S.RegistBtn onClick={doRegistComment}>Regist</S.RegistBtn>
           </S.InputContainer>
         )}
@@ -132,6 +174,30 @@ const RecentSupportBlock = ({ supportContent, isOwner }) => {
           <div>
             <S.Nickname>{supportContent.toAddress.toMemberNickname}</S.Nickname>
             <S.Comment>{supportContent.replyMsg}</S.Comment>
+
+            {isOwner && supportContent.replyMsg && (
+              <S.ButtonContainer>
+                <S.ModifyBtn
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsShowModifyInput((prev) => !prev);
+                  }}
+                >
+                  {isShowModifyInput ? "Close" : "Modify"}
+                </S.ModifyBtn>
+                <S.DeleteBtn onClick={doDeleteComment}>Delete</S.DeleteBtn>
+              </S.ButtonContainer>
+            )}
+
+            {isShowModifyInput && (
+              <S.ModifyInputContainer>
+                <S.ReplyInput
+                  onChange={handleOnChangeInput}
+                  defaultValue={commentInputText}
+                />
+                <S.RegistBtn onClick={doModifyComment}>Modify</S.RegistBtn>
+              </S.ModifyInputContainer>
+            )}
           </div>
         </S.CommentContainer>
       )}
