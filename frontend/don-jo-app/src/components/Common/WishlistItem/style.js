@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit.js";
 export const ItemWrapper = styled.div`
   position: relative;
   display: flex;

@@ -1,7 +1,7 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
 import { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import AddItemModal from "../../Common/Modal/AddItemModal";
 import { useSelector } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
@@ -22,14 +22,18 @@ const PersonalItems = ({ isOwner }) => {
   const [hasMore, setIsEnd] = useState(false);
 
   const getItemList = async () => {
-    const { data } = await itemApi.getItemList(
-      pageMemberAddress,
-      pageNum,
-      PAGE_SIZE
-    );
-    setPageNum((prev) => prev + 1);
-    setItemList((prev) => [...prev, ...(data.itemList || [])]);
-    setIsEnd(data.hasMore);
+    try {
+      const { data } = await itemApi.getItemList(
+        pageMemberAddress,
+        pageNum,
+        PAGE_SIZE
+      );
+      setPageNum((prev) => prev + 1);
+      setItemList((prev) => [...prev, ...(data.itemList || [])]);
+      setIsEnd(data.hasMore);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {

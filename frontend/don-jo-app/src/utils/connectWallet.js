@@ -18,7 +18,7 @@ export const connectWallet = (dispatch) => {
         web3.eth.net.getId().then((chainId) => {
           const infuraWeb3 = new Web3(
             new Web3.providers.HttpProvider(
-              "https://sepolia.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
+              "https://polygon-mumbai.infura.io/v3/1d3e75e17f6f49fea625e1d555738da0"
             )
           );
           web3.setProvider(infuraWeb3.currentProvider);

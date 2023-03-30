@@ -1,21 +1,18 @@
 import * as S from "./style";
-import PropTypes from "prop-types";
-import { IoIosLink } from "react-icons/io";
-import {
-  IoLogoBehance,
-  IoLogoCodepen,
-  IoLogoDropbox,
-  IoLogoFacebook,
-  IoLogoGithub,
-  IoLogoGitlab,
-  IoLogoInstagram,
-  IoLogoLinkedin,
-  IoLogoPinterest,
-  IoLogoTiktok,
-  IoLogoTumblr,
-  IoLogoTwitter,
-  IoLogoYoutube,
-} from "react-icons/io5";
+import { IoIosLink } from "@react-icons/all-files/io/IoIosLink.js";
+import { IoLogoBehance } from "@react-icons/all-files/io5/IoLogoBehance.js";
+import { IoLogoCodepen } from "@react-icons/all-files/io5/IoLogoCodepen";
+import { IoLogoDropbox } from "@react-icons/all-files/io5/IoLogoDropbox";
+import { IoLogoFacebook } from "@react-icons/all-files/io5/IoLogoFacebook";
+import { IoLogoGithub } from "@react-icons/all-files/io5/IoLogoGithub";
+import { IoLogoGitlab } from "@react-icons/all-files/io5/IoLogoGitlab";
+import { IoLogoInstagram } from "@react-icons/all-files/io5/IoLogoInstagram";
+import { IoLogoLinkedin } from "@react-icons/all-files/io5/IoLogoLinkedin";
+import { IoLogoPinterest } from "@react-icons/all-files/io5/IoLogoPinterest";
+import { IoLogoTiktok } from "@react-icons/all-files/io5/IoLogoTiktok";
+import { IoLogoTumblr } from "@react-icons/all-files/io5/IoLogoTumblr";
+import { IoLogoTwitter } from "@react-icons/all-files/io5/IoLogoTwitter";
+import { IoLogoYoutube } from "@react-icons/all-files/io5/IoLogoYoutube";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BackgroundImg from "../../assets/img/intro/bg-intro.jpg";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight } from "@react-icons/all-files/fi/FiArrowRight.js";
 
 export const Container = styled.div`
   display: flex;
