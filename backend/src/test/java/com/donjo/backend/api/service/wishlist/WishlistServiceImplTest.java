@@ -21,7 +21,7 @@ class WishlistServiceImplTest {
                 .title("타이틀 변경 테스트2")
                 .description("설명 변경 테스트")
                 .imgPath("이미지 변경 테스트")
-                .targetAmount(10L)
+                .targetAmount(10.0)
                 .message("메세지 변경 테스트")
                 .build();
 
