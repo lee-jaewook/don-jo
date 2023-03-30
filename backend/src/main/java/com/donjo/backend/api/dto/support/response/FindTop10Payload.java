@@ -12,13 +12,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindTop10Payload {
+    // 후원 금액
     private Double amount;
-
+    // 후원 타입
     private String supportType;
-
+    // 도착 시간
     private LocalDateTime arriveTimeStamp;
 
-
+    // Entity DTO에 담기
     public static FindTop10Payload getTop10(Support support){
         FindTop10Payload findTop10Payload = FindTop10Payload.builder()
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
