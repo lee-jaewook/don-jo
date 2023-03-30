@@ -79,7 +79,7 @@ public class SupportServiceImpl implements SupportService{
         List<Support> nextlist=supportRepository.findAllBySupport(type,memberAddress,nextpageable);
 
         // 다음 페이지에 값이 있는지 확인
-        boolean hashMore = !nextlist.isEmpty();
+        boolean hasMore = !nextlist.isEmpty();
 
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
         for (Support support : list) {
@@ -101,7 +101,7 @@ public class SupportServiceImpl implements SupportService{
 
         // supportList와 next페이지가 있는지 hashMore 던져줌
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("hashMore", hashMore);
+        resultMap.put("hasMore", hasMore);
         resultMap.put("supportList", findSupportPayloadList);
 
         return resultMap;
@@ -109,11 +109,13 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     @Transactional
-    public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid ){
+    public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
         // Address와 Uid로 Solidity[][] 가져오기
         FindSupportDetailPayload findSupportDetailPayload;
+//        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
+        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
+        System.out.println(supportSol.get());
         Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
-//        Optional<SupportSol> supportSol = supportSolidity.getSupportDetail(toAddress,supportUid);
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
@@ -127,19 +129,22 @@ public class SupportServiceImpl implements SupportService{
             findSupportDetailPayload = FindSupportDetailPayload.fromSupport(support,fromMember,toMember);
         }
 
-        // Web3j 객체를 생성하고, Infura 노드를 사용하여 Ethereum 네트워크에 연결합니다
-        Web3j web3 = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
+        // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다
+        Web3j web3 = Web3j.build(new HttpService("https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         try {
+
             // web3 객체를 사용하여, 특정 트랜잭션의 정보를 가져옵니다. support.getTransactionHash()는 특정 트랜잭션의 해시값을 반환합니다.
             EthTransaction ethTransaction = web3.ethGetTransactionByHash(support.getTransactionHash()).send();
 
             // 가져온 트랜잭션 정보에서 블록 번호를 가져옵니다.
             BigInteger blockNumber = ethTransaction.getTransaction().get().getBlockNumber();
+
             // web3 객체를 사용하여, 특정 블록의 정보를 가져옵니다.DefaultBlockParameter.valueOf(blockNumber)는 가져올 블록의 번호를 나타냅니다.
             EthBlock ethBlock = web3.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), true).send();
 
             // 가져온 블록 정보에서 블록 생성 시간 정보를 가져옵니다.
             BigInteger timeStamp = ethBlock.getBlock().getTimestamp();
+
             // 블록 생성 시간 정보가 없을 경우, 기본값인 findSupportDetailPayload를 반환하고 함수를 종료합니다
             if(timeStamp==null){
                 return findSupportDetailPayload;
