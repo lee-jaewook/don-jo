@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { supportApi } from "../../../api/support";
 import DashBoardEarning from "../DashBoardEarning";
 import DashBoardSupportList from "../DashBoardSupportList";
-const DashBoardHome = () => {
-  const [pageNum, setPageNum] = useState(0); // 0번 페이지부터 시작
-  const [result, setResult] = useState([]);
-  const earningData = [0, 30, 90];
+const earningData = [0, 30, 90];
 
-  const handleGetEarning = async () => {
+const DashBoardHome = () => {
+  const [pageNum, setPageNum] = useState(0);
+  const [result, setResult] = useState([]);
+
+  const handleGetEarning = useCallback(async () => {
     const homeEarnings = [];
 
     earningData.map(async (earning) => {
@@ -20,7 +21,7 @@ const DashBoardHome = () => {
     });
 
     setResult([...homeEarnings]);
-  };
+  }, []);
 
   useEffect(() => {
     handleGetEarning();
@@ -39,4 +40,4 @@ const DashBoardHome = () => {
   );
 };
 
-export default DashBoardHome;
+export default React.memo(DashBoardHome);

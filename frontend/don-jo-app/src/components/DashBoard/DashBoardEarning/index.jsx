@@ -7,7 +7,6 @@ import { calculateEth } from "../../../utils/calculateEth";
 import { useLocation } from "react-router-dom";
 const DashBoardEarning = ({ text, result, unit }) => {
   const location = useLocation();
-  // const [all = "", period30 = "", period90 = ""] = result;
 
   return (
     <S.EarningWrapper>
@@ -43,7 +42,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
   );
 };
 
-export default DashBoardEarning;
+export default React.memo(DashBoardEarning);
 
 DashBoardEarning.protoTypes = {
   text: PropTypes.string.isRequired,

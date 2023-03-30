@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown.js";
 const ShowMoreButton = ({ handleOnClickButton }) => {
   return (
     <S.Button onClick={handleOnClickButton}>

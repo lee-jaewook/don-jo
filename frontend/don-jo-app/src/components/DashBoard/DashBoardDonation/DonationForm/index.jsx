@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import BasicTitle from "../../../Common/BasicTitle";
 import EmojiPicker from "emoji-picker-react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown.js";
 import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
 import BasicTextarea from "../../../Common/BasicTextarea";

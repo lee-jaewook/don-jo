@@ -1,6 +1,6 @@
 import * as S from "./style";
 import { useEffect, useState } from "react";
-import { FiDelete } from "react-icons/fi";
+import { FiDelete } from "@react-icons/all-files/fi/FiDelete.js";
 import PropTypes from "prop-types";
 import BasicModal from "../BasicModal";
 

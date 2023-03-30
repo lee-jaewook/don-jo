@@ -1,5 +1,5 @@
 import * as S from "./style";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import ExternalLink from "../../components/Personal/ExternalLink";
 import { useEffect, useRef, useState } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
@@ -8,7 +8,7 @@ import IntroductionEdit from "../../components/Personal/IntroductionEdit";
 import MDEditor from "@uiw/react-md-editor";
 import { Desktop } from "../../components/Common/Template";
 import { memberApi } from "../../api/member";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fileApi } from "../../api/file";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
@@ -16,6 +16,7 @@ import { setProfileImg } from "../../stores/member";
 
 const Personal = () => {
   const { pageName } = useParams();
+  const navigate = useNavigate();
 
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isProfileHover, setIsProfileHover] = useState(false);
@@ -38,10 +39,15 @@ const Personal = () => {
 
   const getPageInfo = async () => {
     try {
-      const { data } = await memberApi.getPageInfo(pageName);
-      dispatch(updateMemberInfo(data.memberInfoItem));
-      setDonationSettingData(data.donationSetting);
-      setWishListData(data.wishList);
+      const { status, data } = await memberApi.getPageInfo(pageName);
+      if (status === 204) {
+        navigate("/");
+        return;
+      } else {
+        dispatch(updateMemberInfo(data.memberInfoItem));
+        setDonationSettingData(data.donationSetting);
+        setWishListData(data.wishList);
+      }
     } catch (error) {
       console.log("error: ", error);
     }

@@ -1,6 +1,6 @@
 import * as S from "./style";
 import WishlistItem from "../../Common/WishlistItem";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useEffect, useState } from "react";
 import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 import { useSelector } from "react-redux";

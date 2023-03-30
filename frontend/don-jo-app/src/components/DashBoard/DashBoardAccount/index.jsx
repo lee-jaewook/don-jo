@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit.js";
 import BasicButton from "../../Common/BasicButton";
 import BasicInput from "../../Common/BasicInput";
 import BasicTitle from "../../Common/BasicTitle";
 import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
 import { memberApi } from "../../../api/member";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setProfileImg } from "../../../stores/member";
+
+const PROFILE_TYPE = "img/profile";
+const BACKGROUND_TYPE = "img/background";
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const DashBoardAccount = () => {
-  const PROFILE_TYPE = "img/profile";
-  const BACKGROUND_TYPE = "img/background";
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
-
+  const dispatch = useDispatch();
   const userPageName = useSelector((state) => state.member.pageName);
 
   // 업로드 파일 미리보기
@@ -146,6 +148,7 @@ const DashBoardAccount = () => {
       const { status } = await memberApi.updateUserInfo(myAccount);
       if (status === 200) {
         alert("Success");
+        dispatch(setProfileImg({ profileImagePath: myAccount.profileImgPath }));
       }
     } catch (error) {
       console.log("error: ", error);
@@ -328,4 +331,4 @@ const DashBoardAccount = () => {
   );
 };
 
-export default DashBoardAccount;
+export default React.memo(DashBoardAccount);

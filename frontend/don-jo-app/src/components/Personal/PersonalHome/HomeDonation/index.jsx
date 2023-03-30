@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import * as S from "./style";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import BasicButton from "../../../Common/BasicButton";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { FiMinus } from "@react-icons/all-files/fi/FiMinus.js";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 

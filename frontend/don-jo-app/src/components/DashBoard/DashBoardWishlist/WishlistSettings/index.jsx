@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FiPlus } from "react-icons/fi";
-import * as S from "./style";
-import Wishlist from "./DashboardWishlist";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import BasicTitle from "../../../Common/BasicTitle";
+import Wishlist from "./DashboardWishlist";
+import * as S from "./style";
 import AddWishlistModal from "../../../Common/Modal/AddWishlistModal";
 
 const WishlistSettings = () => {
@@ -29,6 +29,7 @@ const WishlistSettings = () => {
       {isWishListRegisterModal && (
         <AddWishlistModal handleSetShowModal={handleAddWishListModalOpen} />
       )}
+      {}
     </S.SettingWrapper>
   );
 };
