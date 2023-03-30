@@ -65,18 +65,12 @@ const AddItemModal = ({
 
   const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
-<<<<<<< HEAD
-      setItemImageFile({ previewImgUrl, file });
-    } else if (id === "file-upload") {
-      setItemNamFile({ previewImgUrl, file });
-=======
       console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
       setItemInfo({ ...itemInfo, imgPath: "" });
     } else if (id === "file-upload") {
       setItemNamFile({ previewImgUrl: previewImgUrl, file: file });
       setItemInfo({ ...itemInfo, filePath: "" });
->>>>>>> 6ee062dc01cecf64f866924fa5361d900ac53daa
     }
   };
 
@@ -137,27 +131,6 @@ const AddItemModal = ({
     let itemData = {
       ...itemInfo,
     };
-<<<<<<< HEAD
-    console.log("cond: ", cond);
-    if (whichApiChoose) {
-      itemApi
-        .registerItem(cond)
-        .then(() => {
-          alert("아이템 등록 성공!");
-        })
-        .catch((error) => {
-          alert("아이템 등록 실패!");
-        });
-    } else {
-      wishlistAPI
-        .registerWishlistItem(cond)
-        .then(() => {
-          alert("위시리스트 등록 성공!");
-        })
-        .catch((error) => {
-          alert("위시리스트 등록 실패!");
-        });
-=======
 
     // 아이템 이미지 업로드 확인
     if (itemInfo.imgPath === "" && itemImageFile.previewImgUrl !== null) {
@@ -197,7 +170,6 @@ const AddItemModal = ({
       } catch (error) {
         console.log("error: ", error);
       }
->>>>>>> 6ee062dc01cecf64f866924fa5361d900ac53daa
     }
   };
 
