@@ -65,7 +65,6 @@ const AddItemModal = ({
 
   const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
-      console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
       setItemInfo({ ...itemInfo, imgPath: "" });
     } else if (id === "file-upload") {
@@ -320,7 +319,7 @@ const AddItemModal = ({
         <S.BasicButtonWrap>
           <S.BasicButtonContainer>
             <BasicButton
-              text="Create"
+              text={isModify ? "Update" : "Create"}
               color="var(--color-primary)"
               handleOnClickButton={handleUploadItem}
             />
