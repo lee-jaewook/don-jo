@@ -19,7 +19,7 @@ public class SupportSol {
 
     public String to;
 
-    public Long amount; // matic
+    public Double amount; // matic
 
     public LocalDateTime sendTimestamp;
 
@@ -32,7 +32,7 @@ public class SupportSol {
                 BigInteger.valueOf(id),
                 from,
                 to,
-                BigInteger.valueOf(amount),
+                ConvertUtil.doubleToBigInteger(amount),
                 ConvertUtil.convertToUint256Timestamp(sendTimestamp),
                 BigInteger.valueOf(supportType)
         );
@@ -43,7 +43,7 @@ public class SupportSol {
                 .id(s.id.longValue())
                 .from(s.from)
                 .to(s.to)
-                .amount(s.amount.longValue())
+                .amount(ConvertUtil.bigIntegerToDouble(s.amount))
                 .sendTimestamp(ConvertUtil.convertToLocalDateTime(s.sendTimestamp))
                 .supportType(s.supportType.longValue())
                 .supportStatus(1L)

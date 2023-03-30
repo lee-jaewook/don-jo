@@ -1,5 +1,6 @@
 package com.donjo.backend.solidity.wishlist;
 
+import com.donjo.backend.util.ConvertUtil;
 import lombok.*;
 import org.web3j.applicationhandler.ApplicationHandler;
 
@@ -16,8 +17,8 @@ public class WishlistSol {
     private String title;
     private String imgPath;
     private String description;
-    private Long collectedAmount; // wei
-    private Long targetAmount; // wei
+    private Double collectedAmount; // matic
+    private Double targetAmount; // matic
     private String message;
     private boolean isClosed;
     private String seller;
@@ -28,8 +29,8 @@ public class WishlistSol {
                 imgPath.getBytes(StandardCharsets.UTF_8),
                 title.getBytes(StandardCharsets.UTF_8),
                 description.getBytes(StandardCharsets.UTF_8),
-                BigInteger.valueOf(collectedAmount),
-                BigInteger.valueOf(targetAmount),
+                ConvertUtil.doubleToBigInteger(collectedAmount),
+                ConvertUtil.doubleToBigInteger(targetAmount),
                 message.getBytes(StandardCharsets.UTF_8),
                 isClosed,
                 seller
@@ -42,8 +43,8 @@ public class WishlistSol {
                 .title(new String(w.title, StandardCharsets.UTF_8))
                 .imgPath(new String(w.imgPath, StandardCharsets.UTF_8))
                 .description(new String(w.description, StandardCharsets.UTF_8))
-                .collectedAmount(w.collectedAmount.longValue())
-                .targetAmount(w.targetAmount.longValue())
+                .collectedAmount(ConvertUtil.bigIntegerToDouble(w.collectedAmount))
+                .targetAmount(ConvertUtil.bigIntegerToDouble(w.targetAmount))
                 .message(new String(w.message, StandardCharsets.UTF_8))
                 .isClosed(w.isClosed)
                 .seller(w.seller)
