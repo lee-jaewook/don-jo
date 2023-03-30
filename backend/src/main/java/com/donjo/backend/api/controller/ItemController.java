@@ -36,6 +36,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
+        // pagination이 포함 된 ItemList 가져오기
         return ResponseEntity.status(200).body(itemService.getItemList(memberAddress, pageNum, pageSize));
     }
 
@@ -48,6 +49,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull Long itemUid){
+        // ItemUid로 ItemDetail 가져오기
         return ResponseEntity.status(200)
                 .body(itemService.getItemDetail(itemUid));
     }
@@ -62,6 +64,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyItemList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull Long itemUid){
+        // memberAddress를 조회해서 Item 구매했는지 확인
         return ResponseEntity.status(200)
                 .body(itemService.isPurchased(memberAddress, itemUid));
     }
@@ -75,9 +78,11 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMyItem(HttpServletRequest request, @RequestBody @Valid AddItemCond cond){
+        // 아이템 가격이 0이면 400(등록 실패) 반환
         if(cond.getPrice() == 0) return ResponseEntity.status(400).build();
+        // 헤더에 있는 토큰값으로 memberAddress 조회
         String memberAddress = memberService.getMemberAddress(request);
-
+        // memberAddress와 cond를 보내 아이템 등록
         itemService.addItem(memberAddress, cond);
 
         return ResponseEntity.status(200).build();
@@ -92,7 +97,9 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteItem(HttpServletRequest request, @RequestParam @NotNull Long itemUid){
+        // 헤더에 있는 토큰값으로 memberAddress 조회
         String memberAddress = memberService.getMemberAddress(request);
+        // Address와 itemUid로 아이템 조회 후 삭제
         itemService.deleteMemberItem(memberAddress, itemUid);
         return ResponseEntity.status(200).build();
     }
@@ -106,7 +113,9 @@ public class ItemController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> updateItem(HttpServletRequest request, @RequestBody @Valid UpdateItemCond cond){
+        // 헤더에 있는 토큰값으로 memberAddress 조회
         String memberAddress = memberService.getMemberAddress(request);
+        // memberAddress와 cond를 이용하여 Item Update
         itemService.updateMemberItem(memberAddress, cond);
         return ResponseEntity.status(200).build();
     }

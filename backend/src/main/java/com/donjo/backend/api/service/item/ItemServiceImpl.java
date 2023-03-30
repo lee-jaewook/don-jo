@@ -72,7 +72,7 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public ItemDetailPayload getItemDetail(Long uid) {
-        //  getItemDetail 메소드를 사용하여 특정 아이템의 상세 정보를 가져옴
+        //  getItemDetail 메소드를 사용하여 특정 아이템의 상세 정보를 가져옴 없으면 204
         ItemSol itemSol = itemSolidity.getItemDetail(uid)
                 .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
         // 해당 아이템이 삭제된 상태인 경우(isDeleted() 메소드가 NoContentException 예외를 발생
