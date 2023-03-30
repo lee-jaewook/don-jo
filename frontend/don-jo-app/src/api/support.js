@@ -36,4 +36,11 @@ export const supportApi = {
 
   // 서포트 댓글 작성
   postReply: (replyDto) => api.post(`/auth/support/reply`, replyDto),
+
+  // 서포트 댓글 수정
+  updateReply: (replyDto) => api.put(`/auth/support/reply`, replyDto),
+
+  // 서포트 댓글 삭제
+  deleteReply: (transactionHash) =>
+    api.delete(`/auth/support/reply?transactionHash=${transactionHash}`),
 };

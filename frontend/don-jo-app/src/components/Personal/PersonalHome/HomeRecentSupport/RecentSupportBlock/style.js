@@ -56,6 +56,38 @@ export const ReplyBtn = styled.button`
   }
 `;
 
+export const ModifyBtn = styled.button`
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.2rem;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-text-secondary);
+  }
+`;
+
+export const DeleteBtn = styled.button`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.2rem;
+  margin-left: 0.8rem;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: red;
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+`;
+
+export const ModifyInputContainer = styled.div`
+  margin-top: 0.5rem;
+  display: flex;
+`;
+
 export const InputContainer = styled.div`
   margin-left: 3.5rem;
   margin-top: 0.5rem;
