@@ -16,10 +16,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder(builderMethodName = "MakeFindPageInfoPayloadBuilder")
 public class FindPageInfoPayload {
+    // 개인 아이템리스트
     private MemberInfoItem memberInfoItem;
+    // 개인 도네이션 셋팅
     private DonationSettingItem donationSetting;
+    // 개인 위시리스트
     private List<WishListItem> wishList;
-
+    // page 정보 DTO에 담기
     public static FindPageInfoPayloadBuilder builder(MemberInfoItem memberInfoItem, DonationSettingItem donationSetting, List<WishListItem> wishListItems) {
         return MakeFindPageInfoPayloadBuilder()
             .memberInfoItem(memberInfoItem)

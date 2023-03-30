@@ -10,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SocialItem {
+    // 맴버 소셜 링크
     private String socialLink;
 }

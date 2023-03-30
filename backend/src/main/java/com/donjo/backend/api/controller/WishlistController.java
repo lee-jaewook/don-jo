@@ -37,6 +37,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize){
+        // pagination이 포함 된 Wishlist 가져오기
         return ResponseEntity.status(200)
                 .body(wishlistService.getAllWishlist(memberAddress, pageNum, pageSize));
     }
@@ -50,6 +51,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMemberWishlists(@RequestParam @NotNull Long wishlistUid){
+        // wishlistUid로 Wishlist 상세조회
         return ResponseEntity.status(200)
                 .body(wishlistService.getOneWishlist(wishlistUid));
     }
@@ -63,8 +65,10 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addMemberWishlist(HttpServletRequest request, @RequestBody @Valid AddWishlistCond cond){
+        // cond 안에 있는 가격이 0이면 400(작설 실패) 반환
         if(cond.getTargetAmount() == 0) return ResponseEntity.status(400).build();
         log.info("call ADD wishlist");
+        // 헤더에 있는 토큰값으로 memberAddress조회한 후 Wishlist 추가
         wishlistService.addWishlist(memberService.getMemberAddress(request), cond);
         log.info("Done ADD wishlist");
         return ResponseEntity.status(200).build();
@@ -79,6 +83,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteMemberWishlist(HttpServletRequest request, @RequestParam @NotNull Long wishlistUid){
+        // 헤더에 있는 토큰값으로 memberAddress조회한 후 wishlistUid 이용하여 wishlist 삭제
         wishlistService.deleteWishlist(memberService.getMemberAddress(request), wishlistUid);
         return ResponseEntity.status(200).build();
     }
@@ -92,6 +97,7 @@ public class WishlistController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> updateMemberWishlist(HttpServletRequest request, @RequestBody @Valid UpdateWishlistCond cond){
+        // 헤더에 있는 토큰값으로 memberAddress 조회한 후 wishList Update
         wishlistService.updateWishlist(memberService.getMemberAddress(request), cond);
         return ResponseEntity.status(200).build();
     }
