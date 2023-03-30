@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Random;
 
-import static org.assertj.core.api.Assertions.*;
-
 @SpringBootTest
 class ItemServiceImplTest {
 
@@ -43,7 +41,7 @@ class ItemServiceImplTest {
         Long id = Math.abs(random.nextLong());
 
         UpdateItemCond addItemCond = UpdateItemCond.builder()
-                .uid(1L)
+                .id(1L)
                 .title("Test Update Title" + id)
                 .imgPath("test/image"+id+".jpg")
                 .description("Test Description"+id)
