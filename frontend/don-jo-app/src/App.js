@@ -14,7 +14,6 @@ window.addEventListener("resize", () => {
 });
 
 const App = () => {
-  console.log("app");
   return (
     <div>
       <ToastContainer autoClose={false} />
