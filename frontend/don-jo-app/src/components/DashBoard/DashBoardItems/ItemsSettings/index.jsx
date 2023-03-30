@@ -22,18 +22,29 @@ const ItemsSettings = () => {
   const [hasMore, setIsEnd] = useState(false);
   const [isClickedEdit, setClickedEdit] = useState(false);
 
-  const handleGetMyItemList = async () => {
+  const handleGetMyItemList = async (type) => {
     const {
       data: { itemList, hasMore },
-    } = await itemApi.getItemList(memberAddress, pageNum, PAGE_SIZE);
+    } = await itemApi.getItemList(
+      memberAddress,
+      type === "update" ? 0 : pageNum,
+      PAGE_SIZE
+    );
     setPageNum((prev) => prev + 1);
-    setResult((prev) => [...prev, ...(itemList || [])]);
+    if (type === "update") {
+      setResult(itemList);
+      setPageNum(1);
+    } else {
+      setResult((prev) => [...prev, ...(itemList || [])]);
+    }
     setIsEnd(hasMore);
   };
 
   const handleAddItemModalOpen = () => {
-    setClickedEdit(false);
+    setShowItemModal(false);
     setIsAddItemModalOpen((prev) => !prev);
+    handleGetMyItemList("update");
+    setClickedEdit(false);
   };
 
   const handleShowItemDetailModal = () => {
@@ -48,6 +59,7 @@ const ItemsSettings = () => {
 
     addButton.addEventListener("click", () => {
       setIsAddItemModalOpen((prev) => !prev);
+      dispatch(setCurrentItem({}));
     });
   }, []);
 
@@ -55,6 +67,10 @@ const ItemsSettings = () => {
     if (!isClickedEdit) {
       dispatch(setCurrentItem({}));
     }
+  }, [isClickedEdit]);
+
+  useEffect(() => {
+    console.log(isClickedEdit);
   }, [isClickedEdit]);
 
   return (
@@ -66,9 +82,9 @@ const ItemsSettings = () => {
       </S.AddButton>
       <BasicTitle text="Items List" />
       {result && result.length > 0 ? (
-        result.map((item, index) => (
+        result.map((item) => (
           <ListItem
-            key={index + item.id}
+            key={item.id}
             uid={item.id}
             setUid={setUid}
             imgPath={item.imgPath}

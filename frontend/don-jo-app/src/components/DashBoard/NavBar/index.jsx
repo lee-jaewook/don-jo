@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
@@ -9,8 +9,8 @@ import { memberApi } from "../../../api/member";
 import { setLogOut } from "../../../stores/member";
 import Logo from "../../../assets/img/common/app-logo.svg";
 
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const NavBar = () => {
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +28,10 @@ const NavBar = () => {
       console.log("error:", error);
     }
   };
+
+  useEffect(() => {
+    console.log("profile path ", profileImgPath);
+  }, [profileImgPath]);
 
   return (
     <S.NavBar>
@@ -75,4 +79,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);

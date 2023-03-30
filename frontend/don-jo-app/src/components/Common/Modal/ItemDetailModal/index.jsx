@@ -23,7 +23,6 @@ const ItemDetailModal = ({
     try {
       const { data } = await itemApi.getItemDetail(uid);
       setResult(data);
-      console.log("data?>", data);
       dispatch(setCurrentItem(data));
     } catch (error) {
       console.log("error: ", error);

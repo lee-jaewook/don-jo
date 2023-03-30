@@ -46,13 +46,12 @@ const AddItemModal = ({
 
   // 아이템 정보 저장 및 비구조분해 할당으로 가져옴
   const [itemInfo, setItemInfo] = useState({
-    uid: "",
     title: "",
     price: "",
     description: "",
     message: "",
-    imgPath: null,
-    filePath: null,
+    imgPath: "",
+    filePath: "",
   });
   const { title, price, description, message, imgPath, filePath } = itemInfo;
 
@@ -66,9 +65,12 @@ const AddItemModal = ({
 
   const setFileChange = async (id, previewImgUrl, file) => {
     if (id === "featured-image") {
+      console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
+      setItemInfo({ ...itemInfo, imgPath: "" });
     } else if (id === "file-upload") {
       setItemNamFile({ previewImgUrl: previewImgUrl, file: file });
+      setItemInfo({ ...itemInfo, filePath: "" });
     }
   };
 
@@ -108,22 +110,27 @@ const AddItemModal = ({
   };
 
   const handleUploadItem = async () => {
-    // 필수 입력값 확인
-    // 아이템 이름, 가격, 이미지, 파일, 감사 메세지
-
-    console.log("itemInfo", itemInfo);
-
-    // 필수 입력 확인
-    if (!title || !price || !message) {
-      alert("필수값 확인 안내");
+    if (itemFile.previewImgUrl === "" && filePath === "") {
+      alert("파일 업로드 가이드 제공");
       return;
     }
+
+    if (itemImageFile.previewImgUrl === "" && imgPath === "") {
+      alert("이미지 업로드 가이드 제공");
+      return;
+    }
+
+    // 필수 입력 확인
+    if (!message) {
+      alert("안내처리 - 메세지 예정");
+      return;
+    }
+
+    if (!checkItemValidation({ name: title, price: price })) return;
 
     let itemData = {
       ...itemInfo,
     };
-
-    console.log("item Data 입력 여부 확인, ", itemData);
 
     // 아이템 이미지 업로드 확인
     if (itemInfo.imgPath === "" && itemImageFile.previewImgUrl !== null) {
@@ -131,10 +138,8 @@ const AddItemModal = ({
         itemImageFile.file,
         IMAGE_TYPE
       );
-      itemData = { ...itemData, itemPath: createdItemPath };
+      itemData = { ...itemData, imgPath: createdItemPath };
     }
-    console.log("itemFile, ", itemFile);
-    console.log("itemInfo.filePath , ", itemInfo.filePath);
 
     // 아이템 파일 업로드 확인
     if (itemInfo.filePath === "" && itemFile.previewImgUrl !== null) {
@@ -146,13 +151,22 @@ const AddItemModal = ({
     }
 
     // API 호출
-
     if (isModify) {
       itemData = { ...itemData, uid: currentItem.id };
-      console.log("itemData", itemData);
       try {
-        const data = await itemApi.updateItem(itemData);
-        console.log("수정 성공:: ", data);
+        const { status } = await itemApi.updateItem(itemData);
+        if (status === 200) {
+          handleSetShowModal(true);
+        }
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    } else {
+      try {
+        const { status } = await itemApi.registerItem(itemData);
+        if (status === 200) {
+          handleSetShowModal(true);
+        }
       } catch (error) {
         console.log("error: ", error);
       }
@@ -173,14 +187,6 @@ const AddItemModal = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log("isModify", isModify);
-  }, [isModify]);
-
-  useEffect(() => {
-    console.log("뭐야 시발 두ㅗㅠㅓㅎ", itemInfo);
-  }, [itemInfo]);
-
   return (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
@@ -193,7 +199,7 @@ const AddItemModal = ({
             <BasicInput
               id="title"
               type="text"
-              value={title}
+              value={title || ""}
               placeholder="Items Title"
               handleOnChangeValue={handleOnChangeInput}
             />
@@ -209,7 +215,7 @@ const AddItemModal = ({
             <S.BasicInput
               id="price"
               type="text"
-              value={price}
+              value={price || ""}
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
@@ -261,7 +267,7 @@ const AddItemModal = ({
               </a>
               <S.DeleteButton
                 onClick={() => {
-                  setItemNamFile({ previewImgUrl: null, file: {} });
+                  setItemNamFile({ previewImgUrl: "", file: {} });
                   setItemInfo({ ...itemInfo, filePath: "" });
                 }}
               >
@@ -292,7 +298,7 @@ const AddItemModal = ({
           <BasicTitle text="Description" />
           <BasicTextarea
             id="description"
-            value={description}
+            value={description || ""}
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Description what you are selling."
           />
@@ -305,7 +311,7 @@ const AddItemModal = ({
           </S.RequiredInputWrapper>
           <BasicTextarea
             id="message"
-            value={message}
+            value={message || ""}
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Thank you for supporting my wishlist!"
           />

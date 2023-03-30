@@ -73,7 +73,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
   );
 };
 
-export default DashBoardSupportList;
+export default React.memo(DashBoardSupportList);
 
 DashBoardSupportList.propTypes = {
   type: PropTypes.string.isRequired,
