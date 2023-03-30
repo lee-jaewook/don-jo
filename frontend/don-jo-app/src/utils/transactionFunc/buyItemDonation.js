@@ -89,7 +89,7 @@ export const buyItemDonation = (item) => {
                 };
 
                 const logData1 = receipt.logs[1];
-                const logData2 = receipt.logs[1].data;
+                const logData2 = receipt.logs[0].data;
                 const decodeLog1 = web3.eth.abi.decodeLog(
                   eventABI.inputs,
                   logData1.data,
