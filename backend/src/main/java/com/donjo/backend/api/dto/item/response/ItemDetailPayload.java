@@ -20,7 +20,7 @@ public class ItemDetailPayload {
     // Item 설명
     private String description;
     // Item 가격
-    private Double price; // wei
+    private Double price; // matic
     // Item 판매횟수
     private Long salesCount;
     // Item 판매 총량
@@ -35,19 +35,18 @@ public class ItemDetailPayload {
     private String seller;
     // 객체 입력 받아 Dto 저장
     public static ItemDetailPayload from(ItemSol itemSol){
-        ItemDetailPayload payload = ItemDetailPayload.builder()
+        return ItemDetailPayload.builder()
                 .id(itemSol.getId())
                 .title(itemSol.getTitle())
                 .imgPath(itemSol.getImgPath())
                 .description(itemSol.getDescription())
-                .price(itemSol.getPrice() / Math.pow(10, 18))
+                .price(itemSol.getPrice())
                 .salesCount(itemSol.getSalesCount())
+                .salesAmount(itemSol.getSalesAmount())
                 .message(itemSol.getMessage())
                 .filePath(itemSol.getFilePath())
                 .isDeleted(itemSol.isDeleted())
                 .seller(itemSol.getSeller())
                 .build();
-        payload.setSalesAmount(payload.getPrice() * payload.salesCount);
-        return payload;
     }
 }

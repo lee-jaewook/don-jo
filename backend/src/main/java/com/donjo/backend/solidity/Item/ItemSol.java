@@ -1,5 +1,6 @@
 package com.donjo.backend.solidity.Item;
 
+import com.donjo.backend.util.ConvertUtil;
 import lombok.*;
 import org.web3j.applicationhandler.ApplicationHandler;
 
@@ -16,9 +17,9 @@ public class ItemSol {
     private String title;
     private String imgPath;
     private String description;
-    private Long price; // wei
+    private Double price; // matic
     private Long salesCount;
-    private Long salesAmount;
+    private Double salesAmount;
     private String message;
     private String filePath;
     private boolean isDeleted;
@@ -29,7 +30,7 @@ public class ItemSol {
         byte[] solTitle = title.getBytes(StandardCharsets.UTF_8);
         byte[] solImgPath = imgPath.getBytes(StandardCharsets.UTF_8);
         byte[] solDescription = description.getBytes(StandardCharsets.UTF_8);
-        BigInteger solPrice = BigInteger.valueOf(price);
+        BigInteger solPrice = ConvertUtil.doubleToBigInteger(price);
         BigInteger solSalesCount = BigInteger.valueOf(salesCount);
         byte[] solMessage = message.getBytes(StandardCharsets.UTF_8);
         byte[] solFilePath = filePath.getBytes(StandardCharsets.UTF_8);
@@ -44,9 +45,9 @@ public class ItemSol {
                 .title(new String(item.title, StandardCharsets.UTF_8))
                 .imgPath(new String(item.imgPath, StandardCharsets.UTF_8))
                 .description(new String(item.description, StandardCharsets.UTF_8))
-                .price(item.price.longValue())
+                .price(ConvertUtil.bigIntegerToDouble(item.price))
                 .salesCount(item.salesCount.longValue())
-                .salesAmount(item.salesCount.longValue() * item.price.longValue())
+                .salesAmount(ConvertUtil.bigIntegerToDouble(item.salesCount.multiply(item.price)))
                 .message(new String(item.message, StandardCharsets.UTF_8))
                 .filePath(new String(item.filePath, StandardCharsets.UTF_8))
                 .isDeleted(item.isDeleted.booleanValue())
