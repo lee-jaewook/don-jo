@@ -74,14 +74,4 @@ public class Web3jUtil {
         // StaticGasProvider 사용하여 가스 가격 및 가스 한도 설정
         return new StaticGasProvider(gasPrice, gasLimit);
     }
-
-//    public byte[] convertToByte(String str){
-//        Utf8String utf8String = new Utf8String(str);
-//        return utf8String.getValue().getBytes(StandardCharsets.UTF_8);
-//    }
-//
-//    public String convertToString(byte[] byteArray){
-//        Utf8String result = new Utf8String(new String(byteArray, StandardCharsets.UTF_8));
-//        return result.toString();
-//    }
 }
