@@ -9,14 +9,9 @@ import BasicInput from "../Common/BasicInput";
 import BasicButton from "../Common/BasicButton";
 import FullScreenModal from "../Common/Modal/FullScreenModal";
 
-export const SignUp = ({ isModelOpen }) => {
+export const SignUp = ({ isModelOpen, userInfo, setUserInfo }) => {
   const memberAddress = useSelector((state) => state.web3.walletAddress);
   const [checkPageNameValidation, setCheckPageNameValidation] = useState(false);
-
-  const [userInfo, setUserInfo] = useState({
-    nickName: "",
-    pageName: "",
-  });
 
   const { nickName, pageName } = userInfo;
 
@@ -24,20 +19,6 @@ export const SignUp = ({ isModelOpen }) => {
     previewImgUrl: "",
     file: {},
   });
-
-  // validation check
-  const [isDisabled, setIsDisabled] = useState(true);
-
-  // useEffect(() => {
-  //   if (
-  //     nickName.trim() !== "" &&
-  //     pageName.trim() !== ""
-  //   ) {
-  //     setIsDisabled(false);
-  //   } else {
-  //     setIsDisabled(true);
-  //   }
-  // }, [nickName, pageName]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
