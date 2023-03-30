@@ -1,29 +1,55 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
 import { Desktop } from "../../../components/Common/Template";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut.js";
+import { memberApi } from "../../../api/member";
+import { setLogOut } from "../../../stores/member";
+import Logo from "../../../assets/img/common/app-logo.svg";
 
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const NavBar = () => {
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userName = useSelector((state) => state.member.nickName);
-  const profileImgPath = useSelector((state) => state.member.profileImgPath);
+  const profileImgPath = useSelector((state) => state.member.profileImagePath);
+
+  const handleOnClickLogout = async () => {
+    try {
+      const { status } = await memberApi.logout();
+      if (status === 200) {
+        dispatch(setLogOut());
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
 
   useEffect(() => {
-    console.log("userName:", userName);
-  }, [userName]);
+    console.log("profile path ", profileImgPath);
+  }, [profileImgPath]);
 
   return (
     <S.NavBar>
       <Desktop>
         <S.UserWrapper>
-          <S.UserImg
-            alt="user-profile-img"
-            src={!profileImgPath ? "" : `${S3URL}/${profileImgPath}`}
+          <S.User>
+            <S.UserImg
+              alt="user-profile-img"
+              src={profileImgPath !== "" ? `${S3URL}${profileImgPath}` : Logo}
+            />
+            <S.UseName>{userName}</S.UseName>
+          </S.User>
+          <FiLogOut
+            onClick={handleOnClickLogout}
+            size="22px"
+            color="var(--color-text-secondary)"
+            style={{ cursor: "pointer" }}
           />
-          <S.UseName>{userName === undefined ? "songo427" : ""}</S.UseName>
         </S.UserWrapper>
       </Desktop>
       <S.MenuWrapper>
@@ -53,4 +79,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);

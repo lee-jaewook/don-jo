@@ -5,23 +5,23 @@ import WishlistItem from "../../../../Common/WishlistItem";
 import WishlistDetailModal from "../../../../Common/Modal/WishlistDetailModal";
 import { wishlistAPI } from "../../../../../api/wishlist";
 import ShowMoreButton from "../../../../Common/ShowMoreButton";
+import AddWishlistModal from "../../../../Common/Modal/AddWishlistModal";
 
 const DashboardWishlist = () => {
   const PAGE_SIZE = 6;
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
+  const [isShowWishListModifyModal, setIsShowWishListModifyModal] =
+    useState(false);
   const [result, setResult] = useState([]);
   const [uid, setUid] = useState(0);
   const [pageNum, setPageNum] = useState(0);
   const [hasMore, setIsEnd] = useState(false);
 
   const handleOpenModal = (id) => {
-    console.log("id>", id);
     setShowWishlistModal(true);
     setUid(id);
   };
-
-  const handleEditWishlistItem = async () => {};
 
   const handleGetWishlist = async () => {
     try {
@@ -66,10 +66,19 @@ const DashboardWishlist = () => {
         <WishlistDetailModal
           uid={uid}
           isDashboard={true}
-          handleSetShowModal={setShowWishlistModal}
-          handleOnClickButton={handleEditWishlistItem}
+          setShowWishlistModal={setShowWishlistModal}
+          setIsShowWishListModifyModal={setIsShowWishListModifyModal}
         />
       )}
+      {/* {
+        isShowWishListModifyModal && (
+          <AddWishlistModal
+          handleSetShowModal={}
+          callOldData={true}
+          wishlistUid={uid}
+          />
+        )
+      } */}
     </S.WishlistContainer>
   );
 };

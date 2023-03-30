@@ -13,6 +13,8 @@ const WishlistDetailModal = ({
   uid,
   isDashboard,
   handleSetShowModal,
+  setShowWishlistModal,
+  setIsShowWishListModifyModal,
   handleOnClickButton,
 }) => {
   const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
@@ -141,6 +143,6 @@ export default WishlistDetailModal;
 WishlistDetailModal.propTypes = {
   uid: PropTypes.number.isRequired,
   idDashboard: PropTypes.bool,
-  handleSetShowModal: PropTypes.func.isRequired,
+  setShowWishlistModal: PropTypes.func.isRequired,
   handleOnClickButton: PropTypes.func.isRequired,
 };

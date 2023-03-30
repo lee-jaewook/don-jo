@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BasicTitle from "../../../Common/BasicTitle";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import ListItem from "./ListItem";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import AddItemModal from "../../../Common/Modal/AddItemModal";
 import { itemApi } from "../../../../api/items";
+import { setCurrentItem } from "../../../../stores/items";
 
+const PAGE_SIZE = 6;
 const ItemsSettings = () => {
-  const PAGE_SIZE = 6;
+  const dispatch = useDispatch();
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
   const [isShowItemModal, setShowItemModal] = useState(false);
@@ -18,18 +20,31 @@ const ItemsSettings = () => {
   const [pageNum, setPageNum] = useState(0);
   const [result, setResult] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
+  const [isClickedEdit, setClickedEdit] = useState(false);
 
-  const handleGetMyItemList = async () => {
+  const handleGetMyItemList = async (type) => {
     const {
       data: { itemList, hasMore },
-    } = await itemApi.getItemList(memberAddress, pageNum, PAGE_SIZE);
+    } = await itemApi.getItemList(
+      memberAddress,
+      type === "update" ? 0 : pageNum,
+      PAGE_SIZE
+    );
     setPageNum((prev) => prev + 1);
-    setResult((prev) => [...prev, ...(itemList || [])]);
+    if (type === "update") {
+      setResult(itemList);
+      setPageNum(1);
+    } else {
+      setResult((prev) => [...prev, ...(itemList || [])]);
+    }
     setIsEnd(hasMore);
   };
 
   const handleAddItemModalOpen = () => {
+    setShowItemModal(false);
     setIsAddItemModalOpen((prev) => !prev);
+    handleGetMyItemList("update");
+    setClickedEdit(false);
   };
 
   const handleShowItemDetailModal = () => {
@@ -37,15 +52,26 @@ const ItemsSettings = () => {
   };
 
   useEffect(() => {
-    // handleGetMyItemList();
+    handleGetMyItemList();
     const addButton = document.getElementById("add-button");
 
     if (!addButton) return;
 
     addButton.addEventListener("click", () => {
       setIsAddItemModalOpen((prev) => !prev);
+      dispatch(setCurrentItem({}));
     });
   }, []);
+
+  useEffect(() => {
+    if (!isClickedEdit) {
+      dispatch(setCurrentItem({}));
+    }
+  }, [isClickedEdit]);
+
+  useEffect(() => {
+    console.log(isClickedEdit);
+  }, [isClickedEdit]);
 
   return (
     <S.SettingWrapper>
@@ -56,16 +82,16 @@ const ItemsSettings = () => {
       </S.AddButton>
       <BasicTitle text="Items List" />
       {result && result.length > 0 ? (
-        result.map((item, index) => (
+        result.map((item) => (
           <ListItem
-            key={index + item.id}
+            key={item.id}
             uid={item.id}
             setUid={setUid}
             imgPath={item.imgPath}
-            supportCount={item.supportCount}
+            supportCount={item.salesCount}
             title={item.title}
-            collectedAmount={item.collectedAmount}
-            totalAmount={item.totalAmount}
+            price={item.price}
+            totalAmount={item.salesAmount.toString()}
             handleShowItemDetailModal={handleShowItemDetailModal}
           />
         ))
@@ -81,12 +107,16 @@ const ItemsSettings = () => {
           uid={uid}
           idDashboard={true}
           handleSetShowModal={setShowItemModal}
-          handleOnClickButton={() => setIsAddItemModalOpen(true)}
+          handleOnClickButton={() => {
+            setClickedEdit(true);
+            setIsAddItemModalOpen(true);
+          }}
         />
       )}
 
       {isAddItemModalOpen && (
         <AddItemModal
+          isModify={isClickedEdit}
           handleSetShowModal={handleAddItemModalOpen}
           whichApiChoose={true}
         />

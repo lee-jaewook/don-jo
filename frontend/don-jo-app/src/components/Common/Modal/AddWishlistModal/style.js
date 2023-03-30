@@ -162,8 +162,8 @@ export const EditIconWrapper = styled.div`
 
 export const ItemProfileImg = styled.div`
   position: relative;
-  width: 17.875rem;
-  height: 11.25rem;
+  width: 6.25rem;
+  height: 6.25rem;
   border-radius: 0.5rem;
   border: 0.125rem dashed #d2d2d2;
   background-color: #f7f7f7;
@@ -206,8 +206,4 @@ export const UploadButton = styled.input`
   padding: 0;
   overflow: hidden;
   border: 0;
-`;
-
-export const DeleteButton = styled.button`
-  margin-left: 32px;
 `;

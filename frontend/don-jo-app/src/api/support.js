@@ -33,4 +33,14 @@ export const supportApi = {
 
   // 최근 후원 내역 10건 조회 API - intro page 전광판에서만 사용
   getSponsorshipList: () => api.get(`/main/supports`),
+
+  // 서포트 댓글 작성
+  postReply: (replyDto) => api.post(`/auth/support/reply`, replyDto),
+
+  // 서포트 댓글 수정
+  updateReply: (replyDto) => api.put(`/auth/support/reply`, replyDto),
+
+  // 서포트 댓글 삭제
+  deleteReply: (transactionHash) =>
+    api.delete(`/auth/support/reply?transactionHash=${transactionHash}`),
 };
