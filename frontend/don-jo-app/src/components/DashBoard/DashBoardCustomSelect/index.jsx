@@ -14,10 +14,10 @@ import PropTypes from "prop-types";
  */
 
 const datum = [
-  { name: "Noto Sans Korean" },
+  { name: "NotoSansKR" },
   { name: "Black Han Sans" },
-  { name: "Sunflower" },
-  { name: "Do Hyeon" },
+  { name: "SunFlower" },
+  { name: "DoHyeon" },
   { name: "Jua" },
 ];
 

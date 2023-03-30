@@ -13,7 +13,7 @@ export const ItemWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const UserImg = styled.div`
+export const UserImg = styled.img`
   width: 60px;
   height: 3.75rem;
   background-color: #ddd;

@@ -122,16 +122,19 @@ export const ButtonLabel = styled.label`
 
 export const CopyButton = styled.button`
   display: flex;
-  width: 6rem;
-  font-family: "RobotoMedium";
-  font-size: 1.25rem;
+  width: 100%;
   font-weight: 500;
   color: var(--color-text-third);
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 1rem;
+  cursor: pointer;
+
   &:hover {
     color: white;
+  }
+  label {
+    margin-left: 0.5rem;
   }
 `;
 
