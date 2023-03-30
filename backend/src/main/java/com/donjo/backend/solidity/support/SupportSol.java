@@ -1,6 +1,6 @@
 package com.donjo.backend.solidity.support;
 
-import com.donjo.backend.util.TimeConvertUtil;
+import com.donjo.backend.util.ConvertUtil;
 import lombok.*;
 import org.web3j.applicationhandler.ApplicationHandler;
 
@@ -19,7 +19,7 @@ public class SupportSol {
 
     public String to;
 
-    public Long amount;
+    public Long amount; // matic
 
     public LocalDateTime sendTimestamp;
 
@@ -33,7 +33,7 @@ public class SupportSol {
                 from,
                 to,
                 BigInteger.valueOf(amount),
-                TimeConvertUtil.convertToUint256Timestamp(sendTimestamp),
+                ConvertUtil.convertToUint256Timestamp(sendTimestamp),
                 BigInteger.valueOf(supportType)
         );
     }
@@ -44,7 +44,7 @@ public class SupportSol {
                 .from(s.from)
                 .to(s.to)
                 .amount(s.amount.longValue())
-                .sendTimestamp(TimeConvertUtil.convertToLocalDateTime(s.sendTimestamp))
+                .sendTimestamp(ConvertUtil.convertToLocalDateTime(s.sendTimestamp))
                 .supportType(s.supportType.longValue())
                 .supportStatus(1L)
                 .build();
