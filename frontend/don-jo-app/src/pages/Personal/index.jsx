@@ -1,5 +1,5 @@
 import * as S from "./style";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import ExternalLink from "../../components/Personal/ExternalLink";
 import { useEffect, useRef, useState } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";

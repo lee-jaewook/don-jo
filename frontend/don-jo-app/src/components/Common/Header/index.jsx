@@ -7,7 +7,7 @@ import { logIn } from "../../../utils/logIn";
 import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
-import { FiExternalLink } from "react-icons/fi";
+import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
 import PasswordSetModal from "../Modal/PasswordSetModal";
 
 const Header = () => {

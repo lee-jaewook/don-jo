@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal.js";
 
 export const ItemWrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ export const ItemWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const UserImg = styled.div`
+export const UserImg = styled.img`
   width: 60px;
   height: 3.75rem;
   background-color: #ddd;

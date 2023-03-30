@@ -207,3 +207,7 @@ export const UploadButton = styled.input`
   overflow: hidden;
   border: 0;
 `;
+
+export const DeleteButton = styled.button`
+  margin-left: 32px;
+`;

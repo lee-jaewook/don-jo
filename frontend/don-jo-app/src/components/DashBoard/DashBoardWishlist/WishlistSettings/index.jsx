@@ -1,5 +1,5 @@
 import React from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import BasicTitle from "../../../Common/BasicTitle";
 import Wishlist from "./DashboardWishlist";
 import * as S from "./style";

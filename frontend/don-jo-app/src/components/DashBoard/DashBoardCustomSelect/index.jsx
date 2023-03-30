@@ -14,11 +14,11 @@ import PropTypes from "prop-types";
  */
 
 const datum = [
-  { name: "About Tesla" },
-  { name: "About Samsung" },
-  { name: "About Apple" },
-  { name: "About Google" },
-  { name: "About Lotte" },
+  { name: "NotoSansKR" },
+  { name: "Black Han Sans" },
+  { name: "SunFlower" },
+  { name: "DoHyeon" },
+  { name: "Jua" },
 ];
 
 const CustomSelect = ({
