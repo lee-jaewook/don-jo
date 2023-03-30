@@ -22,10 +22,10 @@ class ItemServiceImplTest {
         Long id = Math.abs(random.nextLong());
 
         AddItemCond addItemCond = AddItemCond.builder()
-                .title("Test Title" + id)
+                .title("Test Title new " + id)
                 .imgPath("test/image"+id+".jpg")
                 .description("Test Description"+id)
-                .price(100.0)
+                .price(100.01)
                 .message("Test Message"+id)
                 .filePath("test/file"+id+".txt")
                 .build();
