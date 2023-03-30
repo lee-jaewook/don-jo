@@ -80,14 +80,14 @@ public class FindSupportDetailPayload {
         return newToMember;
     }
 
-    public static FindSupportDetailPayload fromSupport(Support support,fromMember fromMember, toMember toMember){
+    public static FindSupportDetailPayload fromSupport(Optional<SupportSol> supportsol, Support support, fromMember fromMember, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
                 .from(fromMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(Double.valueOf(supportsol.get().getAmount()))
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())
@@ -95,13 +95,13 @@ public class FindSupportDetailPayload {
         return findSupportDetailPayload;
     }
 
-    public static FindSupportDetailPayload fromSomeoneSupport(Support support,toMember toMember){
+    public static FindSupportDetailPayload fromSomeoneSupport(Optional<SupportSol> supportsol, Support support, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(Double.valueOf(supportsol.get().getAmount()))
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())
