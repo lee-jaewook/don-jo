@@ -20,9 +20,9 @@ public class WishlistDetailPayload {
     // 위시리스트 설명
     private String description;
     // 위시리스트 현재 모금액
-    private Double collectedAmount; // ETH
+    private Double collectedAmount; // MATIC
     // 위시리스트 목표 모금액
-    private Double targetAmount; // ETH
+    private Double targetAmount; // MATIC
     // 감사 메세지
     private String message;
     // 삭제 여부
@@ -36,8 +36,8 @@ public class WishlistDetailPayload {
                 .title(sol.getTitle())
                 .imgPath(sol.getImgPath())
                 .description(sol.getDescription())
-                .collectedAmount(sol.getCollectedAmount() / Math.pow(10, 18))
-                .targetAmount(sol.getTargetAmount() / Math.pow(10, 18))
+                .collectedAmount(sol.getCollectedAmount())
+                .targetAmount(sol.getTargetAmount())
                 .message(sol.getMessage())
                 .isClosed(sol.isClosed())
                 .seller(sol.getSeller())

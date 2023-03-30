@@ -25,7 +25,7 @@ public class UpdateWishlistCond {
     private String description;
     // 위시리스트 목표금액
     @NotNull
-    private Long targetAmount; // ETH
+    private Double targetAmount; // ETH
     // 감사 메세지
     @NotNull
     private String message;
@@ -37,7 +37,7 @@ public class UpdateWishlistCond {
                 .imgPath(imgPath)
                 .description(description)
                 .collectedAmount(sol.getCollectedAmount())
-                .targetAmount((long) (targetAmount * Math.pow(10,18)))
+                .targetAmount(targetAmount)
                 .message(message)
                 .isClosed(sol.isClosed())
                 .seller(memberAddress)
