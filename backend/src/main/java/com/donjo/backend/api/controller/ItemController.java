@@ -27,6 +27,21 @@ public class ItemController {
     private final MemberService memberService;
     private final ItemService itemService;
 
+
+
+    @GetMapping("/api/member/items/all")
+    @ApiOperation(value = "아이템 전체 리스트 가져오기", notes = "<strong>멤버의 주소</strong>를 입력받아 전체 아이템 리스트를 리턴합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "NO CONTENT(정보 없음)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getAllMyItems(@RequestParam @NotNull String memberAddress){
+        // pagination이 포함 된 ItemList 가져오기
+        return ResponseEntity.status(200).body(itemService.getAllItems(memberAddress));
+    }
+
     @GetMapping("/api/member/items")
     @ApiOperation(value = "아이템 리스트 가져오기", notes = "<strong>멤버의 주소</strong>를 입력받아 아이템 리스트를 리턴합니다.")
     @ApiResponses({

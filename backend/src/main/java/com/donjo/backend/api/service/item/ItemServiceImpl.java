@@ -2,6 +2,7 @@ package com.donjo.backend.api.service.item;
 
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
+import com.donjo.backend.api.dto.item.response.GetAllMyItemPayload;
 import com.donjo.backend.api.dto.item.response.GetItemListPayload;
 import com.donjo.backend.api.dto.item.response.ItemDetailPayload;
 import com.donjo.backend.exception.NoContentException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,18 @@ public class ItemServiceImpl implements ItemService{
         }
         // 아이템 목록의 크기, 페이지 번호, 페이지 크기, 그리고 결과 리스트를 담아 반환
         return GetItemListPayload.from(list.size(), pageNum, pageSize, result);
+    }
+
+    @Override
+    public List<GetAllMyItemPayload> getAllItems(String address) {
+        // null 체크
+        // 회원의 아이템 목록을 가져옵니다. 이때, orElseThrow() 메소드를 이용하여 결과가 존재하지 않는 경우 예외(NoContentException)를 발생시킵니다.
+        List<ItemSol> list = itemSolidity.getMemberItemList(address)
+                .orElseThrow(()-> new NoContentException());
+
+        // 다음으로, 가져온 아이템 목록을 역순(reverse)으로 정렬합니다.
+        Collections.reverse(list);
+        return list.stream().map(itemSol -> GetAllMyItemPayload.from(itemSol)).collect(Collectors.toList());
     }
 
     @Override
