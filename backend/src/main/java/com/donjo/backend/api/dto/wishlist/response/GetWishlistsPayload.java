@@ -14,12 +14,16 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 public class GetWishlistsPayload {
+    // 배열 사이즈
     int size;
+    // 현재 페이지
     int pageNum;
+    // 페이지에 들어갈 위시리스트 숫자
     int pageSize;
+    // 다음 페이지 여부
     boolean hasMore;
     List<WishlistDetailPayload> wishlists;
-
+    // DTO에 담기
     public static GetWishlistsPayload from(int size, int pageNum, int pageSize, List<WishlistSol> wishlists){
         return GetWishlistsPayload.builder()
                 .size(size)

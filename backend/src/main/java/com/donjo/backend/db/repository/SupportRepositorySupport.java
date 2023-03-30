@@ -21,52 +21,6 @@ public class SupportRepositorySupport {
     @PersistenceContext
     private EntityManager em;
 
-
-//    public List<Support> findEarning(String address, String type, int period) {
-//        String oneMonthDatetime = LocalDateTime.now().minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); //어제 00:00:00
-//        String threeMonthDatetime = LocalDateTime.now().minusMonths(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); //어제 00:00:00
-//        String jpql = "select u from Support u";
-//        String whereSql = " where u.toAddress = ";
-//        whereSql+= "'"+address+"'";
-//        List<String> whereCondition = new ArrayList<>();
-//        if (type.equals("all")) {
-//        }
-//        else{
-//            whereCondition.add(" and");
-//        }
-//        switch (type) {
-//            case "donation":
-//                whereCondition.add(" u.supportType = 'donation'");
-//                break;
-//            case "item":
-//                whereCondition.add(" u.supportType = 'item'");
-//                break;
-//            case "wishlist":
-//                whereCondition.add(" u.supportType = 'wishlist'");
-//                break;
-//            case "all":
-//                break;
-//        }
-//        if (type !="all" && period != 0) {
-//            whereCondition.add(" and ");
-//        }
-//        switch (period) {
-//            case 0:
-//                break;
-//            case 30:
-//                whereCondition.add("u.arriveTimeStamp >= "+oneMonthDatetime);
-//                break;
-//            case 90:
-//                whereCondition.add("u.arriveTimeStamp >= "+threeMonthDatetime);
-//                break;
-//        }
-//        jpql += whereSql;
-//        jpql += String.join("", whereCondition);
-//
-//        TypedQuery<Support> query = em.createQuery(jpql, Support.class);
-//        return query.getResultList();
-//    }
-
     public List<Support> findEarning(String address, String type, int period) {
         // StringBuilder는 문자열을 효율적으로 다룰 수 있게 하는 클래스 JPQL을 담을 변수
         StringBuilder jpqlBuilder = new StringBuilder("SELECT s FROM Support s WHERE s.toAddress = :address");

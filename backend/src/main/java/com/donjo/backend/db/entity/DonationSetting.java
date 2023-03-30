@@ -28,27 +28,27 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonationSetting {
-
+  // 맴버 지갑 주소
   @Id
   private String memberAddress;
-
+  // 맴버와 매핑
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_address")
   @JsonIgnore
   private Member member;
-
+  // 도네이션 개당 가격(기본값 1)
   @Column
   @Builder.Default
   private int pricePerDonation = 1;
-
+  // 도네이션 이모지(기본값 쿠키 이모지)
   @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
   @Builder.Default
   private String donationEmoji = "\uD83C\uDF6A";
-
+  // 도네이션 이름(기본값 쿠키)
   @Column
   @Builder.Default
   private String donationName = "Cookie";
-
+  // 감사메세지(기본값 thanks)
   @Column
   @Builder.Default
   private String thankMsg = "thanks";

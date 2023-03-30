@@ -25,11 +25,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Social {
-
+  // 소셜 id 번호
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  // 소셜 주소
   @Column
   @Nullable
   private String socialLink;
