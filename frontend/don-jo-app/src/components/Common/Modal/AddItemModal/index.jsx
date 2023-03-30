@@ -52,11 +52,11 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
     });
   };
 
-  const setFileChange = async (id, previewImgUrl, file) => {
+  const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
-      setItemImageFile({ previewImgUrl: "", file: {} });
+      setItemImageFile({ previewImgUrl, file });
     } else if (id === "file-upload") {
-      setItemNamFile({ previewImgUrl: "", file: {} });
+      setItemNamFile({ previewImgUrl, file });
     }
   };
 
@@ -117,7 +117,7 @@ const AddItemModal = ({ handleSetShowModal, whichApiChoose, imageTitle }) => {
       imgPath: imgPath,
       filePath: filePath,
     };
-
+    console.log("cond: ", cond);
     if (whichApiChoose) {
       itemApi
         .registerItem(cond)
