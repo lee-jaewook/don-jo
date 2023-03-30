@@ -1,7 +1,8 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiUser, FiCreditCard } from "react-icons/fi";
+import { FiUser } from "@react-icons/all-files/fi/FiUser.js";
+import { FiCreditCard } from "@react-icons/all-files/fi/FiCreditCard.js";
 import { useMediaQuery } from "react-responsive";
 
 const ListItem = ({

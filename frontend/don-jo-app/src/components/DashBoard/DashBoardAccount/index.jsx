@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit.js";
 import BasicButton from "../../Common/BasicButton";
 import BasicInput from "../../Common/BasicInput";
 import BasicTitle from "../../Common/BasicTitle";

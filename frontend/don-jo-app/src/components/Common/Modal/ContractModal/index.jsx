@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import ProfileImg from "../../ProfileImg";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
-import { FiRefreshCcw } from "react-icons/fi";
+import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
 import blockchain from "../../../../assets/img/common/blockchain.jpg";
 
 const DesktopTablet = ({ children }) => {

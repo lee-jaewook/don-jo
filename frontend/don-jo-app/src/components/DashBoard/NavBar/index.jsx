@@ -4,7 +4,7 @@ import * as S from "./style";
 import { menus } from "../../../data/dashboard";
 import { Desktop } from "../../../components/Common/Template";
 import { useDispatch, useSelector } from "react-redux";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut.js";
 import { memberApi } from "../../../api/member";
 import { setLogOut } from "../../../stores/member";
 import Logo from "../../../assets/img/common/app-logo.svg";

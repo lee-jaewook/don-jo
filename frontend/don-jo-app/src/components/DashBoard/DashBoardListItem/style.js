@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal.js";
 
 export const ItemWrapper = styled.div`
   display: flex;

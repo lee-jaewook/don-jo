@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import BasicTitle from "../../../Common/BasicTitle";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import ListItem from "./ListItem";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
