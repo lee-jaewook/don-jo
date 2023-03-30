@@ -25,6 +25,10 @@ const Header = () => {
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    nickName: "",
+    pageName: "",
+  });
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -83,7 +87,13 @@ const Header = () => {
         </S.ProfileImgContainer>
       </S.Header>
       {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
-      {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
+      {isShowSignUpModal && (
+        <SignUp
+          isModelOpen={setIsShowSignUpModal}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+        />
+      )}
       {isShowPasswordSetModal && (
         <PasswordSetModal
           handleSetShowModal={setIsShowPasswordSetModal}

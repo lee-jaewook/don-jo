@@ -26,7 +26,7 @@ export const donation = () => {
             // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0xc45694392A301B63a1FD0A1b2762521915a78f44" // contract 주소
+              "0x02E7dA6f0b7010DafCA07F95635F78817372C80C" // contract 주소
             );
 
             const tx = myContract.methods.callBasicDonation(

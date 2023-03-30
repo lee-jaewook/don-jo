@@ -63,7 +63,7 @@ const AddItemModal = ({
     });
   };
 
-  const setFileChange = async (id, previewImgUrl, file) => {
+  const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
       console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
