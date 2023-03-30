@@ -30,7 +30,8 @@ export const buyItemDonation = (item) => {
             // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x02E7dA6f0b7010DafCA07F95635F78817372C80C" // contract 주소
+              "0x43fDA3579cFAaa756c1A08e3B30E9f0c238bFe13" // contract 주소
+              // "0x02E7dA6f0b7010DafCA07F95635F78817372C80C" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
@@ -62,15 +63,17 @@ export const buyItemDonation = (item) => {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
                       if (receipt !== undefined && receipt !== null) {
+                        const value = intervalId;
                         clearInterval(intervalId);
-                        resolve({ receipt, txHash });
+                        console.log("intervalId: ", intervalId);
+                        resolve({ receipt, txHash, value });
                       }
                     });
                   }, 1000);
                 });
                 return receiptPromise;
               })
-              .then(({ receipt, txHash }) => {
+              .then(({ receipt, txHash, value }) => {
                 console.log("Transaction successful");
                 // console.log("events: ", events);
                 console.log("receipt: ", receipt);
@@ -89,7 +92,7 @@ export const buyItemDonation = (item) => {
                 };
 
                 const logData1 = receipt.logs[1];
-                const logData2 = receipt.logs[0].data;
+                const logData2 = receipt.logs[1].data;
                 const decodeLog1 = web3.eth.abi.decodeLog(
                   eventABI.inputs,
                   logData1.data,
@@ -108,7 +111,7 @@ export const buyItemDonation = (item) => {
                   sendMsg: "",
                   supportType: "item",
                   supportTypeUid: item.id,
-                  supportUid: 0,
+                  supportUid: value,
                   toAddress: item.seller,
                   transactionHash: txHash,
                 };
