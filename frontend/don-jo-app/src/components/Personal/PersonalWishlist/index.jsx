@@ -47,8 +47,6 @@ const PersonalWishlist = ({ isOwner }) => {
     getWishList();
   };
 
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
-
   const OwnerOrHasWishList = () => {
     return (
       <S.CardContainer>
@@ -66,7 +64,7 @@ const PersonalWishlist = ({ isOwner }) => {
                 onClick={() => setThisItemUId(wishlistItem.id)}
                 uid={wishlistItem.id}
                 title={wishlistItem.title}
-                imgPath={S3URL + wishlistItem.imgPath}
+                imgPath={wishlistItem.imgPath}
                 description={wishlistItem.description}
                 collectedAmount={wishlistItem.collectedAmount.toString()}
                 totalAmount={wishlistItem.targetAmount.toString()}
