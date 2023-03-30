@@ -39,7 +39,6 @@ RUN npm run build
 # Use a stable nginx image
 FROM nginx:stable-alpine as deploy
 WORKDIR /home/node/app
+
 # Copy what we've installed/built from production
-COPY --chown=node:node --from=production /home/node/app/build /usr/share/nginx/html/
-# Add custom Nginx configuration
-COPY --chown=node:node nginx.conf /etc/nginx/conf.d/default.conf
+COPY --chown=node:node --from=production /home/node/app/build /usr/share/nginx/html/guides
