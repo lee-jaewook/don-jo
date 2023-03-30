@@ -90,6 +90,7 @@ public class FindSupportDetailPayload {
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
+                .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
         return findSupportDetailPayload;
     }
@@ -103,6 +104,7 @@ public class FindSupportDetailPayload {
                 .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
+                .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
         return findSupportDetailPayload;
     }
