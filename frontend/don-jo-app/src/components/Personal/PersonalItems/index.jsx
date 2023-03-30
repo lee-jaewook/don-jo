@@ -60,8 +60,12 @@ const PersonalItems = ({ isOwner }) => {
           </S.AddCard>
         )}
 
-        {itemList.map((item, i) => {
-          return <ItemCard key={i} item={item} isOwner={isOwner} />;
+        {itemList.map((item) => {
+          if (!item.closed) {
+            return <ItemCard key={item.id} item={item} isOwner={isOwner} />;
+          } else {
+            return null;
+          }
         })}
       </S.CardContainer>
     );

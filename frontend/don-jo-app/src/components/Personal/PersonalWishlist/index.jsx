@@ -58,22 +58,26 @@ const PersonalWishlist = ({ isOwner }) => {
           </S.AddCard>
         )}
         {wishlist.map((wishlistItem) => {
-          return (
-            <S.WishlistItemWrapper key={wishlistItem.id} disabled={isOwner}>
-              <WishlistItem
-                onClick={() => setThisItemUId(wishlistItem.id)}
-                uid={wishlistItem.id}
-                title={wishlistItem.title}
-                imgPath={wishlistItem.imgPath}
-                description={wishlistItem.description}
-                collectedAmount={wishlistItem.collectedAmount.toString()}
-                totalAmount={wishlistItem.targetAmount.toString()}
-                thankMsg={wishlistItem.thankMsg}
-                handleSetShowModal={setIsShowWishlistDetailModal}
-                isDashboard={isOwner}
-              />
-            </S.WishlistItemWrapper>
-          );
+          if (!wishlistItem.closed) {
+            return (
+              <S.WishlistItemWrapper key={wishlistItem.id} disabled={isOwner}>
+                <WishlistItem
+                  onClick={() => setThisItemUId(wishlistItem.id)}
+                  uid={wishlistItem.id}
+                  title={wishlistItem.title}
+                  imgPath={wishlistItem.imgPath}
+                  description={wishlistItem.description}
+                  collectedAmount={wishlistItem.collectedAmount.toString()}
+                  totalAmount={wishlistItem.targetAmount.toString()}
+                  thankMsg={wishlistItem.thankMsg}
+                  handleSetShowModal={setIsShowWishlistDetailModal}
+                  isDashboard={isOwner}
+                />
+              </S.WishlistItemWrapper>
+            );
+          } else {
+            return null;
+          }
         })}
       </S.CardContainer>
     );
