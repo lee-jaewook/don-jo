@@ -100,7 +100,7 @@ const GlobalStyle = createGlobalStyle`
   --color-text: #222222;
   --color-text-secondary: #666666;
   --color-text-third: #999999;
-  --color-primary: #9042DD;
+  --color-primary: #000000;
   --color-background: #FFFFFF;
   --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;

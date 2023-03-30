@@ -8,7 +8,7 @@ import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
 import { memberApi } from "../../../api/member";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfileImg } from "../../../stores/member";
+import { setProfileImg, setThemeColor } from "../../../stores/member";
 
 const PROFILE_TYPE = "img/profile";
 const BACKGROUND_TYPE = "img/background";
@@ -149,6 +149,7 @@ const DashBoardAccount = () => {
       if (status === 200) {
         alert("Success");
         dispatch(setProfileImg({ profileImagePath: myAccount.profileImgPath }));
+        dispatch(setThemeColor({ themeColor: themeColor }));
       }
     } catch (error) {
       console.log("error: ", error);
