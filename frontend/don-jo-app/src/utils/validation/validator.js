@@ -15,8 +15,17 @@ export const imageSizeValidator = (file) => {
   return true;
 };
 
+export const pageNameValidator = (pageName) => {
+  const pageNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+  if (pageNameRegex.test(pageName)) {
+    return true;
+  }
+  return false;
+};
+
 export const nicknameValidator = (nickname) => {
-  const nicknameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+  const nicknameRegex =
+    /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/ㄱ-ㅎㅏ-ㅣ가-힣]{1,100}$/;
   if (nicknameRegex.test(nickname)) {
     return true;
   }
@@ -24,7 +33,7 @@ export const nicknameValidator = (nickname) => {
 };
 
 /**
- * 1. 영문 대소문자, 숫자, 공백, 특수문자 등을 포함하여
+ * 1. 영문 대소문자, 한글, 숫자, 공백, 특수문자 등을 포함하여
  *    최소 1자 이상, 최대 100자까지 입력 가능.
  */
 
