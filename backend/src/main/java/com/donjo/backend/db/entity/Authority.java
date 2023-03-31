@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Authority {
-
+   // 권한 설정
    @Id
    @Column(name = "authority_name", length = 50)
    private String authorityName;

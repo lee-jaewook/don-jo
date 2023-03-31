@@ -15,9 +15,11 @@ import lombok.ToString;
 @Builder(builderMethodName = "MakeToMemberBuilder")
 @ToString
 public class ToMemberItem {
+  // 맴버 주소
   private String address;
+  // 맴버 닉네임
   private String nickname;
-
+  // 맴버 정보 Dto에 담기
   public static ToMemberItemBuilder builder(Member member) {
     return MakeToMemberBuilder()
         .address(member.getAddress())

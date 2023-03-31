@@ -16,24 +16,25 @@ import java.util.Optional;
 @Builder
 @ToString
 public class FindSupportDetailPayload {
+    // 서포트 Uid
     private Long supportUid;
-
+    // 서포트 트랜잭션해쉬
     private String transactionHash;
-
+    // 서포트 보내는 사람
     private fromMember from;
-
+    // 서포트 받는 사람
     private toMember to;
-
+    // 서포트 타입
     private String supportType; //  Donation : 0, Item : 1, Wishlist : 2
-
+    // 서포트타입 Uid
     private Long supportTypeUid;
-
+    // 후원 금액
     private Double amount;
-
+    // 보낸 시간
     private LocalDateTime sendTimeStamp ;
-
+    // 받는 시간
     private LocalDateTime arriveTimeStamp ;
-
+    // 보내는 메세지
     private String sendMsg;
 
 //    private Long supportStatus;
@@ -79,29 +80,31 @@ public class FindSupportDetailPayload {
         return newToMember;
     }
 
-    public static FindSupportDetailPayload fromSupport(Support support,fromMember fromMember, toMember toMember){
+    public static FindSupportDetailPayload fromSupport(Optional<SupportSol> supportsol, Support support, fromMember fromMember, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
                 .from(fromMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(supportsol.get().getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
+                .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
         return findSupportDetailPayload;
     }
 
-    public static FindSupportDetailPayload fromSomeoneSupport(Support support,toMember toMember){
+    public static FindSupportDetailPayload fromSomeoneSupport(Optional<SupportSol> supportsol, Support support, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(supportsol.get().getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
+                .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
         return findSupportDetailPayload;
     }

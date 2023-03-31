@@ -12,10 +12,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 public class GetItemListPayload {
+    // 배열에 크기
     int size;
+    // 현재 페이지
     int pageNum;
+    // 한 페이지 Item 개수
     int pageSize;
+    // 다음 페이지 여부
     boolean hasMore;
+    //
     List<ItemDetailPayload> itemList;
 
     public static GetItemListPayload from(int size, int pageNum, int pageSize,List<ItemSol> itemList){
