@@ -13,7 +13,7 @@ public class GetAllMyItemPayload {
     private Long id;
     // Item 제목
     private String title;
-
+    // ItemSol에서 Dto에 저장
     public static GetAllMyItemPayload from(ItemSol itemSol){
         return GetAllMyItemPayload.builder()
                 .id(itemSol.getId())

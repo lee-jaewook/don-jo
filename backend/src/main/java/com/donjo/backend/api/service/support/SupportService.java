@@ -4,6 +4,7 @@ import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
+import com.donjo.backend.api.dto.support.response.FindSupportPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface SupportService {
     void createSupports(AddSupportCond addSupportCond);
 
     // 서포트 조회
-    Map<String, Object> getSupports(String memberAddress, String Type, int pageNum, int pageSize);
+    FindSupportPayload getSupports(String memberAddress, String Type, int pageNum, int pageSize);
 
     // 서포트 Detail 조회
     FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid);
