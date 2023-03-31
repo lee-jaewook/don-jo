@@ -148,6 +148,6 @@ export default PasswordSetModal;
 
 PasswordSetModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  doSignUp: PropTypes.func.isRequired,
+  // setPassword: PropTypes.func.isRequired,
+  // doSignUp: PropTypes.func.isRequired,
 };

@@ -21,29 +21,16 @@ export const buyItemDonation = (item) => {
             );
             web3.setProvider(infuraWeb3.currentProvider);
             // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
-            const valueInWei = web3.utils.toWei(
-              (item.price * Math.pow(10, -3)).toString(),
-              "ether"
-            );
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
             // const valueInWei = item.price;
             console.log("valueInWei: ", valueInWei);
             // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x43fDA3579cFAaa756c1A08e3B30E9f0c238bFe13" // contract 주소
-              // "0x02E7dA6f0b7010DafCA07F95635F78817372C80C" // contract 주소
+              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
-
-            // myContract.events
-            //   .SupportEvent()
-            //   .on("data", (event) => {
-            //     console.log("data: ", event);
-            //   })
-            //   .on("error", (error) => {
-            //     console.log("그런 거 안키워");
-            //   });
 
             window.ethereum
               .request({
@@ -51,7 +38,7 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: item.seller,
+                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
                     value: valueInWei.toString(),
                     // gas: "100000000000000000",
                     data: tx.encodeABI(),
@@ -91,19 +78,19 @@ export const buyItemDonation = (item) => {
                   type: "event",
                 };
 
-                const logData1 = receipt.logs[1];
-                const logData2 = receipt.logs[1].data;
+                const logData1 = receipt.logs[0];
+                // const logData2 = receipt.logs[1].data;
                 const decodeLog1 = web3.eth.abi.decodeLog(
                   eventABI.inputs,
                   logData1.data,
                   logData1.topics
                 );
-                const decodeLog2 = web3.eth.abi.decodeParameter(
-                  "uint256",
-                  logData2
-                );
+                // const decodeLog2 = web3.eth.abi.decodeParameter(
+                //   "uint256",
+                //   logData2
+                // );
                 console.log("decodeLog1: ", decodeLog1.value);
-                console.log("decodeLog2: ", decodeLog2);
+                // console.log("decodeLog2: ", decodeLog2);
 
                 const donationDto = {
                   amountEth: item.price,

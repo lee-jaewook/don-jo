@@ -2,23 +2,33 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
-import { useSelector } from "react-redux";
-import { memberApi } from "../../api/member";
 import BasicTitle from "../Common/BasicTitle";
 import BasicInput from "../Common/BasicInput";
 import BasicButton from "../Common/BasicButton";
 import FullScreenModal from "../Common/Modal/FullScreenModal";
+import { fileSizeValidator } from "../../utils/validation/validator";
 
-export const SignUp = ({ isModelOpen, userInfo, setUserInfo }) => {
-  const memberAddress = useSelector((state) => state.web3.walletAddress);
-  const [checkPageNameValidation, setCheckPageNameValidation] = useState(false);
+/**
+ * 회원가입 1단계 - 프로필 등록, nickName, pageName 설정
+ * @param {function} isModelOpen
+ * @param {function} handleContinueButtonClick
+ * @param {function} setUserInfo
+ * @param {object} userInfo
+ *
+ * 프로필 등록: image 데이터로 제한, 사이즈 제한
+ * nickname : 한글, 영어, 숫자, 일부 특수문자 지원
+ * pageName : API 요청을 보내서 중복검사 및 한글, 영어, 숫자, 일부 특수문자 지원
+ */
 
+export const SignUp = ({
+  isModelOpen,
+  handleContinueButtonClick,
+  userInfo,
+  setUserInfo,
+  profileImgPath,
+  setProfileImgPath,
+}) => {
   const { nickName, pageName } = userInfo;
-
-  const [profileImgPath, setProfileImgPath] = useState({
-    previewImgUrl: "",
-    file: {},
-  });
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -26,58 +36,26 @@ export const SignUp = ({ isModelOpen, userInfo, setUserInfo }) => {
       ...userInfo,
       [id]: value,
     });
-    if (id === "pageName" && checkPageNameValidation) {
-      setCheckPageNameValidation(false);
-    }
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.value === "") return;
-    const files = e.target.files;
+  const handleFileChange = async (e) => {
+    const { files } = e.target;
+    console.log("files: ", files);
+    if (e.target.value === "") {
+      setProfileImgPath({ previewImgUrl: "", file: {} });
+      return;
+    }
+
+    if (!fileSizeValidator(files[0])) {
+      setProfileImgPath({ previewImgUrl: "", file: {} });
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = () => {
       setProfileImgPath({ previewImgUrl: reader.result, file: files[0] });
     };
-  };
-
-  const handlePageNameValidation = () => {
-    memberApi
-      .checkPageName()
-      .then((res) => {
-        console.log("res: ", res);
-        setCheckPageNameValidation(true);
-      })
-      .catch((error) => console.log("error: ", error));
-  };
-
-  // const handleContinueButtonClick = () => {
-  //   if()
-  // }
-
-  // const handleUploadFile = async(file, type);
-
-  const handleSubmit = async () => {
-    const signUpMemberCond = {
-      address: memberAddress,
-      nickname: nickName,
-      pageName: pageName,
-      password: "1234",
-      profileImgPath: "",
-    };
-
-    console.log("signUpMemberCond: ", signUpMemberCond);
-    memberApi
-      .signUp(signUpMemberCond)
-      .then((res) => {
-        console.log("회원가입 성공: ", res);
-        localStorage.setItem("accesstoken", res.headers.accesstoken);
-        sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
-      })
-      .catch((error) => {
-        console.log("회원가입 실패");
-      });
-    isModelOpen();
   };
 
   return (
@@ -140,7 +118,7 @@ export const SignUp = ({ isModelOpen, userInfo, setUserInfo }) => {
       <BasicButton
         text="Continue"
         color="var(--color-primary)"
-        handleOnClickButton={handleSubmit}
+        handleOnClickButton={handleContinueButtonClick}
       />
     </FullScreenModal>
   );
