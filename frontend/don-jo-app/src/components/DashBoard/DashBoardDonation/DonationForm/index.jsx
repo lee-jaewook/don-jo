@@ -42,14 +42,15 @@ const DonationForm = () => {
 
   const handleOnClickButton = async () => {
     if (!donationEmoji || !donationName || !thankMsg) {
-      alert("Please enter all settings"); // 임시 처리
+      sendToastMessage("Please enter all settings.", "error");
+      return;
     }
 
     try {
       await supportApi.updateDonationSettings(result);
       sendToastMessage("✨ Saved successfully.");
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("[Save failed]: Contact your administrator.", "error");
     }
   };
 
