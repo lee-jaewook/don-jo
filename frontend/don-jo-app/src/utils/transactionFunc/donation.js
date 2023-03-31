@@ -3,7 +3,7 @@ import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
 
-export const donation = () => {
+export const donation = (item) => {
   // 모바일 여부 확인
   if (!isMobile) {
     // 메타마스크 설치 여부 확인
@@ -21,7 +21,7 @@ export const donation = () => {
             );
             web3.setProvider(infuraWeb3.currentProvider);
             // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
-            const valueInWei = web3.utils.toWei("0.000003", "ether");
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
 
             // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(

@@ -38,7 +38,7 @@ export const buyWishlistDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: item.seller,
+                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
@@ -49,7 +49,6 @@ export const buyWishlistDonation = (item) => {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
                       if (receipt !== undefined && receipt !== null) {
-                        console.log("야옹야옹!");
                         clearInterval(intervalId);
                         resolve({ receipt, txHash });
                       }
