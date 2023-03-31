@@ -24,7 +24,7 @@ export const buyWishlistDonation = (item) => {
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
+              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
             );
 
             const tx = myContract.methods.buyWishilistDonation(
@@ -38,7 +38,7 @@ export const buyWishlistDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
+                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
@@ -66,7 +66,7 @@ export const buyWishlistDonation = (item) => {
                   sendMsg: item.message,
                   supportType: "item",
                   supportTypeUid: item.id,
-                  supportUid: "0",
+                  supportUid: 0,
                   toAddress: item.seller,
                   transactionHash: txHash,
                 };
