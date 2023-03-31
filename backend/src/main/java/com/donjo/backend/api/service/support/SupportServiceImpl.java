@@ -27,7 +27,6 @@ import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.protocol.http.HttpService;
 
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -80,10 +79,8 @@ public class SupportServiceImpl implements SupportService{
 
         // 다음 페이지에 값이 있는지 확인
         boolean hasMore = !nextlist.isEmpty();
-        System.out.println("여기옴?");
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
-        for (Support support : list) {
-            System.out.println(support.getArriveTimeStamp());
+        for (Support support : list) {;
             if (support.getArriveTimeStamp()==null){
                 try {
                     getArriveTimeStamp(support.getTransactionHash());
@@ -92,7 +89,6 @@ public class SupportServiceImpl implements SupportService{
                     e.printStackTrace();
                 }
             }
-            System.out.println("여기옴2?");
             if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
                 FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
@@ -124,7 +120,6 @@ public class SupportServiceImpl implements SupportService{
         FindSupportDetailPayload findSupportDetailPayload;
 //        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
         Optional<SupportSol> supportSol = Optional.ofNullable(supportSolidity.getSupportDetail(toAddress, supportUid).orElseThrow(() -> new NoContentException()));
-        System.out.println("여기는 옴");
         System.out.println(supportSol.get().getTo());
         Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
 
@@ -139,14 +134,14 @@ public class SupportServiceImpl implements SupportService{
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSomeoneSupport(support,toMember);
+            findSupportDetailPayload = FindSupportDetailPayload.fromSomeoneSupport(supportSol,support,toMember);
         }
         else {
             Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.fromMember fromMember = FindSupportDetailPayload.getFromMember(findFromMember);
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSupport(support,fromMember,toMember);
+            findSupportDetailPayload = FindSupportDetailPayload.fromSupport(supportSol,support,fromMember,toMember);
         }
 
 

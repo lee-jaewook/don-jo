@@ -33,6 +33,7 @@ public class SupportSolidity {
     public Optional<SupportSol> getSupportDetail(String address, Long id){
         SupportSol supportSol = null;
         try {
+            // id로 SupportDetail 가져오기
             supportSol = SupportSol.fromSol(contract.getSupportDetail(address, BigInteger.valueOf(id)).send());
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
@@ -48,7 +49,9 @@ public class SupportSolidity {
     public Optional<List<SupportSol>> getSupportList(String address){
         List<SupportSol> list = null;
         try {
+            // address로 SupportList 가져오기
            List<ApplicationHandler.SupportSol> response = contract.getSupportList(address).send();
+           // SupportSol에 담기
            list = response.stream().map(support -> SupportSol.fromSol(support)).collect(Collectors.toList());
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
@@ -65,7 +68,9 @@ public class SupportSolidity {
     public Optional<LocalDateTime> getSendDateTime(String address, Long uid){
         LocalDateTime result = null;
         try {
+            // Address와 Uid로 보낸 시간 가져오기
             BigInteger response = contract.getSupportSendTime(address, BigInteger.valueOf(uid)).send();
+            // 보낸시간 LocalDateTime으로 감싸주기
             result = ConvertUtil.convertToLocalDateTime(response);
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
