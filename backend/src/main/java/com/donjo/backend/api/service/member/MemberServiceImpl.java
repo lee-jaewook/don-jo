@@ -9,6 +9,7 @@ import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.LoginItem;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
@@ -22,9 +23,6 @@ import com.donjo.backend.exception.DuplicateMemberException;
 
 import com.donjo.backend.exception.NoContentException;
 
-import com.donjo.backend.solidity.support.SupportSolidity;
-
-import io.jsonwebtoken.ExpiredJwtException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -49,20 +47,23 @@ import org.web3j.utils.Numeric;
 @Service("MemberService")
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-
+  // PERSONAL_MESSAGE_PREFIX 선언
   public static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
-
+  // MemberRepository 선언
   private final MemberRepository memberRepository;
+  // PasswordEncoder 선언
   private final PasswordEncoder passwordEncoder;
+  // TokenProvider 선언
   private final TokenProvider tokenProvider;
+  // PAGE_NAME 선언
   private final String PAGE_NAME = "pageName";
-
+  // NICK_NAME
   private final String NICK_NAME = "nickName";
-
+  // THEME_COLOR 선언
   private final String THEME_COLOR = "themeColor";
-
+  // IMAGE_PATH 선언
   private final String IMAGE_PATH = "imagePath";
-
+  // WishlistSolidity 선언
   private final WishlistSolidity wishlistSolidity;
 
   @Override
@@ -124,19 +125,18 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
+  public LoginItem loginMember(LoginMemberCond loginMemberCond) {
     boolean check = verifySignature(loginMemberCond.getMemberAddress(), loginMemberCond.getMemberSignature(), loginMemberCond.getSignMessage());
+    // 서명 검증을 진행
     if (check) {
+      // 주어진 회원 주소를 기반으로 데이터베이스에서 해당 회원을 조회 해당 회원의 정보를 이용하여 토큰을 생성하고, 회원 정보와 함께 결과값으로 반환
       Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new UnAuthorizationException("아이디가 존재하지 않습니다."));
-
       Map<String, Object> result = returnToken(member);
-      result.put(PAGE_NAME, member.getPageName());
-      result.put(NICK_NAME, member.getNickname());
-      result.put(THEME_COLOR, member.getThemeColor());
-      result.put(IMAGE_PATH, member.getProfileImagePath());
+      LoginItem loginItem = LoginItem.getInfo(result,member);
 
-// 추가 정보를 포함한 결과값 반환
-      return result;
+
+      // 추가 정보를 포함한 결과값 반환
+      return loginItem;
     }
 
     throw new BadRequestException("잘못된 요청");
@@ -343,6 +343,7 @@ public class MemberServiceImpl implements MemberService {
     List<WishlistSol> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
     // 리스트에 포함된 각각의 위시리스트 정보를 순회하며 wishList 리스트에 추가합니다.
     for (WishlistSol wishlistSol : memberWishLists) {
+      if(wishlistSol.isClosed()) continue;
       WishListItem item = WishListItem.builder(wishlistSol).build();
       wishList.add(item);
     }

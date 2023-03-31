@@ -22,7 +22,7 @@ public class GetItemListPayload {
     boolean hasMore;
     //
     List<ItemDetailPayload> itemList;
-
+    // page,ItemList 입력 받아서 Dto에 저장
     public static GetItemListPayload from(int size, int pageNum, int pageSize,List<ItemSol> itemList){
         return GetItemListPayload.builder()
                 .size(size)

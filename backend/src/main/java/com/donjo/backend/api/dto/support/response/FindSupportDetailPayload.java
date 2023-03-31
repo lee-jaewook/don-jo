@@ -38,7 +38,7 @@ public class FindSupportDetailPayload {
     private String sendMsg;
 
 //    private Long supportStatus;
-
+    // fromMember 클래스 설정
     @Getter
     @Setter
     @ToString
@@ -52,6 +52,7 @@ public class FindSupportDetailPayload {
         private String fromMemberNickname;
 
     }
+    // toMember 클래스 설정
     @Getter
     @Setter
     @ToString
@@ -63,7 +64,7 @@ public class FindSupportDetailPayload {
         private String toMemberProfileImagePath;
 
     }
-
+    //Member를 입력 받아 fromMember에 넣기
     public static FindSupportDetailPayload.fromMember getFromMember(Member member){
         FindSupportDetailPayload.fromMember newFromMember = new FindSupportDetailPayload.fromMember();
         newFromMember.setFromMemberAddress(member.getAddress());
@@ -72,6 +73,7 @@ public class FindSupportDetailPayload {
         newFromMember.setFromMemberNickname(member.getNickname());
         return newFromMember;
     }
+    //Member를 입력 받아 toMember에 넣기
     public static FindSupportDetailPayload.toMember getToMember(Member member){
         FindSupportDetailPayload.toMember newToMember = new FindSupportDetailPayload.toMember();
         newToMember.setToMemberAddress(member.getAddress());
@@ -79,29 +81,29 @@ public class FindSupportDetailPayload {
         newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
         return newToMember;
     }
-
-    public static FindSupportDetailPayload fromSupport(Support support,fromMember fromMember, toMember toMember){
+    // 입력 받아 Dto에 저장
+    public static FindSupportDetailPayload fromSupport(Optional<SupportSol> supportsol, Support support, fromMember fromMember, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
                 .from(fromMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(supportsol.get().getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
         return findSupportDetailPayload;
     }
-
-    public static FindSupportDetailPayload fromSomeoneSupport(Support support,toMember toMember){
+    // 입력 받아 Dto에 저장 fromMember가 없을 때
+    public static FindSupportDetailPayload fromSomeoneSupport(Optional<SupportSol> supportsol, Support support, toMember toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .to(toMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(supportsol.get().getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())

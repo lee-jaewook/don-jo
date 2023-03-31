@@ -4,8 +4,10 @@ import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
+import com.donjo.backend.api.dto.support.FindSupportItem;
 import com.donjo.backend.api.dto.support.response.FindSupportPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
+import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Support;
@@ -17,6 +19,8 @@ import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.support.SupportSolidity;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +31,6 @@ import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.protocol.http.HttpService;
 
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -40,16 +43,24 @@ import java.util.*;
 @Service("SupportService")
 @RequiredArgsConstructor
 public class SupportServiceImpl implements SupportService{
+    // logger 선언
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    // MemberRepository 선언
     private final MemberRepository memberRepository;
+    // SupportSolidity 선언
     private final SupportSolidity supportSolidity;
+    // DonationSettingRepository 선언
     private final DonationSettingRepository donationSettingRepository;
+    //SupportRepository 선언
     private final SupportRepository supportRepository;
+    // SupportRepositorySupport 선언
     private final SupportRepositorySupport supportRepositorySupport;
 
     public Double getEarning(String address,String type,int period){
+        logger.info("supportRepositorySupport.findEarning 요청");
         // Type과 Period를 변수로 넘겨 Support 리스트 가져오기
         Optional<List<Support>> supportList = Optional.ofNullable(supportRepositorySupport.findEarning(address,type,period));
-
+        logger.info("결과값을 Wei에서 ETH로 변환");
         // list를 돌면서 amount값을 더해주고 총값을 10^18로 나눠준다(wei를 ETH로 변환)
         return supportList.map(list -> list.stream()
                         .mapToLong(Support::getAmount)
@@ -60,15 +71,17 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public void createSupports(AddSupportCond dto){
+        logger.info("supportSolidity.getSendDateTime에서 sendTime 요청");
         // contract가서 보낸시간을 가져오고, dto의 값과 가져온 sendTime값을 넣어주고 저장한다.
         LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
                 .orElseThrow(() -> new NoContentException());
+        logger.info("DB 후원 저장");
         supportRepository.save(dto.toSupport(sendTime));
     }
     @Override
-    public Map<String, Object> getSupports(String memberAddress, String type, int pageNum, int pageSize){
+    public FindSupportPayload getSupports(String memberAddress, String type, int pageNum, int pageSize){
         // Dto 리스트배열 생성
-        List<FindSupportPayload> findSupportPayloadList = new ArrayList<>();
+        List<FindSupportItem> findSupportItemList = new ArrayList<>();
 
         // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -80,10 +93,8 @@ public class SupportServiceImpl implements SupportService{
 
         // 다음 페이지에 값이 있는지 확인
         boolean hasMore = !nextlist.isEmpty();
-        System.out.println("여기옴?");
         // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
-        for (Support support : list) {
-            System.out.println(support.getArriveTimeStamp());
+        for (Support support : list) {;
             if (support.getArriveTimeStamp()==null){
                 try {
                     getArriveTimeStamp(support.getTransactionHash());
@@ -92,29 +103,24 @@ public class SupportServiceImpl implements SupportService{
                     e.printStackTrace();
                 }
             }
-            System.out.println("여기옴2?");
             if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
-                FindSupportPayload findSupportPayload = FindSupportPayload.getSomeoneSupport(support,toMember);
-                findSupportPayloadList.add(findSupportPayload);
+                FindSupportItem.toMember toMember = FindSupportItem.getToMember(findToMember);
+                FindSupportItem findSupportItem = FindSupportItem.getSomeoneSupport(support,toMember);
+                findSupportItemList.add(findSupportItem);
             }
             else {
                 Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
                 Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                FindSupportPayload.fromMember fromMember = FindSupportPayload.getFromMember(findFromMember);
-                FindSupportPayload.toMember toMember = FindSupportPayload.getToMember(findToMember);
-                FindSupportPayload findSupportPayload = FindSupportPayload.getSupport(support, fromMember,toMember);
-                findSupportPayloadList.add(findSupportPayload);
+                FindSupportItem.fromMember fromMember = FindSupportItem.getFromMember(findFromMember);
+                FindSupportItem.toMember toMember = FindSupportItem.getToMember(findToMember);
+                FindSupportItem findSupportItem = FindSupportItem.getSupport(support, fromMember,toMember);
+                findSupportItemList.add(findSupportItem);
             }
         }
 
         // supportList와 next페이지가 있는지 hashMore 던져줌
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("hasMore", hasMore);
-        resultMap.put("supportList", findSupportPayloadList);
-
-        return resultMap;
+        return FindSupportPayload.getSupportList(hasMore,findSupportItemList);
     }
 
     @Override
@@ -124,7 +130,6 @@ public class SupportServiceImpl implements SupportService{
         FindSupportDetailPayload findSupportDetailPayload;
 //        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
         Optional<SupportSol> supportSol = Optional.ofNullable(supportSolidity.getSupportDetail(toAddress, supportUid).orElseThrow(() -> new NoContentException()));
-        System.out.println("여기는 옴");
         System.out.println(supportSol.get().getTo());
         Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
 
@@ -139,14 +144,14 @@ public class SupportServiceImpl implements SupportService{
         if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSomeoneSupport(support,toMember);
+            findSupportDetailPayload = FindSupportDetailPayload.fromSomeoneSupport(supportSol,support,toMember);
         }
         else {
             Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
             Member findToMember = memberRepository.findById(support.getToAddress()).get();
             FindSupportDetailPayload.fromMember fromMember = FindSupportDetailPayload.getFromMember(findFromMember);
             FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSupport(support,fromMember,toMember);
+            findSupportDetailPayload = FindSupportDetailPayload.fromSupport(supportSol,support,fromMember,toMember);
         }
 
 
