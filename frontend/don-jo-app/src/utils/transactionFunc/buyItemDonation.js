@@ -27,9 +27,14 @@ export const buyItemDonation = (item) => {
             // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
+              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
             );
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
+
+            const event = myContract.events.SupportIdEvent();
+            event.on("data", (result) => {
+              console.log("하하하하하ㅏ하: ", result);
+            });
 
             // myContract.methods
             //   .buyItemDonation(item.seller, item.id)
@@ -53,7 +58,7 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
+                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
                     value: valueInWei.toString(),
                     // gas: "100000000000000000",
                     data: tx.encodeABI(),
@@ -78,22 +83,18 @@ export const buyItemDonation = (item) => {
                 console.log("receipt: ", receipt);
                 // console.log("receipt.returnValues: ", receipt.returnValues);
                 // console.log("receipt.returnValues[0]", receipt.returnValues[0]);
-                let val;
-                for (const log of receipt.logs) {
-                  console.log("log.topics[0]: ", log.topics[0]);
-                  console.log(
-                    web3.eth.abi.decodeParameter("uint64", log.topics[0])
-                  );
-                  if (log.topics[0] === web3.utils.sha3("return (uint64)")) {
-                    val = web3.eth.abi.decodeParameter("uint64", log.data);
-                    console.log("여기로와?");
-                    console.log("Returned value: ", val);
-                  }
-                }
-                const cccc = myContract.methods
-                  .buyItemDonation(item.seller, item.id)
-                  .call()
-                  .then((res) => console.log("Res: ", res));
+                // let val;
+                // for (const log of receipt.logs) {
+                //   console.log("log.topics[0]: ", log.topics[0]);
+                //   console.log(
+                //     web3.eth.abi.decodeParameter("uint64", log.topics[0])
+                //   );
+                //   if (log.topics[0] === web3.utils.sha3("SupportIdEvent")) {
+                //     val = web3.eth.abi.decodeParameter("uint64", log.data);
+                //     console.log("여기로와?");
+                //     console.log("Returned value: ", val);
+                //   }
+                // }
 
                 // myContract.methods
                 //   .buyItemDonation(item.seller, item.id)
@@ -138,7 +139,7 @@ export const buyItemDonation = (item) => {
                   sendMsg: "",
                   supportType: "item",
                   supportTypeUid: item.id,
-                  supportUid: val,
+                  supportUid: ,
                   toAddress: item.seller,
                   transactionHash: txHash,
                 };
