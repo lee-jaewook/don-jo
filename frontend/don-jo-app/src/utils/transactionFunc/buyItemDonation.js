@@ -139,7 +139,7 @@ export const buyItemDonation = (item) => {
                   sendMsg: "",
                   supportType: "item",
                   supportTypeUid: item.id,
-                  supportUid: ,
+                  supportUid: 0,
                   toAddress: item.seller,
                   transactionHash: txHash,
                 };
