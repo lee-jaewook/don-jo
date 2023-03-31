@@ -27,6 +27,7 @@ public class WishlistSolidity {
     public Optional<List<WishlistSol>> getMemberWishLists(String address){
         List<WishlistSol> list = null;
         try {
+            // Address로 List에 담기
             List<ApplicationHandler.WishlistSol> response = contract.getMemberWishLists(address).send();
             list = new ArrayList<>();
             for (ApplicationHandler.WishlistSol wishlist : response) {
@@ -42,7 +43,9 @@ public class WishlistSolidity {
     public Optional<WishlistSol> getMemberWishListDetail(Long id){
         WishlistSol wishlistSol = null;
         try {
+            //id로 디테일 정보 가져오기
             ApplicationHandler.WishlistSol response = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send();
+            // wishlistSol에 담기
             wishlistSol = WishlistSol.fromSol(response);
         } catch (Exception e) {
             throw new BadRequestException(e.getMessage());
@@ -53,6 +56,7 @@ public class WishlistSolidity {
     public void addMemberWishList(WishlistSol wishlistSol){
         try {
             log.info("call add wishlist sol");
+            // 위시리스트 형태 변환해서 넘기기(위시리스트 추가)
             contract.addMemberWishList(wishlistSol.toSol()).send();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -62,8 +66,10 @@ public class WishlistSolidity {
 
     public void deleteMemberWishlist(String address, Long id){
         try {
+            // id로 디테일 가져오기
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(id)).send().seller;
             if(!seller.equalsIgnoreCase(address)) throw new UnAuthorizationException("판매자가 아닙니다");
+            // id로 삭제하기
             contract.deleteMemberWishlist(address, BigInteger.valueOf(id)).send();
         }
         catch (UnAuthorizationException e1){
@@ -76,9 +82,11 @@ public class WishlistSolidity {
 
     public void updateMemberWishlist(WishlistSol wishlistSol){
         try {
+            // id로 위시리스트 가져오기
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlistSol.getId())).send().seller;
             if(!seller.equalsIgnoreCase(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
             System.out.println("컨트랙트 호출 !");
+            // 위시리스트 업데이트
             contract.updateMemberWishlist(wishlistSol.toSol()).send();
         }
         catch (UnAuthorizationException e1){
