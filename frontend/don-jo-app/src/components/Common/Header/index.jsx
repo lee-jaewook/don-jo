@@ -112,20 +112,20 @@ const Header = () => {
    *
    */
 
-  // const doSignUp = () => {
-  //   const signUpMemberCond = {};
-  //   //회원가입하는 함수
-  //   memberApi
-  //     .signUp(signUpMemberCond)
-  //     .then((res) => {
-  //       console.log("회원가입 성공: ", res);
-  //       localStorage.setItem("accesstoken", res.headers.accesstoken);
-  //       sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
-  //     })
-  //     .catch((error) => {
-  //       console.log("회원가입 실패");
-  //     });
-  // };
+  const doSignUp = () => {
+    const signUpMemberCond = {};
+    //회원가입하는 함수
+    memberApi
+      .signUp(signUpMemberCond)
+      .then((res) => {
+        console.log("회원가입 성공: ", res);
+        localStorage.setItem("accesstoken", res.headers.accesstoken);
+        sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
+      })
+      .catch((error) => {
+        console.log("회원가입 실패");
+      });
+  };
 
   return (
     <S.HeaderContainer>
