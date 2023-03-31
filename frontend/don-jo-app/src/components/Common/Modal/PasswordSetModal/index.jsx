@@ -51,7 +51,8 @@ const PasswordSetModal = ({ handleSetShowModal, setPassword, doSignUp }) => {
       }
       // 이전 비밀번호와 일치한지
       else if (prevPassword === inputPassword) {
-        setPassword(inputPassword);
+        // setPassword(inputPassword);
+        doSignUp(inputPassword);
         closeModal();
       }
       // 이전 비밀번호와 다르다면

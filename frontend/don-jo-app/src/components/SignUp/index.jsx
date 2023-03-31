@@ -1,6 +1,6 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
 import BasicTitle from "../Common/BasicTitle";
 import BasicInput from "../Common/BasicInput";
