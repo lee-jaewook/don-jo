@@ -35,6 +35,7 @@ public class ItemSol {
     private boolean isDeleted;
     // 아이템 판매자
     private String seller;
+    // 블록체인 가능한 형태로 변환
     public ApplicationHandler.ItemSol toSol(){
         BigInteger solId = BigInteger.valueOf(id);
         byte[] solTitle = title.getBytes(StandardCharsets.UTF_8);
@@ -48,7 +49,7 @@ public class ItemSol {
         String solSeller = seller;
         return new ApplicationHandler.ItemSol(solId, solTitle, solImgPath, solDescription, solPrice, solSalesCount, solMessage, solFilePath, solIsDeleted, solSeller);
     }
-
+    // ItemSol에 데이터 저장
     public static ItemSol fromSol(ApplicationHandler.ItemSol item){
         return ItemSol.builder()
                 .id(item.id.longValue())
