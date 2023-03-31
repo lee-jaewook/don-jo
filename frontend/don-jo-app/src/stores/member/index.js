@@ -14,6 +14,9 @@ export const memberSlice = createSlice({
   name: "member",
   initialState,
   reducers: {
+    setWallet(state, action) {
+      state.walletAddress = action.payload.walletAddress;
+    },
     setLogIn(state, action) {
       state.isLogIn = true;
       state.pageName = action.payload.pageName;
@@ -42,6 +45,7 @@ export const memberSlice = createSlice({
 });
 
 export const {
+  setWallet,
   setLogIn,
   setLogOut,
   setLoading,

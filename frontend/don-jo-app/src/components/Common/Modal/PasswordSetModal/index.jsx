@@ -12,7 +12,7 @@ const PasswordSetModal = ({ handleSetShowModal, setPassword, doSignUp }) => {
   //패스워드 모달 창 닫기
   const closeModal = () => {
     document.body.style.overflow = "auto";
-    handleSetShowModal(false);
+    handleSetShowModal();
   };
 
   //0~9 배열
@@ -51,7 +51,8 @@ const PasswordSetModal = ({ handleSetShowModal, setPassword, doSignUp }) => {
       }
       // 이전 비밀번호와 일치한지
       else if (prevPassword === inputPassword) {
-        setPassword(inputPassword);
+        // setPassword(inputPassword);
+        doSignUp(inputPassword);
         closeModal();
       }
       // 이전 비밀번호와 다르다면
