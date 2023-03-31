@@ -3,7 +3,8 @@ import ProfileImg from "../ProfileImg";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import { logIn } from "../../../utils/logIn";
+import { metamaskLogIn } from "../../../utils/metamaskLogIn";
+import { walletConnectLogIn } from "../../../utils/walletConnectLogIn";
 import { useDispatch, useSelector } from "react-redux";
 import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
@@ -11,6 +12,7 @@ import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
 import PasswordSetModal from "../Modal/PasswordSetModal";
 import { checkSignUpValidation } from "../../../utils/validation/checkSignUpValidation";
 import { memberApi } from "../../../api/member";
+import SelectBox from "./SelectBox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -77,14 +79,14 @@ const Header = () => {
   };
 
   /**
-   * handleLogInClick - LogIn 함수
+   * handleMetamaskLogInClick - 메타마스크 LogIn 함수
    * 설명:
    * Start 버튼 클릭에 대한 이벤트 함수.
    * 회원일 경우, 로그인 처리
    * 비회원일 경우, 회원가입 모달 띄우기
    */
-  const handleLogInClick = () => {
-    logIn({
+  const handleMetamaskLogInClick = () => {
+    metamaskLogIn({
       dispatch,
       handleModalOpen: () => {
         setIsShowSignUpModal(true);
@@ -127,6 +129,21 @@ const Header = () => {
       });
   };
 
+  /**
+   * handleWalletConnectLogInClick - 월렛커넥트 LogIn 함수
+   * 설명:
+   * 회원일 경우, 로그인 처리
+   * 비회원일 경우, 회원가입 모달 띄우기
+   */
+  const handleWalletConnectLogInClick = () => {
+    walletConnectLogIn({
+      dispatch,
+      handleModalOpen: () => {
+        setIsShowSignUpModal(true);
+      },
+    });
+  };
+
   return (
     <S.HeaderContainer>
       <S.Header>
@@ -150,7 +167,14 @@ const Header = () => {
               isLocalSrc={isLocalSrc}
             />
           ) : (
-            <S.Startbtn onClick={handleLogInClick}>Start</S.Startbtn>
+            <SelectBox
+              metamaskLogin={handleMetamaskLogInClick}
+              walletConnectLogin={() => {
+                console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+              }}
+            >
+              Start
+            </SelectBox>
           )}
         </S.ProfileImgContainer>
       </S.Header>
