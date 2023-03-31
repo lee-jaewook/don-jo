@@ -11,6 +11,7 @@ import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
 import PasswordSetModal from "../Modal/PasswordSetModal";
 import { checkSignUpValidation } from "../../../utils/validation/checkSignUpValidation";
 import { memberApi } from "../../../api/member";
+import SelectBox from "./SelectBox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Header = () => {
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
+  const [isShowStartDropDown, setIsShowStartDropDown] = useState(false);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
   const [userInfo, setUserInfo] = useState({
     nickName: "",
@@ -150,7 +152,14 @@ const Header = () => {
               isLocalSrc={isLocalSrc}
             />
           ) : (
-            <S.Startbtn onClick={handleLogInClick}>Start</S.Startbtn>
+            <SelectBox
+              metamaskLogin={handleLogInClick}
+              walletConnectLogin={() => {
+                console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+              }}
+            >
+              Start
+            </SelectBox>
           )}
         </S.ProfileImgContainer>
       </S.Header>
