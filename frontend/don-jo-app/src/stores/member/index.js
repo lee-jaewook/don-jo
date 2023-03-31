@@ -34,10 +34,20 @@ export const memberSlice = createSlice({
     setProfileImg(state, action) {
       state.profileImagePath = action.payload.profileImagePath;
     },
+
+    setThemeColor(state, action) {
+      state.themeColor = action.payload.themeColor;
+    },
   },
 });
 
-export const { setLogIn, setLogOut, setLoading, setConnected, setProfileImg } =
-  memberSlice.actions;
+export const {
+  setLogIn,
+  setLogOut,
+  setLoading,
+  setConnected,
+  setProfileImg,
+  setThemeColor,
+} = memberSlice.actions;
 
 export default memberSlice.reducer;

@@ -9,6 +9,8 @@ import SignUp from "../../SignUp";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
 import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
 import PasswordSetModal from "../Modal/PasswordSetModal";
+import { checkSignUpValidation } from "../../../utils/validation/checkSignUpValidation";
+import { memberApi } from "../../../api/member";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -28,8 +30,12 @@ const Header = () => {
   const [userInfo, setUserInfo] = useState({
     nickName: "",
     pageName: "",
+    password: "",
   });
-  const [password, setPassword] = useState("");
+  const [profileImgPath, setProfileImgPath] = useState({
+    previewImgUrl: "",
+    file: {},
+  });
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
@@ -48,16 +54,78 @@ const Header = () => {
   }, [location.pathname]);
 
   const handleSignUpModalOpen = () => {
-    setIsShowSignUpModal((prev) => !prev);
+    setIsShowSignUpModal(false);
   };
 
-  const SubmitLogIn = () => {
-    logIn({ dispatch, handleModalOpen: handleSignUpModalOpen });
+  /**
+   * isModalOpen - Signup 모달 함수
+   * 설명:
+   * SignUp 모달에서 닫기 버튼 클릭 시
+   * state 초기화 및 모달 닫기 함수 실행
+   */
+  const isModalOpen = () => {
+    setUserInfo({
+      nickName: "",
+      pageName: "",
+      password: "",
+    });
+    setProfileImgPath({
+      previewImgUrl: "",
+      file: {},
+    });
+    setIsShowSignUpModal(false);
   };
 
-  const doSignUp = () => {
-    //회원가입하는 함수
+  /**
+   * handleLogInClick - LogIn 함수
+   * 설명:
+   * Start 버튼 클릭에 대한 이벤트 함수.
+   * 회원일 경우, 로그인 처리
+   * 비회원일 경우, 회원가입 모달 띄우기
+   */
+  const handleLogInClick = () => {
+    logIn({
+      dispatch,
+      handleModalOpen: () => {
+        setIsShowSignUpModal(true);
+      },
+    });
   };
+
+  /**
+   * handleContinueButtonClick
+   * 설명:
+   * SignUp Modal (회원가입 1단계)에서 Continue 버튼 클릭 시 호출
+   * nickName, pageName의 Validation을 체크
+   * 유효할 경우, SignUp Modal에서 Password Modal로 이동.
+   * 유효하지 않을 경우, alert를 띄우고, SignUp Modal 유지.
+   */
+  const handleContinueButtonClick = () => {
+    if (!checkSignUpValidation(userInfo.nickName, userInfo.pageName)) return;
+    setIsShowSignUpModal(false);
+    setIsShowPasswordSetModal(true);
+  };
+
+  /**
+   * doSignUp - 회원가입 함수
+   * 설명:
+   *
+   */
+
+  // const doSignUp = () => {
+  //   const signUpMemberCond = {};
+  //   //회원가입하는 함수
+  //   memberApi
+  //     .signUp(signUpMemberCond)
+  //     .then((res) => {
+  //       console.log("회원가입 성공: ", res);
+  //       localStorage.setItem("accesstoken", res.headers.accesstoken);
+  //       sessionStorage.setItem("refreshtoken", res.headers.refreshtoken);
+  //     })
+  //     .catch((error) => {
+  //       console.log("회원가입 실패");
+  //     });
+  // };
 
   return (
     <S.HeaderContainer>
@@ -82,23 +150,25 @@ const Header = () => {
               isLocalSrc={isLocalSrc}
             />
           ) : (
-            <S.Startbtn onClick={SubmitLogIn}>Start</S.Startbtn>
+            <S.Startbtn onClick={handleLogInClick}>Start</S.Startbtn>
           )}
         </S.ProfileImgContainer>
       </S.Header>
       {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
       {isShowSignUpModal && (
         <SignUp
-          isModelOpen={setIsShowSignUpModal}
+          isModelOpen={isModalOpen}
           userInfo={userInfo}
           setUserInfo={setUserInfo}
+          handleContinueButtonClick={handleContinueButtonClick}
+          profileImgPath={profileImgPath}
+          setProfileImgPath={setProfileImgPath}
         />
       )}
       {isShowPasswordSetModal && (
         <PasswordSetModal
-          handleSetShowModal={setIsShowPasswordSetModal}
-          setPassword={setPassword}
-          doSignUp={doSignUp}
+          handleSetShowModal={isModalOpen}
+          // doSignUp={doSignUp}
         />
       )}
     </S.HeaderContainer>

@@ -29,10 +29,6 @@ const NavBar = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("profile path ", profileImgPath);
-  }, [profileImgPath]);
-
   return (
     <S.NavBar>
       <Desktop>

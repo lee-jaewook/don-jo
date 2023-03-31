@@ -23,6 +23,15 @@ const DashboardWishlist = () => {
     setUid(id);
   };
 
+  const handleSetShowModal = () => {
+    setShowWishlistModal(false);
+  };
+
+  const handleOnClickButton = () => {
+    setShowWishlistModal(false);
+    setIsShowWishListModifyModal((prev) => !prev);
+  };
+
   const handleGetWishlist = async () => {
     try {
       const {
@@ -66,19 +75,17 @@ const DashboardWishlist = () => {
         <WishlistDetailModal
           uid={uid}
           isDashboard={true}
-          setShowWishlistModal={setShowWishlistModal}
-          setIsShowWishListModifyModal={setIsShowWishListModifyModal}
+          handleSetShowModal={handleSetShowModal}
+          handleOnClickButton={handleOnClickButton}
         />
       )}
-      {/* {
-        isShowWishListModifyModal && (
-          <AddWishlistModal
-          handleSetShowModal={}
+      {isShowWishListModifyModal && (
+        <AddWishlistModal
+          handleSetShowModal={handleOnClickButton}
           callOldData={true}
           wishlistUid={uid}
-          />
-        )
-      } */}
+        />
+      )}
     </S.WishlistContainer>
   );
 };

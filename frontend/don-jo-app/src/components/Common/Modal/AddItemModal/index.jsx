@@ -13,7 +13,9 @@ import { fileSizeValidator } from "../../../../utils/validation/validator";
 import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
+import sendToastMessage from "../../../../utils/sendToastMessage";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -65,7 +67,6 @@ const AddItemModal = ({
 
   const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
-      console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
       setItemInfo({ ...itemInfo, imgPath: "" });
     } else if (id === "file-upload") {
@@ -111,18 +112,18 @@ const AddItemModal = ({
 
   const handleUploadItem = async () => {
     if (itemFile.previewImgUrl === "" && filePath === "") {
-      alert("파일 업로드 가이드 제공");
+      sendToastMessage("🚫 Please register the file");
       return;
     }
 
     if (itemImageFile.previewImgUrl === "" && imgPath === "") {
-      alert("이미지 업로드 가이드 제공");
+      sendToastMessage("🚫 Please register the image");
       return;
     }
 
     // 필수 입력 확인
     if (!message) {
-      alert("안내처리 - 메세지 예정");
+      sendToastMessage("🚫 Please enter a message");
       return;
     }
 
@@ -152,11 +153,12 @@ const AddItemModal = ({
 
     // API 호출
     if (isModify) {
-      itemData = { ...itemData, uid: currentItem.id };
+      itemData = { ...itemData, id: currentItem.id };
       try {
         const { status } = await itemApi.updateItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
+          toast("✨ update!");
         }
       } catch (error) {
         console.log("error: ", error);
@@ -166,6 +168,7 @@ const AddItemModal = ({
         const { status } = await itemApi.registerItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
+          toast("✨ register!");
         }
       } catch (error) {
         console.log("error: ", error);
@@ -176,7 +179,7 @@ const AddItemModal = ({
   useEffect(() => {
     if (isModify) {
       setItemInfo({
-        uid: currentItem.id,
+        id: currentItem.id,
         title: currentItem.title,
         price: currentItem.price,
         description: currentItem.description,
@@ -320,7 +323,7 @@ const AddItemModal = ({
         <S.BasicButtonWrap>
           <S.BasicButtonContainer>
             <BasicButton
-              text="Create"
+              text={isModify ? "Update" : "Create"}
               color="var(--color-primary)"
               handleOnClickButton={handleUploadItem}
             />
