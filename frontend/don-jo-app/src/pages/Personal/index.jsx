@@ -17,6 +17,9 @@ import { colorSet } from "../../data/dashboard";
 
 const Personal = () => {
   const { pageName } = useParams();
+  const { items } = useParams();
+  const { itemId } = useParams();
+
   const navigate = useNavigate();
 
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
@@ -199,6 +202,7 @@ const Personal = () => {
           donationSettingData={donationSettingData}
           wishListData={wishListData}
           isOwner={isOwner}
+          itemId={itemId}
         />
       </S.ContentsContainer>
 

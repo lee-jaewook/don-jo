@@ -23,14 +23,16 @@ const PersonalItems = ({ isOwner }) => {
 
   const getItemList = async () => {
     try {
-      const { data } = await itemApi.getItemList(
-        pageMemberAddress,
-        pageNum,
-        PAGE_SIZE
-      );
-      setPageNum((prev) => prev + 1);
-      setItemList((prev) => [...prev, ...(data.itemList || [])]);
-      setIsEnd(data.hasMore);
+      if (pageMemberAddress !== "") {
+        const { data } = await itemApi.getItemList(
+          pageMemberAddress,
+          pageNum,
+          PAGE_SIZE
+        );
+        setPageNum((prev) => prev + 1);
+        setItemList((prev) => [...prev, ...(data.itemList || [])]);
+        setIsEnd(data.hasMore);
+      }
     } catch (error) {
       console.log("error: ", error);
     }
@@ -38,7 +40,7 @@ const PersonalItems = ({ isOwner }) => {
 
   useEffect(() => {
     getItemList();
-  }, []);
+  }, [pageMemberAddress]);
 
   const handleOnClickShowMoreButton = () => {
     console.log("Show More");
