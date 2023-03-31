@@ -1,6 +1,6 @@
 package com.donjo.backend.solidity.support;
 
-import com.donjo.backend.util.TimeConvertUtil;
+import com.donjo.backend.util.ConvertUtil;
 import lombok.*;
 import org.web3j.applicationhandler.ApplicationHandler;
 
@@ -13,38 +13,39 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class SupportSol {
+    // Support Uid
     public Long id;
-
+    // Support 보낸사람
     public String from;
-
+    // Support 받는사람
     public String to;
-
-    public Long amount;
-
+    // Support 후원 금액
+    public Double amount; // matic
+    // Support 보낸 시간
     public LocalDateTime sendTimestamp;
-
+    // Support 타입
     public Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
-
+    // Support 상태
     public Long supportStatus; // 1 ok
-
+    // Support 내보내기
     public ApplicationHandler.SupportSol toSol(){
         return new ApplicationHandler.SupportSol(
                 BigInteger.valueOf(id),
                 from,
                 to,
-                BigInteger.valueOf(amount),
-                TimeConvertUtil.convertToUint256Timestamp(sendTimestamp),
+                ConvertUtil.doubleToBigInteger(amount),
+                ConvertUtil.convertToUint256Timestamp(sendTimestamp),
                 BigInteger.valueOf(supportType)
         );
     }
-
+    // SupportSol에 담기
     public static SupportSol fromSol(ApplicationHandler.SupportSol s){
         return SupportSol.builder()
                 .id(s.id.longValue())
                 .from(s.from)
                 .to(s.to)
-                .amount(s.amount.longValue())
-                .sendTimestamp(TimeConvertUtil.convertToLocalDateTime(s.sendTimestamp))
+                .amount(ConvertUtil.bigIntegerToDouble(s.amount))
+                .sendTimestamp(ConvertUtil.convertToLocalDateTime(s.sendTimestamp))
                 .supportType(s.supportType.longValue())
                 .supportStatus(1L)
                 .build();

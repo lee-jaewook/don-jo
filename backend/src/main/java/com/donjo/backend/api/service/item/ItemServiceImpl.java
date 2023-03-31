@@ -2,6 +2,7 @@ package com.donjo.backend.api.service.item;
 
 import com.donjo.backend.api.dto.item.request.AddItemCond;
 import com.donjo.backend.api.dto.item.request.UpdateItemCond;
+import com.donjo.backend.api.dto.item.response.GetAllMyItemPayload;
 import com.donjo.backend.api.dto.item.response.GetItemListPayload;
 import com.donjo.backend.api.dto.item.response.ItemDetailPayload;
 import com.donjo.backend.exception.NoContentException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,18 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
+    public List<GetAllMyItemPayload> getAllItems(String address) {
+        // null 체크
+        // 회원의 아이템 목록을 가져옵니다. 이때, orElseThrow() 메소드를 이용하여 결과가 존재하지 않는 경우 예외(NoContentException)를 발생시킵니다.
+        List<ItemSol> list = itemSolidity.getMemberItemList(address)
+                .orElseThrow(()-> new NoContentException());
+
+        // 다음으로, 가져온 아이템 목록을 역순(reverse)으로 정렬합니다.
+        Collections.reverse(list);
+        return list.stream().map(itemSol -> GetAllMyItemPayload.from(itemSol)).collect(Collectors.toList());
+    }
+
+    @Override
     // cond 객체에 address를 추가한 결과를 Solidity 스마트 컨트랙트에 저장합니다.
     public void addItem(String address, AddItemCond cond) {
         itemSolidity.addMemberItem(cond.from(address));
@@ -61,7 +75,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public void updateMemberItem(String address, UpdateItemCond cond) {
         //  cond 객체에 address를 추가한 결과를 Solidity 스마트 컨트랙트에 업데이트
-        itemSolidity.updateMemberItem(cond.from(address, getItemDetail(cond.getUid())));
+        itemSolidity.updateMemberItem(cond.from(address, getItemDetail(cond.getId())));
     }
 
     @Override
@@ -72,7 +86,7 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public ItemDetailPayload getItemDetail(Long uid) {
-        //  getItemDetail 메소드를 사용하여 특정 아이템의 상세 정보를 가져옴
+        //  getItemDetail 메소드를 사용하여 특정 아이템의 상세 정보를 가져옴 없으면 204
         ItemSol itemSol = itemSolidity.getItemDetail(uid)
                 .orElseThrow(()-> new NoContentException("데이터가 없습니다."));
         // 해당 아이템이 삭제된 상태인 경우(isDeleted() 메소드가 NoContentException 예외를 발생
