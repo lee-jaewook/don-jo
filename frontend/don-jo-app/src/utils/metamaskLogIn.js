@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
  * 회원이 아니면, 회원가입 모달
  */
 
-export const logIn = async ({ dispatch, handleModalOpen }) => {
+export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
   // 메타마스크 설치 여부 확인
   if (!isMobile) {
     if (typeof window.ethereum !== "undefined") {
