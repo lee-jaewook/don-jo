@@ -29,8 +29,23 @@ export const buyItemDonation = (item) => {
               ApplicationHandler.abi, // abi 설정
               "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
             );
-
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
+
+            // myContract.methods
+            //   .buyItemDonation(item.seller, item.id)
+            //   .sendTransaction({
+            //     from: accounts[0],
+            //     to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
+            //     value: valueInWei.toString(),
+            //     // gas: "100000000000000000",
+            //     data: tx.encodeABI(),
+            //   })
+            //   .then((receipt) => {
+            //     console.log("receipt: ", receipt);
+            //   })
+            //   .catch((error) => {
+            //     console.log("error: ", error);
+            //   });
 
             window.ethereum
               .request({
@@ -50,46 +65,71 @@ export const buyItemDonation = (item) => {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
                       if (receipt !== undefined && receipt !== null) {
-                        const value = intervalId;
                         clearInterval(intervalId);
-                        console.log("intervalId: ", intervalId);
-                        resolve({ receipt, txHash, value });
+                        resolve({ receipt, txHash });
                       }
                     });
                   }, 1000);
                 });
                 return receiptPromise;
               })
-              .then(({ receipt, txHash, value }) => {
+              .then(({ receipt, txHash }) => {
                 console.log("Transaction successful");
-                // console.log("events: ", events);
                 console.log("receipt: ", receipt);
-                const eventABI = {
-                  anonymous: false,
-                  inputs: [
-                    {
-                      indexed: false,
-                      internalType: "uint64",
-                      name: "value",
-                      type: "uint64",
-                    },
-                  ],
-                  name: "SupportEvent",
-                  type: "event",
-                };
+                // console.log("receipt.returnValues: ", receipt.returnValues);
+                // console.log("receipt.returnValues[0]", receipt.returnValues[0]);
+                let val;
+                for (const log of receipt.logs) {
+                  console.log("log.topics[0]: ", log.topics[0]);
+                  console.log(
+                    web3.eth.abi.decodeParameter("uint64", log.topics[0])
+                  );
+                  if (log.topics[0] === web3.utils.sha3("return (uint64)")) {
+                    val = web3.eth.abi.decodeParameter("uint64", log.data);
+                    console.log("여기로와?");
+                    console.log("Returned value: ", val);
+                  }
+                }
+                const cccc = myContract.methods
+                  .buyItemDonation(item.seller, item.id)
+                  .call()
+                  .then((res) => console.log("Res: ", res));
 
-                const logData1 = receipt.logs[0];
+                // myContract.methods
+                //   .buyItemDonation(item.seller, item.id)
+                //   .call()
+                //   .then((result) => {
+                //     console.log("res: ", result);
+                //   })
+                //   .catch((error) => {
+                //     console.log("error: ", error);
+                //   });
+                // const eventABI = {
+                //   anonymous: false,
+                //   inputs: [
+                //     {
+                //       indexed: false,
+                //       internalType: "uint64",
+                //       name: "value",
+                //       type: "uint64",
+                //     },
+                //   ],
+                //   name: "SupportEvent",
+                //   type: "event",
+                // };
+
+                // const logData1 = receipt.logs[0];
                 // const logData2 = receipt.logs[1].data;
-                const decodeLog1 = web3.eth.abi.decodeLog(
-                  eventABI.inputs,
-                  logData1.data,
-                  logData1.topics
-                );
+                // const decodeLog1 = web3.eth.abi.decodeLog(
+                //   eventABI.inputs,
+                //   logData1.data,
+                //   logData1.topics
+                // );
                 // const decodeLog2 = web3.eth.abi.decodeParameter(
                 //   "uint256",
                 //   logData2
                 // );
-                console.log("decodeLog1: ", decodeLog1.value);
+                // console.log("decodeLog1: ", decodeLog1.value);
                 // console.log("decodeLog2: ", decodeLog2);
 
                 const donationDto = {
@@ -98,7 +138,7 @@ export const buyItemDonation = (item) => {
                   sendMsg: "",
                   supportType: "item",
                   supportTypeUid: item.id,
-                  supportUid: value,
+                  supportUid: val,
                   toAddress: item.seller,
                   transactionHash: txHash,
                 };
