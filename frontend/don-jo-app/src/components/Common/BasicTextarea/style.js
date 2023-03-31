@@ -17,7 +17,12 @@ export const Textarea = styled.textarea`
   ${(props) =>
     props.disabled &&
     `
-    opacity: 0.5;
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
     pointer-events: none;
+
+    ::placeholder {
+      color: #BBBBBB;
+    }
   `}
 `;

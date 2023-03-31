@@ -6,7 +6,12 @@ import PersonalItems from "../PersonalItems";
 import PersonalWishlist from "../PersonalWishlist";
 import PropTypes from "prop-types";
 
-const PersonalContent = ({ donationSettingData, wishListData, isOwner }) => {
+const PersonalContent = ({
+  donationSettingData,
+  wishListData,
+  isOwner,
+  itemId,
+}) => {
   const allTab = [
     {
       index: 0,
@@ -31,7 +36,7 @@ const PersonalContent = ({ donationSettingData, wishListData, isOwner }) => {
     },
   ];
 
-  const { currentItem, changeItem } = useTabs(0, allTab);
+  const { currentItem, changeItem } = useTabs(itemId ? 1 : 0, allTab);
 
   return (
     <S.Container>
@@ -52,4 +57,5 @@ PersonalContent.propTypes = {
   }).isRequired,
   wishListData: PropTypes.array,
   isOwner: PropTypes.bool,
+  itemId: PropTypes.string,
 };
