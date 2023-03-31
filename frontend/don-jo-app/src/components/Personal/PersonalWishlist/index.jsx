@@ -2,11 +2,11 @@ import * as S from "./style";
 import WishlistItem from "../../Common/WishlistItem";
 import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useEffect, useState } from "react";
-import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 import { useSelector } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import { wishlistAPI } from "../../../api/wishlist";
 import PropTypes from "prop-types";
+import AddWishlistModal from "../../Common/Modal/AddWishlistModal";
 
 const PersonalWishlist = ({ isOwner }) => {
   //현재 페이지의 멤버 지갑주소 정보
@@ -16,6 +16,7 @@ const PersonalWishlist = ({ isOwner }) => {
 
   const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
     useState(false);
+  const [isShowWishlistAddModal, setIsShowWishlistAddModal] = useState(false);
   const [thisItemUID, setThisItemUId] = useState(0);
 
   const [pageNum, setPageNum] = useState(0);
@@ -51,7 +52,11 @@ const PersonalWishlist = ({ isOwner }) => {
     return (
       <S.CardContainer>
         {isOwner && (
-          <S.AddCard>
+          <S.AddCard
+            onClick={() => {
+              setIsShowWishlistAddModal(true);
+            }}
+          >
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
             </S.IconWrapper>
@@ -97,13 +102,8 @@ const PersonalWishlist = ({ isOwner }) => {
         <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
       )}
 
-      {isShowWishlistDetailModal && (
-        <WishlistDetailModal
-          uid={thisItemUID}
-          isDashboard={false}
-          handleSetShowModal={setIsShowWishlistDetailModal}
-          handleOnClickButton={() => {}}
-        />
+      {isShowWishlistAddModal && (
+        <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
       )}
     </S.Container>
   );
