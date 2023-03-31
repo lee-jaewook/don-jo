@@ -5,7 +5,7 @@ import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
 import BasicTitle from "../Common/BasicTitle";
 import BasicInput from "../Common/BasicInput";
 import BasicButton from "../Common/BasicButton";
-import FullScreenModal from "../Common/Modal/FullScreenModal";
+import BasicModal from "../Common/Modal/BasicModal";
 import { fileSizeValidator } from "../../utils/validation/validator";
 
 /**
@@ -59,7 +59,7 @@ export const SignUp = ({
   };
 
   return (
-    <FullScreenModal handleSetShowModal={isModelOpen}>
+    <BasicModal handleSetShowModal={isModelOpen}>
       <S.ContentWrap>
         <BasicTitle text="Profile Photo" />
         <S.UserProfileImg
@@ -120,7 +120,7 @@ export const SignUp = ({
         color="var(--color-primary)"
         handleOnClickButton={handleContinueButtonClick}
       />
-    </FullScreenModal>
+    </BasicModal>
   );
 };
 
