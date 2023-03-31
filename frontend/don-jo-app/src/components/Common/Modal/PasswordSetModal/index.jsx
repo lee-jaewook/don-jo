@@ -12,7 +12,7 @@ const PasswordSetModal = ({ handleSetShowModal, setPassword, doSignUp }) => {
   //패스워드 모달 창 닫기
   const closeModal = () => {
     document.body.style.overflow = "auto";
-    handleSetShowModal(false);
+    handleSetShowModal();
   };
 
   //0~9 배열
