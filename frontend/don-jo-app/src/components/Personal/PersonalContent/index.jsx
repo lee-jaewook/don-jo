@@ -27,7 +27,12 @@ const PersonalContent = ({
     {
       index: 1,
       name: "Items",
-      component: <PersonalItems isOwner={isOwner} />,
+      component: (
+        <PersonalItems
+          isOwner={isOwner}
+          itemId={itemId ? Number(itemId) : null}
+        />
+      ),
     },
     {
       index: 2,

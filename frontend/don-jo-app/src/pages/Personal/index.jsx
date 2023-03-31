@@ -17,7 +17,6 @@ import { colorSet } from "../../data/dashboard";
 
 const Personal = () => {
   const { pageName } = useParams();
-  const { items } = useParams();
   const { itemId } = useParams();
 
   const navigate = useNavigate();
