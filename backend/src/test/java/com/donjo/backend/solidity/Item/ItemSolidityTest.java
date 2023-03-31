@@ -38,7 +38,7 @@ class ItemSolidityTest {
         String title = "Title " + id;
         String imgPath = "ImgPath " + id;
         String description = "Description " + id;
-        Long price = 1000000L;
+        Double price = 1000000.0;
         String message = "Message " + id;
         String filePath = "FilePath " + id;
         boolean isDeleted = false;
@@ -48,7 +48,7 @@ class ItemSolidityTest {
                 .imgPath(imgPath)
                 .description(description)
                 .price(price)
-                .salesAmount(0L)
+                .salesAmount(0.0)
                 .salesCount(0L)
                 .message(message)
                 .filePath(filePath)

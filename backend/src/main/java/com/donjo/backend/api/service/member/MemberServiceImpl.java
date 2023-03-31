@@ -343,6 +343,7 @@ public class MemberServiceImpl implements MemberService {
     List<WishlistSol> memberWishLists = wishlistSolidity.getMemberWishLists(member.getAddress()).orElse(Collections.emptyList());
     // 리스트에 포함된 각각의 위시리스트 정보를 순회하며 wishList 리스트에 추가합니다.
     for (WishlistSol wishlistSol : memberWishLists) {
+      if(wishlistSol.isClosed()) continue;
       WishListItem item = WishListItem.builder(wishlistSol).build();
       wishList.add(item);
     }

@@ -16,16 +16,25 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder(builderMethodName = "MakeSupportItemBuilder")
 public class SupportItem {
+  // Support Hash값
   private String transactionHash;
+  // SupportType(donation,item,wishlist)
   private String supportType;
+  // Uid값
   private Long id;
+  // 보낸 지갑 주소
   private FromMemberItem fromMember;
+  // 보낸 지갑 주소
   private ToMemberItem toMember;
-  private Long amountEth;
+  // 보낸 이더
+  private Double amountEth;
+  // 보낸 시간
   private LocalDateTime sendTimeStamp;
+  // 도착 시간
   private LocalDateTime arriveStamp;
+  // 후원할 때 보낸 메세지
   private String sendMsg;
-
+  // 후원 Dto에 담기
   public static SupportItem builder(Support support, FromMemberItem fromMember, ToMemberItem toMember, SupportSol blockSupportSol) {
     return MakeSupportItemBuilder()
         .transactionHash(support.getTransactionHash())
