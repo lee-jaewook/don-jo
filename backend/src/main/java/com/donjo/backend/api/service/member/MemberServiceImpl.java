@@ -49,20 +49,23 @@ import org.web3j.utils.Numeric;
 @Service("MemberService")
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-
+  // PERSONAL_MESSAGE_PREFIX 선언
   public static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
-
+  // MemberRepository 선언
   private final MemberRepository memberRepository;
+  // PasswordEncoder 선언
   private final PasswordEncoder passwordEncoder;
+  // TokenProvider 선언
   private final TokenProvider tokenProvider;
+  // PAGE_NAME 선언
   private final String PAGE_NAME = "pageName";
-
+  // NICK_NAME
   private final String NICK_NAME = "nickName";
-
+  // THEME_COLOR 선언
   private final String THEME_COLOR = "themeColor";
-
+  // IMAGE_PATH 선언
   private final String IMAGE_PATH = "imagePath";
-
+  // WishlistSolidity 선언
   private final WishlistSolidity wishlistSolidity;
 
   @Override
@@ -126,7 +129,9 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public Map<String, Object> loginMember(LoginMemberCond loginMemberCond) {
     boolean check = verifySignature(loginMemberCond.getMemberAddress(), loginMemberCond.getMemberSignature(), loginMemberCond.getSignMessage());
+    // 로 서명 검증을 진행
     if (check) {
+      // 주어진 회원 주소를 기반으로 데이터베이스에서 해당 회원을 조회 해당 회원의 정보를 이용하여 토큰을 생성하고, 회원 정보와 함께 결과값으로 반환
       Member member = Optional.ofNullable(memberRepository.findByAddress(loginMemberCond.getMemberAddress())).orElseThrow(() -> new UnAuthorizationException("아이디가 존재하지 않습니다."));
 
       Map<String, Object> result = returnToken(member);

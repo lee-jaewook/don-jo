@@ -39,10 +39,15 @@ import java.util.*;
 @Service("SupportService")
 @RequiredArgsConstructor
 public class SupportServiceImpl implements SupportService{
+    // MemberRepository 선언
     private final MemberRepository memberRepository;
+    // SupportSolidity 선언
     private final SupportSolidity supportSolidity;
+    // DonationSettingRepository 선언
     private final DonationSettingRepository donationSettingRepository;
+    //SupportRepository 선언
     private final SupportRepository supportRepository;
+    // SupportRepositorySupport 선언
     private final SupportRepositorySupport supportRepositorySupport;
 
     public Double getEarning(String address,String type,int period){

@@ -35,7 +35,7 @@ public class FindSupportPayload {
     private String transactionHash;
 
 //    private LocalDateTime sendTimeStamp;
-
+    // fromMember 클래스 저장
     @Getter
     @Setter
     @ToString
@@ -49,6 +49,7 @@ public class FindSupportPayload {
         private String fromMemberNickname;
 
     }
+    // toMember 클래스 저장
     @Getter
     @Setter
     @ToString
@@ -60,7 +61,7 @@ public class FindSupportPayload {
         private String toMemberProfileImagePath;
 
     }
-
+    // Member 입력 받아 fromMember 저장
     public static FindSupportPayload.fromMember getFromMember(Member member){
         FindSupportPayload.fromMember newFromMember = new FindSupportPayload.fromMember();
         newFromMember.setFromMemberAddress(member.getAddress());
@@ -69,6 +70,7 @@ public class FindSupportPayload {
         newFromMember.setFromMemberNickname(member.getNickname());
         return newFromMember;
     }
+    // Member 입력 받아 toMember 저장
     public static FindSupportPayload.toMember getToMember(Member member){
         FindSupportPayload.toMember newToMember = new FindSupportPayload.toMember();
         newToMember.setToMemberAddress(member.getAddress());
@@ -76,6 +78,7 @@ public class FindSupportPayload {
         newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
         return newToMember;
     }
+    // 입력 받아 Dto에 저장
     public static FindSupportPayload getSupport(Support support, fromMember fromMemberAddress, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
                 .transactionHash(support.getTransactionHash())
@@ -90,6 +93,7 @@ public class FindSupportPayload {
                 .build();
         return findSupportPayload;
     }
+    // 입력 받아 Dto에 저장 fromMember가 없을 때
     public static FindSupportPayload getSomeoneSupport(Support support, toMember toMemberAddress){
         FindSupportPayload findSupportPayload = FindSupportPayload.builder()
                 .transactionHash(support.getTransactionHash())

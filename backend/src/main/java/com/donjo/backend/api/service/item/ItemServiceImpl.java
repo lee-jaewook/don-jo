@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService{
-
+    // itemSolidity를 선언
     private final ItemSolidity itemSolidity;
 
     @Override
