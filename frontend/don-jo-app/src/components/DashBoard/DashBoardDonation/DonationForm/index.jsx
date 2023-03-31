@@ -7,6 +7,7 @@ import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import { supportApi } from "../../../../api/support";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 const DonationForm = () => {
   const PricePerData = [1, 2, 3, 4, 5];
@@ -46,6 +47,7 @@ const DonationForm = () => {
 
     try {
       await supportApi.updateDonationSettings(result);
+      sendToastMessage("✨ Saved successfully.");
     } catch (error) {
       console.log("error: ", error);
     }
