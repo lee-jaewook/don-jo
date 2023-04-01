@@ -43,32 +43,32 @@ const Profile = () => {
     },
   });
 
-  const [isShowAskContinueLoginModal, setIsShowAskContinueLoginModal] =
-    useState(false);
+  // const [isShowAskContinueLoginModal, setIsShowAskContinueLoginModal] =
+  //   useState(false);
 
-  const AskContinueLogin = () => {
-    const doSign = () => {
-      signMessage({ message: "don jo log in test" });
-      setIsShowAskContinueLoginModal(false);
-    };
+  // const AskContinueLogin = () => {
+  //   const doSign = () => {
+  //     signMessage({ message: "don jo log in test" });
+  //     setIsShowAskContinueLoginModal(false);
+  //   };
 
-    return (
-      <BasicModal handleSetShowModal={setIsShowAskContinueLoginModal} width={1}>
-        <S.Container>
-          <S.Title>Your account is</S.Title>
-          <S.AddressWrapper>{address}</S.AddressWrapper>
-          <S.BasicButtonWrapper>
-            <BasicButton
-              text="Sign In"
-              isBackground={true}
-              color="black"
-              handleOnClickButton={doSign}
-            />
-          </S.BasicButtonWrapper>
-        </S.Container>
-      </BasicModal>
-    );
-  };
+  //   return (
+  //     <BasicModal handleSetShowModal={setIsShowAskContinueLoginModal} width={1}>
+  //       <S.Container>
+  //         <S.Title>Your account is</S.Title>
+  //         <S.AddressWrapper>{address}</S.AddressWrapper>
+  //         <S.BasicButtonWrapper>
+  //           <BasicButton
+  //             text="Sign In"
+  //             isBackground={true}
+  //             color="black"
+  //             handleOnClickButton={doSign}
+  //           />
+  //         </S.BasicButtonWrapper>
+  //       </S.Container>
+  //     </BasicModal>
+  //   );
+  // };
 
   const SignUpCheck = () => {
     // signMessage({ message: "don jo log in test" });
@@ -76,7 +76,11 @@ const Profile = () => {
       console.log("wallet connect 주소:", address);
       if (status === 200) {
         console.log("회원정보 있음");
-        setIsShowAskContinueLoginModal(true);
+        if (window.confirm("Do you want to SignIn?")) {
+          signMessage({ message: "don jo log in test" });
+        } else {
+          //월렛 디스커넥트
+        }
       } else if (status === 204) {
         console.log("회원가입 모달 띄우기");
         // handleSignUpModalOpen();
@@ -103,7 +107,7 @@ const Profile = () => {
       </div>
       {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
       {/* {<SignUp isModelOpen={setIsShowSignUpModal} />} */}
-      {isShowAskContinueLoginModal && <AskContinueLogin />}
+      {/* {isShowAskContinueLoginModal && <AskContinueLogin />} */}
     </>
   );
 };
