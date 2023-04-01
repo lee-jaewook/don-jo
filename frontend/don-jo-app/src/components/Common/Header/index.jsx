@@ -218,14 +218,17 @@ const Header = () => {
               isLocalSrc={isLocalSrc}
             />
           ) : (
-            <SelectBox
-              metamaskLogin={handleMetamaskLogInClick}
-              walletConnectLogin={() => {
-                console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
-              }}
-            >
-              Start
-            </SelectBox>
+            <div style={{ display: "flex" }}>
+              <SelectBox
+                metamaskLogin={handleMetamaskLogInClick}
+                walletConnectLogin={() => {
+                  console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+                }}
+              >
+                Start
+              </SelectBox>
+              <WalletConnectLogin />
+            </div>
           )}
         </S.ProfileImgContainer>
       </S.Header>
