@@ -14,7 +14,6 @@ import { checkSignUpValidation } from "../../../utils/validation/checkSignUpVali
 import { memberApi } from "../../../api/member";
 import SelectBox from "./SelectBox";
 import { fileApi } from "../../../api/file";
-import sendToastMessage from "../../../utils/sendToastMessage";
 import WalletConnectLogin from "../WalletConnectLogin";
 
 const IMAGE_TYPE = "img/item";
