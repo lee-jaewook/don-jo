@@ -15,6 +15,8 @@ import { memberApi } from "../../../api/member";
 import SelectBox from "./SelectBox";
 import { fileApi } from "../../../api/file";
 import sendToastMessage from "../../../utils/sendToastMessage";
+import WalletConnectLogin from "../WalletConnectLogin";
+
 const IMAGE_TYPE = "img/item";
 
 const Header = () => {
@@ -218,7 +220,9 @@ const Header = () => {
           ) : (
             <SelectBox
               metamaskLogin={handleMetamaskLogInClick}
-              walletConnectLogin={handleWalletConnectLogInClick}
+              walletConnectLogin={() => {
+                console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+              }}
             >
               Start
             </SelectBox>

@@ -73,7 +73,7 @@ const PersonalItems = ({ isOwner, itemId }) => {
   const OwnerOrHasItemList = () => {
     return (
       <S.CardContainer>
-        <ItemIdParamsExist />
+        {/* <ItemIdParamsExist /> */}
         {isOwner && (
           <S.AddCard
             onClick={() => {
