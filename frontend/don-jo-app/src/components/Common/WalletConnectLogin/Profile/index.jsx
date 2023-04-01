@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLogIn } from "../../../../stores/member";
 import { memberApi } from "../../../../api/member";
-import SignUp from "../../../SignUp";
-import BasicModal from "../../Modal/BasicModal";
-import * as S from "./style";
-import BasicButton from "../../BasicButton";
+import SignUp from "../../SignUp";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -70,6 +67,7 @@ const Profile = () => {
   //   );
   // };
 
+  const [isShowSignUp, setIsShowSignUp] = useState(false);
   const SignUpCheck = () => {
     // signMessage({ message: "don jo log in test" });
     memberApi.checkMemberAddress(address).then(({ status }) => {
@@ -83,13 +81,9 @@ const Profile = () => {
         }
       } else if (status === 204) {
         console.log("회원가입 모달 띄우기");
-        // handleSignUpModalOpen();
+        setIsShowSignUp(true);
       }
     });
-  };
-
-  const handleSignUpModalOpen = () => {
-    setIsShowSignUpModal((prev) => !prev);
   };
 
   useEffect(() => {
@@ -105,9 +99,9 @@ const Profile = () => {
         {isSuccess && <div>Signature: {data}</div>}
         {isError && <div>Error signing message</div>}
       </div>
-      {isShowSignUpModal && <SignUp isModelOpen={setIsShowSignUpModal} />}
-      {/* {<SignUp isModelOpen={setIsShowSignUpModal} />} */}
-      {/* {isShowAskContinueLoginModal && <AskContinueLogin />} */}
+      {isShowSignUp && (
+        <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
+      )}
     </>
   );
 };
