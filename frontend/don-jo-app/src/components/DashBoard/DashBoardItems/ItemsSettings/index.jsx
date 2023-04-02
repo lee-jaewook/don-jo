@@ -94,6 +94,7 @@ const ItemsSettings = () => {
             supportCount={item.salesCount}
             title={item.title}
             price={item.price}
+            deleted={item.deleted}
             totalAmount={item.salesAmount.toString()}
             handleShowItemDetailModal={handleShowItemDetailModal}
           />
@@ -106,11 +107,15 @@ const ItemsSettings = () => {
       {isShowItemModal && (
         <ItemDetailModal
           uid={uid}
-          idDashboard={true}
-          handleSetShowModal={setShowItemModal}
+          isDashboard={true}
+          handleSetShowModal={() => {
+            handleGetMyItemList("update");
+            setShowItemModal(false);
+          }}
           handleOnClickButton={() => {
             setClickedEdit(true);
             setIsAddItemModalOpen(true);
+            setShowItemModal(false);
           }}
         />
       )}

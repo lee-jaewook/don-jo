@@ -13,6 +13,7 @@ const ListItem = ({
   imgPath,
   title,
   price,
+  deleted,
   totalAmount,
   supportCount,
   handleShowItemDetailModal,
@@ -21,6 +22,7 @@ const ListItem = ({
 
   return (
     <S.ItemWrapper
+      deleted={deleted}
       onClick={() => {
         setUid(uid);
         handleShowItemDetailModal(true);
@@ -65,6 +67,7 @@ ListItem.propTypes = {
   setUid: PropTypes.func.isRequired,
   imgPath: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  deleted: PropTypes.bool.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
   handleShowItemDetailModal: PropTypes.func.isRequired,
