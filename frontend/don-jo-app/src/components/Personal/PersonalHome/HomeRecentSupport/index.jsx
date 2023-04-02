@@ -46,6 +46,10 @@ const HomeRecentSupport = ({ isOwner }) => {
     getSupportList();
   };
 
+  useEffect(() => {
+    console.log(supportList);
+  }, [supportList]);
+
   const Contents = () => {
     return (
       <>
@@ -58,7 +62,7 @@ const HomeRecentSupport = ({ isOwner }) => {
                   supportContent={supportContent}
                   isOwner={isOwner}
                   supportListLength={supportList.length}
-                  num = {i}
+                  num={i}
                 />
               );
             })}
