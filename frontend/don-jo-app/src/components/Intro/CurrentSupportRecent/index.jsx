@@ -23,36 +23,24 @@ const CurrentSupportList = () => {
     <S.CurrentSupportList>
       <S.Track>
         <div className="content">
-          <>
-            &nbsp;<S.DateTime>Mar 23 2023</S.DateTime>
-            <S.Separator />
-            &nbsp;<S.SupportType>WISHLIST</S.SupportType>
-            <S.Separator />
-            &nbsp;
-            <S.Price>
-              3.00 <S.Unit>MATIC</S.Unit>
-            </S.Price>
-          </>
-          <>
-            &nbsp;<S.DateTime>Mar 23 2023</S.DateTime>
-            <S.Separator />
-            &nbsp;<S.SupportType>DONATION</S.SupportType>
-            <S.Separator />
-            &nbsp;
-            <S.Price>
-              13.00 <S.Unit>MATIC</S.Unit>
-            </S.Price>
-          </>
-          <>
-            &nbsp;<S.DateTime>Mar 23 2023</S.DateTime>
-            <S.Separator />
-            &nbsp;<S.SupportType>ITEMS</S.SupportType>
-            <S.Separator />
-            &nbsp;
-            <S.Price>
-              4.00 <S.Unit>MATIC</S.Unit>
-            </S.Price>
-          </>
+          {result &&
+            result.length > 0 &&
+            result.map((item, index) => (
+              <div key={index}>
+                &nbsp;
+                <S.DateTime>
+                  {new Date(item.arriveTimeStamp).toDateString()}
+                </S.DateTime>
+                <S.Separator />
+                &nbsp;
+                <S.SupportType>{item.supportType.toUpperCase()}</S.SupportType>
+                <S.Separator />
+                &nbsp;
+                <S.Price>
+                  {item.amount} <S.Unit>MATIC</S.Unit>
+                </S.Price>
+              </div>
+            ))}
         </div>
       </S.Track>
     </S.CurrentSupportList>

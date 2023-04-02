@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./style";
 import BasicModal from "../BasicModal";
 import PropTypes from "prop-types";
@@ -8,33 +8,55 @@ import { useMediaQuery } from "react-responsive";
 import { itemApi } from "../../../../api/items";
 import { useDispatch } from "react-redux";
 import { setCurrentItem } from "../../../../stores/items";
+import DashboardLoading from "../../../DashBoard/DashboardLoading";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 const ItemDetailModal = ({
   uid,
-  idDashboard = false,
+  isDashboard = false,
   handleSetShowModal,
   handleOnClickButton,
 }) => {
+  const [isLoading, setLoading] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [result, setResult] = useState({});
   const dispatch = useDispatch();
 
   const handleGetItemDetail = async () => {
+    setLoading(true);
     try {
       const { data } = await itemApi.getItemDetail(uid);
       setResult(data);
       dispatch(setCurrentItem(data));
     } catch (error) {
       console.log("error: ", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleDeleteItem = useCallback(async () => {
+    setLoading(true);
+    try {
+      await itemApi.deleteItem(uid);
+      sendToastMessage("✨ Deleted successfully.");
+      handleSetShowModal();
+    } catch (error) {
+      sendToastMessage("Delete Failed", "error");
+      console.log("[Items] Delete Error: ", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     handleGetItemDetail();
   }, []);
 
   const handleMakeModalContent = () => {
-    return (
+    return isLoading ? (
+      <DashboardLoading />
+    ) : (
       <S.ContentWrapper>
         <S.ContentImg
           src={
@@ -48,11 +70,14 @@ const ItemDetailModal = ({
         <S.Description>{result.description}</S.Description>
         <S.Price>
           {result.price}
-          <S.Eth>eth</S.Eth>
+          <S.Eth>MATIC</S.Eth>
         </S.Price>
         <S.ButtonWrapper>
+          {isDashboard && (
+            <S.DeleteButton onClick={handleDeleteItem}>Delete</S.DeleteButton>
+          )}
           <BasicButton
-            text={idDashboard ? "Edit" : "Buy"}
+            text={isDashboard ? "Edit" : "Buy"}
             color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={handleOnClickButton}
