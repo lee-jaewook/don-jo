@@ -29,10 +29,30 @@ const Intro = () => {
           <S.ArrowIcon />
         </S.InputWrapper>
       </S.Background>
-
       {/* 컨텐츠 소개1 */}
+      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
+      <S.ContentDescription>
+        DonJo provides an image button that can be attached to my site or blog.
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
       {/* 컨텐츠 소개2 */}
+      <S.ContentTitle>
+        Transparent Sponsorship History Management!
+      </S.ContentTitle>
+      <S.ContentDescription>
+        You can receive the details of the sponsors transparently through
+        blockchain technology.
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
       {/* 컨텐츠 소개3 */}
+      <S.ContentTitle>
+        Purchase items and provide wishlist functionality!
+      </S.ContentTitle>
+
+      <S.ContentDescription>
+        You can sell and manage your own creations in DonJo!
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
     </S.Container>
   );
 };

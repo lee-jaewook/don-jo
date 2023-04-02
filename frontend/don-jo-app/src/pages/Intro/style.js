@@ -147,7 +147,7 @@ export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   width: calc(100% - 2.5rem);
-  height: 5rem;
+  height: 4rem;
   max-width: 60rem;
   transform: translate(-50%, -50%);
   background-color: white;
@@ -173,7 +173,7 @@ export const Input = styled.input`
   outline: none;
   border: none;
   background-color: transparent;
-  font-size: 2.25rem;
+  font-size: 1.875rem;
   line-height: 2.25rem;
   flex: 1;
   margin-left: 0.25rem;
@@ -193,4 +193,32 @@ export const ArrowIcon = styled(FiArrowRight)`
   @media (max-width: 769px) {
     font-size: 1rem;
   }
+`;
+
+export const ContentTitle = styled.h1`
+  font-family: "RobotoBold";
+  font-size: 2rem;
+  line-height: 1.5rem;
+  margin-top: 5.875rem;
+  margin-bottom: 1rem;
+  @media (max-width: 769px) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const ContentDescription = styled.p`
+  font-family: "RobotoRegular";
+  font-size: 1.5rem;
+  @media (max-width: 769px) {
+    font-size: 0.875rem;
+    height: 100%;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  width: 100%;
+  height: calc(100vh - 10rem);
+  background-color: white;
+  margin-top: 2rem;
+  border-radius: 1.25rem;
 `;
