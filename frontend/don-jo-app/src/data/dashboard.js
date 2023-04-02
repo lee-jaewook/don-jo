@@ -35,13 +35,12 @@ export const generatorData = [
   {
     text: "Website Buttons",
     description:
-      "Create customizable buttons which take your audience to your Buy Me a Coffee page. You can add this to your site or blog.",
+      "Create customizable buttons to your Don Jo page. You can add this to your site or blog.",
     isItemsRequired: false,
   },
   {
     text: "QR Code",
-    description:
-      "Generate a fancy QR code for your page and give your audience a quick, simple way to make a donation.",
+    description: "Generate a QR code for your Don Jo page.",
     isItemsRequired: false,
   },
   {

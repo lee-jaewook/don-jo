@@ -34,9 +34,9 @@ const GeneratorItem = ({ id, title, description, isItemsRequired }) => {
           <S.Title>{title}</S.Title>
           <S.Description>{description}</S.Description>
         </S.ItemInfo>
-        <S.generateButton onClick={handlePlugInGenModalChange}>
+        <S.GenerateButton onClick={handlePlugInGenModalChange}>
           Generate
-        </S.generateButton>
+        </S.GenerateButton>
       </S.ItemWrapper>
       {isPlugInGenModalOpen && (
         <PluginGenerator

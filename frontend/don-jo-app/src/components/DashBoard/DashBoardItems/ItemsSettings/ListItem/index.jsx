@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import { FiUser } from "@react-icons/all-files/fi/FiUser.js";
 import { FiCreditCard } from "@react-icons/all-files/fi/FiCreditCard.js";
 import { useMediaQuery } from "react-responsive";
+
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 const ListItem = ({
   uid,
   setUid,
@@ -30,7 +32,7 @@ const ListItem = ({
           <S.InfoText size="0.875rem">{title}</S.InfoText>
           <S.InfoText>
             {price}
-            <S.Unit>eth</S.Unit>
+            <S.Unit>MATIC</S.Unit>
           </S.InfoText>
         </S.ItemInfo>
       </S.ItemInfoWrapper>
@@ -48,7 +50,7 @@ const ListItem = ({
               style={{ marginRight: "2px" }}
             />
             {totalAmount}
-            <S.Unit>eth</S.Unit>
+            <S.Unit>MATIC</S.Unit>
           </S.Count>
         </>
       )}

@@ -28,7 +28,7 @@ const DashBoardListItem = ({ supportType, from, amount, arriveTimeStamp }) => {
         <S.UserInfo>
           <S.Supporter>{from.fromMemberNickname}</S.Supporter>
           <S.SponsorshipAmount>
-            {amount} <S.Eth>eth</S.Eth>
+            {amount} <S.Eth>MATIC</S.Eth>
           </S.SponsorshipAmount>
         </S.UserInfo>
 

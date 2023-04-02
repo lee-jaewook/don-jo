@@ -99,7 +99,8 @@ const DonationForm = () => {
         <S.RequiredIcon>*</S.RequiredIcon>
       </S.RequiredInputWrapper>
       <S.FormDescription>
-        Change the default price of a coffee to an amount of your choice.
+        Change the default price of a "{donationName}" to an amount of your
+        choice.
       </S.FormDescription>
 
       <S.RadioGroup>

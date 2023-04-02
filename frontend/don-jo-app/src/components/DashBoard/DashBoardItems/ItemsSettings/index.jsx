@@ -77,6 +77,13 @@ const ItemsSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Items List" />
+      {isAddItemModalOpen && (
+        <AddItemModal
+          isModify={isClickedEdit}
+          handleSetShowModal={handleAddItemModalOpen}
+          whichApiChoose={true}
+        />
+      )}
       {result && result.length > 0 ? (
         result.map((item) => (
           <ListItem
@@ -94,9 +101,7 @@ const ItemsSettings = () => {
       ) : (
         <S.Message>There are no items registered.</S.Message>
       )}
-      {hasMore && (
-        <ShowMoreButton handleOnClickButton={handleShowItemDetailModal} />
-      )}
+      {hasMore && <ShowMoreButton handleOnClickButton={handleGetMyItemList} />}
 
       {isShowItemModal && (
         <ItemDetailModal
@@ -107,14 +112,6 @@ const ItemsSettings = () => {
             setClickedEdit(true);
             setIsAddItemModalOpen(true);
           }}
-        />
-      )}
-
-      {isAddItemModalOpen && (
-        <AddItemModal
-          isModify={isClickedEdit}
-          handleSetShowModal={handleAddItemModalOpen}
-          whichApiChoose={true}
         />
       )}
     </S.SettingWrapper>

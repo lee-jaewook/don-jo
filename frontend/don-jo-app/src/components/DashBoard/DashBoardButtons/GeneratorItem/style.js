@@ -35,6 +35,7 @@ export const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 28.75rem;
+  flex: 1;
 `;
 
 export const Title = styled.h1`
@@ -48,7 +49,7 @@ export const Description = styled.label`
   color: var(--color-text-secondary);
 `;
 
-export const generateButton = styled.button`
+export const GenerateButton = styled.button`
   font-family: "RobotoMedium";
   width: 7.5rem;
   height: 3rem;
@@ -64,5 +65,11 @@ export const generateButton = styled.button`
     width: 100%;
     margin-top: 0.75rem;
     margin-left: 0rem;
+  }
+
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: var(--color-primary);
   }
 `;
