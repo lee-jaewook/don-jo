@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogIn } from "../../../../stores/member";
 import { memberApi } from "../../../../api/member";
-import { metamaskLogIn } from "../../../../utils/metamaskLogIn";
 import { setIsMember } from "../../../../stores/member";
 import SignUp from "../../SignUp";
 
@@ -110,18 +109,13 @@ const Auth = () => {
     signMessage({ message: "don jo log in test" });
   }
 
-  const handleLogInClick = () => {
-    metamaskLogIn({
-      dispatch,
-      handleModalOpen: () => {
-        setIsShowSignUp(true);
-      },
-    });
-  };
+  const handleModalOpen = () => {
+    setIsShowSignUp(true);
+  }
 
   return (
     <>
-      {isConnected && (isMember ? <S.Startbtn onClick={handleSign}>로그인</S.Startbtn> : <S.Startbtn onClick={handleLogInClick}>회원가입</S.Startbtn>)}
+      {isConnected && (isMember ? <S.Startbtn onClick={handleSign}>로그인</S.Startbtn> : <S.Startbtn onClick={handleModalOpen}>회원가입</S.Startbtn>)}
       {isShowSignUp && (
         <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
       )}
