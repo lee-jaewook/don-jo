@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @Api(tags = "사용자 관련 기능 API")
@@ -85,7 +86,7 @@ public class MemberController {
       @ApiResponse(code = 500, message = "서버에러")
   })
   @PostMapping(path="/api/member")
-  public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
+  public ResponseEntity signUpMember(@RequestBody @Valid SignUpMemberCond signUpMemberCond) {
     // member Signup
     Map<String, Object> result = memberService.signUpMember(signUpMemberCond);
     HttpHeaders headers = returnTokenHeader(result);
