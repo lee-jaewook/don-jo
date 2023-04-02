@@ -8,6 +8,7 @@ import { wishlistAPI } from "../../../api/wishlist";
 import PropTypes from "prop-types";
 import AddWishlistModal from "../../Common/Modal/AddWishlistModal";
 import { PulseLoader } from "react-spinners";
+import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 
 const PersonalWishlist = ({ isOwner }) => {
   //현재 페이지의 멤버 지갑주소 정보
@@ -51,6 +52,10 @@ const PersonalWishlist = ({ isOwner }) => {
     getWishList();
   };
 
+  const doDonateWishlist = () => {
+    console.log("위시리스트 후원하기");
+  };
+
   const OwnerOrHasWishList = () => {
     return (
       <S.CardContainer>
@@ -70,7 +75,6 @@ const PersonalWishlist = ({ isOwner }) => {
             return (
               <S.WishlistItemWrapper key={wishlistItem.id} disabled={isOwner}>
                 <WishlistItem
-                  onClick={() => setThisItemUId(wishlistItem.id)}
                   uid={wishlistItem.id}
                   title={wishlistItem.title}
                   imgPath={wishlistItem.imgPath}
@@ -78,7 +82,10 @@ const PersonalWishlist = ({ isOwner }) => {
                   collectedAmount={wishlistItem.collectedAmount.toString()}
                   totalAmount={wishlistItem.targetAmount.toString()}
                   thankMsg={wishlistItem.thankMsg}
-                  handleSetShowModal={setIsShowWishlistDetailModal}
+                  handleSetShowModal={() => {
+                    setThisItemUId(wishlistItem.id);
+                    setIsShowWishlistDetailModal(true);
+                  }}
                   isDashboard={isOwner}
                 />
               </S.WishlistItemWrapper>
@@ -110,6 +117,15 @@ const PersonalWishlist = ({ isOwner }) => {
 
         {isShowWishlistAddModal && (
           <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
+        )}
+
+        {isShowWishlistDetailModal && (
+          <WishlistDetailModal
+            handleSetShowModal={setIsShowWishlistDetailModal}
+            uid={thisItemUID}
+            handleOnClickButton={doDonateWishlist}
+            isDashboard={false}
+          />
         )}
       </>
     );
