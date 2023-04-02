@@ -11,27 +11,29 @@ import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
 import { useNavigate, useParams } from "react-router";
 
 const PersonalItems = ({ isOwner, itemId }) => {
-  // const navigate = useNavigate();
-  // const { pageName } = useParams();
-  // const [isShowDetailModal, setIsShowDetailModal] = useState(true);
+  const navigate = useNavigate();
+  const { pageName } = useParams();
+  const [isShowDetailModal, setIsShowDetailModal] = useState(true);
 
-  // useEffect(() => {
-  //   navigate(`/${pageName}`);
-  // }, [isShowDetailModal]);
+  useEffect(() => {
+    if (!isShowDetailModal) {
+      navigate(`/${pageName}`);
+    }
+  }, [isShowDetailModal]);
 
-  // const ItemIdParamsExist = () => {
-  //   if (itemId) {
-  //     return (
-  //       <ItemDetailModal
-  //         uid={itemId}
-  //         handleSetShowModal={setIsShowDetailModal}
-  //         handleOnClickButton={() => {
-  //           console.log("흠좀무");
-  //         }}
-  //       />
-  //     );
-  //   }
-  // };
+  const ItemIdParamsExist = () => {
+    if (itemId) {
+      return (
+        <ItemDetailModal
+          uid={itemId}
+          handleSetShowModal={setIsShowDetailModal}
+          handleOnClickButton={() => {
+            console.log("흠좀무");
+          }}
+        />
+      );
+    }
+  };
 
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
@@ -73,7 +75,7 @@ const PersonalItems = ({ isOwner, itemId }) => {
   const OwnerOrHasItemList = () => {
     return (
       <S.CardContainer>
-        {/* <ItemIdParamsExist /> */}
+        <ItemIdParamsExist />
         {isOwner && (
           <S.AddCard
             onClick={() => {
