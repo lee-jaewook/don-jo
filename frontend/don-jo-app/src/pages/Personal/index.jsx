@@ -17,7 +17,6 @@ import { colorSet } from "../../data/dashboard";
 
 const Personal = () => {
   const { pageName } = useParams();
-  const { items } = useParams();
   const { itemId } = useParams();
 
   const navigate = useNavigate();
@@ -28,7 +27,9 @@ const Personal = () => {
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
-  const loginUserAddress = useSelector((state) => state.member.walletAddress);
+  const loginUserAddress = useSelector(
+    (state) => state.member.walletAddress
+  ).toLowerCase();
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",

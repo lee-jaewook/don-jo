@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import { buyItemDonation } from "../../../../utils/transactionFunc/buyItemDonation";
+import { calculateEth } from "../../../../utils/calculateEth";
+
 const ItemCard = ({ item, isOwner }) => {
   const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
   const doBuy = () => {
@@ -19,8 +21,8 @@ const ItemCard = ({ item, isOwner }) => {
         <S.Description>{item.description}</S.Description>
         <S.PriceBtnContainer>
           <S.PriceWrapper>
-            <S.Price>{item.price.toFixed(3)}</S.Price>
-            <S.Unit>eth</S.Unit>
+            <S.Price>{calculateEth(item.price)}</S.Price>
+            <S.Unit>matic</S.Unit>
           </S.PriceWrapper>
           {!isOwner && (
             <S.BuyBtn

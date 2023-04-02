@@ -7,6 +7,7 @@ import ShowMoreButton from "../../Common/ShowMoreButton";
 import { wishlistAPI } from "../../../api/wishlist";
 import PropTypes from "prop-types";
 import AddWishlistModal from "../../Common/Modal/AddWishlistModal";
+import { PulseLoader } from "react-spinners";
 
 const PersonalWishlist = ({ isOwner }) => {
   //현재 페이지의 멤버 지갑주소 정보
@@ -23,6 +24,7 @@ const PersonalWishlist = ({ isOwner }) => {
   const PAGE_SIZE = 6;
   const [wishlist, setWishlist] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getWishList = async () => {
     try {
@@ -34,6 +36,7 @@ const PersonalWishlist = ({ isOwner }) => {
       setPageNum((prev) => prev + 1);
       setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
       setIsEnd(data.hasMore);
+      setIsLoading(false);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -92,19 +95,38 @@ const PersonalWishlist = ({ isOwner }) => {
     return <S.Nothing>There's no wishlists 🥲</S.Nothing>;
   };
 
+  const Contents = () => {
+    return (
+      <>
+        {isOwner || wishlist.length !== 0 ? (
+          <OwnerOrHasWishList />
+        ) : (
+          <Nothing />
+        )}
+
+        {hasMore && (
+          <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+        )}
+
+        {isShowWishlistAddModal && (
+          <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.LoadingContainer>
+        <PulseLoader color="var(--color-primary)" />
+      </S.LoadingContainer>
+    );
+  };
+
   return (
     <S.Container>
       <S.Title>Support My Wishlist</S.Title>
-
-      {isOwner || wishlist.length !== 0 ? <OwnerOrHasWishList /> : <Nothing />}
-
-      {hasMore && (
-        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
-      )}
-
-      {isShowWishlistAddModal && (
-        <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
-      )}
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };
