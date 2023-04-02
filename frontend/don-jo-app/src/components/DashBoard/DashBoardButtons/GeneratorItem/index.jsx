@@ -3,7 +3,7 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import PluginGenerator from "../../DashBoardGeneratorModal";
 import QRCodeModal from "../../DashboardQRModal";
-
+import { useMediaQuery } from "react-responsive";
 /**
  * GeneratorItem 컴포넌트
  * @param {Object} props - 컴포넌트에 전달되는 props
@@ -13,9 +13,16 @@ import QRCodeModal from "../../DashboardQRModal";
  * @returns
  */
 
-const GeneratorItem = ({ id, title, description, isItemsRequired }) => {
+const GeneratorItem = ({
+  id,
+  title,
+  description,
+  isItemsRequired,
+  previewSrc,
+}) => {
   const [isPlugInGenModalOpen, setIsPlugInGenModalOpen] = useState(false);
   const [isOpenQRCodeModal, setOpenQRCodeModal] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handlePlugInGenModalChange = () => {
     if (id === "generator-item2") {
@@ -29,7 +36,14 @@ const GeneratorItem = ({ id, title, description, isItemsRequired }) => {
   return (
     <>
       <S.ItemWrapper>
-        <S.ItemImg />
+        <S.ItemImg>
+          <img
+            src={previewSrc}
+            alt="preview-img"
+            width="auto"
+            height={isMobile ? "180px" : "100px"}
+          />
+        </S.ItemImg>
         <S.ItemInfo>
           <S.Title>{title}</S.Title>
           <S.Description>{description}</S.Description>

@@ -21,7 +21,10 @@ export const ItemImg = styled.div`
   min-width: 10rem;
   height: 7.5rem;
   border-radius: 0.5rem;
-  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #efefef;
   margin-right: 0.75rem;
   @media (max-width: 768px) {
     width: 100%;
