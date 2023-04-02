@@ -13,7 +13,7 @@ public class LoginPayload {
     // 페이지 이름
     private String pageName;
     // 프로필 이미지 경로
-    private String profileImgPath;
+    private String imagePath;
     // 개인 닉네임
     private String nickName;
     // 개인 테마색
@@ -22,7 +22,7 @@ public class LoginPayload {
     public static  LoginPayload getMemberInfo(LoginItem result) {
         LoginPayload loginPayload = LoginPayload.builder()
                 .pageName(result.getPageName())
-                .profileImgPath(result.getProfileImgPath())
+                .imagePath(result.getProfileImgPath())
                 .nickName(result.getNickName())
                 .themeColor(result.getThemeColor())
                 .build();
