@@ -7,12 +7,13 @@ import { checkSignUpValidation } from "../../../utils/validation/checkSignUpVali
 import PasswordSetModal from "../Modal/PasswordSetModal";
 import SignUpModal from "./SignUpModal";
 import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   const dispatch = useDispatch();
   const IMAGE_TYPE = "img/item";
 
-  const address = useSelector((state) => state.member.walletAddress);
+  const { address, isConnected } = useAccount();
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(isShowSignUp);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
 
