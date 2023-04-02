@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -106,7 +106,7 @@ const AddItemModal = ({
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("Upload failed: Contact your administrator.", "error");
     }
   };
 
@@ -158,20 +158,20 @@ const AddItemModal = ({
         const { status } = await itemApi.updateItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
-          toast("✨ update!");
+          sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
       }
     } else {
       try {
         const { status } = await itemApi.registerItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
-          toast("✨ register!");
+          sendToastMessage("✨ Saved successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
       }
     }
   };
