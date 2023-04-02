@@ -81,23 +81,26 @@ const ExternalLink = () => {
 
   //해당 사이트에 맞는 로고 저장
   const matchLogo = () => {
+    const tmp = [];
+
     for (let socialListIndex in socialList) {
       if (socialList[socialListIndex] !== "") {
         for (let websiteIndex in website) {
           if (
             socialList[socialListIndex].includes(website[websiteIndex].name)
           ) {
-            setIconList((prev) => [...prev, website[websiteIndex].logo]);
+            tmp.push(website[websiteIndex].logo);
             break;
           }
         }
       }
     }
+    setIconList(tmp);
   };
 
   useEffect(() => {
     matchLogo();
-  }, []);
+  }, [socialList]);
 
   const handleOpenNewTab = (url) => {
     window.open(url);

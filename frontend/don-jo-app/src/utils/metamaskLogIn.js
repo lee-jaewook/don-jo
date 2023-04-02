@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
 import { memberApi } from "../api/member";
 import { setLogIn } from "../stores/member";
+import { setWallet } from "../stores/member";
 import { isMobile } from "react-device-detect";
 import { useSelector } from "react-redux";
 
@@ -12,7 +13,7 @@ import { useSelector } from "react-redux";
  * 회원이 아니면, 회원가입 모달
  */
 
-export const logIn = async ({ dispatch, handleModalOpen }) => {
+export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
   // 메타마스크 설치 여부 확인
   if (!isMobile) {
     if (typeof window.ethereum !== "undefined") {
@@ -29,7 +30,7 @@ export const logIn = async ({ dispatch, handleModalOpen }) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            dispatch(setWeb3({ web3: web3, walletAddress: accounts[0] }));
+            dispatch(setWallet({ walletAddress: accounts[0] }));
 
             // 우리 회원인지 아닌지
             memberApi

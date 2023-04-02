@@ -20,18 +20,15 @@ export const donation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
+
             const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
 
-            // const myWallet = web3.walletAddress;
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
+              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
             );
 
-            const tx = myContract.methods.callBasicDonation(
-              "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12"
-            );
+            const tx = myContract.methods.callBasicDonation(item.seller);
 
             window.ethereum
               .request({
@@ -39,26 +36,49 @@ export const donation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12",
+                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
                     value: valueInWei,
                     gas: "20000",
                     data: tx.encodeABI(),
                   },
                 ],
               })
-              .then((res) => {
-                console.log("transaction 성공");
-                console.log("res: ", res);
-                // const donationDto = {
-                //   amountEth: 0,
-                //   fromAddress: myWallet,
-                //   sendMsg: "string",
-                //   supportType: "donation",
-                //   supportUid: 0,
-                //   toAddress: "string",
-                //   transactionHash: res,
-                // };
-                // saveDonation(donationDto);
+              .then((txHash) => {
+                const receiptPromise = new Promise(function (resolve, reject) {
+                  const intervalId = setInterval(function () {
+                    web3.eth.getTransactionReceipt(txHash).then((receipt) => {
+                      if (receipt !== undefined && receipt !== null) {
+                        clearInterval(intervalId);
+                        resolve({ receipt, txHash });
+                      }
+                    });
+                  }, 1000);
+                });
+                return receiptPromise;
+              })
+              .then(({ receipt, txHash }) => {
+                const logs = receipt.logs.filter(
+                  (log) =>
+                    log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
+                );
+                if (logs.length > 0) {
+                  const log = logs[0];
+                  const id = web3.eth.abi.decodeParameters(
+                    ["uint64"],
+                    log.topics[1]
+                  )[0];
+                  const donationDto = {
+                    amountEth: item.price,
+                    fromAddress: accounts[0],
+                    sendMsg: "",
+                    supportType: "donation",
+                    supportTypeUid: item.id,
+                    supportUid: id,
+                    toAddress: item.seller,
+                    transactionHash: txHash,
+                  };
+                  saveDonation(donationDto);
+                }
               })
               .catch((err) => console.log(err));
           });

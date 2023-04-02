@@ -1,12 +1,12 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
-import BasicTitle from "../Common/BasicTitle";
-import BasicInput from "../Common/BasicInput";
-import BasicButton from "../Common/BasicButton";
-import FullScreenModal from "../Common/Modal/FullScreenModal";
-import { fileSizeValidator } from "../../utils/validation/validator";
+import BasicTitle from "../../BasicTitle";
+import BasicInput from "../../BasicInput";
+import BasicButton from "../../BasicButton";
+import BasicModal from "../../Modal/BasicModal";
+import { fileSizeValidator } from "../../../../utils/validation/validator";
 
 /**
  * 회원가입 1단계 - 프로필 등록, nickName, pageName 설정
@@ -20,7 +20,7 @@ import { fileSizeValidator } from "../../utils/validation/validator";
  * pageName : API 요청을 보내서 중복검사 및 한글, 영어, 숫자, 일부 특수문자 지원
  */
 
-export const SignUp = ({
+export const SignUpModal = ({
   isModelOpen,
   handleContinueButtonClick,
   userInfo,
@@ -59,7 +59,7 @@ export const SignUp = ({
   };
 
   return (
-    <FullScreenModal handleSetShowModal={isModelOpen}>
+    <BasicModal handleSetShowModal={isModelOpen}>
       <S.ContentWrap>
         <BasicTitle text="Profile Photo" />
         <S.UserProfileImg
@@ -120,12 +120,12 @@ export const SignUp = ({
         color="var(--color-primary)"
         handleOnClickButton={handleContinueButtonClick}
       />
-    </FullScreenModal>
+    </BasicModal>
   );
 };
 
-export default SignUp;
+export default SignUpModal;
 
-SignUp.propTypes = {
+SignUpModal.propTypes = {
   isModelOpen: PropTypes.func.isRequired,
 };
