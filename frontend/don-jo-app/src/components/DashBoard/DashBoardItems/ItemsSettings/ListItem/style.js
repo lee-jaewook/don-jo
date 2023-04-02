@@ -5,7 +5,7 @@ export const ItemWrapper = styled.div`
   height: 6.25rem;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
+  background-color: ${(props) => (props.deleted ? "#EFEFEF" : "white")};
   border-radius: 0.5rem;
   padding: 0 1.25rem;
   margin-bottom: 0.75rem;
