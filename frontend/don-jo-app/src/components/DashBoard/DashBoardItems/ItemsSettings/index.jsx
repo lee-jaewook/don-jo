@@ -77,6 +77,13 @@ const ItemsSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Items List" />
+      {isAddItemModalOpen && (
+        <AddItemModal
+          isModify={isClickedEdit}
+          handleSetShowModal={handleAddItemModalOpen}
+          whichApiChoose={true}
+        />
+      )}
       {result && result.length > 0 ? (
         result.map((item) => (
           <ListItem
@@ -87,6 +94,7 @@ const ItemsSettings = () => {
             supportCount={item.salesCount}
             title={item.title}
             price={item.price}
+            deleted={item.deleted}
             totalAmount={item.salesAmount.toString()}
             handleShowItemDetailModal={handleShowItemDetailModal}
           />
@@ -94,27 +102,21 @@ const ItemsSettings = () => {
       ) : (
         <S.Message>There are no items registered.</S.Message>
       )}
-      {hasMore && (
-        <ShowMoreButton handleOnClickButton={handleShowItemDetailModal} />
-      )}
+      {hasMore && <ShowMoreButton handleOnClickButton={handleGetMyItemList} />}
 
       {isShowItemModal && (
         <ItemDetailModal
           uid={uid}
-          idDashboard={true}
-          handleSetShowModal={setShowItemModal}
+          isDashboard={true}
+          handleSetShowModal={() => {
+            handleGetMyItemList("update");
+            setShowItemModal(false);
+          }}
           handleOnClickButton={() => {
             setClickedEdit(true);
             setIsAddItemModalOpen(true);
+            setShowItemModal(false);
           }}
-        />
-      )}
-
-      {isAddItemModalOpen && (
-        <AddItemModal
-          isModify={isClickedEdit}
-          handleSetShowModal={handleAddItemModalOpen}
-          whichApiChoose={true}
         />
       )}
     </S.SettingWrapper>

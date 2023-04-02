@@ -1,42 +1,58 @@
 import React from "react";
+import CurrentSupportList from "../../components/Intro/CurrentSupportRecent";
+import DonJoTitleSvg from "../../components/Intro/DonJoTitleSvg";
 import * as S from "./style";
 
 const Intro = () => {
   return (
     <S.Container>
-      <S.DonJoTitle>DON-JO TO ME</S.DonJoTitle>
-      <S.CurrentEthInfoWrapper>
-        <S.CurrentEthInfoItem>
-          <S.StandardDate> Mar 23 2023</S.StandardDate>
-          <S.Indicator />
-          <S.EthValue>DONATE</S.EthValue>
-          <S.Indicator />
-          <S.EthValue>982.9273 ETH</S.EthValue>
-        </S.CurrentEthInfoItem>
-        {/* <S.CurrentEthInfoItem>
-          <S.StandardDate> Mar 23 2023</S.StandardDate>
-          <S.Indicator />
-          <S.EthValue>ITEMS</S.EthValue>
-          <S.Indicator />
-          <S.EthValue>982.9273 ETH</S.EthValue>
-        </S.CurrentEthInfoItem>
-        <S.CurrentEthInfoItem>
-          <S.StandardDate> Mar 23 2023</S.StandardDate>
-          <S.Indicator />
-          <S.EthValue>WISHLIST</S.EthValue>
-          <S.Indicator />
-          <S.EthValue>982.9273 ETH</S.EthValue>
-        </S.CurrentEthInfoItem> */}
-      </S.CurrentEthInfoWrapper>
-
+      <S.DonJoTitle>
+        <DonJoTitleSvg />
+      </S.DonJoTitle>
+      <CurrentSupportList />
       <S.Background>
-        <S.BackgroundBlur />
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
         <S.InputWrapper>
-          <S.InputLabel>don-jo.co/</S.InputLabel>
-          <S.Input type="text" placeholder="your page name" />
-          <S.FiArrowRightIcon />
+          don-jo.co/
+          <S.Input placeholder="Your Page Name" />
+          <S.ArrowIcon />
         </S.InputWrapper>
       </S.Background>
+      {/* 컨텐츠 소개1 */}
+      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
+      <S.ContentDescription>
+        DonJo provides an image button that can be attached to my site or blog.
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
+      {/* 컨텐츠 소개2 */}
+      <S.ContentTitle>
+        Transparent Sponsorship History Management!
+      </S.ContentTitle>
+      <S.ContentDescription>
+        You can receive the details of the sponsors transparently through
+        blockchain technology.
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
+      {/* 컨텐츠 소개3 */}
+      <S.ContentTitle>
+        Purchase items and provide wishlist functionality!
+      </S.ContentTitle>
+
+      <S.ContentDescription>
+        You can sell and manage your own creations in DonJo!
+      </S.ContentDescription>
+      <S.ContentWrapper></S.ContentWrapper>
     </S.Container>
   );
 };

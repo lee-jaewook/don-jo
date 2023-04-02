@@ -5,7 +5,7 @@ const DashBoardCard = ({
   isFirstCard = false,
   classification,
   data,
-  unit = "eth",
+  unit = "MATIC",
 }) => {
   return (
     <S.Container>
