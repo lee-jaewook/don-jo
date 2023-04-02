@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   connected: false,
   isLogIn: false,
+  isMember: false,
   pageName: "",
   nickName: "",
   themeColor: 0,
@@ -34,6 +35,10 @@ export const memberSlice = createSlice({
       state.profileImagePath = "";
       state.walletAddress = "";
     },
+    setIsMember(state, action) {
+      console.log(action)
+      state.isMember = action.payload
+    },
     setProfileImg(state, action) {
       state.profileImagePath = action.payload.profileImagePath;
     },
@@ -48,6 +53,7 @@ export const {
   setWallet,
   setLogIn,
   setLogOut,
+  setIsMember,
   setLoading,
   setConnected,
   setProfileImg,

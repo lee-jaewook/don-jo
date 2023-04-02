@@ -7,19 +7,46 @@ import { useSelector } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import { itemApi } from "../../../api/items";
 import PropTypes from "prop-types";
+import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
+import { useNavigate, useParams } from "react-router";
+import { PulseLoader } from "react-spinners";
 
-const PersonalItems = ({ isOwner }) => {
+const PersonalItems = ({ isOwner, itemId }) => {
+  const navigate = useNavigate();
+  const { pageName } = useParams();
+  const [isShowDetailModal, setIsShowDetailModal] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isShowDetailModal) {
+      navigate(`/${pageName}`);
+    }
+  }, [isShowDetailModal]);
+
+  const ItemIdParamsExist = () => {
+    if (itemId) {
+      return (
+        <ItemDetailModal
+          uid={itemId}
+          handleSetShowModal={setIsShowDetailModal}
+          handleOnClickButton={() => {
+            console.log("흠좀무");
+          }}
+        />
+      );
+    }
+  };
+
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
 
-  const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
-
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 6;
   const [itemList, setItemList] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
+  const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
 
   const getItemList = async () => {
     try {
@@ -32,6 +59,7 @@ const PersonalItems = ({ isOwner }) => {
         setPageNum((prev) => prev + 1);
         setItemList((prev) => [...prev, ...(data.itemList || [])]);
         setIsEnd(data.hasMore);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -50,6 +78,7 @@ const PersonalItems = ({ isOwner }) => {
   const OwnerOrHasItemList = () => {
     return (
       <S.CardContainer>
+        <ItemIdParamsExist />
         {isOwner && (
           <S.AddCard
             onClick={() => {
@@ -77,21 +106,42 @@ const PersonalItems = ({ isOwner }) => {
     return <S.Nothing>There's no items 🥲</S.Nothing>;
   };
 
+  const Contents = () => {
+    return (
+      <>
+        {isOwner || itemList.length !== 0 ? (
+          <OwnerOrHasItemList />
+        ) : (
+          <Nothing />
+        )}
+
+        {hasMore && (
+          <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+        )}
+
+        {isOpenAddItemModal && (
+          <AddItemModal
+            handleSetShowModal={setIsOpenAddItemModal}
+            whichApiChoose={true}
+          />
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.LoadingContainer>
+        <PulseLoader color="var(--color-primary)" />
+      </S.LoadingContainer>
+    );
+  };
+
   return (
     <S.Container>
       <S.Title>This is my Items</S.Title>
-      {isOwner || itemList.length !== 0 ? <OwnerOrHasItemList /> : <Nothing />}
 
-      {hasMore && (
-        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
-      )}
-
-      {isOpenAddItemModal && (
-        <AddItemModal
-          handleSetShowModal={setIsOpenAddItemModal}
-          whichApiChoose={true}
-        />
-      )}
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };
