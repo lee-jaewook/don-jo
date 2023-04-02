@@ -3,16 +3,13 @@ import ProfileImg from "../ProfileImg";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import { metamaskLogIn } from "../../../utils/metamaskLogIn";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
 import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
 import SelectBox from "./SelectBox";
 import WalletConnectLogin from "../WalletConnectLogin";
-import SignUp from "../SignUp";
 
 const Header = () => {
-  const dispatch = useDispatch();
   const pageName = useSelector((state) => state.member.pageName);
   const profileImagePath = useSelector(
     (state) => state.member.profileImagePath
@@ -22,8 +19,8 @@ const Header = () => {
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
-  const [isShowSignUp, setIsShowSignUp] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
+  
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
@@ -48,14 +45,6 @@ const Header = () => {
    * 회원일 경우, 로그인 처리
    * 비회원일 경우, 회원가입 모달 띄우기
    */
-  const handleMetamaskLogInClick = () => {
-    metamaskLogIn({
-      dispatch,
-      handleModalOpen: () => {
-        setIsShowSignUp(true);
-      },
-    });
-  };
 
   return (
     <S.HeaderContainer>
@@ -81,22 +70,19 @@ const Header = () => {
             />
           ) : (
             <div style={{ display: "flex" }}>
-              <SelectBox
+              {/* <SelectBox
                 metamaskLogin={handleMetamaskLogInClick}
                 walletConnectLogin={() => {
                   console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
                 }}
               >
                 Start
-              </SelectBox>
+              </SelectBox> */}
               <WalletConnectLogin />
             </div>
           )}
         </S.ProfileImgContainer>
       </S.Header>
-      {isShowSignUp && (
-        <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
-      )}
     </S.HeaderContainer>
   );
 };

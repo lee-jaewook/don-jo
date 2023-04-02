@@ -1,17 +1,21 @@
+import * as S from "./style";
 import { useAccount } from "wagmi";
 import { useSignMessage } from "wagmi";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogIn } from "../../../../stores/member";
 import { memberApi } from "../../../../api/member";
+import { metamaskLogIn } from "../../../../utils/metamaskLogIn";
+import { setIsMember } from "../../../../stores/member";
 import SignUp from "../../SignUp";
 
-const Profile = () => {
+const Auth = () => {
   const dispatch = useDispatch();
   const { address, isConnected } = useAccount();
-  const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
+  const [isShowSignUp, setIsShowSignUp] = useState(false);
+  const isMember = useSelector((state) => state.member.isMember);
   // const recoveredAddress = React.useRef<string>()
-  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+  const { signMessage } = useSignMessage({
     onSuccess(data, variables) {
       const loginMemberCond = {
         memberAddress: address.toLowerCase(),
@@ -67,38 +71,57 @@ const Profile = () => {
   //   );
   // };
 
-  const [isShowSignUp, setIsShowSignUp] = useState(false);
-  const SignUpCheck = () => {
-    // signMessage({ message: "don jo log in test" });
+  // const SignUpCheck = () => {
+  //   // signMessage({ message: "don jo log in test" });
+  //   memberApi.checkMemberAddress(address).then(({ status }) => {
+  //     console.log("wallet connect 주소:", address);
+  //     if (status === 200) {
+  //       console.log("회원정보 있음");
+  //       if (window.confirm("Do you want to SignIn?")) {
+  //         signMessage({ message: "don jo log in test" });
+  //       } else {
+  //         //월렛 디스커넥트
+  //       }
+  //     } else if (status === 204) {
+  //       console.log("회원가입 모달 띄우기");
+  //       setIsShowSignUp(true);
+  //     }
+  //   });
+  // };
+
+  const MemberCheck = () => {
     memberApi.checkMemberAddress(address).then(({ status }) => {
       console.log("wallet connect 주소:", address);
       if (status === 200) {
-        console.log("회원정보 있음");
-        if (window.confirm("Do you want to SignIn?")) {
-          signMessage({ message: "don jo log in test" });
-        } else {
-          //월렛 디스커넥트
-        }
+        dispatch(setIsMember(true))
       } else if (status === 204) {
-        console.log("회원가입 모달 띄우기");
-        setIsShowSignUp(true);
+        dispatch(setIsMember(false))
       }
     });
-  };
+  }
 
   useEffect(() => {
     if (isConnected) {
-      SignUpCheck();
+      MemberCheck()
     }
   }, [isConnected]);
 
+  const handleSign = () => {
+    signMessage({ message: "don jo log in test" });
+  }
+
+  const handleLogInClick = () => {
+    metamaskLogIn({
+      dispatch,
+      handleModalOpen: () => {
+        setIsShowSignUp(true);
+      },
+    });
+  };
+
   return (
     <>
-      <div>
-        {isLoading && <label>실행중</label>}
-        {isSuccess && <div>Signature: {data}</div>}
-        {isError && <div>Error signing message</div>}
-      </div>
+      {isConnected && (isMember ? <S.Startbtn onClick={handleSign}>로그인</S.Startbtn> : <S.Startbtn onClick={handleLogInClick}>회원가입</S.Startbtn>)}
       {isShowSignUp && (
         <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
       )}
@@ -106,4 +129,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Auth;

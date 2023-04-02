@@ -6,19 +6,19 @@ import {
 import { Web3Button, Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import {
-  mainnet,
-  //polygonMumbai,
+  //mainnet,
+  polygonMumbai,
   // polygon,
   // sepolia,
 } from "wagmi/chains";
-import Profile from "./Profile";
+import Auth from "./Auth"
 // import { UniversalProvider } from "@walletconnect/universal-provider";
 const projectId = "bff442f05c60a67faf40efa21f494f0d";
 
 // 2. Configure wagmi client
 const chains = [
-  mainnet,
-  //polygonMumbai
+  //mainnet,
+  polygonMumbai
   // polygon,
 ];
 
@@ -44,11 +44,14 @@ const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 // 4. Wrap your app with WagmiProvider and add <Web3Modal /> compoennt
 const WalletConnectLogin = () => {
+
   return (
     <>
       <WagmiConfig client={wagmiClient}>
+        <Auth/>
+      {/* {isConnected && (isMember ? <S.Startbtn>로그인</S.Startbtn> : <S.Startbtn onClick={handleLogInClick}>회원가입</S.Startbtn>)} */}
         <Web3Button icon={"hide"} label={"Wallet Connect"} />
-        <Profile />
+        {/* <Profile /> */}
       </WagmiConfig>
 
       <Web3Modal
