@@ -2,6 +2,7 @@ import Web3 from "web3";
 import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
+import sendToastMessage from "../sendToastMessage";
 
 export const buyWishlistDonation = (item) => {
   // 모바일 여부 확인
@@ -24,7 +25,7 @@ export const buyWishlistDonation = (item) => {
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
+              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
             );
 
             const tx = myContract.methods.buyWishilistDonation(
@@ -38,7 +39,7 @@ export const buyWishlistDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
+                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
@@ -58,19 +59,31 @@ export const buyWishlistDonation = (item) => {
                 return receiptPromise;
               })
               .then(({ receipt, txHash }) => {
-                console.log("Transaction successful");
-                console.log("receipt: ", receipt);
-                const donationDto = {
-                  amountEth: item.price,
-                  fromAddress: accounts[0],
-                  sendMsg: item.message,
-                  supportType: "item",
-                  supportTypeUid: item.id,
-                  supportUid: "0",
-                  toAddress: item.seller,
-                  transactionHash: txHash,
-                };
-                saveDonation(donationDto);
+                const logs = receipt.logs.filter(
+                  (log) =>
+                    log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
+                );
+                if (logs.length > 0) {
+                  const log = logs[0];
+                  console.log("log: ", log);
+                  const id = web3.eth.abi.decodeParameters(
+                    ["uint64"],
+                    log.topics[1]
+                  )[0];
+                  const donationDto = {
+                    amountEth: item.price,
+                    fromAddress: accounts[0],
+                    sendMsg: "",
+                    supportType: "wishlist",
+                    supportTypeUid: item.id,
+                    supportUid: id,
+                    toAddress: item.seller,
+                    transactionHash: txHash,
+                  };
+                  saveDonation(donationDto);
+                } else {
+                  sendToastMessage("Failed to register support record.");
+                }
               })
               .catch((err) => console.log(err));
           });

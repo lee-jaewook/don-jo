@@ -20,7 +20,10 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
     return (
       <div style={{ margin: "0 auto" }}>
         <S.RoundBtn onClick={decreaseCount} disabled={isOwner}>
-          <FiMinus color="var(--color-primary)" size={22} />
+          <FiMinus
+            color={isOwner ? "white" : "var(--color-primary)"}
+            size={22}
+          />
         </S.RoundBtn>
       </div>
     );
@@ -29,7 +32,7 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
   const IncreaseBtn = () => {
     return (
       <S.RoundBtn onClick={increaseCount} disabled={isOwner}>
-        <FiPlus color="var(--color-primary)" size={22} />
+        <FiPlus color={isOwner ? "white" : "var(--color-primary)"} size={22} />
       </S.RoundBtn>
     );
   };

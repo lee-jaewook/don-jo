@@ -10,6 +10,7 @@ export const Container = styled.div`
   position: relative;
   margin-bottom: 9.375rem;
   overflow-x: hidden;
+  min-height: calc(var(--vh, 1vh) * 100 - 23.375rem);
 `;
 
 export const BackgroundImg = styled.div`

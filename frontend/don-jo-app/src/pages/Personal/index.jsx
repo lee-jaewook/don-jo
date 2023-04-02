@@ -13,9 +13,12 @@ import { fileApi } from "../../api/file";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
 import { setProfileImg } from "../../stores/member";
+import { colorSet } from "../../data/dashboard";
 
 const Personal = () => {
   const { pageName } = useParams();
+  const { itemId } = useParams();
+
   const navigate = useNavigate();
 
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
@@ -24,7 +27,9 @@ const Personal = () => {
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
-  const loginUserAddress = useSelector((state) => state.member.walletAddress);
+  const loginUserAddress = useSelector(
+    (state) => state.member.walletAddress
+  ).toLowerCase();
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
@@ -58,16 +63,16 @@ const Personal = () => {
     setIsOwner(
       memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
     );
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--color-primary",
+      colorSet[memberInfoItemData.themeColor]
+    );
   }, [memberInfoItemData]);
 
   useEffect(() => {
     getPageInfo();
   }, []);
-
-  //로그인 유저의 지갑주소 정보
-  const loginUserMemberAddress = useSelector(
-    (state) => state.web3.walletAddress
-  );
 
   const PROFILE_TYPE = "img/profile";
   const BACKGROUND_TYPE = "img/background";
@@ -198,6 +203,7 @@ const Personal = () => {
           donationSettingData={donationSettingData}
           wishListData={wishListData}
           isOwner={isOwner}
+          itemId={itemId}
         />
       </S.ContentsContainer>
 

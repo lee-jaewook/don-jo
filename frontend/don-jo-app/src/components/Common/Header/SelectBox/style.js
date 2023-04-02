@@ -1,11 +1,18 @@
 import styled from "styled-components";
 
 export const SelectBox = styled.div`
-  min-width: 2rem;
-  height: 1.5625rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
+  font-size: 1rem;
+  width: 100px;
+  height: 40px;
+  border-radius: 1.25rem;
+  font-family: "RobotoMedium";
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  cursor: pointer;
 `;
 
 export const Label = styled.label`

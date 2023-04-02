@@ -57,8 +57,10 @@ export const CountInput = styled.input`
   ${(props) =>
     props.disabled &&
     `
-    opacity: 0.5;
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
     pointer-events: none;
+    color: #BBBBBB;
   `}
 
   @media screen and (max-width: 48rem) {
@@ -82,9 +84,10 @@ export const RoundBtn = styled.button`
   ${(props) =>
     props.disabled &&
     `
-    opacity: 0.5;
+    background-color: var(--color-disabled);
     cursor: not-allowed;
     pointer-events: none;
+    border-color: var(--color-disabled);
   `}
 `;
 

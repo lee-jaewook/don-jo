@@ -5,12 +5,17 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { memberApi } from "../../../api/member";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
   const originIntroduction = useSelector(
     (state) => state.memberInfo.introduction
   );
   const [md, setMd] = useState(originIntroduction);
+
+  useEffect(() => {
+    if (!originIntroduction) setMd("");
+  }, [originIntroduction]);
 
   const updateIntroduction = async () => {
     try {

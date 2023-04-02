@@ -43,6 +43,7 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<Intro />} />
           <Route path="/:pageName" element={<Personal />} />
+          <Route path="/:pageName/items/:itemId" element={<Personal />} />
           <Route
             path="/dashboard"
             element={

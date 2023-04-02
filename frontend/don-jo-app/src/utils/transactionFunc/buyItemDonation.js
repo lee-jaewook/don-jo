@@ -2,6 +2,7 @@ import Web3 from "web3";
 import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
+import sendToastMessage from "../sendToastMessage";
 
 export const buyItemDonation = (item) => {
   // 모바일 여부 확인
@@ -20,14 +21,12 @@ export const buyItemDonation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
+
             const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
-            // const valueInWei = item.price;
-            console.log("valueInWei: ", valueInWei);
-            // const myWallet = web3.walletAddress;
+
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x785251d4d21B80415210aD4b8419d1fB300cC29B" // contract 주소
+              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
@@ -38,9 +37,8 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x785251d4d21B80415210aD4b8419d1fB300cC29B",
+                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
                     value: valueInWei.toString(),
-                    // gas: "100000000000000000",
                     data: tx.encodeABI(),
                   },
                 ],
@@ -50,59 +48,40 @@ export const buyItemDonation = (item) => {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
                       if (receipt !== undefined && receipt !== null) {
-                        const value = intervalId;
                         clearInterval(intervalId);
-                        console.log("intervalId: ", intervalId);
-                        resolve({ receipt, txHash, value });
+                        resolve({ receipt, txHash });
                       }
                     });
                   }, 1000);
                 });
                 return receiptPromise;
               })
-              .then(({ receipt, txHash, value }) => {
-                console.log("Transaction successful");
-                // console.log("events: ", events);
-                console.log("receipt: ", receipt);
-                const eventABI = {
-                  anonymous: false,
-                  inputs: [
-                    {
-                      indexed: false,
-                      internalType: "uint64",
-                      name: "value",
-                      type: "uint64",
-                    },
-                  ],
-                  name: "SupportEvent",
-                  type: "event",
-                };
-
-                const logData1 = receipt.logs[0];
-                // const logData2 = receipt.logs[1].data;
-                const decodeLog1 = web3.eth.abi.decodeLog(
-                  eventABI.inputs,
-                  logData1.data,
-                  logData1.topics
+              .then(({ receipt, txHash }) => {
+                const logs = receipt.logs.filter(
+                  (log) =>
+                    log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
                 );
-                // const decodeLog2 = web3.eth.abi.decodeParameter(
-                //   "uint256",
-                //   logData2
-                // );
-                console.log("decodeLog1: ", decodeLog1.value);
-                // console.log("decodeLog2: ", decodeLog2);
-
-                const donationDto = {
-                  amountEth: item.price,
-                  fromAddress: accounts[0],
-                  sendMsg: "",
-                  supportType: "item",
-                  supportTypeUid: item.id,
-                  supportUid: value,
-                  toAddress: item.seller,
-                  transactionHash: txHash,
-                };
-                saveDonation(donationDto);
+                if (logs.length > 0) {
+                  const log = logs[0];
+                  console.log("log: ", log);
+                  const id = web3.eth.abi.decodeParameters(
+                    ["uint64"],
+                    log.topics[1]
+                  )[0];
+                  const donationDto = {
+                    amountEth: item.price,
+                    fromAddress: accounts[0],
+                    sendMsg: "",
+                    supportType: "item",
+                    supportTypeUid: item.id,
+                    supportUid: id,
+                    toAddress: item.seller,
+                    transactionHash: txHash,
+                  };
+                  saveDonation(donationDto);
+                } else {
+                  sendToastMessage("Failed to register support record.");
+                }
               })
               .catch((err) => console.log(err));
           });
