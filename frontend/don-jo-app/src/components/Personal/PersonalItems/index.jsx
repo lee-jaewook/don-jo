@@ -9,11 +9,13 @@ import { itemApi } from "../../../api/items";
 import PropTypes from "prop-types";
 import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
 import { useNavigate, useParams } from "react-router";
+import { PulseLoader } from "react-spinners";
 
 const PersonalItems = ({ isOwner, itemId }) => {
   const navigate = useNavigate();
   const { pageName } = useParams();
   const [isShowDetailModal, setIsShowDetailModal] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isShowDetailModal) {
@@ -57,6 +59,7 @@ const PersonalItems = ({ isOwner, itemId }) => {
         setPageNum((prev) => prev + 1);
         setItemList((prev) => [...prev, ...(data.itemList || [])]);
         setIsEnd(data.hasMore);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -103,21 +106,42 @@ const PersonalItems = ({ isOwner, itemId }) => {
     return <S.Nothing>There's no items 🥲</S.Nothing>;
   };
 
+  const Contents = () => {
+    return (
+      <>
+        {isOwner || itemList.length !== 0 ? (
+          <OwnerOrHasItemList />
+        ) : (
+          <Nothing />
+        )}
+
+        {hasMore && (
+          <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+        )}
+
+        {isOpenAddItemModal && (
+          <AddItemModal
+            handleSetShowModal={setIsOpenAddItemModal}
+            whichApiChoose={true}
+          />
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.LoadingContainer>
+        <PulseLoader color="var(--color-primary)" />
+      </S.LoadingContainer>
+    );
+  };
+
   return (
     <S.Container>
       <S.Title>This is my Items</S.Title>
-      {isOwner || itemList.length !== 0 ? <OwnerOrHasItemList /> : <Nothing />}
 
-      {hasMore && (
-        <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
-      )}
-
-      {isOpenAddItemModal && (
-        <AddItemModal
-          handleSetShowModal={setIsOpenAddItemModal}
-          whichApiChoose={true}
-        />
-      )}
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };
