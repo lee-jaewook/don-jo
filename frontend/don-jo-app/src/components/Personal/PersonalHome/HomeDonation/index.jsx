@@ -6,6 +6,8 @@ import { FiMinus } from "@react-icons/all-files/fi/FiMinus.js";
 import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { donation } from "../../../../utils/transactionFunc/donation";
+import { priceApi } from "../../../../api/price";
 
 const HomeDonation = ({ donationSettingData, isOwner }) => {
   const [count, setCount] = useState(1);
@@ -15,6 +17,10 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
 
   //현재 페이지의 멤버 닉네임
   const pageMemberNickname = useSelector((state) => state.memberInfo.nickname);
+  //현재 페이지의 멤버 지갑 주소
+  const pageMemberWalletAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  );
 
   const DecreaseBtn = () => {
     return (
@@ -54,7 +60,16 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
     setMsg(e.target.value);
   };
 
-  const handleOnClickDonate = () => {};
+  const handleOnClickDonate = async () => {
+    const { data } = await priceApi.getItemDetail();
+    //후원하는 api
+    const item = {
+      price: donationAmount * data,
+      seller: pageMemberWalletAddress,
+      // id: 0,
+    };
+    donation(item);
+  };
 
   useEffect(() => {
     const donationAmount = donationSettingData.pricePerDonation * count;

@@ -57,6 +57,8 @@ const HomeRecentSupport = ({ isOwner }) => {
                   key={i}
                   supportContent={supportContent}
                   isOwner={isOwner}
+                  supportListLength={supportList.length}
+                  num={i}
                 />
               );
             })}
