@@ -5,7 +5,12 @@ import PropTypes from "prop-types";
 import ContractModal from "../../../../Common/Modal/ContractModal";
 import { supportApi } from "../../../../../api/support";
 
-const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
+const RecentSupportBlock = ({
+  supportContent: initContent,
+  isOwner,
+  num,
+  supportListLength,
+}) => {
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
@@ -201,7 +206,8 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
           </div>
         </S.CommentContainer>
       )}
-      <S.Line />
+      {num !== supportListLength - 1 && <S.Line />}
+
       {isShowContractModal && (
         <ContractModal
           handleSetShowModal={setIsShowContractModal}
