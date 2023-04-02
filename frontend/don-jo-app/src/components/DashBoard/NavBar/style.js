@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 export const NavBar = styled.div`
   position: sticky;
-  top: 0rem;
   display: flex;
-  flex-direction: column;
+  top: 0rem;
   width: 17.5rem;
-  margin-right: 3.75rem;
   height: 100%;
+  flex-direction: column;
   background-color: transparent;
   margin-left: 2.5rem;
+  margin-right: 3.75rem;
   @media (max-width: 1280px) {
     position: absolute;
     top: unset;
@@ -72,8 +72,8 @@ export const MenuWrapper = styled.ul`
   max-width: 17.5rem;
   list-style: none;
   margin-top: 1.875rem;
-  background-color: #fff;
-  /* margin-left: 2.5rem; */
+  background-color: white;
+  margin-bottom: 2.25rem;
   @media (max-width: 1280px) {
     width: 11.25rem;
     margin: 0.75rem;

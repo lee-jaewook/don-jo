@@ -7,6 +7,7 @@ import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import { supportApi } from "../../../../api/support";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 const DonationForm = () => {
   const PricePerData = [1, 2, 3, 4, 5];
@@ -41,13 +42,15 @@ const DonationForm = () => {
 
   const handleOnClickButton = async () => {
     if (!donationEmoji || !donationName || !thankMsg) {
-      alert("Please enter all settings"); // 임시 처리
+      sendToastMessage("Please enter all settings.", "error");
+      return;
     }
 
     try {
       await supportApi.updateDonationSettings(result);
+      sendToastMessage("✨ Saved successfully.");
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("[Save failed]: Contact your administrator.", "error");
     }
   };
 
@@ -96,7 +99,8 @@ const DonationForm = () => {
         <S.RequiredIcon>*</S.RequiredIcon>
       </S.RequiredInputWrapper>
       <S.FormDescription>
-        Change the default price of a coffee to an amount of your choice.
+        Change the default price of a "{donationName}" to an amount of your
+        choice.
       </S.FormDescription>
 
       <S.RadioGroup>

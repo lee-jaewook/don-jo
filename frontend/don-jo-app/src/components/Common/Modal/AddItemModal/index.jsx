@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import DashboardLoading from "../../../DashBoard/DashboardLoading";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -28,14 +28,9 @@ const ITEM_TYPE = "item";
 const IMAGE_TYPE = "img/item";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
-const AddItemModal = ({
-  handleSetShowModal,
-  whichApiChoose,
-  imageTitle,
-  isModify,
-}) => {
+const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
   const currentItem = useSelector((state) => state.items.currentItem);
-
+  const [isLoading, setLoading] = useState(false);
   // 아이템 프로필 설정
   const [itemFile, setItemNamFile] = useState({
     previewImgUrl: "",
@@ -106,7 +101,7 @@ const AddItemModal = ({
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("Upload failed: Contact your administrator.", "error");
     }
   };
 
@@ -151,6 +146,8 @@ const AddItemModal = ({
       itemData = { ...itemData, filePath: createdItemFilePath };
     }
 
+    setLoading(true);
+
     // API 호출
     if (isModify) {
       itemData = { ...itemData, id: currentItem.id };
@@ -158,20 +155,24 @@ const AddItemModal = ({
         const { status } = await itemApi.updateItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
-          toast("✨ update!");
+          sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        setLoading(false);
       }
     } else {
       try {
         const { status } = await itemApi.registerItem(itemData);
         if (status === 200) {
           handleSetShowModal(true);
-          toast("✨ register!");
+          sendToastMessage("✨ Saved successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -190,7 +191,9 @@ const AddItemModal = ({
     }
   }, []);
 
-  return (
+  return isLoading ? (
+    <DashboardLoading />
+  ) : (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
         <S.ContentWrap>
@@ -222,7 +225,7 @@ const AddItemModal = ({
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
-            <S.UnitWrap>eth</S.UnitWrap>
+            <S.UnitWrap>MATIC</S.UnitWrap>
           </S.SeparationContainer>
         </S.ContentWrap>
 
