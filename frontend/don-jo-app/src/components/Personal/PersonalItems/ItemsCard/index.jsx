@@ -2,10 +2,13 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
-import { buyItemDonation } from "../../../../utils/transactionFunc/buyItemDonation";
 import { calculateEth } from "../../../../utils/calculateEth";
 import { itemApi } from "../../../../api/items";
 import { useSelector } from "react-redux";
+import { useWaitForTransaction, useProvider, usePrepareContractWrite, useContractWrite } from 'wagmi';
+import ApplicationHandler from "../../../../contracts/ApplicationHandler.json";
+import Web3 from "web3";
+import { supportApi } from "../../../../api/support";
 
 const ItemCard = ({ item, isOwner }) => {
   const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
@@ -33,10 +36,61 @@ const ItemCard = ({ item, isOwner }) => {
     }
   }, []);
 
-  const doBuy = () => {
-    // 해당 아이템을 구매하는 api
-    buyItemDonation(item);
-    console.log("buy");
+  const provider = useProvider()
+  const web3 = new Web3(provider)
+
+  const { config } = usePrepareContractWrite({
+    abi: ApplicationHandler.abi,
+    address: "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77",
+    functionName: "buyItemDonation",
+    args: [item.seller, item.id],
+    overrides: {
+      gasLimit: 8000000,
+      value: web3.utils.toWei(item.price.toString(), "ether")
+    }
+  })
+  const contractWrite = useContractWrite(config)
+
+  const waitForTransaction = useWaitForTransaction({
+    hash: contractWrite.data?.hash,
+    onError(error) {
+      alert("구입 실패")
+    },
+    onSuccess(data) {
+      alert("구입 성공")
+      const logs = data.logs.filter(
+        (log) => log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
+      );
+      if (logs.length > 0) {
+        const log = logs[0];
+        const id = web3.eth.abi.decodeParameters(
+          ["uint64"],
+          log.topics[1]
+        )[0];
+        const donationDto = {
+          amountEth: item.price,
+          fromAddress: data.from,
+          sendMsg: "",
+          supportType: "item",
+          supportTypeUid: item.id,
+          supportUid: id,
+          toAddress: item.seller,
+          transactionHash: data.transactionHash,
+        };
+        supportApi
+          .saveSponsorshipDetail(donationDto)
+          .then((res) => {
+            console.log("저장 성공!");
+          })
+          .catch((error) => {
+            console.log("저장 실패");
+          });
+      }
+    }
+  })
+
+  const doBuy = async () => {
+    contractWrite.write()
   };
 
   return (
