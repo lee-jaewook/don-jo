@@ -4,7 +4,6 @@ import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
-import com.donjo.backend.api.dto.support.response.FindSupportPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
 import com.donjo.backend.api.service.member.MemberService;
 import com.donjo.backend.api.service.support.SupportService;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -69,6 +67,21 @@ public class SupportController {
         return ResponseEntity.status(200).build();
     }
 
+    @PutMapping(path="/api/member/support/arrive")
+    @ApiOperation(value = "후원 도착 업데이트", notes = "<strong>후원 트랜잭션 해시와 uid</strong>를 입력받아 후원이 도착했음을 업데이트합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
+            @ApiResponse(code=404, message = "NOT FOUND(정보 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+
+    })
+    public ResponseEntity<?> updateArrivedSupport(@RequestParam String transactionHash, @RequestParam Long supportUid) {
+        logger.info("후원 도착 업데이트 요청");
+        supportService.updateArrivedSupport(transactionHash, supportUid);
+        return ResponseEntity.status(200).build();
+    }
+
     @GetMapping(path="/api/member/dashboard/supports")
     @ApiOperation(value = "서포트 조회", notes = "example content")
     @ApiResponses({
@@ -79,12 +92,9 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupports(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull String type, @RequestParam @NotNull int pageNum,@RequestParam @NotNull int pageSize) {
+    public ResponseEntity<?> getSupportList(@RequestParam @NotNull String memberAddress, @RequestParam @NotNull String type, @RequestParam @NotNull int pageNum, @RequestParam @NotNull int pageSize) {
         logger.info("supportService.getSupports 요청");
-        // type으로 support를 조회하고 pagination
-        FindSupportPayload supports = supportService.getSupports(memberAddress, type, pageNum,pageSize);
-        // 값이 들어있지 않다면 204 정보없음
-        return ResponseEntity.status(supports.getSupportList().size() > 0 ? 200 : 204).body(supports);
+        return ResponseEntity.status(200).body(supportService.getSupportList(memberAddress, type, pageNum,pageSize));
     }
 
     @GetMapping(path="/api/member/supports")
