@@ -207,8 +207,7 @@ const RecentSupportBlock = ({
       {isShowContractModal && (
         <ContractModal
           handleSetShowModal={setIsShowContractModal}
-          uid={supportContent.uid}
-          toMemberAddress={supportContent.toMember.memberAddress}
+          transactionHash={supportContent.transactionHash}
         />
       )}
     </div>
