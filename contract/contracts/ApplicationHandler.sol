@@ -94,7 +94,7 @@ contract ApplicationHandler is ItemDonation, WishlistDonation {
   }
 
   // 후원 요청 시간 조회
-  function getSupportSendTime(address _address, uint64 _id) external view returns(uint256){
-    return _getSupportDetail(_address, _id).sendTimestamp;
+  function getSupportArriveTime(address _address, uint64 _id) external view returns(uint256){
+    return _getSupportDetail(_address, _id).arriveTime;
   }
 }

@@ -4,9 +4,10 @@ import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
-import com.donjo.backend.api.dto.support.FindSupportItem;
-import com.donjo.backend.api.dto.support.response.FindSupportPayload;
+import com.donjo.backend.api.dto.support.response.FindSupportItem;
+import com.donjo.backend.api.dto.support.response.FindSupportListPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
+import com.donjo.backend.api.dto.support.response.MemberItem;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.DonationSetting;
 import com.donjo.backend.db.entity.Member;
@@ -21,6 +22,7 @@ import com.donjo.backend.solidity.support.SupportSolidity;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -73,91 +77,58 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     public void createSupports(AddSupportCond dto){
-        logger.info("supportSolidity.getSendDateTime에서 sendTime 요청");
-        // contract가서 보낸시간을 가져오고, dto의 값과 가져온 sendTime값을 넣어주고 저장한다.
-        LocalDateTime sendTime = supportSolidity.getSendDateTime(dto.getToAddress(), dto.getSupportUid())
-                .orElseThrow(() -> new NoContentException());
         logger.info("DB 후원 저장");
-        supportRepository.save(dto.toSupport(sendTime));
+        supportRepository.save(dto.toSupport(LocalDateTime.now()));
     }
     @Override
-    public FindSupportPayload getSupports(String memberAddress, String type, int pageNum, int pageSize){
-        // Dto 리스트배열 생성
-        List<FindSupportItem> findSupportItemList = new ArrayList<>();
-
+    public FindSupportListPayload getSupportList(String memberAddress, String type, int pageNum, int pageSize){
         // PageRequest 변수 생성
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        Pageable nextpageable = PageRequest.of(pageNum+1, pageSize);
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
-        List<Support> list=supportRepository.findAllBySupport(type,memberAddress,pageable);
-        List<Support> nextlist=supportRepository.findAllBySupport(type,memberAddress,nextpageable);
+        Page<Support> list = supportRepositorySupport.findAllOrderByArriveTime(type,memberAddress,pageable);
+        logger.info("Support Item SIZE : {}", list.getTotalElements());
+        logger.info("Support Item SIZE : {}", list.getSize());
 
-        // 다음 페이지에 값이 있는지 확인
-        boolean hasMore = !nextlist.isEmpty();
-        // 리스트를 돌면서 FromAddress가 있으면 To와From 둘다 담고 없으면 To객체만 담아서 배열에 추가(add)
-        for (Support support : list) {;
-            if (support.getArriveTimeStamp()==null){
-                try {
-                    getArriveTimeStamp(support.getTransactionHash());
-                }
-                catch (NoSuchElementException e){
-                    e.printStackTrace();
-                }
-            }
-            if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
-                Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                FindSupportItem.toMember toMember = FindSupportItem.getToMember(findToMember);
-                FindSupportItem findSupportItem = FindSupportItem.getSomeoneSupport(support,toMember);
-                findSupportItemList.add(findSupportItem);
-            }
-            else {
-                Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
-                Member findToMember = memberRepository.findById(support.getToAddress()).get();
-                FindSupportItem.fromMember fromMember = FindSupportItem.getFromMember(findFromMember);
-                FindSupportItem.toMember toMember = FindSupportItem.getToMember(findToMember);
-                FindSupportItem findSupportItem = FindSupportItem.getSupport(support, fromMember,toMember);
-                findSupportItemList.add(findSupportItem);
-            }
-        }
+        // Dto 리스트배열 생성
+        List<FindSupportItem> findSupportItemList = list.stream().map(support -> {
+            Member fromMember = memberRepository.findById(support.getFromAddress())
+                    .orElse(new Member(support.getFromAddress()));
+            Member toMember = memberRepository.findById(support.getToAddress())
+                    .orElse(new Member(support.getToAddress()));
+
+            return FindSupportItem.fromSupportAndMember(support,
+                                                        MemberItem.fromMember(fromMember),
+                                                        MemberItem.fromMember(toMember));
+        }).collect(Collectors.toList());
+
+        logger.info("Support Item SIZE : {}", findSupportItemList.size());
 
         // supportList와 next페이지가 있는지 hashMore 던져줌
-        return FindSupportPayload.getSupportList(hasMore,findSupportItemList);
+        return FindSupportListPayload.getSupportList(list.hasNext(), findSupportItemList);
     }
 
     @Override
     @Transactional
     public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
-//         Address와 Uid로 Solidity[][] 가져오기
-        FindSupportDetailPayload findSupportDetailPayload;
-//        Support support = supportRepository.findById(hash).orElseThrow(()->new NoContentException());
-        Optional<SupportSol> supportSol = Optional.ofNullable(supportSolidity.getSupportDetail(toAddress, supportUid).orElseThrow(() -> new NoContentException()));
-        System.out.println(supportSol.get().getTo());
-        Support support = Optional.ofNullable(supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)).orElseThrow(()-> new NoContentException());
 
-        if (support.getArriveTimeStamp() == null) {
-            try {
-                getArriveTimeStamp(support.getTransactionHash());
-            }
-            catch (NoSuchElementException e){
-                e.printStackTrace();
-            }
-        }
-        if (support.getFromAddress()==null || support.getFromAddress().isEmpty()){
-            Member findToMember = memberRepository.findById(support.getToAddress()).get();
-            FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSomeoneSupport(supportSol,support,toMember);
-        }
-        else {
-            Member findFromMember = memberRepository.findById(support.getFromAddress()).get();
-            Member findToMember = memberRepository.findById(support.getToAddress()).get();
-            FindSupportDetailPayload.fromMember fromMember = FindSupportDetailPayload.getFromMember(findFromMember);
-            FindSupportDetailPayload.toMember toMember = FindSupportDetailPayload.getToMember(findToMember);
-            findSupportDetailPayload = FindSupportDetailPayload.fromSupport(supportSol,support,fromMember,toMember);
-        }
+        SupportSol supportSol =  supportSolidity.getSupportDetail(toAddress, supportUid)
+                .orElseThrow(()-> new NoContentException());
+
+        Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)
+                .orElseThrow(()-> new NoContentException());
 
 
-        return findSupportDetailPayload;
+        // 회원 (보낸 사람)
+        Member fromMember = memberRepository.findById(support.getFromAddress())
+                .orElse(Member.builder().address(support.getFromAddress()).build());
+        // 회원 (받은 사람)
+        Member toMember = memberRepository.findById(toAddress)
+                .orElse(Member.builder().address(toAddress).build());
+
+
+        return FindSupportDetailPayload
+                .fromSupport(supportSol,support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
     }
     @Override
     public int getSupportCount(String type, String memberAddress){
@@ -222,6 +193,17 @@ public class SupportServiceImpl implements SupportService{
 
         // 댓글 삭제
         support.setReplyMsg(null);
+    }
+
+    @Override
+    @Transactional
+    public void updateArrivedSupport(String transactionHash, Long supportUid) {
+        Support support = supportRepository.findById(transactionHash)
+                .orElseThrow(()-> new BadRequestException("잘못된 트랜잭션 HX 값입니다."));
+        LocalDateTime arriveTimeStamp = supportSolidity.getArriveTimeStamp(support.getToAddress(), supportUid)
+                .orElseThrow(()->new RuntimeException("블록체인에 후원 정보가 없습니다."));
+        support.setSupportUid(supportUid);
+        support.setArriveTimeStamp(arriveTimeStamp);
     }
 
     @Transactional
