@@ -24,6 +24,12 @@ export const supportApi = {
     return api.post(`/member/supports`, supportRequestDto);
   },
 
+  // 후워내역 도착 업데이트
+  updateSponsorshipArrived: (supportUid, transactionHash) =>
+    api.put(
+      `/member/support/arrive?supportUid=${supportUid}&transactionHash=${transactionHash}`
+    ),
+
   // 서포트 수 조회 API
   getSupportCount: (type) => api.get(`/member/supporters/count?type=${type}`),
 
