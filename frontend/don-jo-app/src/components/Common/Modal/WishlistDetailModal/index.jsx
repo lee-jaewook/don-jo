@@ -8,6 +8,8 @@ import BasicTextarea from "../../BasicTextarea";
 import { useMediaQuery } from "react-responsive";
 import FullScreenModal from "../FullScreenModal";
 import { wishlistAPI } from "../../../../api/wishlist";
+import { useSelector } from "react-redux";
+import { buyWishlistDonation } from "../../../../utils/transactionFunc/buyWishlistDonation";
 
 const WishlistDetailModal = ({
   uid,
@@ -21,7 +23,13 @@ const WishlistDetailModal = ({
     collectedAmount: "0",
   });
   const [price, setPrice] = useState(0);
-  const [confirmationMessage, setConfirmationMessage] = useState(""); // 확인 메세지
+  const [sendMsg, setSendMsg] = useState(""); // 확인 메세지
+
+  //현재 페이지의 멤버 지갑주소 정보
+  const pageMemberAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  ).toLowerCase();
+
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleDeleteWishlistItem = useCallback(async () => {
@@ -44,6 +52,22 @@ const WishlistDetailModal = ({
   useEffect(() => {
     handleGetWishlistItemDetail();
   }, []);
+
+  const BuyOrEdit = () => {
+    if (handleOnClickButton) {
+      console.log("여기로 오나?");
+      return;
+    }
+
+    const item = {
+      price: price,
+      id: uid,
+      seller: pageMemberAddress,
+      sendMsg: sendMsg,
+    };
+
+    buyWishlistDonation(item);
+  };
 
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
@@ -101,10 +125,10 @@ const WishlistDetailModal = ({
                 <S.Eth>eth</S.Eth>
               </span>
             </S.PriceInputWrapper>
-            <BasicTitle text="Confirmation Message" />
+            <BasicTitle text="Send a Message" />
             <BasicTextarea
-              handleOnChangeValue={setConfirmationMessage}
-              placeholder="Thank you for supporting my wishlist!"
+              handleOnChangeValue={setSendMsg}
+              placeholder="Express your appreciation to the seller!"
             />
           </div>
         )}
@@ -118,7 +142,7 @@ const WishlistDetailModal = ({
             text={isDashboard ? "Edit" : "Donate"}
             color="var(--color-primary)"
             isBackground={true}
-            handleOnClickButton={handleOnClickButton}
+            handleOnClickButton={BuyOrEdit}
           />
         </S.ButtonWrapper>
       </S.ContentWrapper>
@@ -142,5 +166,5 @@ WishlistDetailModal.propTypes = {
   uid: PropTypes.number.isRequired,
   idDashboard: PropTypes.bool,
   handleSetShowModal: PropTypes.func.isRequired,
-  handleOnClickButton: PropTypes.func.isRequired,
+  handleOnClickButton: PropTypes.func,
 };

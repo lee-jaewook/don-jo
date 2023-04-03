@@ -123,7 +123,6 @@ const PersonalWishlist = ({ isOwner }) => {
           <WishlistDetailModal
             handleSetShowModal={setIsShowWishlistDetailModal}
             uid={thisItemUID}
-            handleOnClickButton={doDonateWishlist}
             isDashboard={false}
           />
         )}
