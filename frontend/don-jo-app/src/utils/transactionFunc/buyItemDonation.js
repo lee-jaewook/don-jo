@@ -21,9 +21,10 @@ export const buyItemDonation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-
-            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
-
+            const priceInMatic = parseFloat(item.price) * 10 ** 15;
+            // const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
+            console.log("typeof valueInWei: ", typeof priceInMatic);
+            console.log("valueInWei: ", priceInMatic);
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
               "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
@@ -38,7 +39,7 @@ export const buyItemDonation = (item) => {
                   {
                     from: accounts[0],
                     to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
-                    value: valueInWei.toString() * Math.pow(10, -3),
+                    value: priceInMatic.toString(),
                     data: tx.encodeABI(),
                   },
                 ],
