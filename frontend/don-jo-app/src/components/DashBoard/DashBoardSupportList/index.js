@@ -7,6 +7,7 @@ import ShowMoreButton from "../../Common/ShowMoreButton";
 import DashBoardListItem from "../DashBoardListItem";
 import { supportApi } from "../../../api/support";
 import { useSelector } from "react-redux";
+import { calculateEth } from "../../../utils/calculateEth";
 
 const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
   const [result, setResult] = useState([]);
@@ -58,8 +59,11 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
               key={item.uid + index}
               uid={item.uid}
               supportType={item.supportType}
-              amount={item.amountEth}
+              amount={calculateEth(item.amount)}
               from={item.fromMember}
+              toMemberAddress={item.toMember.toMemberAddress}
+              arriveTimeStamp={item.arriveTimeStamp}
+              transactionHash={item.transactionHash}
             />
           ))
         ) : (

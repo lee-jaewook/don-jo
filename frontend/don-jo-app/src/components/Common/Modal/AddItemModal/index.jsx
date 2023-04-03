@@ -154,7 +154,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
       try {
         const { status } = await itemApi.updateItem(itemData);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
           sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {
@@ -166,7 +166,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
       try {
         const { status } = await itemApi.registerItem(itemData);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
           sendToastMessage("✨ Saved successfully.");
         }
       } catch (error) {
