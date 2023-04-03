@@ -204,6 +204,13 @@ public class SupportServiceImpl implements SupportService{
                 .orElseThrow(()->new RuntimeException("블록체인에 후원 정보가 없습니다."));
         support.setSupportUid(supportUid);
         support.setArriveTimeStamp(arriveTimeStamp);
+
+        // toAddress -> fromAddress : 최초의 후원인 경우
+        if(supportRepositorySupport.checkFistSupport(support.getFromAddress(), support.getToAddress())){
+            Optional<Member> member = memberRepository.findById(support.getToAddress());
+            if(member.isEmpty()) return;
+            member.get().setNumSupporters(member.get().getNumSupporters()+1);
+        }
     }
 
     @Transactional
