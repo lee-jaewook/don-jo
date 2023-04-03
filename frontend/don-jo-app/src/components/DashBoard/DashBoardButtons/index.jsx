@@ -15,6 +15,7 @@ const DashBoardButtons = () => {
             <GeneratorItem
               id={`generator-item${index + 1}`}
               key={index}
+              previewSrc={item.preview}
               title={item.text}
               description={item.description}
               isItemsRequired={item.isItemsRequired}

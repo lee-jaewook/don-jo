@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
+  position: relative;
   max-width: 33.0625rem;
   display: flex;
   flex-direction: column;
@@ -44,4 +45,16 @@ export const ButtonWrapper = styled.div`
   width: 100%;
   max-width: 17.5rem;
   margin: 2.5rem auto 0rem auto;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  bottom: 0rem;
+  left: 0rem;
+  color: var(--color-text-secondary);
+  @media (max-width: 768px) {
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;

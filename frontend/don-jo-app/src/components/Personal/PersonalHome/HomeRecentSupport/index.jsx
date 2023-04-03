@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { supportApi } from "../../../../api/support";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { PulseLoader } from "react-spinners";
 
 const HomeRecentSupport = ({ isOwner }) => {
   const [pageNum, setPageNum] = useState(0);
@@ -12,6 +13,7 @@ const HomeRecentSupport = ({ isOwner }) => {
   const TYPE = "all";
   const [supportList, setSupportList] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
@@ -29,6 +31,7 @@ const HomeRecentSupport = ({ isOwner }) => {
       setPageNum((prev) => prev + 1);
       setHasMore(data.hasMore);
       setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+      setIsLoading(false);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -43,6 +46,44 @@ const HomeRecentSupport = ({ isOwner }) => {
     getSupportList();
   };
 
+  const Contents = () => {
+    return (
+      <>
+        {supportList.length !== 0 ? (
+          <S.Card>
+            {supportList.map((supportContent, i) => {
+              return (
+                <RecentSupportBlock
+                  key={i}
+                  supportContent={supportContent}
+                  isOwner={isOwner}
+                  supportListLength={supportList.length}
+                  num={i}
+                />
+              );
+            })}
+
+            {hasMore && (
+              <ShowMoreButton
+                handleOnClickButton={handleOnClickShowMoreButton}
+              />
+            )}
+          </S.Card>
+        ) : (
+          <S.Nothing>There's no Recent Support 😥</S.Nothing>
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.Nothing>
+        <PulseLoader color="var(--color-primary)" />
+      </S.Nothing>
+    );
+  };
+
   return (
     <S.Container>
       <S.TitleContainer>
@@ -53,25 +94,7 @@ const HomeRecentSupport = ({ isOwner }) => {
           <S.Type>📁 Items</S.Type>
         </S.Typecontainer>
       </S.TitleContainer>
-      {supportList.length !== 0 ? (
-        <S.Card>
-          {supportList.map((supportContent, i) => {
-            return (
-              <RecentSupportBlock
-                key={i}
-                supportContent={supportContent}
-                isOwner={isOwner}
-              />
-            );
-          })}
-
-          {hasMore && (
-            <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
-          )}
-        </S.Card>
-      ) : (
-        <S.Nothing>There's no Recent Support 😥</S.Nothing>
-      )}
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };

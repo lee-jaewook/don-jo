@@ -5,8 +5,10 @@ import { QRCode } from "react-qrcode-logo";
 import BasicButton from "../../Common/BasicButton";
 import { toPng } from "html-to-image";
 import Logo from "../../../assets/img/dashboard/qr-logo.svg";
+import { useSelector } from "react-redux";
 const QRCodeModal = ({ handleSetShowModal }) => {
   const ref = useRef(null);
+  const pageName = useSelector((state) => state.member.pageName);
 
   const handleOnClickDownloadButton = () => {
     if (ref.current === null) {
@@ -30,7 +32,7 @@ const QRCodeModal = ({ handleSetShowModal }) => {
       <S.Content>
         <div ref={ref}>
           <QRCode
-            value="https://j8a209.p.ssafy.io"
+            value={`https://j8a209.p.ssafy.io/${pageName}`}
             size="200"
             fgColor="#222"
             logoWidth="48"

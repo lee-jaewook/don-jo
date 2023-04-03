@@ -8,20 +8,15 @@ import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "@react-icons/all-files/fi/FiRefreshCcw";
 import blockchain from "../../../../assets/img/common/blockchain.jpg";
+import { supportApi } from "../../../../api/support";
+import { calculateEth } from "../../../../utils/calculateEth";
 
 const DesktopTablet = ({ children }) => {
   const isDesktopTablet = useMediaQuery({ minWidth: 769 });
   return isDesktopTablet ? children : null;
 };
 
-const ContractInfo = ({ supportContent }) => {
-  // 임시 페이지 주인 정보
-  const pageOwner = {
-    profileImgPath:
-      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-    nickname: "Robert Downey Jr.",
-  };
-
+const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
   const [refreshedTime, setRefreshedTime] = useState("");
 
   const getRefreshedTime = () => {
@@ -33,8 +28,32 @@ const ContractInfo = ({ supportContent }) => {
     setRefreshedTime(timeString);
   };
 
-  useEffect(() => {
+  const [contractDetail, setContractDetail] = useState({
+    amount: 0.0,
+    arriveTimeStamp: "",
+    sendTimeStamp: "",
+    from: {
+      fromMemberProfileImagePath: "",
+    },
+    to: {
+      toMemberProfileImagePath: "",
+    },
+  });
+
+  const [isArrived, setIsArrived] = useState(false);
+  const getSupportContent = async () => {
+    const { data } = await supportApi.getSupportDetail(uid, toMemberAddress);
+    if (data.arriveTimeStamp) setIsArrived(true);
+    setContractDetail(data);
+  };
+
+  const refresh = () => {
     getRefreshedTime();
+    getSupportContent();
+  };
+
+  useEffect(() => {
+    refresh();
   }, []);
 
   return (
@@ -43,20 +62,20 @@ const ContractInfo = ({ supportContent }) => {
       <S.ProgressContainer>
         <S.RefreshContainer>
           Refreshed at {refreshedTime}
-          <S.RefreshIconWrapper onClick={getRefreshedTime}>
+          <S.RefreshIconWrapper onClick={refresh}>
             <FiRefreshCcw color="var(--color-text-secondary)" size={18} />
           </S.RefreshIconWrapper>
         </S.RefreshContainer>
         <S.ProgressWrapper>
           <S.Bar isFirst={true} isEnable={true} />
-          <S.Bar isFirst={false} isEnable={false} />
+          <S.Bar isFirst={false} isEnable={isArrived} />
 
           {/* 보낸 사람 */}
           <S.ProfileContainer>
             <S.ProfileWrapper isEnable={true}>
               <ProfileImg
                 width={3}
-                src={supportContent.fromMember.profileImgPath}
+                src={contractDetail.from.fromMemberProfileImagePath}
               />
             </S.ProfileWrapper>
             <S.Tag>Supporter</S.Tag>
@@ -72,8 +91,11 @@ const ContractInfo = ({ supportContent }) => {
 
           {/* 받는 사람 */}
           <S.ProfileContainer>
-            <S.ProfileWrapper isEnable={false}>
-              <ProfileImg width={3} src={pageOwner.profileImgPath} />
+            <S.ProfileWrapper isEnable={isArrived}>
+              <ProfileImg
+                width={3}
+                src={contractDetail.to.toMemberProfileImagePath}
+              />
             </S.ProfileWrapper>
             <S.Tag>Creator</S.Tag>
           </S.ProfileContainer>
@@ -83,21 +105,21 @@ const ContractInfo = ({ supportContent }) => {
         <S.Wrapper>
           <S.Type>Supporter</S.Type>
           <S.TextContainer>
-            <label>{supportContent.fromMember.nickname}</label>
-            <label>{supportContent.fromMember.address}</label>
+            <label>{contractDetail.from.fromMemberNickname}</label>
+            <label>{contractDetail.from.fromMemberAddress}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Creator</S.Type>
           <S.TextContainer>
-            <label>{supportContent.toMember.nickname}</label>
-            <label>{supportContent.toMember.address}</label>
+            <label>{contractDetail.to.toMemberNickname}</label>
+            <label>{contractDetail.to.toMemberAddress}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Amount</S.Type>
           <div>
-            <S.Amount>{supportContent.amountEth.toFixed(3)}</S.Amount>
+            <S.Amount>{calculateEth(contractDetail.amount)}</S.Amount>
             <S.Unit>eth</S.Unit>
           </div>
         </S.Wrapper>
@@ -108,13 +130,13 @@ const ContractInfo = ({ supportContent }) => {
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Send:
               </label>
-              <S.TimeText>{supportContent.sendTimeStamp}</S.TimeText>
+              <S.TimeText>{contractDetail.sendTimeStamp}</S.TimeText>
             </S.TimeContainer>
             <S.TimeContainer>
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Arrived:
               </label>
-              <S.TimeText>{supportContent.arriveTimeStamp}</S.TimeText>
+              <S.TimeText>{contractDetail.arriveTimeStamp}</S.TimeText>
             </S.TimeContainer>
           </S.TextContainer>
         </S.Wrapper>
@@ -123,17 +145,17 @@ const ContractInfo = ({ supportContent }) => {
   );
 };
 
-const ContractModal = ({ handleSetShowModal, supportContent }) => {
+const ContractModal = ({ handleSetShowModal, uid, toMemberAddress }) => {
   return (
     <>
       <DesktopTablet>
         <BasicModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo supportContent={supportContent} />
+          <ContractInfo uid={uid} toMemberAddress={toMemberAddress} />
         </BasicModal>
       </DesktopTablet>
       <Mobile>
         <FullScreenModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo supportContent={supportContent} />
+          <ContractInfo uid={uid} toMemberAddress={toMemberAddress} />
         </FullScreenModal>
       </Mobile>
     </>
@@ -144,20 +166,6 @@ export default ContractModal;
 
 ContractModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
-  supportContent: PropTypes.shape({
-    amountEth: PropTypes.number,
-    uid: PropTypes.number.isRequired,
-    fromMember: PropTypes.shape({
-      nickname: PropTypes.string.isRequired,
-      profileImgPath: PropTypes.string,
-      address: PropTypes.string.isRequired,
-    }).isRequired,
-    toMember: PropTypes.shape({
-      nickname: PropTypes.string.isRequired,
-      profileImgPath: PropTypes.string,
-      address: PropTypes.string.isRequired,
-    }),
-    sendTimeStamp: PropTypes.string,
-    arriveTimeStamp: PropTypes.string,
-  }).isRequired,
+  uid: PropTypes.number.isRequired,
+  toMemberAddress: PropTypes.string.isRequired,
 };

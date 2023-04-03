@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { menus } from "../../../data/dashboard";
@@ -8,6 +8,7 @@ import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut.js";
 import { memberApi } from "../../../api/member";
 import { setLogOut } from "../../../stores/member";
 import Logo from "../../../assets/img/common/app-logo.svg";
+import sendToastMessage from "../../../utils/sendToastMessage";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const NavBar = () => {
@@ -23,9 +24,10 @@ const NavBar = () => {
       if (status === 200) {
         dispatch(setLogOut());
         navigate("/");
+        sendToastMessage("✨ logout");
       }
     } catch (error) {
-      console.log("error:", error);
+      console.log("Logout Failed:", error);
     }
   };
 

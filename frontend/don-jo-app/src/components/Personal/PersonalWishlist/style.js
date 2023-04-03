@@ -81,3 +81,11 @@ export const Nothing = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 18.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

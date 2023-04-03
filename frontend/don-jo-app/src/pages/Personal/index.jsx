@@ -27,7 +27,9 @@ const Personal = () => {
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
-  const loginUserAddress = useSelector((state) => state.member.walletAddress);
+  const loginUserAddress = useSelector(
+    (state) => state.member.walletAddress
+  ).toLowerCase();
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
