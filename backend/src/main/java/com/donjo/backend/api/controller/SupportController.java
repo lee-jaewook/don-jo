@@ -118,7 +118,7 @@ public class SupportController {
         }
     }
 
-    @GetMapping(path="/api/member/supporters/count")
+    @GetMapping(path="/api/auth/member/supports/count")
     @ApiOperation(value = "서포트 수 조회", notes = "조건에 맞게 후원수를 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
