@@ -28,10 +28,11 @@ public class AddSupportCond {
     private Long supportTypeUid;
 
     // transaction Uid값
-    @NotNull
-    private Long supportUid;
+//    @NotNull
+//    private Long supportUid;
 
     // 보낸 사람 주소
+    @NotNull
     private String fromAddress;
 
     // 보낸 사람 주소
@@ -51,7 +52,7 @@ public class AddSupportCond {
                 .transactionHash(this.getTransactionHash())
                 .supportType(this.getSupportType())
                 .supportTypeUid(this.getSupportTypeUid())
-                .supportUid(this.getSupportUid())
+                .supportUid(null)
                 .fromAddress(this.getFromAddress())
                 .toAddress(this.getToAddress())
                 .sendMsg(this.getSendMsg())
