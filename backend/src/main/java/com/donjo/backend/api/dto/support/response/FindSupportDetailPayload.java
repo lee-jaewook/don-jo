@@ -45,6 +45,7 @@ public class FindSupportDetailPayload {
                 .fromMember(fromMember)
                 .amount(support.getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
+                .supportTypeUid(support.getSupportTypeUid())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();
