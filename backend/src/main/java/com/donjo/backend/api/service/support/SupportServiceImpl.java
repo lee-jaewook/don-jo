@@ -221,13 +221,13 @@ public class SupportServiceImpl implements SupportService{
         // 댓글 삭제
         support.setReplyMsg(null);
     }
-
+    
     @Transactional
     public void getArriveTimeStamp(String transactionHash){
         // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다
         Web3j web3 = Web3j.build(new HttpService("https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a"));
         try {
-
+            System.out.println(transactionHash);
             // web3 객체를 사용하여, 특정 트랜잭션의 정보를 가져옵니다. support.getTransactionHash()는 특정 트랜잭션의 해시값을 반환합니다.
             EthTransaction ethTransaction = web3.ethGetTransactionByHash(transactionHash).send();
 
@@ -248,6 +248,7 @@ public class SupportServiceImpl implements SupportService{
                 Optional<Support> support = supportRepository.findById(transactionHash);
                 if(support.isPresent()) {
                     support.get().setArriveTimeStamp(transactionTime);
+                    supportRepository.save(support.get());
                 }
                 // 서포트 객체에 도착시간을 저장한다.
                 // Dto값에 도착시간을 넣고, Dto 리턴.
