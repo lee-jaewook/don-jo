@@ -73,9 +73,9 @@ export const donation = (item) => {
                   const donationDto = {
                     amountEth: item.price,
                     fromAddress: accounts[0],
-                    sendMsg: "",
+                    sendMsg: item.sendMsg,
                     supportType: "donation",
-                    supportTypeUid: item.id,
+                    supportTypeUid: "",
                     supportUid: id,
                     toAddress: item.seller,
                     transactionHash: txHash,

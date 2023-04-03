@@ -76,7 +76,7 @@ export const buyWishlistDonation = (item) => {
                   const donationDto = {
                     amountEth: item.price,
                     fromAddress: accounts[0],
-                    sendMsg: "",
+                    sendMsg: item.sendMsg,
                     supportType: "wishlist",
                     supportTypeUid: item.id,
                     supportUid: id,
