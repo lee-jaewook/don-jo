@@ -21,7 +21,10 @@ export const donation = (item) => {
             );
             web3.setProvider(infuraWeb3.currentProvider);
 
-            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
+            const valueInWei = web3.utils.toWei(
+              item.price.toString() * Math.pow(10, -3),
+              "ether"
+            );
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
@@ -70,9 +73,9 @@ export const donation = (item) => {
                   const donationDto = {
                     amountEth: item.price,
                     fromAddress: accounts[0],
-                    sendMsg: "",
+                    sendMsg: item.sendMsg,
                     supportType: "donation",
-                    supportTypeUid: item.id,
+                    supportTypeUid: "",
                     supportUid: id,
                     toAddress: item.seller,
                     transactionHash: txHash,
