@@ -10,21 +10,24 @@ import FullScreenModal from "../FullScreenModal";
 import { wishlistAPI } from "../../../../api/wishlist";
 import { useSelector } from "react-redux";
 import { buyWishlistDonation } from "../../../../utils/transactionFunc/buyWishlistDonation";
+import sendToastMessage from "../../../../utils/sendToastMessage";
+import DashboardLoading from "../../../DashBoard/DashboardLoading";
+
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const WishlistDetailModal = ({
   uid,
-  isDashboard,
+  isDashboard = false,
   handleSetShowModal,
   handleOnClickButton,
 }) => {
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
   const [result, setResult] = useState({
     targetAmount: "0",
     collectedAmount: "0",
   });
   const [price, setPrice] = useState(0);
   const [sendMsg, setSendMsg] = useState(""); // 확인 메세지
-
+  const [isLoading, setLoading] = useState(false);
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
@@ -32,22 +35,31 @@ const WishlistDetailModal = ({
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  const handleDeleteWishlistItem = useCallback(async () => {
-    try {
-      await wishlistAPI.deleteWishlistItem(uid);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  }, []);
-
   const handleGetWishlistItemDetail = async () => {
+    setLoading(true);
     try {
       const { data } = await wishlistAPI.getWishlistItemDetail(uid);
       setResult(data);
     } catch (error) {
       console.log("error: ", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleDeleteWishlistItem = useCallback(async () => {
+    setLoading(true);
+    try {
+      await wishlistAPI.deleteWishlistItem(uid);
+      sendToastMessage("✨ Deleted successfully.");
+      handleSetShowModal();
+    } catch (error) {
+      sendToastMessage("Delete Failed", "error");
+      console.log("[Wishlists] Delete Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     handleGetWishlistItemDetail();
@@ -56,6 +68,7 @@ const WishlistDetailModal = ({
   const BuyOrEdit = () => {
     if (handleOnClickButton) {
       console.log("여기로 오나?");
+      handleOnClickButton();
       return;
     }
 
@@ -81,7 +94,9 @@ const WishlistDetailModal = ({
   };
 
   const handleMakeModalContent = () => {
-    return (
+    return isLoading ? (
+      <DashboardLoading />
+    ) : (
       <S.ContentWrapper>
         <S.WishlistContent>
           <S.wishlistImg
@@ -94,7 +109,7 @@ const WishlistDetailModal = ({
             <S.Title>{result.title}</S.Title>
             <S.Description>{result.description}</S.Description>
             <S.Price>
-              {result.targetAmount} <S.Eth>eth</S.Eth>
+              {result.targetAmount} <S.Eth>MATIC</S.Eth>
             </S.Price>
           </S.Content>
         </S.WishlistContent>
@@ -122,7 +137,7 @@ const WishlistDetailModal = ({
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
-                <S.Eth>eth</S.Eth>
+                <S.Eth>MATIC</S.Eth>
               </span>
             </S.PriceInputWrapper>
             <BasicTitle text="Send a Message" />
