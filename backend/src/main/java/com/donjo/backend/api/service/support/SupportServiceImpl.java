@@ -68,7 +68,7 @@ public class SupportServiceImpl implements SupportService{
                 .mapToDouble(Support::getAmount)
                 .sum();
 
-        return totalAmountInWei;
+        return Double.parseDouble(String.format("%.3f", totalAmountInWei));
     }
 
     @Override
