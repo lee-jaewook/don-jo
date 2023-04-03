@@ -8,6 +8,7 @@ import AddWishlistModal from "../../../Common/Modal/AddWishlistModal";
 const WishlistSettings = () => {
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
   const [isWishListRegisterModal, setIsWishListRegisterModal] = useState(false);
+  const [callApi, setCallApi] = useState(false);
 
   const handleAddWishListModalOpen = () => {
     setIsWishListRegisterModal((prev) => !prev);
@@ -21,9 +22,14 @@ const WishlistSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Wishlist" />
-      <DashboardWishlist />
+      <DashboardWishlist callApi={callApi} setCallApi={setCallApi} />
       {isWishListRegisterModal && (
-        <AddWishlistModal handleSetShowModal={handleAddWishListModalOpen} />
+        <AddWishlistModal
+          handleSetShowModal={() => {
+            setIsWishListRegisterModal(false);
+            setCallApi((prev) => !prev);
+          }}
+        />
       )}
     </S.SettingWrapper>
   );
