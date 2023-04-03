@@ -19,9 +19,9 @@ public class FindSupportDetailPayload {
     // 서포트 트랜잭션해쉬
     private String transactionHash;
     // 서포트 보내는 사람
-    private MemberItem from;
+    private MemberItem fromMember;
     // 서포트 받는 사람
-    private MemberItem to;
+    private MemberItem toMember;
     // 서포트 타입
     private String supportType; //  Donation : 0, Item : 1, Wishlist : 2
     // 서포트타입 Uid
@@ -41,8 +41,8 @@ public class FindSupportDetailPayload {
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
-                .to(toMember)
-                .from(fromMember)
+                .toMember(toMember)
+                .fromMember(fromMember)
                 .amount(supportsol.getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
