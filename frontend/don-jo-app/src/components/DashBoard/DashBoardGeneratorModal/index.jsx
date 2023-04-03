@@ -35,14 +35,12 @@ const DashBoardGeneratorModal = ({
     emoji: "🍪",
     buttonName: "My Button",
   });
-
-  const { emoji, buttonName } = generatorValue;
-
   const [code, setCode] = useState("");
   const [searchItem, setSearchItem] = useState({
     id: -1,
     title: "",
   });
+  const { emoji, buttonName } = generatorValue;
 
   const handleOnChangeValue = (e) => {
     const { id, value } = e.target;
@@ -55,8 +53,8 @@ const DashBoardGeneratorModal = ({
   };
 
   const handleOnChangeItemId = (e) => {
-    const { innerText } = e.target;
-    setFontStyle(innerText);
+    const { id, innerText } = e.target;
+    setSearchItem({ id: id, title: innerText });
   };
 
   const handleOnClickEmoji = (item) => {
@@ -236,7 +234,7 @@ const DashBoardGeneratorModal = ({
               id="selectedItem"
               isBefore={false}
               data={itemList}
-              selectValue={searchItem.title}
+              selectValue={searchItem.title || ""}
               handleOptionChange={handleOnChangeItemId}
             />
           </>

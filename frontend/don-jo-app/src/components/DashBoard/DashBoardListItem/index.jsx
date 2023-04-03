@@ -3,6 +3,7 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import ContractModal from "../../Common/Modal/ContractModal";
+import DefaultImg from "../../../assets/img/common/app-logo.svg";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const type = {
@@ -18,6 +19,7 @@ const DashBoardListItem = ({
   amount,
   arriveTimeStamp,
   toMemberAddress,
+  transactionHash,
 }) => {
   const location = useLocation();
   const [isClickedSupportItem, setClickedSupportItem] = useState(false);
@@ -29,8 +31,7 @@ const DashBoardListItem = ({
       {isClickedSupportItem && (
         <ContractModal
           handleSetShowModal={handleSetShowItemTransactionModal}
-          uid={uid}
-          toMemberAddress={toMemberAddress}
+          transactionHash={transactionHash}
         />
       )}
 
@@ -40,7 +41,11 @@ const DashBoardListItem = ({
         </S.Icon>
       )}
       <S.UserImg
-        src={`${S3URL}${from.memberProfileImagePath}`}
+        src={
+          !from.memberProfileImagePath
+            ? `${DefaultImg}`
+            : `${S3URL}${from.memberProfileImagePath}`
+        }
         alt="user-img"
       />
       <S.ContentWrapper pathname={location.pathname}>
@@ -52,7 +57,11 @@ const DashBoardListItem = ({
         </S.UserInfo>
 
         <S.DateWrapper>
-          <S.Date>{arriveTimeStamp === null ? "Now" : arriveTimeStamp}</S.Date>
+          <S.Date>
+            {arriveTimeStamp === null
+              ? "Now"
+              : new Date(arriveTimeStamp).toDateString()}
+          </S.Date>
         </S.DateWrapper>
       </S.ContentWrapper>
       <S.SFiMoreHorizontal size="24px" />
