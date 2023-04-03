@@ -16,7 +16,7 @@ const DesktopTablet = ({ children }) => {
   return isDesktopTablet ? children : null;
 };
 
-const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
+const ContractInfo = ({ transactionHash }) => {
   const [refreshedTime, setRefreshedTime] = useState("");
 
   const getRefreshedTime = () => {
@@ -32,17 +32,21 @@ const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
     amount: 0.0,
     arriveTimeStamp: "",
     sendTimeStamp: "",
-    from: {
-      fromMemberProfileImagePath: "",
+    fromMember: {
+      memberAddress: "",
+      memberNickname: "",
+      memberProfileImagePath: "",
     },
-    to: {
-      toMemberProfileImagePath: "",
+    toMember: {
+      memberAddress: "",
+      memberNickname: "",
+      memberProfileImagePath: "",
     },
   });
 
   const [isArrived, setIsArrived] = useState(false);
   const getSupportContent = async () => {
-    const { data } = await supportApi.getSupportDetail(uid, toMemberAddress);
+    const { data } = await supportApi.getSupportDetail(transactionHash);
     if (data.arriveTimeStamp) setIsArrived(true);
     setContractDetail(data);
   };
@@ -75,7 +79,7 @@ const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
             <S.ProfileWrapper isEnable={true}>
               <ProfileImg
                 width={3}
-                src={contractDetail.from.fromMemberProfileImagePath}
+                src={contractDetail.fromMember.memberProfileImagePath}
               />
             </S.ProfileWrapper>
             <S.Tag>Supporter</S.Tag>
@@ -94,7 +98,7 @@ const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
             <S.ProfileWrapper isEnable={isArrived}>
               <ProfileImg
                 width={3}
-                src={contractDetail.to.toMemberProfileImagePath}
+                src={contractDetail.toMember.memberProfileImagePath}
               />
             </S.ProfileWrapper>
             <S.Tag>Creator</S.Tag>
@@ -105,15 +109,15 @@ const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
         <S.Wrapper>
           <S.Type>Supporter</S.Type>
           <S.TextContainer>
-            <label>{contractDetail.from.fromMemberNickname}</label>
-            <label>{contractDetail.from.fromMemberAddress}</label>
+            <label>{contractDetail.fromMember.memberNickname}</label>
+            <label>{contractDetail.fromMember.memberAddress}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Creator</S.Type>
           <S.TextContainer>
-            <label>{contractDetail.to.toMemberNickname}</label>
-            <label>{contractDetail.to.toMemberAddress}</label>
+            <label>{contractDetail.toMember.memberNickname}</label>
+            <label>{contractDetail.toMember.memberAddress}</label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
@@ -145,17 +149,17 @@ const ContractInfo = ({ supportContent, uid, toMemberAddress }) => {
   );
 };
 
-const ContractModal = ({ handleSetShowModal, uid, toMemberAddress }) => {
+const ContractModal = ({ handleSetShowModal, transactionHash }) => {
   return (
     <>
       <DesktopTablet>
         <BasicModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo uid={uid} toMemberAddress={toMemberAddress} />
+          <ContractInfo transactionHash={transactionHash} />
         </BasicModal>
       </DesktopTablet>
       <Mobile>
         <FullScreenModal handleSetShowModal={handleSetShowModal}>
-          <ContractInfo uid={uid} toMemberAddress={toMemberAddress} />
+          <ContractInfo transactionHash={transactionHash} />
         </FullScreenModal>
       </Mobile>
     </>
@@ -166,6 +170,5 @@ export default ContractModal;
 
 ContractModal.propTypes = {
   handleSetShowModal: PropTypes.func.isRequired,
-  uid: PropTypes.number.isRequired,
-  toMemberAddress: PropTypes.string.isRequired,
+  transactionHash: PropTypes.string.isRequired,
 };

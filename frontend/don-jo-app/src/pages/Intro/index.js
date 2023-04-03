@@ -1,6 +1,9 @@
 import React from "react";
 import CurrentSupportList from "../../components/Intro/CurrentSupportRecent";
 import DonJoTitleSvg from "../../components/Intro/DonJoTitleSvg";
+import UndrawEther from "../../assets/img/intro/undraw_ether.svg";
+import UndrawTransaction from "../../assets/img/intro/undraw_transaction.svg";
+import UndrawTransferMoney from "../../assets/img/intro/undraw_transfer_money.svg";
 import * as S from "./style";
 
 const Intro = () => {
@@ -34,25 +37,25 @@ const Intro = () => {
       <S.ContentDescription>
         DonJo provides an image button that can be attached to my site or blog.
       </S.ContentDescription>
-      <S.ContentWrapper></S.ContentWrapper>
-      {/* 컨텐츠 소개2 */}
-      <S.ContentTitle>
-        Transparent Sponsorship History Management!
-      </S.ContentTitle>
-      <S.ContentDescription>
-        You can receive the details of the sponsors transparently through
-        blockchain technology.
-      </S.ContentDescription>
-      <S.ContentWrapper></S.ContentWrapper>
-      {/* 컨텐츠 소개3 */}
-      <S.ContentTitle>
-        Purchase items and provide wishlist functionality!
-      </S.ContentTitle>
+      <S.ContentWrapper>
+        <img src={UndrawTransferMoney} alt="undrawEther" width={300} />
+      </S.ContentWrapper>
 
+      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
       <S.ContentDescription>
-        You can sell and manage your own creations in DonJo!
+        DonJo provides an image button that can be attached to my site or blog.
       </S.ContentDescription>
-      <S.ContentWrapper></S.ContentWrapper>
+      <S.ContentWrapper>
+        <img src={UndrawEther} alt="undrawEther" width={300} />
+      </S.ContentWrapper>
+
+      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
+      <S.ContentDescription>
+        DonJo provides an image button that can be attached to my site or blog.
+      </S.ContentDescription>
+      <S.ContentWrapper>
+        <img src={UndrawTransaction} alt="undrawEther" width={300} />
+      </S.ContentWrapper>
     </S.Container>
   );
 };

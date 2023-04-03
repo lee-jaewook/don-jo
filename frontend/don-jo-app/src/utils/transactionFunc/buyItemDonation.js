@@ -27,7 +27,7 @@ export const buyItemDonation = (item) => {
             console.log("valueInWei: ", valueInWei);
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
+              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
@@ -38,13 +38,26 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
+                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
                     value: valueInWei,
                     data: tx.encodeABI(),
                   },
                 ],
               })
               .then((txHash) => {
+                const donationDto = {
+                  amountEth: item.price,
+                  fromAddress: accounts[0],
+                  sendMsg: "",
+                  supportType: "item",
+                  supportTypeUid: item.id,
+                  toAddress: item.seller,
+                  transactionHash: txHash,
+                };
+
+                console.log("donationDto", donationDto);
+                saveDonation(donationDto);
+
                 const receiptPromise = new Promise(function (resolve, reject) {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
@@ -70,18 +83,7 @@ export const buyItemDonation = (item) => {
                     log.topics[1]
                   )[0];
                   console.log("type id: ", typeof id);
-                  const donationDto = {
-                    amountEth: item.price,
-                    fromAddress: accounts[0],
-                    sendMsg: "",
-                    supportType: "item",
-                    supportTypeUid: item.id,
-                    supportUid: id,
-                    toAddress: item.seller,
-                    transactionHash: txHash,
-                  };
-                  console.log("donationDto", donationDto);
-                  saveDonation(donationDto);
+                  updateDondationInfo(id, txHash);
                 } else {
                   sendToastMessage("Failed to register support record.");
                 }
@@ -110,5 +112,16 @@ const saveDonation = async (donationDto) => {
     })
     .catch((error) => {
       console.log("저장 실패");
+    });
+};
+
+const updateDondationInfo = async (supportUid, transactionHash) => {
+  supportApi
+    .updateSponsorshipArrived(supportUid, transactionHash)
+    .then((res) => {
+      console.log("update 성공!");
+    })
+    .catch((error) => {
+      console.log("update 실패!");
     });
 };

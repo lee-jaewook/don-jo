@@ -21,17 +21,15 @@ export const buyWishlistDonation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            const valueInWei = web3.utils.toWei(
-              item.price.toString() * Math.pow(10, -3),
-              "ether"
-            );
+            const priceInMatic = parseFloat(item.price) * 10 ** 18;
+            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
+              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
             );
 
-            const tx = myContract.methods.buyWishilistDonation(
+            const tx = myContract.methods.buyWishlistDonation(
               item.seller,
               item.id
             );
@@ -42,13 +40,23 @@ export const buyWishlistDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
+                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
                 ],
               })
               .then((txHash) => {
+                const donationDto = {
+                  amountEth: item.price,
+                  fromAddress: accounts[0],
+                  sendMsg: item.sendMsg,
+                  supportType: "wishlist",
+                  supportTypeUid: item.id,
+                  toAddress: item.seller,
+                  transactionHash: txHash,
+                };
+                saveDonation(donationDto);
                 const receiptPromise = new Promise(function (resolve, reject) {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
@@ -73,17 +81,7 @@ export const buyWishlistDonation = (item) => {
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  const donationDto = {
-                    amountEth: item.price,
-                    fromAddress: accounts[0],
-                    sendMsg: item.sendMsg,
-                    supportType: "wishlist",
-                    supportTypeUid: item.id,
-                    supportUid: id,
-                    toAddress: item.seller,
-                    transactionHash: txHash,
-                  };
-                  saveDonation(donationDto);
+                  updateDondationInfo(id, txHash);
                 } else {
                   sendToastMessage("Failed to register support record.");
                 }
@@ -112,5 +110,16 @@ const saveDonation = async (donationDto) => {
     })
     .catch((error) => {
       console.log("저장 실패");
+    });
+};
+
+const updateDondationInfo = async (supportUid, transactionHash) => {
+  supportApi
+    .updateSponsorshipArrived(supportUid, transactionHash)
+    .then((res) => {
+      console.log("update 성공!");
+    })
+    .catch((error) => {
+      console.log("update 실패!");
     });
 };

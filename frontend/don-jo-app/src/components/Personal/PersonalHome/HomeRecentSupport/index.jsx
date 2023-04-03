@@ -20,20 +20,27 @@ const HomeRecentSupport = ({ isOwner }) => {
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
 
-  const getSupportList = async () => {
+  const getSupportList = async (init) => {
+    setIsLoading(true);
+    console.log("pageNum", pageNum);
     try {
       const { data } = await supportApi.getSupportList(
         pageMemberAddress,
-        pageNum,
+        init ? 0 : pageNum,
         PAGE_SIZE,
         TYPE
       );
-      setPageNum((prev) => prev + 1);
+      setPageNum(init ? 0 : pageNum + 1);
       setHasMore(data.hasMore);
-      setSupportList((prev) => [...prev, ...(data.supportList || [])]);
-      setIsLoading(false);
+      if (init) {
+        setSupportList(data.supportList || []);
+      } else {
+        setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+      }
     } catch (error) {
       console.log("error: ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

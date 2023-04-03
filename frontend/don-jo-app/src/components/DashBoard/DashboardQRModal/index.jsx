@@ -28,7 +28,7 @@ const QRCodeModal = ({ handleSetShowModal }) => {
   };
 
   return (
-    <BasicModal handleSetShowModal={handleSetShowModal}>
+    <BasicModal handleSetShowModal={handleSetShowModal} width={1}>
       <S.Content>
         <div ref={ref}>
           <QRCode
