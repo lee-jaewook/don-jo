@@ -57,49 +57,6 @@ export const generatorData = [
   },
 ];
 
-export const itemList = [
-  {
-    uid: 1,
-    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
-    title: "Where is my Home Project",
-    collectedAmount: "120.000",
-    totalAmount: "360.000",
-    supportCount: 257,
-  },
-  {
-    uid: 2,
-    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
-    title: "Where is my Home Project",
-    collectedAmount: "120.000",
-    totalAmount: "360.000",
-    supportCount: 3,
-  },
-  {
-    uid: 3,
-    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
-    title: "Where is my Home Project",
-    collectedAmount: "120.000",
-    totalAmount: "360.000",
-    supportCount: 18,
-  },
-  {
-    uid: 4,
-    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
-    title: "Where is my Home Project",
-    collectedAmount: "120.000",
-    totalAmount: "360.000",
-    supportCount: 534,
-  },
-  {
-    uid: 5,
-    imgPath: "https://www.ssafy.com/swp/images/sns_img.png",
-    title: "Where is my Home Project",
-    collectedAmount: "120.000",
-    totalAmount: "360.000",
-    supportCount: 3,
-  },
-];
-
 export const colorSet = [
   "#000000",
   "#F02C7E",
@@ -117,12 +74,10 @@ export const generatorColorSet = [
   "#9042DD",
 ];
 
-export const supportList = [
-  {
-    uid: 1,
-    amountEth: "100.000",
-    arrivedDate: "2023.03.02",
-    fromMember: {},
-    toMember: {},
-  },
+export const fontDataSet = [
+  { id: 1, title: "NotoSansKR" },
+  { id: 2, title: "Black Han Sans" },
+  { id: 3, title: "SunFlower" },
+  { id: 4, title: "DoHyeon" },
+  { id: 5, title: "Jua" },
 ];

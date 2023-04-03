@@ -19,11 +19,10 @@ const DashBoardCard = ({
     </S.Container>
   );
 };
-export default React.memo(DashBoardCard);
+export default DashBoardCard;
 
 DashBoardCard.propTypes = {
   isFirstCard: PropTypes.bool,
   classification: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
   unit: PropTypes.string,
 };

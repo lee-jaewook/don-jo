@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicTitle from "../../Common/BasicTitle";
@@ -17,7 +17,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
           classification={
             location.pathname === "/dashboard/home" ? "All" : "Supporters"
           }
-          data={calculateEth(result.all)}
+          data={result[0] || calculateEth(0)}
           isFirstCard={true}
           unit={unit}
         />
@@ -27,7 +27,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
               ? "Last 30 days"
               : "All Time"
           }
-          data={calculateEth(result.period30)}
+          data={result[1] || calculateEth(0)}
         />
         <DashBoardCard
           classification={
@@ -35,14 +35,14 @@ const DashBoardEarning = ({ text, result, unit }) => {
               ? "Last 90 days"
               : "Last 30 days"
           }
-          data={calculateEth(result.period90)}
+          data={result[2] || calculateEth(0)}
         />
       </S.CardWrapper>
     </S.EarningWrapper>
   );
 };
 
-export default React.memo(DashBoardEarning);
+export default DashBoardEarning;
 
 DashBoardEarning.protoTypes = {
   text: PropTypes.string.isRequired,

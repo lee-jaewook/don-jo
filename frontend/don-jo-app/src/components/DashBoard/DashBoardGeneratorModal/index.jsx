@@ -9,12 +9,12 @@ import CustomSelect from "../DashBoardCustomSelect";
 import EmojiPicker from "emoji-picker-react";
 import { FiCopy } from "@react-icons/all-files/fi/FiCopy.js";
 import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown.js";
-import { generatorColorSet } from "../../../data/dashboard";
+import { generatorColorSet, fontDataSet } from "../../../data/dashboard";
 import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-
+import { itemApi } from "../../../api/items";
 /**
  * 플러그인 생성기 컴포넌트
  * @param {Object} props - 컴포넌트에 전달되는 props
@@ -24,24 +24,22 @@ import { useMediaQuery } from "react-responsive";
  * @returns {JSX.Element} - 렌더링 결과
  */
 
-const DashBoardGeneratorModal = ({
-  isSearchDefault,
-  isModalOpen,
-  isItemsRequired = true,
-}) => {
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+const DashBoardGeneratorModal = ({ isModalOpen, isItemsRequired = true }) => {
+  const memberAddress = useSelector((state) => state.member.walletAddress);
   const ref = useRef(null);
   const codeRef = useRef(null);
-  const [title, setTitle] = useState("My Button Name");
-  const [colorIndex, setColorIndex] = useState("#F02C7E"); // 사용자의 현재 테마 색상 설정
-  const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
-  const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
-  const [code, setCode] = useState("");
-  const pageName = useSelector((state) => state.member.pageName);
-  const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const pageName = useSelector((state) => state.member.pageName);
+  const [code, setCode] = useState("");
+  const [searchItem, setSearchItem] = useState({});
+  const [title, setTitle] = useState("My Button Name");
+  const [colorIndex, setColorIndex] = useState("#F02C7E");
+  const [selectedEmoji, setSelectedEmoji] = useState("💕");
+  const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
+  const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const [fontStyle, setFontStyle] = useState("Noto Sans Korean");
-  const [searchItem, setSearchItem] = useState("");
+  const [itemList, setItemList] = useState([]);
 
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
@@ -49,8 +47,17 @@ const DashBoardGeneratorModal = ({
     setFontStyle(e.target.innerText);
   };
 
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
   const handleSearchItemChange = (e) => {
-    setSearchItem(e.target.innerText);
+    const { id, innerText } = e.target;
+
+    setSearchItem({
+      id: id,
+      title: innerText,
+    });
   };
 
   const handleOnClickEmoji = (item) => {
@@ -58,38 +65,39 @@ const DashBoardGeneratorModal = ({
     setShowEmojiPicker(false);
   };
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  function blobToFormData(blob) {
+  const blobToFormData = (blob) => {
     const formData = new FormData();
     formData.append("multipartFile", blob);
     return formData;
-  }
+  };
 
   const handleUploadFile = async (formData, type) => {
     try {
       const { data } = await fileApi.uploadFile(formData, type);
-      setCode(
-        `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`
-      );
+
+      let code;
+      if (isItemsRequired) {
+        code = `<a href="https://j8a209.p.ssafy.io/${pageName}/items/${searchItem.id}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`;
+      } else {
+        code = `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`;
+      }
+      setCode(code);
       handleDownloadButtonImg();
     } catch (error) {
       console.log("error: ", error);
     }
   };
 
-  const handleGeneratePlugIn = useCallback(() => {
+  const handleGeneratePlugIn = () => {
     if (ref.current === null) {
       return;
     }
 
     toBlob(ref.current).then(function (blob) {
       const formData = blobToFormData(blob);
-      handleUploadFile(formData, "img/profile");
+      handleUploadFile(formData, "img/plugin");
     });
-  }, [ref]);
+  };
 
   const handleDownloadButtonImg = () => {
     setClickedGenerateButton(true);
@@ -118,6 +126,25 @@ const DashBoardGeneratorModal = ({
     codeRef.current.style.height = "auto";
     codeRef.current.style.height = codeRef.current.scrollHeight + "px";
   };
+
+  // 나의 아이템 목록 가져오기
+  const handleGetMyItems = async () => {
+    try {
+      const { data } = await itemApi.getAllItems(memberAddress);
+      setItemList(data);
+      setSearchItem(data[0]);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("searchItem", searchItem);
+  }, [searchItem]);
+
+  useEffect(() => {
+    handleGetMyItems();
+  }, []);
 
   useEffect(() => {
     if (codeRef.current === null) return;
@@ -177,7 +204,7 @@ const DashBoardGeneratorModal = ({
           <S.ColorPalette>
             {generatorColorSet &&
               generatorColorSet.length > 0 &&
-              generatorColorSet.map((color, index) => (
+              generatorColorSet.map((color) => (
                 <S.Color
                   type="radio"
                   name="color"
@@ -194,6 +221,7 @@ const DashBoardGeneratorModal = ({
           <BasicTitle text="Font" />
           <CustomSelect
             isBefore={true}
+            data={fontDataSet}
             selectValue={fontStyle}
             handleOptionChange={handleFontChange}
           />
@@ -205,7 +233,8 @@ const DashBoardGeneratorModal = ({
               <BasicTitle text="Search Items" />
               <CustomSelect
                 isBefore={false}
-                selectValue={searchItem}
+                data={itemList}
+                selectValue={searchItem.title}
                 handleOptionChange={handleSearchItemChange}
               />
             </>
@@ -215,8 +244,12 @@ const DashBoardGeneratorModal = ({
         <S.ButtonWrap>
           <S.ButtonContent>
             <BasicButton
-              text="Generate"
-              handleOnClickButton={handleGeneratePlugIn}
+              text={isClickedGenerateButton ? "Reset" : "Generate"}
+              handleOnClickButton={
+                isClickedGenerateButton
+                  ? () => setClickedGenerateButton(false)
+                  : handleGeneratePlugIn
+              }
               isBackground={true}
               isDisabled={false}
               color="var(--color-primary)"
@@ -231,7 +264,6 @@ const DashBoardGeneratorModal = ({
 export default DashBoardGeneratorModal;
 
 DashBoardGeneratorModal.propTypes = {
-  isSearchDefault: PropTypes.bool,
   isModalOpen: PropTypes.func.isRequired,
   isItemsRequired: PropTypes.bool,
 };

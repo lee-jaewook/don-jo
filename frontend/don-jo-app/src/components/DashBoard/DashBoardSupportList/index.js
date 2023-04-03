@@ -60,6 +60,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
               supportType={item.supportType}
               amount={item.amountEth}
               from={item.fromMember}
+              toMemberAddress={item.toAddress.toMemberAddress}
             />
           ))
         ) : (

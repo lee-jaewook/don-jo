@@ -16,11 +16,11 @@ const DashBoardHome = () => {
         const { data } = await supportApi.getAllEarnings(earning, "all");
         homeEarnings.push(data);
       } catch (error) {
-        console.log("error: ", error);
+        console.log("[home] Get Earning: ", error);
       }
     });
 
-    setResult([...homeEarnings]);
+    setResult(homeEarnings);
   }, []);
 
   useEffect(() => {

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
+import ContractModal from "../../Common/Modal/ContractModal";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const type = {
@@ -10,11 +11,29 @@ const type = {
   item: "📁",
 };
 
-const DashBoardListItem = ({ supportType, from, amount, arriveTimeStamp }) => {
+const DashBoardListItem = ({
+  uid,
+  supportType,
+  from,
+  amount,
+  arriveTimeStamp,
+  toMemberAddress,
+}) => {
   const location = useLocation();
+  const [isClickedSupportItem, setClickedSupportItem] = useState(false);
 
+  const handleSetShowItemTransactionModal = () =>
+    setClickedSupportItem((prev) => !prev);
   return (
-    <S.ItemWrapper>
+    <S.ItemWrapper onClick={handleSetShowItemTransactionModal}>
+      {isClickedSupportItem && (
+        <ContractModal
+          handleSetShowModal={handleSetShowItemTransactionModal}
+          uid={uid}
+          toMemberAddress={toMemberAddress}
+        />
+      )}
+
       {location.pathname === "/dashboard/home" && (
         <S.Icon aria-label="icon" role="img">
           {type[supportType]}

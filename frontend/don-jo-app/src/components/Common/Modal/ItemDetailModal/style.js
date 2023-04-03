@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
   position: relative;
+  width: calc(100vw - 5.5rem);
   max-width: 33.0625rem;
   display: flex;
   flex-direction: column;
@@ -12,7 +13,7 @@ export const ContentImg = styled.img`
   max-height: 22.5rem;
   border-radius: 1.25rem;
   margin-bottom: 2rem;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export const Title = styled.h1`
