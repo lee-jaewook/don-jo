@@ -1,12 +1,38 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import { buyItemDonation } from "../../../../utils/transactionFunc/buyItemDonation";
 import { calculateEth } from "../../../../utils/calculateEth";
+import { itemApi } from "../../../../api/items";
+import { useSelector } from "react-redux";
 
 const ItemCard = ({ item, isOwner }) => {
   const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
+  const [isAlreadyBought, setIsAlreadyBought] = useState(false);
+  const [btnText, setBtnText] = useState("");
+
+  const loginUserAddress = useSelector(
+    (state) => state.member.walletAddress
+  ).toLowerCase();
+
+  const getIsPurchased = async () => {
+    try {
+      const { data } = await itemApi.getIsPurchased(item.id, loginUserAddress);
+      if (data) setBtnText("Download");
+      else setBtnText("Buy");
+      setIsAlreadyBought(data);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isOwner) {
+      getIsPurchased();
+    }
+  }, []);
+
   const doBuy = () => {
     // 해당 아이템을 구매하는 api
     buyItemDonation(item);
@@ -31,7 +57,7 @@ const ItemCard = ({ item, isOwner }) => {
                 setIsShowItemDetailModal(true);
               }}
             >
-              Buy
+              {btnText}
             </S.BuyBtn>
           )}
         </S.PriceBtnContainer>
@@ -41,6 +67,7 @@ const ItemCard = ({ item, isOwner }) => {
           uid={item.id}
           handleSetShowModal={setIsShowItemDetailModal}
           handleOnClickButton={doBuy}
+          isAlreadyBought={isAlreadyBought}
         />
       )}
     </S.Container>

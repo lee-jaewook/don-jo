@@ -18,4 +18,10 @@ export const itemApi = {
 
   // 아이템 삭제 API
   deleteItem: (itemUid) => api.delete(`/auth/member/item?itemUid=${itemUid}`),
+
+  //아이템 구매 여부 조회 API
+  getIsPurchased: (itemUid, memberAddress) =>
+    api.get(
+      `/member/item/purchased?itemUid=${itemUid}&memberAddress=${memberAddress}`
+    ),
 };
