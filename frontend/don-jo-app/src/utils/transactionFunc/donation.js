@@ -21,11 +21,14 @@ export const donation = (item) => {
             );
             web3.setProvider(infuraWeb3.currentProvider);
 
-            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
+            const valueInWei = web3.utils.toWei(
+              item.price.toString() * Math.pow(10, -3),
+              "ether"
+            );
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
+              "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77" // contract 주소
             );
 
             const tx = myContract.methods.callBasicDonation(item.seller);
@@ -36,7 +39,7 @@ export const donation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
+                    to: "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77",
                     value: valueInWei,
                     gas: "20000",
                     data: tx.encodeABI(),
@@ -70,9 +73,9 @@ export const donation = (item) => {
                   const donationDto = {
                     amountEth: item.price,
                     fromAddress: accounts[0],
-                    sendMsg: "",
+                    sendMsg: item.sendMsg,
                     supportType: "donation",
-                    supportTypeUid: item.id,
+                    supportTypeUid: "",
                     supportUid: id,
                     toAddress: item.seller,
                     transactionHash: txHash,

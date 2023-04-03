@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService{
-
+    // WishlistSolidity 선언
     private final WishlistSolidity wishlistSolidity;
 
     @Override

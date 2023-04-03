@@ -5,6 +5,8 @@ import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
 import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.LoginItem;
+import com.donjo.backend.api.dto.member.response.LoginPayload;
 import com.donjo.backend.api.service.member.MemberServiceImpl;
 import com.donjo.backend.config.jwt.JwtFilter;
 import com.donjo.backend.db.entity.Member;
@@ -25,18 +27,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @Api(tags = "사용자 관련 기능 API")
 @RequiredArgsConstructor
 public class MemberController {
-
+  // MemberServiceImpl 선언
   private final MemberServiceImpl memberService;
+  // PAGE_NAME 선언
   private final String PAGE_NAME = "pageName";
-
+  // NICK_NAME 선언
   private final String NICK_NAME = "nickName";
-
+  // THEME_COLOR 선언
   private final String THEME_COLOR = "themeColor";
+  // IMAGE_PATH 선언
   private final String IMAGE_PATH = "imagePath";
 
   @ApiOperation(value="기존 유저 정보 확인", notes = "기존 유저 정보를 확인합니다.")
@@ -81,7 +86,7 @@ public class MemberController {
       @ApiResponse(code = 500, message = "서버에러")
   })
   @PostMapping(path="/api/member")
-  public ResponseEntity signUpMember(@RequestBody SignUpMemberCond signUpMemberCond) {
+  public ResponseEntity signUpMember(@RequestBody @Valid SignUpMemberCond signUpMemberCond) {
     // member Signup
     Map<String, Object> result = memberService.signUpMember(signUpMemberCond);
     HttpHeaders headers = returnTokenHeader(result);
@@ -99,18 +104,14 @@ public class MemberController {
       @ApiResponse(code = 500, message = "서버에러")
   })
   @PostMapping(path="/api/members")
-  public ResponseEntity login(@RequestBody LoginMemberCond loginMemberCond) {
+  public ResponseEntity<?> login(@RequestBody LoginMemberCond loginMemberCond) {
     // login 확인
-    Map<String, Object> result = memberService.loginMember(loginMemberCond);
-    HttpHeaders headers = returnTokenHeader(result);
-
-    // 성공했으면 Page_Name,Nick_Name,Theme_Color,Image_Path 같이 반환
-    return new ResponseEntity<Object>(new HashMap<String, Object>() {{
-      put(PAGE_NAME, result.get(PAGE_NAME));
-      put(NICK_NAME, result.get(NICK_NAME));
-      put(THEME_COLOR, result.get(THEME_COLOR));
-      put(IMAGE_PATH, result.get(IMAGE_PATH));
-    }}, headers, HttpStatus.OK);
+    LoginItem result = memberService.loginMember(loginMemberCond);
+    HttpHeaders headers = returnTokenHeader(result.getResult());
+    LoginPayload memberInfo = LoginPayload.getMemberInfo(result);
+    return ResponseEntity.status(200)
+            .headers(headers)
+            .body(memberInfo);
   }
 
   @ApiOperation(value = "Access 토큰 재발급", notes = "헤더의 refresh 토큰 정보를 통해 access 토큰을 재발급한다.")
