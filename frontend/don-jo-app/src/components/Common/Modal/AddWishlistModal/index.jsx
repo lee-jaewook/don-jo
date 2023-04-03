@@ -11,6 +11,8 @@ import { wishlistAPI } from "../../../../api/wishlist";
 import { fileApi } from "../../../../api/file";
 import { fileSizeValidator } from "../../../../utils/validation/validator";
 import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
+import DashboardLoading from "../../../DashBoard/DashboardLoading";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 /**
  * 아이템 추가/수정 모달
@@ -23,6 +25,7 @@ import { checkItemValidation } from "../../../../utils/validation/checkItemValid
 const IMAGE_TYPE = "img/item";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
+  const [isLoading, setLoading] = useState(false);
   const [itemImageFile, setItemImageFile] = useState({
     previewImgUrl: "",
     file: {},
@@ -118,29 +121,42 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
       };
     }
 
-    console.log("cond: ", cond);
-    if (callOldData) {
-      wishlistAPI
-        .updateWishlistItem(cond)
-        .then(() => {
-          alert("success wishlist update!");
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-          alert("fail wishlist update!");
-        });
-    } else {
-      wishlistAPI
-        .registerWishlistItem(cond)
-        .then(() => {
-          alert("success!");
-        })
-        .catch((error) => {
-          alert("fail!");
-        });
-    }
+    setLoading(true);
 
-    setTimeout(handleSetShowModal, 2000);
+    // API 호출
+    if (callOldData) {
+      try {
+        const { status } = await wishlistAPI.updateWishlistItem(cond);
+        if (status === 200) {
+          handleSetShowModal(true);
+          sendToastMessage("✨ Updated successfully.");
+        }
+      } catch (error) {
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      }
+
+      // WishlistAPI
+      //   .updateWishlistItem(cond)
+      //   .then(() => {
+      //     alert("success wishlist update!");
+      //   })
+      //   .catch((error) => {
+      //     console.log("error: ", error);
+      //     alert("fail wishlist update!");
+      //   });
+    } else {
+      try {
+        const { status } = await wishlistAPI.registerWishlistItem(cond);
+        if (status === 200) {
+          handleSetShowModal(true);
+          sendToastMessage("✨ Updated successfully.");
+        }
+      } catch (error) {
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleGetAccoutInfo = async () => {
@@ -166,7 +182,9 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
     }
   }, []);
 
-  return (
+  return isLoading ? (
+    <DashboardLoading />
+  ) : (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
         <S.ContentWrap>
