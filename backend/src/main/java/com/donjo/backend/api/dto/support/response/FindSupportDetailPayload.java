@@ -36,14 +36,14 @@ public class FindSupportDetailPayload {
     private String sendMsg;
 
     // 입력 받아 Dto에 저장
-    public static FindSupportDetailPayload fromSupport(SupportSol supportsol, Support support, MemberItem fromMember, MemberItem toMember){
+    public static FindSupportDetailPayload fromSupport(Support support, MemberItem fromMember, MemberItem toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
                 .toMember(toMember)
                 .fromMember(fromMember)
-                .amount(supportsol.getAmount())
+                .amount(support.getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())

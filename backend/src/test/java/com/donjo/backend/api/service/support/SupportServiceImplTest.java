@@ -34,7 +34,7 @@ class SupportServiceImplTest {
 
         supportService.updateArrivedSupport(transactionHx, supportUid);
 
-        FindSupportDetailPayload support= supportService.getSupportDetail(transactionHx, supportUid);
+        FindSupportDetailPayload support= supportService.getSupportDetail(transactionHx);
 
 
 

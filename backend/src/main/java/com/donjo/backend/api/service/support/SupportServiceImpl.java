@@ -110,12 +110,9 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     @Transactional
-    public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
+    public FindSupportDetailPayload getSupportDetail(String transactionHash){
 
-        SupportSol supportSol =  supportSolidity.getSupportDetail(toAddress, supportUid)
-                .orElseThrow(()-> new NoContentException());
-
-        Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)
+        Support support = supportRepository.findById(transactionHash)
                 .orElseThrow(()-> new NoContentException());
 
 
@@ -123,12 +120,12 @@ public class SupportServiceImpl implements SupportService{
         Member fromMember = memberRepository.findById(support.getFromAddress())
                 .orElse(Member.builder().address(support.getFromAddress()).build());
         // 회원 (받은 사람)
-        Member toMember = memberRepository.findById(toAddress)
-                .orElse(Member.builder().address(toAddress).build());
+        Member toMember = memberRepository.findById(support.getToAddress())
+                .orElse(Member.builder().address(support.getToAddress()).build());
 
 
         return FindSupportDetailPayload
-                .fromSupport(supportSol,support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
+                .fromSupport(support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
     }
     @Override
     public int getSupportCount(String type, String memberAddress){

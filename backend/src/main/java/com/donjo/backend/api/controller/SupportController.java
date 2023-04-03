@@ -110,7 +110,7 @@ public class SupportController {
         // Address와 supportUid로 SupportDetail을 조회합니다.
         try {
             logger.info("supportService.getSupportDetail 요청");
-            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(toAddress,supportUid);
+            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(transactionHash);
             return ResponseEntity.status(200).body(supportDetail);
         }
         catch (Exception e){
