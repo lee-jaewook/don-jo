@@ -38,6 +38,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service("SupportService")
@@ -62,11 +63,12 @@ public class SupportServiceImpl implements SupportService{
         Optional<List<Support>> supportList = Optional.ofNullable(supportRepositorySupport.findEarning(address,type,period));
         logger.info("결과값을 Wei에서 ETH로 변환");
         // list를 돌면서 amount값을 더해주고 총값을 10^18로 나눠준다(wei를 ETH로 변환)
-        return supportList.map(list -> list.stream()
-                        .mapToLong(Support::getAmount)
-                        .sum())
-                .map(result -> result.doubleValue() / Math.pow(10, 18d))
-                .orElse(0.0);
+        double totalAmountInWei = supportList.map(List::stream)
+                .orElseGet(Stream::empty)
+                .mapToDouble(Support::getAmount)
+                .sum();
+
+        return totalAmountInWei;
     }
 
     @Override
@@ -221,7 +223,7 @@ public class SupportServiceImpl implements SupportService{
         // 댓글 삭제
         support.setReplyMsg(null);
     }
-    
+
     @Transactional
     public void getArriveTimeStamp(String transactionHash){
         // Web3j 객체를 생성하고, Infura 노드를 사용하여 polygon-mumbai 네트워크에 연결합니다

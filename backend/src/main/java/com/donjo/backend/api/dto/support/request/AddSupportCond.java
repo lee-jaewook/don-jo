@@ -56,7 +56,7 @@ public class AddSupportCond {
                 .toAddress(this.getToAddress())
                 .sendMsg(this.getSendMsg())
                 .sendTimeStamp(sendTime)
-                .amount((long) (this.getAmountEth() * Math.pow(10, 18d)))
+                .amount(this.getAmountEth())
                 .build();
     }
 }
