@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import BasicModal from "../BasicModal";
 import PropTypes from "prop-types";
@@ -16,6 +16,7 @@ const ItemDetailModal = ({
   isDashboard = false,
   handleSetShowModal,
   handleOnClickButton,
+  isAlreadyBought = false,
 }) => {
   const [isLoading, setLoading] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -53,6 +54,12 @@ const ItemDetailModal = ({
     handleGetItemDetail();
   }, []);
 
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+  const aTagRef = useRef();
+  const doDownload = () => {
+    aTagRef.current.click();
+  };
+
   const handleMakeModalContent = () => {
     return isLoading ? (
       <DashboardLoading />
@@ -76,12 +83,28 @@ const ItemDetailModal = ({
           {isDashboard && (
             <S.DeleteButton onClick={handleDeleteItem}>Delete</S.DeleteButton>
           )}
-          <BasicButton
-            text={isDashboard ? "Edit" : "Buy"}
-            color="var(--color-primary)"
-            isBackground={true}
-            handleOnClickButton={handleOnClickButton}
+
+          <S.DownloadLink
+            href={S3URL + result.filePath}
+            ref={aTagRef}
+            target="_blank"
           />
+
+          {isAlreadyBought ? (
+            <BasicButton
+              text="Download"
+              color="var(--color-primary)"
+              isBackground={true}
+              handleOnClickButton={doDownload}
+            />
+          ) : (
+            <BasicButton
+              text={isDashboard ? "Edit" : "Buy"}
+              color="var(--color-primary)"
+              isBackground={true}
+              handleOnClickButton={handleOnClickButton}
+            />
+          )}
         </S.ButtonWrapper>
       </S.ContentWrapper>
     );
@@ -105,4 +128,5 @@ ItemDetailModal.propTypes = {
   idDashboard: PropTypes.bool,
   handleSetShowModal: PropTypes.func.isRequired,
   handleOnClickButton: PropTypes.func.isRequired,
+  isAlreadyBought: PropTypes.bool,
 };
