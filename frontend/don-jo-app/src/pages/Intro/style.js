@@ -216,9 +216,11 @@ export const ContentDescription = styled.p`
 `;
 
 export const ContentWrapper = styled.div`
+  display: flex;
   width: 100%;
   height: calc(100vh - 10rem);
   background-color: transparent;
   margin-top: 2rem;
   border-radius: 1.25rem;
+  justify-content: center;
 `;
