@@ -38,7 +38,7 @@ export const buyItemDonation = (item) => {
                   {
                     from: accounts[0],
                     to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
-                    value: valueInWei.toString(),
+                    value: valueInWei.toString() * Math.pow(10, -3),
                     data: tx.encodeABI(),
                   },
                 ],
