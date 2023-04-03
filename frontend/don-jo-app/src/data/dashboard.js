@@ -52,7 +52,7 @@ export const generatorData = [
     preview: PreviewButtonImg,
     text: "Items Buttons",
     description:
-      "Allow your audience to buy you a coffee right from your own website. Customize the widget with a message.",
+      "Create a button that can be moved directly to the item you are selling.",
     isItemsRequired: true,
   },
 ];

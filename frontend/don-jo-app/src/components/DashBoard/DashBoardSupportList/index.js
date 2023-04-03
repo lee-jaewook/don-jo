@@ -27,6 +27,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
       );
       if (status === 200) {
         setResult(supportList);
+        console.log(supportList);
         setHasMore(hasMore);
         setPageNum((prev) => prev + 1);
       }
@@ -58,9 +59,9 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
               key={item.uid + index}
               uid={item.uid}
               supportType={item.supportType}
-              amount={item.amountEth}
+              amount={item.amount}
               from={item.fromMember}
-              toMemberAddress={item.toAddress.toMemberAddress}
+              toMemberAddress={item.toMember.toMemberAddress}
             />
           ))
         ) : (

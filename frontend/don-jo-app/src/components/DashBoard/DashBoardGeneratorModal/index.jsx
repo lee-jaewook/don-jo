@@ -13,6 +13,7 @@ import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
 import { useSelector } from "react-redux";
 import { itemApi } from "../../../api/items";
+import { useMediaQuery } from "react-responsive";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
@@ -22,6 +23,7 @@ const DashBoardGeneratorModal = ({
 }) => {
   const ref = useRef(null);
   const codeRef = useRef(null);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const pageName = useSelector((state) => state.member.pageName);
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [itemList, setItemList] = useState([]);
@@ -147,7 +149,10 @@ const DashBoardGeneratorModal = ({
   }, [code]);
 
   return (
-    <BasicModal handleSetShowModal={setShowPlugInModal}>
+    <BasicModal
+      width={isMobile ? 1 : 33}
+      handleSetShowModal={setShowPlugInModal}
+    >
       <S.PreViewWrap>
         {!isClickedGenerateButton ? (
           <S.PreView id="don-jo-link" color={themeColor} ref={ref} href="#">

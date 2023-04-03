@@ -40,12 +40,12 @@ const DashBoardListItem = ({
         </S.Icon>
       )}
       <S.UserImg
-        src={`${S3URL}${from.fromMemberProfileImagePath}`}
+        src={`${S3URL}${from.memberProfileImagePath}`}
         alt="user-img"
       />
       <S.ContentWrapper pathname={location.pathname}>
         <S.UserInfo>
-          <S.Supporter>{from.fromMemberNickname}</S.Supporter>
+          <S.Supporter>{from.memberNickname}</S.Supporter>
           <S.SponsorshipAmount>
             {amount} <S.Eth>MATIC</S.Eth>
           </S.SponsorshipAmount>
