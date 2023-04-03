@@ -22,7 +22,7 @@ public class SupportSol {
     // Support 후원 금액
     public Double amount; // matic
     // Support 보낸 시간
-    public LocalDateTime sendTimestamp;
+    public LocalDateTime arriveTimestamp;
     // Support 타입
     public Long supportType; //  Donation : 0, Item : 1, Wishlist : 2
     // Support 상태
@@ -34,7 +34,7 @@ public class SupportSol {
                 from,
                 to,
                 ConvertUtil.doubleToBigInteger(amount),
-                ConvertUtil.convertToUint256Timestamp(sendTimestamp),
+                ConvertUtil.convertToUint256Timestamp(arriveTimestamp),
                 BigInteger.valueOf(supportType)
         );
     }
@@ -45,7 +45,7 @@ public class SupportSol {
                 .from(s.from)
                 .to(s.to)
                 .amount(ConvertUtil.bigIntegerToDouble(s.amount))
-                .sendTimestamp(ConvertUtil.convertToLocalDateTime(s.sendTimestamp))
+                .arriveTimestamp(ConvertUtil.convertToLocalDateTime(s.arriveTime))
                 .supportType(s.supportType.longValue())
                 .supportStatus(1L)
                 .build();
