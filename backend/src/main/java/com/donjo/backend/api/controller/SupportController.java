@@ -83,7 +83,7 @@ public class SupportController {
     }
 
     @GetMapping(path="/api/member/dashboard/supports")
-    @ApiOperation(value = "서포트 조회", notes = "후원내역 리스트를 조회한다")
+    @ApiOperation(value = "서포트 리스트 조회", notes = "후원내역 리스트를 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(정보 없음)"),
@@ -106,7 +106,7 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String toAddress, @RequestParam @NotNull Long supportUid) {
+    public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String transactionHash) {
         // Address와 supportUid로 SupportDetail을 조회합니다.
         try {
             logger.info("supportService.getSupportDetail 요청");
