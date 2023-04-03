@@ -22,9 +22,13 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
+    // TokenProvider 선언
     private final TokenProvider tokenProvider;
+    // CorsFilter 선언
     private final CorsFilter corsFilter;
+    // JwtAuthenticationEntryPoint 선언
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    // JwtAccessDeniedHandler 선언
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public SecurityConfig(TokenProvider tokenProvider, CorsFilter corsFilter, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
