@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class FindSupportItem {
     // 서포트 Uid
-    private long uid;
+    private Long uid;
     // 서포트 타입
     private String supportType;
     // 보내는 사람
@@ -35,7 +35,7 @@ public class FindSupportItem {
 
     // 입력 받아 Dto에 저장
     public static FindSupportItem fromSupportAndMember(Support support, MemberItem fromMember, MemberItem toMember){
-        FindSupportItem findSupportItem = FindSupportItem.builder()
+        return FindSupportItem.builder()
                 .transactionHash(support.getTransactionHash())
                 .uid(support.getSupportUid())
                 .supportType(support.getSupportType())
@@ -46,6 +46,5 @@ public class FindSupportItem {
                 .sendMsg(support.getSendMsg())
                 .replyMsg(support.getReplyMsg())
                 .build();
-        return findSupportItem;
     }
 }
