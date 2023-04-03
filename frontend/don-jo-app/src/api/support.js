@@ -28,8 +28,8 @@ export const supportApi = {
   getSupportCount: (type) => api.get(`/member/supporters/count?type=${type}`),
 
   // 서포트 상세 조회 API
-  getSupportDetail: (supportUid, toAddress) =>
-    api.get(`/member/supports?supportUid=${supportUid}&toAddress=${toAddress}`),
+  getSupportDetail: (transactionHash) =>
+    api.get(`/member/supports?transactionHash=${transactionHash}`),
 
   // 최근 후원 내역 10건 조회 API - intro page 전광판에서만 사용
   getSponsorshipList: () => api.get(`/main/supports`),
