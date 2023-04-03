@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import defaultImg from "../../../assets/img/common/app-logo.svg";
+import defaultProfile from "../../../assets/img/common/defaultProfile.png";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
@@ -16,7 +16,7 @@ export const Circle = styled.div`
     props.isLocalSrc
       ? `url(${props.src})`
       : props.src === ""
-      ? `url(${defaultImg})`
+      ? `url(${defaultProfile})`
       : `url(${S3URL + props.src})`};
 `;
 
