@@ -3,7 +3,6 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import BasicTitle from "../../Common/BasicTitle";
 import DashBoardCard from "../DashBoardCard";
-import { calculateEth } from "../../../utils/calculateEth";
 import { useLocation } from "react-router-dom";
 const DashBoardEarning = ({ text, result, unit }) => {
   const location = useLocation();
@@ -17,7 +16,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
           classification={
             location.pathname === "/dashboard/home" ? "All" : "Supporters"
           }
-          data={result[0] || calculateEth(0)}
+          data={result[0]}
           isFirstCard={true}
           unit={unit}
         />
@@ -27,7 +26,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
               ? "Last 30 days"
               : "All Time"
           }
-          data={result[1] || calculateEth(0)}
+          data={result[1]}
         />
         <DashBoardCard
           classification={
@@ -35,7 +34,7 @@ const DashBoardEarning = ({ text, result, unit }) => {
               ? "Last 90 days"
               : "Last 30 days"
           }
-          data={result[2] || calculateEth(0)}
+          data={result[2]}
         />
       </S.CardWrapper>
     </S.EarningWrapper>

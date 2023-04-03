@@ -197,10 +197,10 @@ export const ArrowIcon = styled(FiArrowRight)`
 
 export const ContentTitle = styled.h1`
   font-family: "RobotoBold";
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1.5rem;
   margin-top: 5.875rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   @media (max-width: 769px) {
     font-size: 1.25rem;
   }
@@ -218,7 +218,7 @@ export const ContentDescription = styled.p`
 export const ContentWrapper = styled.div`
   width: 100%;
   height: calc(100vh - 10rem);
-  background-color: white;
+  background-color: transparent;
   margin-top: 2rem;
   border-radius: 1.25rem;
 `;

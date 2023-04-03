@@ -1,10 +1,11 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
+import { calculateEth } from "../../../utils/calculateEth";
 const DashBoardCard = ({
   isFirstCard = false,
   classification,
-  data,
+  data = 0,
   unit = "MATIC",
 }) => {
   return (
@@ -13,7 +14,7 @@ const DashBoardCard = ({
         {classification}
       </S.Classification>
       <S.Data isFirstCard={isFirstCard}>
-        {data}
+        {classification === "Supporters" ? data : calculateEth(data)}
         <S.Unit isFirstCard={isFirstCard}>{unit}</S.Unit>
       </S.Data>
     </S.Container>
