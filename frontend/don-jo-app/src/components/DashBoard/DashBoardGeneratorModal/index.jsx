@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
-import PropTypes from "prop-types";
 import BasicButton from "../../Common/BasicButton";
 import BasicInput from "../../Common/BasicInput";
 import BasicModal from "../../Common/Modal/BasicModal";
@@ -13,55 +12,53 @@ import { generatorColorSet, fontDataSet } from "../../../data/dashboard";
 import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
 import { useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
 import { itemApi } from "../../../api/items";
-/**
- * 플러그인 생성기 컴포넌트
- * @param {Object} props - 컴포넌트에 전달되는 props
- * @param {boolean} props.isSearchDefault - searchValue에 Default 값 적용 여부
- * @param {function} props.isModalOpen - Modal을 닫을 때 호출될 콜백 함수
- * @param {boolean} props.isItemsRequired - searchItems 컴포넌트는 필수 여부
- * @returns {JSX.Element} - 렌더링 결과
- */
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
-const DashBoardGeneratorModal = ({ isModalOpen, isItemsRequired = true }) => {
-  const memberAddress = useSelector((state) => state.member.walletAddress);
+
+const DashBoardGeneratorModal = ({
+  setShowPlugInModal,
+  isItemsRequired = true,
+}) => {
   const ref = useRef(null);
   const codeRef = useRef(null);
-  const isMobile = useMediaQuery({ maxWidth: 768 });
   const pageName = useSelector((state) => state.member.pageName);
-  const [code, setCode] = useState("");
-  const [searchItem, setSearchItem] = useState({});
-  const [title, setTitle] = useState("My Button Name");
-  const [colorIndex, setColorIndex] = useState("#F02C7E");
-  const [selectedEmoji, setSelectedEmoji] = useState("💕");
-  const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
-  const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [fontStyle, setFontStyle] = useState("Noto Sans Korean");
+  const memberAddress = useSelector((state) => state.member.walletAddress);
   const [itemList, setItemList] = useState([]);
+  const [fontStyle, setFontStyle] = useState("Noto Sans KR");
+  const [themeColor, setThemeColor] = useState(0);
+  const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isClickedGenerateButton, setClickedGenerateButton] = useState(false);
+  const [generatorValue, setGeneratorValue] = useState({
+    emoji: "🍪",
+    buttonName: "My Button",
+  });
 
-  const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
+  const { emoji, buttonName } = generatorValue;
 
-  const handleFontChange = (e) => {
-    setFontStyle(e.target.innerText);
+  const [code, setCode] = useState("");
+  const [searchItem, setSearchItem] = useState({
+    id: -1,
+    title: "",
+  });
+
+  const handleOnChangeValue = (e) => {
+    const { id, value } = e.target;
+    setGeneratorValue({ ...generatorValue, [id]: value });
   };
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+  const handleOnChangeFontStyle = (e) => {
+    const { innerText } = e.target;
+    setFontStyle(innerText);
   };
 
-  const handleSearchItemChange = (e) => {
-    const { id, innerText } = e.target;
-
-    setSearchItem({
-      id: id,
-      title: innerText,
-    });
+  const handleOnChangeItemId = (e) => {
+    const { innerText } = e.target;
+    setFontStyle(innerText);
   };
 
   const handleOnClickEmoji = (item) => {
-    setSelectedEmoji(item.emoji);
+    setGeneratorValue({ ...generatorValue, emoji: item.emoji });
     setShowEmojiPicker(false);
   };
 
@@ -105,7 +102,7 @@ const DashBoardGeneratorModal = ({ isModalOpen, isItemsRequired = true }) => {
     toPng(ref.current)
       .then((dataUrl) => {
         const link = document.createElement("a");
-        link.download = `${title}-button.png`;
+        link.download = `${buttonName}-button.png`;
         link.href = dataUrl;
         link.click();
       })
@@ -132,15 +129,13 @@ const DashBoardGeneratorModal = ({ isModalOpen, isItemsRequired = true }) => {
     try {
       const { data } = await itemApi.getAllItems(memberAddress);
       setItemList(data);
-      setSearchItem(data[0]);
+      if (data.length > 0) {
+        setSearchItem(data[0]);
+      }
     } catch (error) {
       console.log("error:", error);
     }
   };
-
-  useEffect(() => {
-    console.log("searchItem", searchItem);
-  }, [searchItem]);
 
   useEffect(() => {
     handleGetMyItems();
@@ -152,118 +147,114 @@ const DashBoardGeneratorModal = ({ isModalOpen, isItemsRequired = true }) => {
   }, [code]);
 
   return (
-    <div>
-      <BasicModal width={isMobile ? 1 : 26.25} handleSetShowModal={isModalOpen}>
-        <S.PreViewWrap>
-          {!isClickedGenerateButton ? (
-            <S.PreView id="don-jo-link" color={colorIndex} ref={ref} href="#">
-              <S.EmojiLabel>{selectedEmoji}</S.EmojiLabel>
-              <S.ButtonLabel font={fontStyle}>{title}</S.ButtonLabel>
-            </S.PreView>
-          ) : (
-            <>
-              <S.CodeBox
-                ref={codeRef}
-                id="code-field"
-                value={code}
-                readOnly
-                rows={1}
-              />
-              <S.CopyButton onClick={handleCopyCode}>
-                <FiCopy />
-                <label>copy code</label>
-              </S.CopyButton>
-            </>
-          )}
-        </S.PreViewWrap>
-
-        <S.ContentWrap>
-          <BasicTitle text="Text" />
-          <S.EmojiSettingWrapper>
-            <S.GridBox>
-              <S.EmojiButton onClick={handleSetShowEmojiPicker}>
-                {selectedEmoji}
-                <FiChevronDown size="16px" />
-              </S.EmojiButton>
-              <BasicInput
-                type="text"
-                value={title}
-                handleOnChangeValue={handleTitleChange}
-              />
-            </S.GridBox>
-            {isShowEmojiPicker && (
-              <S.EmojiPickerModal>
-                <EmojiPicker onEmojiClick={handleOnClickEmoji} />
-              </S.EmojiPickerModal>
-            )}
-          </S.EmojiSettingWrapper>
-        </S.ContentWrap>
-
-        <S.ContentWrap>
-          <BasicTitle text="Color" />
-          <S.ColorPalette>
-            {generatorColorSet &&
-              generatorColorSet.length > 0 &&
-              generatorColorSet.map((color) => (
-                <S.Color
-                  type="radio"
-                  name="color"
-                  key={color}
-                  value={color}
-                  defaultChecked={color === colorIndex}
-                  onChange={(e) => setColorIndex(e.target.value)}
-                />
-              ))}
-          </S.ColorPalette>
-        </S.ContentWrap>
-
-        <S.ContentWrap>
-          <BasicTitle text="Font" />
-          <CustomSelect
-            isBefore={true}
-            data={fontDataSet}
-            selectValue={fontStyle}
-            handleOptionChange={handleFontChange}
-          />
-        </S.ContentWrap>
-
-        <S.ContentWrap>
-          {isItemsRequired && (
-            <>
-              <BasicTitle text="Search Items" />
-              <CustomSelect
-                isBefore={false}
-                data={itemList}
-                selectValue={searchItem.title}
-                handleOptionChange={handleSearchItemChange}
-              />
-            </>
-          )}
-        </S.ContentWrap>
-
-        <S.ButtonWrap>
-          <S.ButtonContent>
-            <BasicButton
-              text={isClickedGenerateButton ? "Reset" : "Generate"}
-              handleOnClickButton={
-                isClickedGenerateButton
-                  ? () => setClickedGenerateButton(false)
-                  : handleGeneratePlugIn
-              }
-              isBackground={true}
-              isDisabled={false}
-              color="var(--color-primary)"
+    <BasicModal handleSetShowModal={setShowPlugInModal}>
+      <S.PreViewWrap>
+        {!isClickedGenerateButton ? (
+          <S.PreView id="don-jo-link" color={themeColor} ref={ref} href="#">
+            <S.EmojiLabel>{emoji}</S.EmojiLabel>
+            <S.ButtonLabel font={fontStyle}>{buttonName}</S.ButtonLabel>
+          </S.PreView>
+        ) : (
+          <>
+            <S.CodeBox
+              ref={codeRef}
+              id="code-field"
+              value={code}
+              readOnly
+              rows={1}
             />
-          </S.ButtonContent>
-        </S.ButtonWrap>
-      </BasicModal>
-    </div>
+            <S.CopyButton onClick={handleCopyCode}>
+              <FiCopy />
+              <label>copy code</label>
+            </S.CopyButton>
+          </>
+        )}
+      </S.PreViewWrap>
+
+      <S.ContentWrap>
+        <BasicTitle text="Text" />
+        <S.EmojiSettingWrapper>
+          <S.GridBox>
+            <S.EmojiButton onClick={() => setShowEmojiPicker(true)}>
+              {emoji}
+              <FiChevronDown size="16px" />
+            </S.EmojiButton>
+            <BasicInput
+              id="buttonName"
+              type="text"
+              value={buttonName}
+              handleOnChangeValue={handleOnChangeValue}
+            />
+          </S.GridBox>
+          {isShowEmojiPicker && (
+            <S.EmojiPickerModal>
+              <EmojiPicker onEmojiClick={handleOnClickEmoji} />
+            </S.EmojiPickerModal>
+          )}
+        </S.EmojiSettingWrapper>
+      </S.ContentWrap>
+
+      <S.ContentWrap>
+        <BasicTitle text="Color" />
+        <S.ColorPalette>
+          {generatorColorSet &&
+            generatorColorSet.length > 0 &&
+            generatorColorSet.map((color, index) => (
+              <S.Color
+                type="radio"
+                name="color"
+                key={color}
+                value={color}
+                defaultChecked={index === themeColor}
+                onChange={(e) => setThemeColor(e.target.value)}
+              />
+            ))}
+        </S.ColorPalette>
+      </S.ContentWrap>
+
+      <S.ContentWrap>
+        <BasicTitle text="Font" />
+        <CustomSelect
+          id="fontStyle"
+          isBefore={true}
+          data={fontDataSet}
+          selectValue={fontStyle}
+          handleOptionChange={handleOnChangeFontStyle}
+        />
+      </S.ContentWrap>
+
+      <S.ContentWrap>
+        {isItemsRequired && (
+          <>
+            <BasicTitle text="Search Items" />
+            <CustomSelect
+              id="selectedItem"
+              isBefore={false}
+              data={itemList}
+              selectValue={searchItem.title}
+              handleOptionChange={handleOnChangeItemId}
+            />
+          </>
+        )}
+      </S.ContentWrap>
+
+      <S.ButtonWrap>
+        <S.ButtonContent>
+          <BasicButton
+            text={isClickedGenerateButton ? "Reset" : "Generate"}
+            handleOnClickButton={
+              isClickedGenerateButton
+                ? () => setClickedGenerateButton(false)
+                : handleGeneratePlugIn
+            }
+            isBackground={true}
+            isDisabled={false}
+            color="var(--color-primary)"
+          />
+        </S.ButtonContent>
+      </S.ButtonWrap>
+    </BasicModal>
   );
 };
 
 export default DashBoardGeneratorModal;
-
-DashBoardGeneratorModal.propTypes = {
-  isModalOpen: PropTypes.func.isRequired,
-  isItemsRequired: PropTypes.bool,
-};
