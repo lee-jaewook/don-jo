@@ -45,6 +45,7 @@ const ItemsSettings = () => {
     setIsAddItemModalOpen((prev) => !prev);
     handleGetMyItemList("update");
     setClickedEdit(false);
+    document.body.style.overflow = "unset";
   };
 
   const handleShowItemDetailModal = () => {
@@ -68,6 +69,12 @@ const ItemsSettings = () => {
       dispatch(setCurrentItem({}));
     }
   }, [isClickedEdit]);
+
+  useEffect(() => {
+    if (!isShowItemModal) {
+      document.body.style.overflow = "unset";
+    }
+  }, [isShowItemModal]);
 
   return (
     <S.SettingWrapper>
