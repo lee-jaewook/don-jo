@@ -110,21 +110,19 @@ const RecentSupportBlock = ({
           >
             <ProfileImg
               width={3}
-              src={supportContent.fromMember.fromMemberProfileImagePath}
-              to={`/${supportContent.fromMember.fromMemberPageName}`}
+              src={supportContent.fromMember.memberProfileImagePath}
+              to={`/${supportContent.fromMember.memberPageName}`}
             />
           </S.ProfileImgContainer>
           <S.TitleWrapper>
             <S.TitleContent>
               <S.Nickname>
-                {supportContent.fromMember.fromMemberNickname}
+                {supportContent.fromMember.memberNickname}
               </S.Nickname>
               &nbsp;
               {supportText}
               &nbsp;
-              <S.Nickname>
-                {supportContent.toAddress.toMemberNickname}
-              </S.Nickname>
+              <S.Nickname>{supportContent.toMember.memberNickname}</S.Nickname>
             </S.TitleContent>
             {isOwner && !supportContent.replyMsg && (
               <S.ReplyBtn
@@ -154,14 +152,12 @@ const RecentSupportBlock = ({
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
-              src={supportContent.fromMember.fromMemberProfileImagePath}
-              to={`/${supportContent.fromMember.fromMemberPageName}`}
+              src={supportContent.fromMember.memberProfileImagePath}
+              to={`/${supportContent.fromMember.memberPageName}`}
             />
           </S.ProfileImgContainer>
           <div>
-            <S.Nickname>
-              {supportContent.fromMember.fromMemberNickname}
-            </S.Nickname>
+            <S.Nickname>{supportContent.fromMember.memberNickname}</S.Nickname>
             <S.Comment>{supportContent.sendMsg}</S.Comment>
             <S.SupportMsgText>Support message</S.SupportMsgText>
           </div>
@@ -173,11 +169,11 @@ const RecentSupportBlock = ({
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
-              src={supportContent.toAddress.toMemberProfileImagePath}
+              src={supportContent.toMember.memberProfileImagePath}
             />
           </S.ProfileImgContainer>
           <div>
-            <S.Nickname>{supportContent.toAddress.toMemberNickname}</S.Nickname>
+            <S.Nickname>{supportContent.toMember.memberNickname}</S.Nickname>
             <S.Comment>{supportContent.replyMsg}</S.Comment>
 
             {isOwner && supportContent.replyMsg && (
@@ -212,7 +208,7 @@ const RecentSupportBlock = ({
         <ContractModal
           handleSetShowModal={setIsShowContractModal}
           uid={supportContent.uid}
-          toMemberAddress={supportContent.toAddress.toMemberAddress}
+          toMemberAddress={supportContent.toMember.memberAddress}
         />
       )}
     </div>
@@ -226,15 +222,15 @@ RecentSupportBlock.propTypes = {
     uid: PropTypes.number.isRequired,
     supportType: PropTypes.string.isRequired,
     fromMember: PropTypes.shape({
-      fromMemberAddress: PropTypes.string.isRequired,
-      fromMemberNickname: PropTypes.string.isRequired,
-      fromMemberPageName: PropTypes.string.isRequired,
-      fromMemberProfileImagePath: PropTypes.string,
+      memberAddress: PropTypes.string.isRequired,
+      memberNickname: PropTypes.string.isRequired,
+      memberPageName: PropTypes.string.isRequired,
+      memberProfileImagePath: PropTypes.string,
     }).isRequired,
-    toAddress: PropTypes.shape({
-      toMemberAddress: PropTypes.string.isRequired,
-      toMemberNickname: PropTypes.string.isRequired,
-      toMemberProfileImagePath: PropTypes.string,
+    toMember: PropTypes.shape({
+      memberAddress: PropTypes.string.isRequired,
+      memberNickname: PropTypes.string.isRequired,
+      memberProfileImagePath: PropTypes.string,
     }),
     sendMsg: PropTypes.string,
   }).isRequired,
