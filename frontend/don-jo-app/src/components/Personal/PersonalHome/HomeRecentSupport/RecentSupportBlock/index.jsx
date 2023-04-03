@@ -22,10 +22,6 @@ const RecentSupportBlock = ({
   const [isShowContractModal, setIsShowContractModal] = useState(false);
 
   useEffect(() => {
-    console.log(supportContent);
-  }, []);
-
-  useEffect(() => {
     switch (supportContent.supportType) {
       case "donation":
         setSupportText("donates to ");
