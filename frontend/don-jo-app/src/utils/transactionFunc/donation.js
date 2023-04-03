@@ -2,6 +2,7 @@ import Web3 from "web3";
 import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
+import sendToastMessage from "../sendToastMessage";
 
 export const donation = (item) => {
   // 모바일 여부 확인
@@ -21,14 +22,12 @@ export const donation = (item) => {
             );
             web3.setProvider(infuraWeb3.currentProvider);
 
-            const valueInWei = web3.utils.toWei(
-              item.price.toString() * Math.pow(10, -3),
-              "ether"
-            );
+            const priceInMatic = parseFloat(item.price) * 10 ** 18;
+            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77" // contract 주소
+              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
             );
 
             const tx = myContract.methods.callBasicDonation(item.seller);
@@ -39,7 +38,7 @@ export const donation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77",
+                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
                     value: valueInWei,
                     gas: "20000",
                     data: tx.encodeABI(),
@@ -47,6 +46,16 @@ export const donation = (item) => {
                 ],
               })
               .then((txHash) => {
+                const donationDto = {
+                  amountEth: item.price,
+                  fromAddress: accounts[0],
+                  sendMsg: item.sendMsg,
+                  supportType: "donation",
+                  supportTypeUid: "",
+                  toAddress: item.seller,
+                  transactionHash: txHash,
+                };
+                saveDonation(donationDto);
                 const receiptPromise = new Promise(function (resolve, reject) {
                   const intervalId = setInterval(function () {
                     web3.eth.getTransactionReceipt(txHash).then((receipt) => {
@@ -70,17 +79,9 @@ export const donation = (item) => {
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  const donationDto = {
-                    amountEth: item.price,
-                    fromAddress: accounts[0],
-                    sendMsg: item.sendMsg,
-                    supportType: "donation",
-                    supportTypeUid: "",
-                    supportUid: id,
-                    toAddress: item.seller,
-                    transactionHash: txHash,
-                  };
-                  saveDonation(donationDto);
+                  updateDondationInfo(id, txHash);
+                } else {
+                  sendToastMessage("Failed to register support record.");
                 }
               })
               .catch((err) => console.log(err));
@@ -107,5 +108,16 @@ const saveDonation = async (donationDto) => {
     })
     .catch((error) => {
       console.log("저장 실패");
+    });
+};
+
+const updateDondationInfo = async (supportUid, transactionHash) => {
+  supportApi
+    .updateSponsorshipArrived(supportUid, transactionHash)
+    .then((res) => {
+      console.log("update 성공!");
+    })
+    .catch((error) => {
+      console.log("update 실패!");
     });
 };
