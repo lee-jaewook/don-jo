@@ -128,27 +128,17 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
       try {
         const { status } = await wishlistAPI.updateWishlistItem(cond);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
           sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {
         sendToastMessage("Save failed: Contact your administrator.", "error");
       }
-
-      // WishlistAPI
-      //   .updateWishlistItem(cond)
-      //   .then(() => {
-      //     alert("success wishlist update!");
-      //   })
-      //   .catch((error) => {
-      //     console.log("error: ", error);
-      //     alert("fail wishlist update!");
-      //   });
     } else {
       try {
         const { status } = await wishlistAPI.registerWishlistItem(cond);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
           sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {

@@ -6,8 +6,9 @@ import WishlistDetailModal from "../../../../Common/Modal/WishlistDetailModal";
 import { wishlistAPI } from "../../../../../api/wishlist";
 import ShowMoreButton from "../../../../Common/ShowMoreButton";
 import AddWishlistModal from "../../../../Common/Modal/AddWishlistModal";
+import PropTypes from "prop-types";
 
-const DashboardWishlist = () => {
+const DashboardWishlist = (callApi, setCallApi) => {
   const PAGE_SIZE = 6;
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
@@ -45,8 +46,9 @@ const DashboardWishlist = () => {
   };
 
   useEffect(() => {
+    console.log("제발 돼죠!!!!!!!!!");
     handleGetWishlist();
-  }, []);
+  }, [callApi]);
 
   return (
     <S.WishlistContainer isDashboard={true}>
@@ -81,7 +83,10 @@ const DashboardWishlist = () => {
       )}
       {isShowWishListModifyModal && (
         <AddWishlistModal
-          handleSetShowModal={handleOnClickButton}
+          handleSetShowModal={() => {
+            setIsShowWishListModifyModal(false);
+            setCallApi((prev) => !prev);
+          }}
           callOldData={true}
           wishlistUid={uid}
         />
@@ -91,3 +96,7 @@ const DashboardWishlist = () => {
 };
 
 export default DashboardWishlist;
+
+DashboardWishlist.propTypes = {
+  callApi: PropTypes.bool,
+};
