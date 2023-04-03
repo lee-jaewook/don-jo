@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://donjodb.ctvdncgwhc2a.ap-northeast-2.rds.amazonaws.com:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useSSL=false
-    username: admin
+    url: jdbc:mysql://j8a2091.p.ssafy.io:3306/donjodb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
     password: donjoroot
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -68,7 +68,11 @@ eth:
   address: '0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7'
   privateKey: '9c63b31a88c410c7d33265876407b31aea175c589ec82fff8d0bc4aa2baf150d'
   rpcUtil : 'https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a'
-  applicationAddress : '0x9790ED5dFE422760515faFd5104fE36b77a8422B'
+  applicationAddress : '0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77'
+
+  # test
+#  applicationAddress : '0x0F053Be8C94F29324Bc6e1b2017a214C504d5F84'
+
   chainId : 80001
 #  rpcUtil: 'http://j8a2091.p.ssafy.io:8545'
 #  applicationAddress: '0xBf431108276e429c168E12938E8f1BF823Ee02B6'

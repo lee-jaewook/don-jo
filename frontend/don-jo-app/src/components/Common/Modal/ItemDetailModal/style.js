@@ -59,3 +59,7 @@ export const DeleteButton = styled.button`
     transform: translateX(-50%);
   }
 `;
+
+export const DownloadLink = styled.a`
+  display: none;
+`;

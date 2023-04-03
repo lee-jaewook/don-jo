@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 4rem;
-  background-color: var(--color-background);
+  background-color: ${(props) =>
+    props.isIntroPage ? "var(--color-modal)" : "var(--color-background)"};
   display: flex;
   align-items: center;
   justify-content: center;

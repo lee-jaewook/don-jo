@@ -3,8 +3,8 @@ package com.donjo.backend.api.service.member;
 import com.donjo.backend.api.dto.member.request.LoginMemberCond;
 import com.donjo.backend.api.dto.member.request.ModifyMemberCond;
 import com.donjo.backend.api.dto.member.request.SignUpMemberCond;
-import com.donjo.backend.api.dto.member.response.FindMemberPayload;
 import com.donjo.backend.api.dto.member.response.FindPageInfoPayload;
+import com.donjo.backend.api.dto.member.LoginItem;
 import com.donjo.backend.db.entity.Member;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public interface MemberService {
   Map<String, Object> signUpMember(SignUpMemberCond signUpMemberCond);
 
   // 로그인
-  Map<String, Object> loginMember(LoginMemberCond loginMemberCond);
+  LoginItem loginMember(LoginMemberCond loginMemberCond);
 
   // 리프레쉬 토큰 재발급
   Map<String, Object> refreshAccessToken(String refreshToken);

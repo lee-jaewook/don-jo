@@ -20,13 +20,16 @@ const Header = () => {
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
   const [isLocalSrc, setIsLocalSrc] = useState(false);
-  
+  const [isIntroPage, setIsIntroPage] = useState(false);
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
   }, [profileImagePath]);
 
   useEffect(() => {
+    if (location.pathname === "/") setIsIntroPage(true);
+    else setIsIntroPage(false);
+
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
       setIsLocalSrc(true);
@@ -47,7 +50,7 @@ const Header = () => {
    */
 
   return (
-    <S.HeaderContainer>
+    <S.HeaderContainer isIntroPage={isIntroPage}>
       <S.Header>
         <Link to="/">
           <S.Logo src={LogoImg} />

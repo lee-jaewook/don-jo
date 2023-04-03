@@ -21,12 +21,13 @@ export const buyItemDonation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-
-            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
-
+            const priceInMatic = parseFloat(item.price) * 10 ** 18;
+            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
+            console.log("typeof valueInWei: ", typeof valueInWei);
+            console.log("valueInWei: ", valueInWei);
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x9790ED5dFE422760515faFd5104fE36b77a8422B" // contract 주소
+              "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
@@ -37,8 +38,8 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x9790ED5dFE422760515faFd5104fE36b77a8422B",
-                    value: valueInWei.toString(),
+                    to: "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77",
+                    value: valueInWei,
                     data: tx.encodeABI(),
                   },
                 ],
@@ -68,6 +69,7 @@ export const buyItemDonation = (item) => {
                     ["uint64"],
                     log.topics[1]
                   )[0];
+                  console.log("type id: ", typeof id);
                   const donationDto = {
                     amountEth: item.price,
                     fromAddress: accounts[0],
@@ -78,6 +80,7 @@ export const buyItemDonation = (item) => {
                     toAddress: item.seller,
                     transactionHash: txHash,
                   };
+                  console.log("donationDto", donationDto);
                   saveDonation(donationDto);
                 } else {
                   sendToastMessage("Failed to register support record.");

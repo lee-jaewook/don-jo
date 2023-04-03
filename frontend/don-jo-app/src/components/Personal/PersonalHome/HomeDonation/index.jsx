@@ -66,7 +66,7 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
     const item = {
       price: donationAmount * data,
       seller: pageMemberWalletAddress,
-      // id: 0,
+      sendMsg: msg,
     };
     donation(item);
   };
