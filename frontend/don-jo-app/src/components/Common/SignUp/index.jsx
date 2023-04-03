@@ -92,7 +92,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
     memberApi
       .signUp(signUpMemberCond)
       .then((res) => {
-        metamaskLogIn({ dispatch, handleModalOpen: isModalOpen });
+        // metamaskLogIn({ dispatch, handleModalOpen: isModalOpen });
       })
       .catch((error) => {
         console.log("회원가입 실패");
