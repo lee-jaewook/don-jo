@@ -41,7 +41,7 @@ const ItemCard = ({ item, isOwner }) => {
 
   const { config } = usePrepareContractWrite({
     abi: ApplicationHandler.abi,
-    address: "0x52049e226Bcd3f5f1DEd1A11aE369Fd74553CF77",
+    address: "0x87F54beAa91600aF02284df366531904Dd3735D8",
     functionName: "buyItemDonation",
     args: [item.seller, item.id],
     overrides: {
