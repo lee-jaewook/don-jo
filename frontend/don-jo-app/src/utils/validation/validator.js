@@ -53,7 +53,7 @@ export const titleValidator = (title) => {
  */
 
 export const priceValidator = (price) => {
-  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,3})?$/;
+  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,9})?$/;
   if (priceRegex.test(price)) {
     return true;
   }
