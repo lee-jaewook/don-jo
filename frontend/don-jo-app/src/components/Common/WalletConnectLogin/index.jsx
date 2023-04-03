@@ -4,7 +4,7 @@ import {
   w3mProvider,
 } from "@web3modal/ethereum";
 import { Web3Button, Web3Modal } from "@web3modal/react";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient } from "wagmi";
 import {
   //mainnet,
   polygonMumbai,
@@ -12,7 +12,7 @@ import {
   // sepolia,
 } from "wagmi/chains";
 import Auth from "./Auth"
-// import { UniversalProvider } from "@walletconnect/universal-provider";
+
 const projectId = "bff442f05c60a67faf40efa21f494f0d";
 
 // 2. Configure wagmi client
@@ -21,15 +21,6 @@ const chains = [
   polygonMumbai
   // polygon,
 ];
-
-// const providerOptions = {
-//   defaultChainId: 1,
-//   rpc: {
-//     1: "https://sepolia.infura.io/v3/b21e7e373fe54229bcc96d33de08ee7e",
-//     // 80001: 'https://rpc-mumbai.ether1hive.org',
-//   },
-// };
-// const provider = new UniversalProvider(providerOptions);
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 
@@ -47,12 +38,8 @@ const WalletConnectLogin = () => {
 
   return (
     <>
-      <WagmiConfig client={wagmiClient}>
-        <Auth/>
-      {/* {isConnected && (isMember ? <S.Startbtn>로그인</S.Startbtn> : <S.Startbtn onClick={handleLogInClick}>회원가입</S.Startbtn>)} */}
-        <Web3Button icon={"hide"} label={"Wallet Connect"} />
-        {/* <Profile /> */}
-      </WagmiConfig>
+      <Auth/>
+      <Web3Button icon={"hide"} label={"Wallet Connect"} />
 
       <Web3Modal
         projectId={projectId}
