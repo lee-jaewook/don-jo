@@ -9,7 +9,7 @@ contract SupportHistory {
         address from;
         address to;
         uint256 amount;
-        uint256 sendTimestamp;
+        uint256 arriveTime;
         SupportType supportType;
     }
 
@@ -24,7 +24,7 @@ contract SupportHistory {
         from: _from,
         to: _to,
         amount: _amount,
-        sendTimestamp: block.timestamp,
+        arriveTime: block.timestamp,
         supportType: _supportType
         });
         return _id;

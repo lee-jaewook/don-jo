@@ -65,11 +65,11 @@ public class SupportSolidity {
      * @param uid
      * @return LocalDateTime(요청 시간)
      */
-    public Optional<LocalDateTime> getSendDateTime(String address, Long uid){
+    public Optional<LocalDateTime> getArriveTimeStamp(String address, Long uid){
         LocalDateTime result = null;
         try {
             // Address와 Uid로 보낸 시간 가져오기
-            BigInteger response = contract.getSupportSendTime(address, BigInteger.valueOf(uid)).send();
+            BigInteger response = contract.getSupportArriveTime(address, BigInteger.valueOf(uid)).send();
             // 보낸시간 LocalDateTime으로 감싸주기
             result = ConvertUtil.convertToLocalDateTime(response);
         } catch (Exception e) {

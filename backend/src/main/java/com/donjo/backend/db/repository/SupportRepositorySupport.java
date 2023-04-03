@@ -1,7 +1,14 @@
 package com.donjo.backend.db.repository;
 
+import com.donjo.backend.db.entity.QSupport;
 import com.donjo.backend.db.entity.Support;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,9 +24,43 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class SupportRepositorySupport {
     @PersistenceContext
     private EntityManager em;
+
+    private final JPAQueryFactory jpaQueryFactory;
+    QSupport qSupport = QSupport.support;
+
+    public Page<Support> findAllOrderByArriveTime(String supportType, String toAddress, Pageable pageable){
+        OrderSpecifier<?> orderByArriveTimeDesc = qSupport.arriveTimeStamp.desc();
+
+        List<Support> supportList = jpaQueryFactory
+                                    .selectFrom(qSupport)
+                                    .where(
+                                            supportTypeEq(supportType),
+                                            qSupport.toAddress.eq(toAddress)
+                                    )
+                                    .offset(pageable.getOffset())
+                                    .orderBy(orderByArriveTimeDesc)
+                                    .limit(pageable.getPageSize())
+                                    .fetch();
+
+        long totalCount = jpaQueryFactory
+                                    .selectFrom(qSupport)
+                                    .where(
+                                            supportTypeEq(supportType),
+                                            qSupport.toAddress.eq(toAddress)
+                                    )
+                                    .fetchCount();
+
+        return new PageImpl<>(supportList, pageable, totalCount);
+    }
+
+    private BooleanExpression supportTypeEq(String supportType) {
+        if(supportType.equals("all") || supportType.equals(("")) || supportType == null) return null;
+        return qSupport.supportType.eq(supportType);
+    }
 
     public List<Support> findEarning(String address, String type, int period) {
         // StringBuilder는 문자열을 효율적으로 다룰 수 있게 하는 클래스 JPQL을 담을 변수
@@ -63,4 +104,6 @@ public class SupportRepositorySupport {
         // 10개만 리턴
         return query.setMaxResults(10).getResultList();
     }
+
+
 }
