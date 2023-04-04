@@ -80,14 +80,10 @@ export const buyWishlistDonation = (
                 );
                 if (logs.length > 0) {
                   const log = logs[0];
-                  console.log("log: ", log);
                   const id = web3.eth.abi.decodeParameters(
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  console.log("id: ", id);
-                  console.log("typeof id: ", typeof id);
-                  console.log("txHash: ", txHash);
                   updateDondationInfo(parseInt(id), txHash);
                   handleLoading(false);
                   sendToastMessage("✨ Updated successfully.");
@@ -98,11 +94,8 @@ export const buyWishlistDonation = (
                   handleLoading(false);
                 }
               })
-              .then((res) => {
-                console.log("res: ", res);
-              })
+              .then((res) => {})
               .catch((err) => {
-                console.log(err);
                 handleLoading(false);
               });
           });
@@ -123,21 +116,13 @@ export const buyWishlistDonation = (
 const saveDonation = (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {
-      console.log("저장 성공!");
-    })
-    .catch((error) => {
-      console.log("저장 실패");
-    });
+    .then((res) => {})
+    .catch((error) => {});
 };
 
 const updateDondationInfo = (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      console.log("update 성공!");
-    })
-    .catch((error) => {
-      console.log("update 실패!");
-    });
+    .then((res) => {})
+    .catch((error) => {});
 };
