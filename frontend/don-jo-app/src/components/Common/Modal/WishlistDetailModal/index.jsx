@@ -64,23 +64,33 @@ const WishlistDetailModal = ({
   useEffect(() => {
     handleGetWishlistItemDetail();
   }, []);
-
-  const BuyOrEdit = () => {
-    console.log("click");
+  const handleLoading = () => {
+    setLoading((prev) => !prev);
+  };
+  const BuyOrEdit = async () => {
     if (isDashboard) {
-      console.log("흠");
       handleOnClickButton();
       return;
     }
-
     const item = {
       price: price,
       id: uid,
       seller: pageMemberAddress,
       sendMsg: sendMsg,
     };
-    console.log("item: ", item);
-    buyWishlistDonation(item);
+
+    setLoading(true);
+
+    buyWishlistDonation(item, handleLoading, handleOnClickButton);
+
+    // setLoading(false);
+    // try {
+    //   sendToastMessage("✨ Updated successfully.");
+    // } catch (error) {
+    //   console.log("error: ", error);
+    // } finally {
+    //   console.log("왜 여기안와?");
+    // }
   };
 
   // 후원 상태바 계산을 위한 함수
