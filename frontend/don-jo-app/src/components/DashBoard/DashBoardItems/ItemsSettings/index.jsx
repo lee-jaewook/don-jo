@@ -9,6 +9,7 @@ import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import AddItemModal from "../../../Common/Modal/AddItemModal";
 import { itemApi } from "../../../../api/items";
 import { setCurrentItem } from "../../../../stores/items";
+import DashboardLoading from "../../DashboardLoading";
 
 const PAGE_SIZE = 6;
 const ItemsSettings = () => {
@@ -21,7 +22,7 @@ const ItemsSettings = () => {
   const [result, setResult] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
   const [isClickedEdit, setClickedEdit] = useState(false);
-
+  const [isLoading, setLoading] = useState(false);
   const handleGetMyItemList = async (type) => {
     const {
       data: { itemList, hasMore },
@@ -42,10 +43,10 @@ const ItemsSettings = () => {
 
   const handleAddItemModalOpen = () => {
     setShowItemModal(false);
-    setIsAddItemModalOpen((prev) => !prev);
+    setIsAddItemModalOpen(false);
     handleGetMyItemList("update");
     setClickedEdit(false);
-    document.body.style.overflow = "unset";
+    document.body.style.overflow = "auto";
   };
 
   const handleShowItemDetailModal = () => {
@@ -70,12 +71,6 @@ const ItemsSettings = () => {
     }
   }, [isClickedEdit]);
 
-  useEffect(() => {
-    if (!isShowItemModal) {
-      document.body.style.overflow = "unset";
-    }
-  }, [isShowItemModal]);
-
   return (
     <S.SettingWrapper>
       <S.AddButton id="add-button">
@@ -84,11 +79,12 @@ const ItemsSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Items List" />
-      {isAddItemModalOpen && (
+      {isLoading && <DashboardLoading />}
+      {isAddItemModalOpen && !isLoading && (
         <AddItemModal
           isModify={isClickedEdit}
           handleSetShowModal={handleAddItemModalOpen}
-          whichApiChoose={true}
+          handleSetLoading={setLoading}
         />
       )}
       {result && result.length > 0 ? (
