@@ -8,7 +8,7 @@ const initialState = {
   numSupporters: 0,
   profileImgPath: "",
   socialList: ["", "", ""],
-  themeColor: 1,
+  themeColor: 0,
 };
 
 export const memberInfoSlice = createSlice({
