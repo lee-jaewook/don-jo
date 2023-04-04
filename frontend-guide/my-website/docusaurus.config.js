@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Don Jo Guide",
   tagline: "Here is a basic guide to get started with Don-jo.",
-  favicon: "img/favicon2.ico",
+  favicon: "img/favicon.ico",
 
   // Set the production url of your site here
   url: "https://j8a209.p.ssafy.io",
