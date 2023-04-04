@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
 import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
-import SelectBox from "./SelectBox";
 import WalletConnectLogin from "../WalletConnectLogin";
 
 const Header = () => {
@@ -41,14 +40,6 @@ const Header = () => {
     }
   }, [location.pathname]);
 
-  /**
-   * handleMetamaskLogInClick - 메타마스크 LogIn 함수
-   * 설명:
-   * Start 버튼 클릭에 대한 이벤트 함수.
-   * 회원일 경우, 로그인 처리
-   * 비회원일 경우, 회원가입 모달 띄우기
-   */
-
   return (
     <S.HeaderContainer isIntroPage={isIntroPage}>
       <S.Header>
@@ -73,14 +64,6 @@ const Header = () => {
             />
           ) : (
             <div style={{ display: "flex" }}>
-              {/* <SelectBox
-                metamaskLogin={handleMetamaskLogInClick}
-                walletConnectLogin={() => {
-                  console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
-                }}
-              >
-                Start
-              </SelectBox> */}
               <WalletConnectLogin />
             </div>
           )}

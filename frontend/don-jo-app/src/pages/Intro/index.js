@@ -6,12 +6,13 @@ import CurrentSupportList from "../../components/Intro/CurrentSupportRecent";
 import DonJoTitleSvg from "../../components/Intro/DonJoTitleSvg";
 import { introContents } from "../../data/intro";
 import IntroContent from "../../components/Intro/IntroContent";
+import SignUp from "../../components/Common/SignUp";
 const Intro = () => {
   const navigate = useNavigate();
   const _pageName = useSelector((state) => state.member.pageName);
   const [pageName, setPageName] = useState("");
   const [isReadOnly, setReadOnly] = useState(false);
-
+  const [isShowSignUp, setIsShowSignUp] = useState(false);
   const handleOnChangePageName = (e) => {
     const { value } = e.target;
     setPageName(value);
@@ -20,8 +21,15 @@ const Intro = () => {
   const handleOnClickArrowButton = () => {
     if (_pageName !== "") {
       navigate(`/${_pageName}`);
-    } else {
+    } else if (pageName !== "") {
       // 회원가입 모달
+      setIsShowSignUp(true);
+    }
+  };
+
+  const handleKeyDownEvent = (e) => {
+    if (e.keyCode === 13) {
+      setIsShowSignUp(true);
     }
   };
 
@@ -32,7 +40,13 @@ const Intro = () => {
     }
   }, [_pageName]);
 
-  return (
+  return isShowSignUp ? (
+    <SignUp
+      isShowSignUp={isShowSignUp}
+      setIsShowSignUp={setIsShowSignUp}
+      pageName={pageName}
+    />
+  ) : (
     <S.Container>
       <S.DonJoTitle>
         <DonJoTitleSvg />
@@ -57,6 +71,7 @@ const Intro = () => {
             value={pageName}
             placeholder="Your Page Name"
             onChange={handleOnChangePageName}
+            onKeyDown={handleKeyDownEvent}
             readOnly={isReadOnly}
           />
           <S.ArrowIcon onClick={handleOnClickArrowButton} />
@@ -64,8 +79,9 @@ const Intro = () => {
       </S.Background>
       {introContents &&
         introContents.length > 0 &&
-        introContents.map((item) => (
+        introContents.map((item, index) => (
           <IntroContent
+            key={index}
             title={item.title}
             description={item.description}
             imageSrc={item.img}

@@ -8,8 +8,9 @@ import PasswordSetModal from "../Modal/PasswordSetModal";
 import SignUpModal from "./SignUpModal";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
+import PropTypes from "prop-types";
 
-const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
+const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const dispatch = useDispatch();
   const IMAGE_TYPE = "img/item";
 
@@ -22,8 +23,8 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   }, [address]);
 
   const [userInfo, setUserInfo] = useState({
-    nickName: "",
-    pageName: "",
+    nickname: "",
+    pageName: pageName,
     password: "",
   });
   const [profileImgPath, setProfileImgPath] = useState({
@@ -39,7 +40,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
    */
   const isModalOpen = () => {
     setUserInfo({
-      nickName: "",
+      nickname: "",
       pageName: "",
       password: "",
     });
@@ -53,7 +54,8 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   };
 
   const handleContinueButtonClick = async () => {
-    if (!checkSignUpValidation(userInfo.nickName, userInfo.pageName)) return;
+    console.log("userInfo: ", userInfo);
+    if (!checkSignUpValidation(userInfo.nickname, userInfo.pageName)) return;
     await memberApi
       .checkPageName(userInfo.pageName)
       .then(() => {
@@ -71,7 +73,6 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   const doSignUp = async (inputPassword) => {
     let signUpMemberCond = {
       ...userInfo,
-      nickname: userInfo.nickName,
       address: address,
       password: inputPassword,
       profileImgPath: "",
@@ -142,3 +143,13 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
 };
 
 export default SignUp;
+
+SignUp.propTypes = {
+  isShowSignUp: PropTypes.func.isRequired,
+  setIsShowSignUp: PropTypes.func.isRequired,
+  pageName: PropTypes.string,
+};
+
+SignUp.defaultProps = {
+  pageName: "",
+};
