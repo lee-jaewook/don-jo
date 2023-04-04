@@ -4,7 +4,11 @@ import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
 import sendToastMessage from "../sendToastMessage";
 
-export const buyWishlistDonation = (item) => {
+export const buyWishlistDonation = (
+  item,
+  handleLoading,
+  handleOnClickButton
+) => {
   // 모바일 여부 확인
   if (!isMobile) {
     // 메타마스크 설치 여부 확인
@@ -81,12 +85,26 @@ export const buyWishlistDonation = (item) => {
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  updateDondationInfo(id, txHash);
+                  console.log("id: ", id);
+                  console.log("typeof id: ", typeof id);
+                  console.log("txHash: ", txHash);
+                  updateDondationInfo(parseInt(id), txHash);
+                  handleLoading(false);
+                  sendToastMessage("✨ Updated successfully.");
+                  handleOnClickButton();
+                  return true;
                 } else {
                   sendToastMessage("Failed to register support record.");
+                  handleLoading(false);
                 }
               })
-              .catch((err) => console.log(err));
+              .then((res) => {
+                console.log("res: ", res);
+              })
+              .catch((err) => {
+                console.log(err);
+                handleLoading(false);
+              });
           });
         });
     } else {
@@ -102,7 +120,7 @@ export const buyWishlistDonation = (item) => {
   }
 };
 
-const saveDonation = async (donationDto) => {
+const saveDonation = (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
     .then((res) => {
@@ -113,7 +131,7 @@ const saveDonation = async (donationDto) => {
     });
 };
 
-const updateDondationInfo = async (supportUid, transactionHash) => {
+const updateDondationInfo = (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
     .then((res) => {
