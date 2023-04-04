@@ -18,7 +18,6 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
   const [pageNum, setPageNum] = useState(0);
   const [result, setResult] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
-  const [isClickedEdit, setClickedEdit] = useState(false);
 
   const handleOpenModal = (id) => {
     setShowWishlistModal(true);
@@ -42,11 +41,9 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
       console.log("data?", wishlists);
       setPageNum((prev) => prev + 1);
       if (type === "update") {
-        console.log("update....");
         setResult(wishlists);
         setPageNum(1);
       } else {
-        console.log("update 아님...");
         setResult((prev) => [...prev, ...(wishlists || [])]);
       }
       setIsEnd(hasMore);

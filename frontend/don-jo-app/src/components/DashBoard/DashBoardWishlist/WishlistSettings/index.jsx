@@ -24,7 +24,6 @@ const WishlistSettings = () => {
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Wishlist" />
-      <DashboardWishlist callApi={callApi} setCallApi={handleCallApiChange} />
       {isWishListRegisterModal && (
         <AddWishlistModal
           handleSetShowModal={() => {
@@ -33,6 +32,7 @@ const WishlistSettings = () => {
           }}
         />
       )}
+      <DashboardWishlist callApi={callApi} setCallApi={handleCallApiChange} />
     </S.SettingWrapper>
   );
 };
