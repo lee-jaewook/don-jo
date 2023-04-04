@@ -118,6 +118,10 @@ const Personal = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("isOwner: ", isOwner);
+  }, [isOwner]);
+
   return (
     <S.Container>
       <S.FileInput
@@ -178,9 +182,7 @@ const Personal = () => {
           <ExternalLink socialList={memberInfoItemData.socialList} />
           <Desktop>
             <S.IntroductionContainer
-              isShow={
-                isOwner || !memberInfoItemData.introduction ? true : false
-              }
+              isShow={isOwner || memberInfoItemData.introduction ? true : false}
             >
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
               {isOwner && (
