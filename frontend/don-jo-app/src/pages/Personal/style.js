@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import defaultProfileImg from "../../assets/img/common/app-logo.svg";
+import defaultProfile from "../../assets/img/common/default-profile.svg";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
@@ -68,9 +68,7 @@ export const ProfileImg = styled.div`
   background-size: cover;
   background-position: center;
   background-image: ${(props) =>
-    props.src === ""
-      ? `url(${defaultProfileImg})`
-      : `url(${S3URL + props.src})`};
+    props.src === "" ? `url(${defaultProfile})` : `url(${S3URL + props.src})`};
   box-shadow: 0px 0.625rem 0.625rem rgba(0, 0, 0, 0.05);
   position: relative;
   margin-left: 4rem;

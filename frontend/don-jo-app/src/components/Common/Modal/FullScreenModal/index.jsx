@@ -20,7 +20,9 @@ const FullScreenModal = ({ handleSetShowModal, children }) => {
     <S.Modal>
       <S.ModalHeader>
         <S.CloseBtnContainer>
-          <FiX size="26" color="#666666" onClick={closeModal} />
+          <S.CloseBtnWrapper onClick={closeModal}>
+            <FiX size="26" color="#666666" />
+          </S.CloseBtnWrapper>
         </S.CloseBtnContainer>
       </S.ModalHeader>
 

@@ -9,6 +9,7 @@ import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.wishlist.WishlistSol;
 import com.donjo.backend.solidity.wishlist.WishlistSolidity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class WishlistServiceImpl implements WishlistService{
     // WishlistSolidity 선언
@@ -69,7 +71,9 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public void updateWishlist(String memberAddress, UpdateWishlistCond cond) {
         //  wishlistSolidity 객체의 updateMemberWishlist 메서드를 호출합니다.
+        log.info("위시리스트 업데이트 Solidity 변환 시작");
         WishlistSol sol = wishlistSolidity.getMemberWishListDetail(cond.getId()).orElseThrow(()-> new BadRequestException());
+        log.info("위시리스트 업데이트 Solidity 변환 완료");
         wishlistSolidity.updateMemberWishlist(cond.toWishlist(memberAddress, sol));
     }
 }

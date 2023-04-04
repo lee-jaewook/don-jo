@@ -11,6 +11,8 @@ import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
 import { useNavigate, useParams } from "react-router";
 import { PulseLoader } from "react-spinners";
 
+const PAGE_SIZE = 6;
+
 const PersonalItems = ({ isOwner, itemId }) => {
   const navigate = useNavigate();
   const { pageName } = useParams();
@@ -43,21 +45,27 @@ const PersonalItems = ({ isOwner, itemId }) => {
   ).toLowerCase();
 
   const [pageNum, setPageNum] = useState(0);
-  const PAGE_SIZE = 6;
   const [itemList, setItemList] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
   const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
 
-  const getItemList = async () => {
+  const getItemList = async (isUpdated = false) => {
     try {
       if (pageMemberAddress !== "") {
         const { data } = await itemApi.getItemList(
           pageMemberAddress,
-          pageNum,
+          isUpdated ? 0 : pageNum,
           PAGE_SIZE
         );
-        setPageNum((prev) => prev + 1);
-        setItemList((prev) => [...prev, ...(data.itemList || [])]);
+
+        if (isUpdated) {
+          setItemList(data.itemList || []);
+          setPageNum(1);
+        } else {
+          setItemList((prev) => [...prev, ...(data.itemList || [])]);
+          setPageNum((prev) => prev + 1);
+        }
+
         setIsEnd(data.hasMore);
         setIsLoading(false);
       }
@@ -71,7 +79,6 @@ const PersonalItems = ({ isOwner, itemId }) => {
   }, [pageMemberAddress]);
 
   const handleOnClickShowMoreButton = () => {
-    console.log("Show More");
     getItemList();
   };
 
@@ -121,8 +128,12 @@ const PersonalItems = ({ isOwner, itemId }) => {
 
         {isOpenAddItemModal && (
           <AddItemModal
-            handleSetShowModal={setIsOpenAddItemModal}
-            whichApiChoose={true}
+            handleSetLoading={setIsLoading}
+            handleSetShowModal={() => {
+              setIsOpenAddItemModal(false);
+              getItemList(true);
+              document.body.style.overflow = "auto";
+            }}
           />
         )}
       </>
