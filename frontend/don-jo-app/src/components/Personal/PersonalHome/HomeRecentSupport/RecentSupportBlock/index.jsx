@@ -47,8 +47,11 @@ const RecentSupportBlock = ({
   };
 
   //해당 후원 block 다시 가져오기
-  const refreshRecentBlock = () => {
-    //UID 붙어서 나오게되면 후원상세조회 다시 해서 setSupportContent 하기.
+  const refreshRecentBlock = async () => {
+    const { data } = await supportApi.getSupportDetail(
+      supportContent.transactionHash
+    );
+    setSupportContent(data);
   };
 
   //댓글 등록
@@ -86,6 +89,7 @@ const RecentSupportBlock = ({
     if (window.confirm("Are you sure you want to delete the comments?")) {
       try {
         await supportApi.deleteReply(supportContent.transactionHash);
+        refreshRecentBlock();
         window.alert("Done deleting comments");
       } catch (error) {
         console.log("error: ", error);

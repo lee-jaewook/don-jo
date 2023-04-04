@@ -7,7 +7,7 @@ const ItemsSupporter = () => {
   const [result, setResult] = useState([]);
 
   const handleGetEarning = async () => {
-    const itemsEarnings = getEarningDataByType("item");
+    const itemsEarnings = await getEarningDataByType("item");
     setResult(itemsEarnings);
   };
 

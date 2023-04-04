@@ -27,7 +27,6 @@ const ItemDetailModal = ({
     setLoading(true);
     try {
       const { data } = await itemApi.getItemDetail(uid);
-      console.log(data);
       setResult(data);
       dispatch(setCurrentItem(data));
     } catch (error) {

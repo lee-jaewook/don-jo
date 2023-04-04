@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
+import { calculateEth } from "../../../utils/calculateEth";
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 const WishlistItem = ({
   isDashboard = false,
   handleSetShowModal,
@@ -12,8 +15,6 @@ const WishlistItem = ({
   totalAmount,
   isClosed,
 }) => {
-  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
-
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
     if (Number(collectedAmount) >= Number(totalAmount)) {
@@ -50,9 +51,9 @@ const WishlistItem = ({
           <S.ProgressState currentState={handleCalcProgressState()} />
         </S.ProgressBar>
         <S.AmountWrapper>
-          <S.ProgressAmount>{collectedAmount}</S.ProgressAmount>
+          <S.ProgressAmount>{calculateEth(collectedAmount)}</S.ProgressAmount>
           <S.ProgressAmount isAllAmount={true}>
-            /{totalAmount} <S.Eth>eth</S.Eth>
+            /{calculateEth(totalAmount)} <S.Eth>MATIC</S.Eth>
           </S.ProgressAmount>
         </S.AmountWrapper>
       </S.ProgressBarWrapper>

@@ -30,6 +30,10 @@ export const Track = styled.div`
   will-change: transform;
   animation: ${slideText} 20s linear infinite;
   background-color: transparent;
+
+  .content {
+    display: flex;
+  }
 `;
 
 export const SupportItem = styled.div`

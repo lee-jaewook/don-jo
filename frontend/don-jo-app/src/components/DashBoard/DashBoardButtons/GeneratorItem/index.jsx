@@ -20,7 +20,7 @@ const GeneratorItem = ({
   isItemsRequired,
   previewSrc,
 }) => {
-  const [isPlugInGenModalOpen, setIsPlugInGenModalOpen] = useState(false);
+  const [isShowPlugInModal, setShowPlugInModal] = useState(false);
   const [isOpenQRCodeModal, setOpenQRCodeModal] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -30,7 +30,7 @@ const GeneratorItem = ({
       return;
     }
 
-    setIsPlugInGenModalOpen((prev) => !prev);
+    setShowPlugInModal((prev) => !prev);
   };
 
   return (
@@ -52,9 +52,9 @@ const GeneratorItem = ({
           Generate
         </S.GenerateButton>
       </S.ItemWrapper>
-      {isPlugInGenModalOpen && (
+      {isShowPlugInModal && (
         <PluginGenerator
-          isModalOpen={handlePlugInGenModalChange}
+          setShowPlugInModal={setShowPlugInModal}
           isItemsRequired={isItemsRequired}
         />
       )}

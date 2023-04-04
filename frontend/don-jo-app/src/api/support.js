@@ -31,7 +31,8 @@ export const supportApi = {
     ),
 
   // 서포트 수 조회 API
-  getSupportCount: (type) => api.get(`/member/supporters/count?type=${type}`),
+  getSupportCount: (type) =>
+    api.get(`/auth/member/supports/count?type=${type}`),
 
   // 서포트 상세 조회 API
   getSupportDetail: (transactionHash) =>
