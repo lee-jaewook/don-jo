@@ -1,6 +1,6 @@
 import * as S from "./style";
 import React, { useState, useEffect } from "react";
-import { FiUpload } from "react-icons/fi";
+import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
 import PropTypes from "prop-types";
 import FullScreenModal from "../FullScreenModal";
 import BasicTitle from "../../BasicTitle";
@@ -11,6 +11,8 @@ import { wishlistAPI } from "../../../../api/wishlist";
 import { fileApi } from "../../../../api/file";
 import { fileSizeValidator } from "../../../../utils/validation/validator";
 import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
+import DashboardLoading from "../../../DashBoard/DashboardLoading";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 /**
  * 아이템 추가/수정 모달
@@ -21,8 +23,9 @@ import { checkItemValidation } from "../../../../utils/validation/checkItemValid
  */
 
 const IMAGE_TYPE = "img/item";
-
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
+  const [isLoading, setLoading] = useState(false);
   const [itemImageFile, setItemImageFile] = useState({
     previewImgUrl: "",
     file: {},
@@ -31,12 +34,12 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
   const [itemInfo, setItemInfo] = useState({
     title: "",
     collectedAmount: null,
-    totalAmount: null,
+    targetAmount: 0,
     description: "",
     message: "",
   });
 
-  const { title, collectedAmount, totalAmount, description, message } =
+  const { title, collectedAmount, targetAmount, description, message } =
     itemInfo;
 
   const handleOnChangeInput = (e) => {
@@ -59,7 +62,7 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
       setItemImageFile({ previewImgUrl: "", file: {} });
       return;
     }
-    console.log("여기까지 오나요?");
+
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = () => {
@@ -88,7 +91,7 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
    * @returns
    */
   const registerItem = async () => {
-    if (!checkItemValidation({ name: title, price: totalAmount })) return;
+    if (!checkItemValidation({ name: title, price: targetAmount })) return;
 
     let cond;
 
@@ -97,37 +100,53 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
       return;
     }
 
-    if (callOldData && itemInfo.imagPath === itemImageFile.previewImgUrl) {
+    if (callOldData && itemInfo.imgPath === itemImageFile.previewImgUrl) {
       cond = {
         description: itemInfo.description,
-        imgPath: itemInfo.imagPath,
+        imgPath: itemInfo.imgPath.substr(47),
         message: itemInfo.message,
-        targetAmount: parseFloat(itemInfo.totalAmount),
+        targetAmount: parseFloat(itemInfo.targetAmount),
         title: itemInfo.title,
+        id: wishlistUid,
       };
     } else {
-      console.log("이거인데?");
       let imagePath = await handleUploadFile(itemImageFile.file, IMAGE_TYPE);
+      console.log("imgPath Type: ", typeof imgPath);
       cond = {
         description: itemInfo.description,
         imgPath: imagePath,
         message: itemInfo.message,
-        targetAmount: parseFloat(itemInfo.totalAmount),
+        targetAmount: parseFloat(itemInfo.targetAmount),
         title: itemInfo.title,
       };
     }
-    console.log("cond: ", cond);
 
-    wishlistAPI
-      .registerWishlistItem(cond)
-      .then(() => {
-        alert("위시리스트 등록 성공!");
-      })
-      .catch((error) => {
-        alert("위시리스트 등록 실패!");
-      });
+    setLoading(true);
 
-    setTimeout(handleSetShowModal, 2000);
+    // API 호출
+    if (callOldData) {
+      try {
+        const { status } = await wishlistAPI.updateWishlistItem(cond);
+        if (status === 200) {
+          handleSetShowModal();
+          sendToastMessage("✨ Updated successfully.");
+        }
+      } catch (error) {
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      }
+    } else {
+      try {
+        const { status } = await wishlistAPI.registerWishlistItem(cond);
+        if (status === 200) {
+          handleSetShowModal();
+          sendToastMessage("✨ Updated successfully.");
+        }
+      } catch (error) {
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleGetAccoutInfo = async () => {
@@ -135,11 +154,12 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
       const { data } = await wishlistAPI.getWishlistItemDetail(wishlistUid);
       setItemInfo({
         ...data,
+        imgPath: `${S3URL}${data.imgPath}`,
       });
 
       setItemImageFile((prev) => ({
         ...prev,
-        previewImgUrl: data.imagPath,
+        previewImgUrl: `${S3URL}${data.imgPath}`,
       }));
     } catch (error) {
       console.log("error: ", error);
@@ -152,7 +172,9 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
     }
   }, []);
 
-  return (
+  return isLoading ? (
+    <DashboardLoading />
+  ) : (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
         <S.ContentWrap>
@@ -178,9 +200,9 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
           </S.RequiredInputWrapper>
           <S.SeparationContainer width="16.75">
             <S.BasicInput
-              id="totalAmount"
+              id="targetAmount"
               type="text"
-              value={totalAmount || ""}
+              value={targetAmount}
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
@@ -225,9 +247,8 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
             id="description"
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Description what you are selling."
-          >
-            {description}
-          </BasicTextarea>
+            value={description}
+          ></BasicTextarea>
         </S.ContentWrap>
 
         <S.ContentWrap>
@@ -239,15 +260,14 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
             id="message"
             handleOnChangeValue={handleOnChangeInput}
             placeholder="Thank you for supporting my wishlist!"
-          >
-            {message}
-          </BasicTextarea>
+            value={message}
+          ></BasicTextarea>
         </S.ContentWrap>
 
         <S.BasicButtonWrap>
           <S.BasicButtonContainer>
             <BasicButton
-              text="Create"
+              text={callOldData ? "Update" : "Create"}
               color="var(--color-primary)"
               handleOnClickButton={registerItem}
             />

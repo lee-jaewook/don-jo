@@ -2,8 +2,9 @@ import Web3 from "web3";
 import ApplicationHandler from "../../contracts/ApplicationHandler.json";
 import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
+import sendToastMessage from "../sendToastMessage";
 
-export const donation = () => {
+export const donation = (item) => {
   // 모바일 여부 확인
   if (!isMobile) {
     // 메타마스크 설치 여부 확인
@@ -20,18 +21,16 @@ export const donation = () => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            // const address = "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12";
-            const valueInWei = web3.utils.toWei("0.000003", "ether");
 
-            // const myWallet = web3.walletAddress;
+            const priceInMatic = parseFloat(item.price) * 10 ** 18;
+            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
+
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x02E7dA6f0b7010DafCA07F95635F78817372C80C" // contract 주소
+              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
             );
 
-            const tx = myContract.methods.callBasicDonation(
-              "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12"
-            );
+            const tx = myContract.methods.callBasicDonation(item.seller);
 
             window.ethereum
               .request({
@@ -39,26 +38,51 @@ export const donation = () => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x6c3ea1dD30BEb9B449272d393693A47727a5dF12",
+                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
                     value: valueInWei,
                     gas: "20000",
                     data: tx.encodeABI(),
                   },
                 ],
               })
-              .then((res) => {
-                console.log("transaction 성공");
-                console.log("res: ", res);
-                // const donationDto = {
-                //   amountEth: 0,
-                //   fromAddress: myWallet,
-                //   sendMsg: "string",
-                //   supportType: "donation",
-                //   supportUid: 0,
-                //   toAddress: "string",
-                //   transactionHash: res,
-                // };
-                // saveDonation(donationDto);
+              .then((txHash) => {
+                const donationDto = {
+                  amountEth: item.price,
+                  fromAddress: accounts[0],
+                  sendMsg: item.sendMsg,
+                  supportType: "donation",
+                  supportTypeUid: "",
+                  toAddress: item.seller,
+                  transactionHash: txHash,
+                };
+                saveDonation(donationDto);
+                const receiptPromise = new Promise(function (resolve, reject) {
+                  const intervalId = setInterval(function () {
+                    web3.eth.getTransactionReceipt(txHash).then((receipt) => {
+                      if (receipt !== undefined && receipt !== null) {
+                        clearInterval(intervalId);
+                        resolve({ receipt, txHash });
+                      }
+                    });
+                  }, 1000);
+                });
+                return receiptPromise;
+              })
+              .then(({ receipt, txHash }) => {
+                const logs = receipt.logs.filter(
+                  (log) =>
+                    log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
+                );
+                if (logs.length > 0) {
+                  const log = logs[0];
+                  const id = web3.eth.abi.decodeParameters(
+                    ["uint64"],
+                    log.topics[1]
+                  )[0];
+                  updateDondationInfo(id, txHash);
+                } else {
+                  sendToastMessage("Failed to register support record.");
+                }
               })
               .catch((err) => console.log(err));
           });
@@ -84,5 +108,16 @@ const saveDonation = async (donationDto) => {
     })
     .catch((error) => {
       console.log("저장 실패");
+    });
+};
+
+const updateDondationInfo = async (supportUid, transactionHash) => {
+  supportApi
+    .updateSponsorshipArrived(supportUid, transactionHash)
+    .then((res) => {
+      console.log("update 성공!");
+    })
+    .catch((error) => {
+      console.log("update 실패!");
     });
 };

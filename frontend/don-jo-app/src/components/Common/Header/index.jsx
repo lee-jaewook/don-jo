@@ -3,39 +3,33 @@ import ProfileImg from "../ProfileImg";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import { logIn } from "../../../utils/logIn";
-import { useDispatch, useSelector } from "react-redux";
-import SignUp from "../../SignUp";
+import { useSelector } from "react-redux";
 import LogoImg from "../../../assets/img/common/app-logo.svg";
 import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
-import PasswordSetModal from "../Modal/PasswordSetModal";
+import SelectBox from "./SelectBox";
+import WalletConnectLogin from "../WalletConnectLogin";
 
 const Header = () => {
-  const dispatch = useDispatch();
   const pageName = useSelector((state) => state.member.pageName);
   const profileImagePath = useSelector(
     (state) => state.member.profileImagePath
   );
 
   const isLogin = useSelector((state) => state.member.isLogIn);
-
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
-  const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
   const [isLocalSrc, setIsLocalSrc] = useState(false);
-  const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    nickName: "",
-    pageName: "",
-  });
-  const [password, setPassword] = useState("");
+  const [isIntroPage, setIsIntroPage] = useState(false);
 
   useEffect(() => {
     setProfileImgSrc(profileImagePath);
   }, [profileImagePath]);
 
   useEffect(() => {
+    if (location.pathname === "/") setIsIntroPage(true);
+    else setIsIntroPage(false);
+
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
       setIsLocalSrc(true);
@@ -47,20 +41,16 @@ const Header = () => {
     }
   }, [location.pathname]);
 
-  const handleSignUpModalOpen = () => {
-    setIsShowSignUpModal((prev) => !prev);
-  };
-
-  const SubmitLogIn = () => {
-    logIn({ dispatch, handleModalOpen: handleSignUpModalOpen });
-  };
-
-  const doSignUp = () => {
-    //회원가입하는 함수
-  };
+  /**
+   * handleMetamaskLogInClick - 메타마스크 LogIn 함수
+   * 설명:
+   * Start 버튼 클릭에 대한 이벤트 함수.
+   * 회원일 경우, 로그인 처리
+   * 비회원일 경우, 회원가입 모달 띄우기
+   */
 
   return (
-    <S.HeaderContainer>
+    <S.HeaderContainer isIntroPage={isIntroPage}>
       <S.Header>
         <Link to="/">
           <S.Logo src={LogoImg} />
@@ -82,25 +72,20 @@ const Header = () => {
               isLocalSrc={isLocalSrc}
             />
           ) : (
-            <S.Startbtn onClick={SubmitLogIn}>Start</S.Startbtn>
+            <div style={{ display: "flex" }}>
+              {/* <SelectBox
+                metamaskLogin={handleMetamaskLogInClick}
+                walletConnectLogin={() => {
+                  console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+                }}
+              >
+                Start
+              </SelectBox> */}
+              <WalletConnectLogin />
+            </div>
           )}
         </S.ProfileImgContainer>
       </S.Header>
-      {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
-      {isShowSignUpModal && (
-        <SignUp
-          isModelOpen={setIsShowSignUpModal}
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-        />
-      )}
-      {isShowPasswordSetModal && (
-        <PasswordSetModal
-          handleSetShowModal={setIsShowPasswordSetModal}
-          setPassword={setPassword}
-          doSignUp={doSignUp}
-        />
-      )}
     </S.HeaderContainer>
   );
 };

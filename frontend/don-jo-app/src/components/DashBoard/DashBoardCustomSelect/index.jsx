@@ -13,16 +13,8 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element}
  */
 
-const datum = [
-  { name: "NotoSansKR" },
-  { name: "Black Han Sans" },
-  { name: "SunFlower" },
-  { name: "DoHyeon" },
-  { name: "Jua" },
-];
-
 const CustomSelect = ({
-  data = datum,
+  data,
   fontStyle,
   selectValue,
   isBefore,
@@ -41,9 +33,14 @@ const CustomSelect = ({
     >
       <S.Label fontStyle={fontStyle}>{selectValue}</S.Label>
       <S.SelectOptions show={isDropdown}>
-        {data.map((datum, index) => (
-          <S.Option key={index} value={datum.name} onClick={handleOptionChange}>
-            {datum.name}
+        {data.map((item) => (
+          <S.Option
+            key={item.id}
+            id={item.id}
+            value={item.title}
+            onClick={handleOptionChange}
+          >
+            {item.title}
           </S.Option>
         ))}
       </S.SelectOptions>
@@ -60,7 +57,5 @@ CustomSelect.propTypes = {
 };
 
 CustomSelect.defaultProps = {
-  data: datum,
   isBefore: true,
-  fontStyle: "RobotoRegular",
 };

@@ -1,6 +1,5 @@
 package com.donjo.backend.api.dto.support.response;
 
-import com.donjo.backend.db.entity.Member;
 import com.donjo.backend.db.entity.Support;
 import com.donjo.backend.solidity.support.SupportSol;
 import lombok.Builder;
@@ -9,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -21,9 +19,9 @@ public class FindSupportDetailPayload {
     // 서포트 트랜잭션해쉬
     private String transactionHash;
     // 서포트 보내는 사람
-    private fromMember from;
+    private MemberItem fromMember;
     // 서포트 받는 사람
-    private toMember to;
+    private MemberItem toMember;
     // 서포트 타입
     private String supportType; //  Donation : 0, Item : 1, Wishlist : 2
     // 서포트타입 Uid
@@ -36,73 +34,23 @@ public class FindSupportDetailPayload {
     private LocalDateTime arriveTimeStamp ;
     // 보내는 메세지
     private String sendMsg;
+    // 댓글
+    private String replyMsg;
 
-//    private Long supportStatus;
-
-    @Getter
-    @Setter
-    @ToString
-    public static class fromMember {
-        private String fromMemberAddress;
-
-        private String fromMemberPageName;
-
-        private String fromMemberProfileImagePath;
-
-        private String fromMemberNickname;
-
-    }
-    @Getter
-    @Setter
-    @ToString
-    public static class toMember {
-        private String toMemberAddress;
-
-        private String toMemberNickname;
-
-        private String toMemberProfileImagePath;
-
-    }
-
-    public static FindSupportDetailPayload.fromMember getFromMember(Member member){
-        FindSupportDetailPayload.fromMember newFromMember = new FindSupportDetailPayload.fromMember();
-        newFromMember.setFromMemberAddress(member.getAddress());
-        newFromMember.setFromMemberPageName(member.getPageName());
-        newFromMember.setFromMemberProfileImagePath(member.getProfileImagePath());
-        newFromMember.setFromMemberNickname(member.getNickname());
-        return newFromMember;
-    }
-    public static FindSupportDetailPayload.toMember getToMember(Member member){
-        FindSupportDetailPayload.toMember newToMember = new FindSupportDetailPayload.toMember();
-        newToMember.setToMemberAddress(member.getAddress());
-        newToMember.setToMemberNickname(member.getNickname());
-        newToMember.setToMemberProfileImagePath(member.getProfileImagePath());
-        return newToMember;
-    }
-
-    public static FindSupportDetailPayload fromSupport(Support support,fromMember fromMember, toMember toMember){
+    // 입력 받아 Dto에 저장
+    public static FindSupportDetailPayload fromSupport(Support support, MemberItem fromMember, MemberItem toMember){
         FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
                 .supportUid(support.getSupportUid())
                 .transactionHash(support.getTransactionHash())
                 .supportType(support.getSupportType())
-                .to(toMember)
-                .from(fromMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .toMember(toMember)
+                .fromMember(fromMember)
+                .amount(support.getAmount())
                 .sendTimeStamp(support.getSendTimeStamp())
+                .supportTypeUid(support.getSupportTypeUid())
                 .sendMsg(support.getSendMsg())
-                .build();
-        return findSupportDetailPayload;
-    }
-
-    public static FindSupportDetailPayload fromSomeoneSupport(Support support,toMember toMember){
-        FindSupportDetailPayload findSupportDetailPayload = FindSupportDetailPayload.builder()
-                .supportUid(support.getSupportUid())
-                .transactionHash(support.getTransactionHash())
-                .supportType(support.getSupportType())
-                .to(toMember)
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
-                .sendTimeStamp(support.getSendTimeStamp())
-                .sendMsg(support.getSendMsg())
+                .arriveTimeStamp(support.getArriveTimeStamp())
+                .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportDetailPayload;
     }

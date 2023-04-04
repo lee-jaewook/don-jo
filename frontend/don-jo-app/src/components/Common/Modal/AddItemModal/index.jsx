@@ -13,7 +13,8 @@ import { fileSizeValidator } from "../../../../utils/validation/validator";
 import { checkItemValidation } from "../../../../utils/validation/checkItemValidation";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
+import sendToastMessage from "../../../../utils/sendToastMessage";
+import "react-toastify/dist/ReactToastify.css";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -28,12 +29,11 @@ const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const AddItemModal = ({
   handleSetShowModal,
-  whichApiChoose,
   imageTitle,
   isModify,
+  handleSetLoading,
 }) => {
   const currentItem = useSelector((state) => state.items.currentItem);
-
   // 아이템 프로필 설정
   const [itemFile, setItemNamFile] = useState({
     previewImgUrl: "",
@@ -65,7 +65,6 @@ const AddItemModal = ({
 
   const setFileChange = async (id, previewImgUrl = "", file = {}) => {
     if (id === "featured-image") {
-      console.log(id, previewImgUrl, file);
       setItemImageFile({ previewImgUrl: previewImgUrl, file: file });
       setItemInfo({ ...itemInfo, imgPath: "" });
     } else if (id === "file-upload") {
@@ -105,24 +104,24 @@ const AddItemModal = ({
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("Upload failed: Contact your administrator.", "error");
     }
   };
 
   const handleUploadItem = async () => {
     if (itemFile.previewImgUrl === "" && filePath === "") {
-      alert("파일 업로드 가이드 제공");
+      sendToastMessage("🚫 Please register the file");
       return;
     }
 
     if (itemImageFile.previewImgUrl === "" && imgPath === "") {
-      alert("이미지 업로드 가이드 제공");
+      sendToastMessage("🚫 Please register the image");
       return;
     }
 
     // 필수 입력 확인
     if (!message) {
-      alert("안내처리 - 메세지 예정");
+      sendToastMessage("🚫 Please enter a message");
       return;
     }
 
@@ -150,25 +149,33 @@ const AddItemModal = ({
       itemData = { ...itemData, filePath: createdItemFilePath };
     }
 
+    handleSetLoading(true);
+
     // API 호출
     if (isModify) {
-      itemData = { ...itemData, uid: currentItem.id };
+      itemData = { ...itemData, id: currentItem.id };
       try {
         const { status } = await itemApi.updateItem(itemData);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
+          sendToastMessage("✨ Updated successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        handleSetLoading(false);
       }
     } else {
       try {
         const { status } = await itemApi.registerItem(itemData);
         if (status === 200) {
-          handleSetShowModal(true);
+          handleSetShowModal();
+          sendToastMessage("✨ Saved successfully.");
         }
       } catch (error) {
-        console.log("error: ", error);
+        sendToastMessage("Save failed: Contact your administrator.", "error");
+      } finally {
+        handleSetLoading(false);
       }
     }
   };
@@ -176,7 +183,7 @@ const AddItemModal = ({
   useEffect(() => {
     if (isModify) {
       setItemInfo({
-        uid: currentItem.id,
+        id: currentItem.id,
         title: currentItem.title,
         price: currentItem.price,
         description: currentItem.description,
@@ -219,7 +226,7 @@ const AddItemModal = ({
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
-            <S.UnitWrap>eth</S.UnitWrap>
+            <S.UnitWrap>MATIC</S.UnitWrap>
           </S.SeparationContainer>
         </S.ContentWrap>
 
@@ -320,7 +327,7 @@ const AddItemModal = ({
         <S.BasicButtonWrap>
           <S.BasicButtonContainer>
             <BasicButton
-              text="Create"
+              text={isModify ? "Update" : "Create"}
               color="var(--color-primary)"
               handleOnClickButton={handleUploadItem}
             />

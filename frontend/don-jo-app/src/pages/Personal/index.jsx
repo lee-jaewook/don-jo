@@ -13,18 +13,29 @@ import { fileApi } from "../../api/file";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
 import { setProfileImg } from "../../stores/member";
+import { colorSet } from "../../data/dashboard";
+import { useAccount } from "wagmi";
+
+const PROFILE_TYPE = "img/profile";
+const BACKGROUND_TYPE = "img/background";
 
 const Personal = () => {
-  const { pageName } = useParams();
+  //현재 월렛커넥트와 연결되어있는 지갑 주소
+  const { address, isConnected } = useAccount();
+  const { pageName, itemId } = useParams();
   const navigate = useNavigate();
 
-  const [isBackgroundHover, setIsBackgroundHover] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [wishListData, setWishListData] = useState([]);
   const [isProfileHover, setIsProfileHover] = useState(false);
+  const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
-  const loginUserAddress = useSelector((state) => state.member.walletAddress);
+  const loginUserAddress = useSelector(
+    (state) => state.member.walletAddress
+  ).toLowerCase();
 
   const [donationSettingData, setDonationSettingData] = useState({
     donationEmoji: "",
@@ -32,10 +43,6 @@ const Personal = () => {
     pricePerDonation: 0,
     thankMsg: "",
   });
-
-  const [wishListData, setWishListData] = useState([]);
-
-  const [isOwner, setIsOwner] = useState(false);
 
   const getPageInfo = async () => {
     try {
@@ -49,7 +56,7 @@ const Personal = () => {
         setWishListData(data.wishList);
       }
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Personal Page] getPageInfo()... ", error);
     }
   };
 
@@ -58,30 +65,25 @@ const Personal = () => {
     setIsOwner(
       memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
     );
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--color-primary",
+      colorSet[memberInfoItemData.themeColor]
+    );
   }, [memberInfoItemData]);
 
   useEffect(() => {
     getPageInfo();
   }, []);
 
-  //로그인 유저의 지갑주소 정보
-  const loginUserMemberAddress = useSelector(
-    (state) => state.web3.walletAddress
-  );
-
-  const PROFILE_TYPE = "img/profile";
-  const BACKGROUND_TYPE = "img/background";
-
   const profileRef = useRef(null);
   const backgroundImgRef = useRef(null);
 
   // 변경 div 클릭 시 해당 input 작동
   const handleBgImgUpload = () => {
-    console.log("배사 변경");
     backgroundImgRef.current.click();
   };
   const handleProfileImgUpload = () => {
-    console.log("프사 변경");
     profileRef.current.click();
   };
 
@@ -106,12 +108,11 @@ const Personal = () => {
 
     try {
       const { data } = await fileApi.uploadFile(formData, PROFILE_TYPE);
-      console.log("받아온 이미지 파일 경로: ", data);
       await memberApi.updateUserProfile(data);
       dispatch(setProfileImg({ profileImagePath: data }));
       getPageInfo();
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Personal Page] uploadProfileImg()...  ", error);
     }
   };
 
@@ -198,6 +199,7 @@ const Personal = () => {
           donationSettingData={donationSettingData}
           wishListData={wishListData}
           isOwner={isOwner}
+          itemId={itemId}
         />
       </S.ContentsContainer>
 

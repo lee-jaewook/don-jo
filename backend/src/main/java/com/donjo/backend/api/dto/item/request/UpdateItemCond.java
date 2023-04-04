@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class UpdateItemCond {
     // 아이템 Uid
     @NotNull
-    private Long uid;
+    private Long id;
     // 아이템 제목
     @NotNull
     @Size(min = 2)
@@ -38,13 +38,13 @@ public class UpdateItemCond {
     // ItemSol 객체 생성
     public ItemSol from(String address, ItemDetailPayload item){
         return ItemSol.builder()
-                .id(this.getUid())
+                .id(this.getId())
                 .title(this.getTitle())
                 .imgPath(this.getImgPath())
                 .description(this.getDescription())
-                .price((long) (this.getPrice()*Math.pow(10, 18)))
+                .price(this.getPrice())
                 .salesCount(item.getSalesCount())
-                .salesAmount((long)(item.getSalesAmount() * Math.pow(10,18)))
+                .salesAmount(item.getSalesAmount())
                 .message(this.getMessage())
                 .filePath(this.getFilePath())
                 .isDeleted(false)

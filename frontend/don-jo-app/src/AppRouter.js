@@ -6,14 +6,22 @@ import {
 } from "react-router-dom";
 import React, { useEffect, Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Header from "./components/Common/Header";
 import { handleWalletChange } from "./utils/handleWalletChange";
 import { isMobile } from "react-device-detect";
 
+const Header = lazy(() => import("./components/Common/Header"));
+const Footer = lazy(() => import("./components/Common/Footer"));
 const Intro = lazy(() => import("./pages/Intro"));
 const Personal = lazy(() => import("./pages/Personal"));
 const DashBoard = lazy(() => import("./pages/DashBoard"));
 const Error = lazy(() => import("./pages/Error"));
+
+const PrivateRoutes = ({ isLogin, component }) => {
+  if (!isLogin) {
+    return <Navigate to="/" replace />;
+  }
+  return component;
+};
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -26,24 +34,7 @@ const AppRouter = () => {
     }
   }, []);
 
-  // 로그인 여부 체크
   const isLogin = useSelector((state) => state.member.isLogIn);
-
-  if (!isLogin) {
-    return (
-      <Router>
-        <Suspense fallback={null}>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Intro />} />
-            <Route path="/dashboard" element={<Error />} />
-            <Route path="/:pageName" element={<Personal />} />
-            <Route path="*" element={<Error />} />
-          </Routes>
-        </Suspense>
-      </Router>
-    );
-  }
 
   return (
     <Router>
@@ -51,14 +42,26 @@ const AppRouter = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Intro />} />
+          <Route path="/:pageName" element={<Personal />} />
+          <Route path="/:pageName/items/:itemId" element={<Personal />} />
           <Route
             path="/dashboard"
-            element={<Navigate replace to="/dashboard/home" />}
+            element={
+              <PrivateRoutes
+                isLogin={isLogin}
+                component={<Navigate replace to="/dashboard/home" />}
+              />
+            }
           />
-          <Route path="/dashboard/:category" element={<DashBoard />} />
-          <Route path="/:pageName" element={<Personal />} />
+          <Route
+            path="/dashboard/:category"
+            element={
+              <PrivateRoutes isLogin={isLogin} component={<DashBoard />} />
+            }
+          />
           <Route path="*" element={<Error />} />
         </Routes>
+        <Footer />
       </Suspense>
     </Router>
   );

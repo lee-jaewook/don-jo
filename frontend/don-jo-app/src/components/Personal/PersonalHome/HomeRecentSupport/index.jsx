@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { supportApi } from "../../../../api/support";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { PulseLoader } from "react-spinners";
 
 const HomeRecentSupport = ({ isOwner }) => {
   const [pageNum, setPageNum] = useState(0);
@@ -12,25 +13,34 @@ const HomeRecentSupport = ({ isOwner }) => {
   const TYPE = "all";
   const [supportList, setSupportList] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
 
-  const getSupportList = async () => {
+  const getSupportList = async (init) => {
+    setIsLoading(true);
+    console.log("pageNum", pageNum);
     try {
       const { data } = await supportApi.getSupportList(
         pageMemberAddress,
-        pageNum,
+        init ? 0 : pageNum,
         PAGE_SIZE,
         TYPE
       );
-      setPageNum((prev) => prev + 1);
+      setPageNum(init ? 0 : pageNum + 1);
       setHasMore(data.hasMore);
-      setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+      if (init) {
+        setSupportList(data.supportList || []);
+      } else {
+        setSupportList((prev) => [...prev, ...(data.supportList || [])]);
+      }
     } catch (error) {
       console.log("error: ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,6 +53,44 @@ const HomeRecentSupport = ({ isOwner }) => {
     getSupportList();
   };
 
+  const Contents = () => {
+    return (
+      <>
+        {supportList.length !== 0 ? (
+          <S.Card>
+            {supportList.map((supportContent, i) => {
+              return (
+                <RecentSupportBlock
+                  key={i}
+                  supportContent={supportContent}
+                  isOwner={isOwner}
+                  supportListLength={supportList.length}
+                  num={i}
+                />
+              );
+            })}
+
+            {hasMore && (
+              <ShowMoreButton
+                handleOnClickButton={handleOnClickShowMoreButton}
+              />
+            )}
+          </S.Card>
+        ) : (
+          <S.Nothing>There's no Recent Support 😥</S.Nothing>
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.Nothing>
+        <PulseLoader color="var(--color-primary)" />
+      </S.Nothing>
+    );
+  };
+
   return (
     <S.Container>
       <S.TitleContainer>
@@ -53,25 +101,7 @@ const HomeRecentSupport = ({ isOwner }) => {
           <S.Type>📁 Items</S.Type>
         </S.Typecontainer>
       </S.TitleContainer>
-      {supportList.length !== 0 ? (
-        <S.Card>
-          {supportList.map((supportContent, i) => {
-            return (
-              <RecentSupportBlock
-                key={i}
-                supportContent={supportContent}
-                isOwner={isOwner}
-              />
-            );
-          })}
-
-          {hasMore && (
-            <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
-          )}
-        </S.Card>
-      ) : (
-        <S.Nothing>There's no Recent Support 😥</S.Nothing>
-      )}
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };

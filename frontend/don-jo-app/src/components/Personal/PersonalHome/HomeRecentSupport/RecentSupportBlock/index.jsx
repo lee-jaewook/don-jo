@@ -5,7 +5,12 @@ import PropTypes from "prop-types";
 import ContractModal from "../../../../Common/Modal/ContractModal";
 import { supportApi } from "../../../../../api/support";
 
-const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
+const RecentSupportBlock = ({
+  supportContent: initContent,
+  isOwner,
+  num,
+  supportListLength,
+}) => {
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
   const [isShowReplyInput, setIsShowReplyInput] = useState(false);
@@ -42,8 +47,11 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
   };
 
   //해당 후원 block 다시 가져오기
-  const refreshRecentBlock = () => {
-    //UID 붙어서 나오게되면 후원상세조회 다시 해서 setSupportContent 하기.
+  const refreshRecentBlock = async () => {
+    const { data } = await supportApi.getSupportDetail(
+      supportContent.transactionHash
+    );
+    setSupportContent(data);
   };
 
   //댓글 등록
@@ -81,6 +89,7 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
     if (window.confirm("Are you sure you want to delete the comments?")) {
       try {
         await supportApi.deleteReply(supportContent.transactionHash);
+        refreshRecentBlock();
         window.alert("Done deleting comments");
       } catch (error) {
         console.log("error: ", error);
@@ -105,21 +114,19 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
           >
             <ProfileImg
               width={3}
-              src={supportContent.fromMember.fromMemberProfileImagePath}
-              to={`/${supportContent.fromMember.fromMemberPageName}`}
+              src={supportContent.fromMember.memberProfileImagePath}
+              to={`/${supportContent.fromMember.memberPageName}`}
             />
           </S.ProfileImgContainer>
           <S.TitleWrapper>
             <S.TitleContent>
               <S.Nickname>
-                {supportContent.fromMember.fromMemberNickname}
+                {supportContent.fromMember.memberNickname}
               </S.Nickname>
               &nbsp;
               {supportText}
               &nbsp;
-              <S.Nickname>
-                {supportContent.toAddress.toMemberNickname}
-              </S.Nickname>
+              <S.Nickname>{supportContent.toMember.memberNickname}</S.Nickname>
             </S.TitleContent>
             {isOwner && !supportContent.replyMsg && (
               <S.ReplyBtn
@@ -149,14 +156,12 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
-              src={supportContent.fromMember.fromMemberProfileImagePath}
-              to={`/${supportContent.fromMember.fromMemberPageName}`}
+              src={supportContent.fromMember.memberProfileImagePath}
+              to={`/${supportContent.fromMember.memberPageName}`}
             />
           </S.ProfileImgContainer>
           <div>
-            <S.Nickname>
-              {supportContent.fromMember.fromMemberNickname}
-            </S.Nickname>
+            <S.Nickname>{supportContent.fromMember.memberNickname}</S.Nickname>
             <S.Comment>{supportContent.sendMsg}</S.Comment>
             <S.SupportMsgText>Support message</S.SupportMsgText>
           </div>
@@ -168,11 +173,11 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
           <S.ProfileImgContainer>
             <ProfileImg
               width={3}
-              src={supportContent.toAddress.toMemberProfileImagePath}
+              src={supportContent.toMember.memberProfileImagePath}
             />
           </S.ProfileImgContainer>
           <div>
-            <S.Nickname>{supportContent.toAddress.toMemberNickname}</S.Nickname>
+            <S.Nickname>{supportContent.toMember.memberNickname}</S.Nickname>
             <S.Comment>{supportContent.replyMsg}</S.Comment>
 
             {isOwner && supportContent.replyMsg && (
@@ -201,11 +206,12 @@ const RecentSupportBlock = ({ supportContent: initContent, isOwner }) => {
           </div>
         </S.CommentContainer>
       )}
-      <S.Line />
+      {num !== supportListLength - 1 && <S.Line />}
+
       {isShowContractModal && (
         <ContractModal
           handleSetShowModal={setIsShowContractModal}
-          supportContent={supportContent}
+          transactionHash={supportContent.transactionHash}
         />
       )}
     </div>
@@ -219,15 +225,15 @@ RecentSupportBlock.propTypes = {
     uid: PropTypes.number.isRequired,
     supportType: PropTypes.string.isRequired,
     fromMember: PropTypes.shape({
-      fromMemberAddress: PropTypes.string.isRequired,
-      fromMemberNickname: PropTypes.string.isRequired,
-      fromMemberPageName: PropTypes.string.isRequired,
-      fromMemberProfileImagePath: PropTypes.string,
+      memberAddress: PropTypes.string.isRequired,
+      memberNickname: PropTypes.string.isRequired,
+      memberPageName: PropTypes.string.isRequired,
+      memberProfileImagePath: PropTypes.string,
     }).isRequired,
-    toAddress: PropTypes.shape({
-      toMemberAddress: PropTypes.string.isRequired,
-      toMemberNickname: PropTypes.string.isRequired,
-      toMemberProfileImagePath: PropTypes.string,
+    toMember: PropTypes.shape({
+      memberAddress: PropTypes.string.isRequired,
+      memberNickname: PropTypes.string.isRequired,
+      memberProfileImagePath: PropTypes.string,
     }),
     sendMsg: PropTypes.string,
   }).isRequired,

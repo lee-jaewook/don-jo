@@ -7,6 +7,7 @@ import "./WishlistDonation.sol";
 contract ApplicationHandler is ItemDonation, WishlistDonation {
   address payable public owner;
 
+  event SupportIdEvent(uint64 indexed id);
   constructor(){
     owner = payable(msg.sender);
   }
@@ -14,15 +15,21 @@ contract ApplicationHandler is ItemDonation, WishlistDonation {
   // ================= Frontend Call =================
   // 기본 도네이션 실행
   function callBasicDonation(address payable _to) external payable returns(uint64) {
-    return _transfer(_to, msg.value, SupportType.Donation, owner);
+    uint64 id = _transfer(_to, msg.value, SupportType.Donation, owner);
+    emit SupportIdEvent(id);
+    return id;
   }
   // 아이템 구매
   function buyItemDonation(address payable _to, uint64 _itemId) external payable returns(uint64) {
-    return _buyItem(_to, _itemId, msg.value, owner);
+    uint64 id = _buyItem(_to, _itemId, msg.value, owner);
+    emit SupportIdEvent(id);
+    return id;
   }
   // 위시 리스트 구매
   function buyWishlistDonation(address payable _to, uint64 _wishlistId) external payable returns(uint64) {
-    return _buyWishlist(_to, _wishlistId, msg.value, owner);
+    uint64 id = _buyWishlist(_to, _wishlistId, msg.value, owner);
+    emit SupportIdEvent(id);
+    return id;
   }
 
   // ================= Backend Call =================
@@ -87,7 +94,7 @@ contract ApplicationHandler is ItemDonation, WishlistDonation {
   }
 
   // 후원 요청 시간 조회
-  function getSupportSendTime(address _address, uint64 _id) external view returns(uint256){
-    return _getSupportDetail(_address, _id).sendTimestamp;
+  function getSupportArriveTime(address _address, uint64 _id) external view returns(uint256){
+    return _getSupportDetail(_address, _id).arriveTime;
   }
 }

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   connected: false,
   isLogIn: false,
+  isMember: false,
   pageName: "",
   nickName: "",
   themeColor: 0,
@@ -14,6 +15,9 @@ export const memberSlice = createSlice({
   name: "member",
   initialState,
   reducers: {
+    setWallet(state, action) {
+      state.walletAddress = action.payload.walletAddress;
+    },
     setLogIn(state, action) {
       state.isLogIn = true;
       state.pageName = action.payload.pageName;
@@ -31,13 +35,29 @@ export const memberSlice = createSlice({
       state.profileImagePath = "";
       state.walletAddress = "";
     },
+    setIsMember(state, action) {
+      console.log(action)
+      state.isMember = action.payload
+    },
     setProfileImg(state, action) {
       state.profileImagePath = action.payload.profileImagePath;
+    },
+
+    setThemeColor(state, action) {
+      state.themeColor = action.payload.themeColor;
     },
   },
 });
 
-export const { setLogIn, setLogOut, setLoading, setConnected, setProfileImg } =
-  memberSlice.actions;
+export const {
+  setWallet,
+  setLogIn,
+  setLogOut,
+  setIsMember,
+  setLoading,
+  setConnected,
+  setProfileImg,
+  setThemeColor,
+} = memberSlice.actions;
 
 export default memberSlice.reducer;

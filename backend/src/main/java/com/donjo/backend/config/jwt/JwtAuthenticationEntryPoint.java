@@ -15,6 +15,7 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+   // 이 메소드는 인증되지 않은 사용자가 보호된 리소스에 접근하려고 할 때 호출
    @Override
    public void commence(HttpServletRequest request,
                         HttpServletResponse response,

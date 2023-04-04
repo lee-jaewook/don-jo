@@ -1,185 +1,226 @@
 import styled from "styled-components";
-import BackgroundImg from "../../assets/img/intro/bg-intro.jpg";
-import { FiArrowRight } from "@react-icons/all-files/fi/FiArrowRight.js";
-
+import { FiArrowRight } from "@react-icons/all-files/fi/FiArrowRight";
 export const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
-  flex-direction: column;
-  overflow: hidden;
-  background-color: #f7f7f7;
-  @media (max-width: 798px) {
-    padding: 1.25rem 1.25rem 0rem 1.25rem;
-  }
-  @media (min-width: 799px) and (max-width: 1280px) {
-    padding: 4.25rem 1.25rem 0rem 1.25rem;
-  }
-`;
-
-export const DonJoTitle = styled.h1`
-  font-family: "RedHatDisplayBold";
-  font-size: 12.5vw;
-  line-height: 14.375rem;
-  text-align: center;
-  /* padding: 4.5rem 2.5rem 0rem 2.5rem; */
-  padding-top: 4.5vh;
-  @media (min-width: 799px) and (max-width: 1280px) {
-    font-size: 11.8vw;
-    line-height: 3.625rem;
-    padding-top: 2vh;
-  }
-  @media (max-width: 798px) {
-    font-size: 11.5vw;
-    line-height: 3.625rem;
-    padding-top: 2vh;
-  }
-`;
-
-export const CurrentEthInfoWrapper = styled.div`
-  display: flex;
-  width: 200vw;
-  height: 6.5625rem;
-  background-color: transparent;
-  margin: 0 2.5rem;
-  /* @media (max-width: 768px) {
-    height: 4rem;
-  } */
-`;
-
-export const CurrentEthInfoItem = styled.div`
-  width: 100%;
-  display: flex;
   align-items: center;
-  margin: 2rem 0.25rem 2.25rem 0.25rem;
+  flex-direction: column;
+  background-color: #f7f7f7;
+  padding: 2rem 2.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1.25rem;
+  }
+`;
+
+export const DonJoTitle = styled.div`
+  display: flex;
+  width: 100%;
   background-color: transparent;
-  @media (max-width: 768px) {
-    margin: 1rem 0.25rem 1.25rem 0.25rem;
-  }
-  @media (min-width: 799px) and (max-width: 1280px) {
-    margin: 2rem 0.25rem 1.25rem 0.25rem;
-  }
-`;
-
-export const StandardDate = styled.label`
-  font-family: "RedHatDisplayRegular";
-  font-size: 2.25rem;
-  line-height: 3rem;
-  color: black;
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.3125rem;
-    padding: 0rem;
-  }
-`;
-
-export const Indicator = styled.hr`
-  width: 3.75rem;
-  height: 0.125rem;
-  background-color: var(--color-text);
-  margin: 0 0.75rem;
-  border: none;
-  @media (max-width: 768px) {
-    margin: 0 0.75rem;
-    width: 2.25rem;
-  }
-`;
-
-export const EthValue = styled.label`
-  font-family: "RedHatDisplayMedium";
-  font-size: 2.25rem;
-  line-height: 3rem;
-  color: black;
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.3125rem;
-    padding: 0rem;
-  }
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Background = styled.div`
   position: relative;
-  width: calc(100% - 5rem);
-  min-height: 37.5rem;
-  height: 100%;
-  margin: 0 2.5rem;
-  background-image: url(${BackgroundImg});
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 1.25rem;
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 0rem;
-    min-height: 35rem;
-  }
-`;
-
-export const BackgroundBlur = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: 37.5rem;
-  background: rgba(221, 221, 221, 0.2);
-  backdrop-filter: blur(0.3125rem);
+  height: 38.125rem;
+  margin-top: 2rem;
   border-radius: 1.25rem;
-  padding: 0 2.5rem;
-  @media (max-width: 768px) {
+  background: #222222;
+  background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+
+  .circles {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .circles li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 20s linear infinite;
+    bottom: -150px;
+  }
+
+  .circles li:nth-child(1) {
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+  }
+
+  .circles li:nth-child(2) {
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+  }
+
+  .circles li:nth-child(3) {
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 4s;
+  }
+
+  .circles li:nth-child(4) {
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+  }
+
+  .circles li:nth-child(5) {
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+  }
+
+  .circles li:nth-child(6) {
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3s;
+  }
+
+  .circles li:nth-child(7) {
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+  }
+
+  .circles li:nth-child(8) {
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+  }
+
+  .circles li:nth-child(9) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+  }
+
+  .circles li:nth-child(10) {
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 11s;
+  }
+
+  @keyframes animate {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+      border-radius: 0;
+    }
+
+    100% {
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0;
+      border-radius: 50%;
+    }
   }
 `;
 
 export const InputWrapper = styled.div`
   position: absolute;
-  display: flex;
   top: 50%;
   left: 50%;
-  width: 100%;
-  max-width: 60rem;
-  height: 5rem;
-  transform: translate(-50%, -50%);
+  display: flex;
   align-items: center;
+  width: calc(100% - 2.5rem);
+  height: 4rem;
+  max-width: 60rem;
+  transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 3.125rem;
-  @media (max-width: 768px) {
-    max-width: 90%;
-    height: 2.5rem;
-  }
-`;
-
-export const InputLabel = styled.label`
-  width: 11.6875rem;
   font-family: "RobotoBold";
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 2.9375rem;
-  margin-left: 2.5rem;
-  @media (max-width: 768px) {
-    width: auto;
-    font-size: 1rem;
-    line-height: 1.3125rem;
-    margin-left: 1rem;
+  padding: 0 2.25rem;
+  @media (max-width: 769px) {
+    height: 2.5rem;
+    font-size: 0.875rem;
+    line-height: 2.5rem;
+    padding: 0 1rem;
+  }
+  @media (max-width: 382px) {
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.5rem;
   }
 `;
 
 export const Input = styled.input`
-  width: 65%;
   outline: none;
   border: none;
-  font-family: "RobotoRegular";
-  font-size: 2rem;
-  line-height: 2.9375rem;
-  @media (max-width: 768px) {
-    width: auto;
-    font-size: 1rem;
-    line-height: 1.3125rem;
+  background-color: transparent;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  flex: 1;
+  margin-left: 0.25rem;
+  font-family: "RobotoMedium";
+  @media (max-width: 769px) {
+    font-size: 0.875rem;
+    height: 100%;
+  }
+
+  @media (max-width: 382px) {
+    font-size: 0.625rem;
   }
 `;
 
-export const FiArrowRightIcon = styled(FiArrowRight)`
-  position: absolute;
-  right: 1.5625rem;
-  font-size: 3.75rem;
-  @media (max-width: 768px) {
-    font-size: 24px;
-    right: 1rem;
+export const ArrowIcon = styled(FiArrowRight)`
+  margin-left: 1rem;
+  @media (max-width: 769px) {
+    font-size: 1rem;
   }
+`;
+
+export const ContentTitle = styled.h1`
+  font-family: "RobotoBold";
+  font-size: 2.5rem;
+  line-height: 1.5rem;
+  margin-top: 5.875rem;
+  margin-bottom: 2rem;
+  @media (max-width: 769px) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const ContentDescription = styled.p`
+  font-family: "RobotoRegular";
+  font-size: 1.5rem;
+  @media (max-width: 769px) {
+    font-size: 0.875rem;
+    height: 100%;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 10rem);
+  background-color: transparent;
+  margin-top: 2rem;
+  border-radius: 1.25rem;
+  justify-content: center;
 `;

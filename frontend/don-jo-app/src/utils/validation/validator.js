@@ -15,8 +15,17 @@ export const imageSizeValidator = (file) => {
   return true;
 };
 
+export const pageNameValidator = (pageName) => {
+  const pageNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+  if (pageNameRegex.test(pageName)) {
+    return true;
+  }
+  return false;
+};
+
 export const nicknameValidator = (nickname) => {
-  const nicknameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+  const nicknameRegex =
+    /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/ㄱ-ㅎㅏ-ㅣ가-힣]{1,100}$/;
   if (nicknameRegex.test(nickname)) {
     return true;
   }
@@ -24,13 +33,13 @@ export const nicknameValidator = (nickname) => {
 };
 
 /**
- * 1. 영문 대소문자, 숫자, 공백, 특수문자 등을 포함하여
+ * 1. 영문 대소문자, 한글, 숫자, 공백, 특수문자 등을 포함하여
  *    최소 1자 이상, 최대 100자까지 입력 가능.
  */
 
 export const titleValidator = (title) => {
   const titleRegex =
-    /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/ㄱ-ㅎㅏ-ㅣ가-힣]{1,100}$/;
+    /^[\w\d\s~`!@#$%^&*()\-_+=\[\]{}\\|:;"'<>,.?/ㄱ-ㅎㅏ-ㅣ가-힣]{0,100}$/;
   if (titleRegex.test(title)) {
     return true;
   }
@@ -39,12 +48,12 @@ export const titleValidator = (title) => {
 
 /**
  *
- * 1. 소수점 아래 5자리까지
+ * 1. 소수점 아래 3자리까지
  * 2. 0으로 시작 가능
  */
 
 export const priceValidator = (price) => {
-  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,5})?$/;
+  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,9})?$/;
   if (priceRegex.test(price)) {
     return true;
   }

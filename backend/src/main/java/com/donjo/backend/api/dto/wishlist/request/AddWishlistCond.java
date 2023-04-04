@@ -22,7 +22,7 @@ public class AddWishlistCond {
     private String description;
     // 위시리스트 목표금액
     @NotNull
-    private Double targetAmount; // ETH
+    private Double targetAmount; // MATIC
     // 감사 메시지
     @NotNull
     private String message;
@@ -33,8 +33,8 @@ public class AddWishlistCond {
                 .title(title)
                 .imgPath(imgPath)
                 .description(description)
-                .collectedAmount(0L) // 1 Ether in wei
-                .targetAmount((long) (targetAmount * Math.pow(10, 18))) // 5 Ether in wei
+                .collectedAmount(0.0)
+                .targetAmount(targetAmount) // 5 Ether in wei
                 .message(message)
                 .isClosed(false)
                 .seller(memberAddress)

@@ -6,38 +6,71 @@ import WishlistDetailModal from "../../../../Common/Modal/WishlistDetailModal";
 import { wishlistAPI } from "../../../../../api/wishlist";
 import ShowMoreButton from "../../../../Common/ShowMoreButton";
 import AddWishlistModal from "../../../../Common/Modal/AddWishlistModal";
+import PropTypes from "prop-types";
 
-const DashboardWishlist = () => {
+const DashboardWishlist = ({ callApi, setCallApi }) => {
   const PAGE_SIZE = 6;
   const memberAddress = useSelector((state) => state.member.walletAddress);
   const [isShowWishlistModal, setShowWishlistModal] = useState(false);
   const [isShowWishListModifyModal, setIsShowWishListModifyModal] =
     useState(false);
-  const [result, setResult] = useState([]);
   const [uid, setUid] = useState(0);
   const [pageNum, setPageNum] = useState(0);
+  const [result, setResult] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
+  const [isClickedEdit, setClickedEdit] = useState(false);
 
   const handleOpenModal = (id) => {
     setShowWishlistModal(true);
     setUid(id);
   };
 
-  const handleGetWishlist = async () => {
+  const handleOnClickButton = () => {
+    setShowWishlistModal(false);
+    setIsShowWishListModifyModal((prev) => !prev);
+  };
+
+  const handleGetWishlist = async (type) => {
     try {
       const {
         data: { wishlists, hasMore },
-      } = await wishlistAPI.getWishList(memberAddress, pageNum, PAGE_SIZE);
+      } = await wishlistAPI.getWishList(
+        memberAddress,
+        type === "update" ? 0 : pageNum,
+        PAGE_SIZE
+      );
       console.log("data?", wishlists);
       setPageNum((prev) => prev + 1);
-      setResult((prev) => [...prev, ...(wishlists || [])]);
+      if (type === "update") {
+        console.log("update....");
+        setResult(wishlists);
+        setPageNum(1);
+      } else {
+        console.log("update 아님...");
+        setResult((prev) => [...prev, ...(wishlists || [])]);
+      }
       setIsEnd(hasMore);
-    } catch (error) {}
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  const handleUpdateModalOpen = () => {
+    setShowWishlistModal(false);
+    setIsShowWishListModifyModal(false);
+    handleGetWishlist("update");
   };
 
   useEffect(() => {
     handleGetWishlist();
   }, []);
+
+  useEffect(() => {
+    if (callApi) {
+      handleGetWishlist("update");
+      setCallApi(false);
+    }
+  }, [callApi]);
 
   return (
     <S.WishlistContainer isDashboard={true}>
@@ -66,21 +99,23 @@ const DashboardWishlist = () => {
         <WishlistDetailModal
           uid={uid}
           isDashboard={true}
-          setShowWishlistModal={setShowWishlistModal}
-          setIsShowWishListModifyModal={setIsShowWishListModifyModal}
+          handleSetShowModal={handleUpdateModalOpen}
+          handleOnClickButton={handleOnClickButton}
         />
       )}
-      {/* {
-        isShowWishListModifyModal && (
-          <AddWishlistModal
-          handleSetShowModal={}
+      {isShowWishListModifyModal && (
+        <AddWishlistModal
+          handleSetShowModal={handleUpdateModalOpen}
           callOldData={true}
           wishlistUid={uid}
-          />
-        )
-      } */}
+        />
+      )}
     </S.WishlistContainer>
   );
 };
 
 export default DashboardWishlist;
+
+DashboardWishlist.propTypes = {
+  callApi: PropTypes.bool,
+};

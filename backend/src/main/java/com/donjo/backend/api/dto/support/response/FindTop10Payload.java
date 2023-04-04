@@ -22,7 +22,7 @@ public class FindTop10Payload {
     // Entity DTO에 담기
     public static FindTop10Payload getTop10(Support support){
         FindTop10Payload findTop10Payload = FindTop10Payload.builder()
-                .amount((double) (support.getAmount()/ Math.pow(10, 18d)))
+                .amount(support.getAmount())
                 .supportType(support.getSupportType())
                 .arriveTimeStamp(support.getArriveTimeStamp())
                 .build();

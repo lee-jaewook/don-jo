@@ -4,10 +4,10 @@ import com.donjo.backend.api.dto.support.request.AddReplyCond;
 import com.donjo.backend.api.dto.support.request.AddSupportCond;
 import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
+import com.donjo.backend.api.dto.support.response.FindSupportListPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
 
 import java.util.List;
-import java.util.Map;
 
 public interface SupportService {
     // 수익금 조회
@@ -20,10 +20,10 @@ public interface SupportService {
     void createSupports(AddSupportCond addSupportCond);
 
     // 서포트 조회
-    Map<String, Object> getSupports(String memberAddress, String Type, int pageNum, int pageSize);
+    FindSupportListPayload getSupportList(String memberAddress, String Type, int pageNum, int pageSize);
 
     // 서포트 Detail 조회
-    FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid);
+    FindSupportDetailPayload getSupportDetail(String transactionHash);
 
     // 도네이션 정보 가져오기
     DonationSettingCond getDonationSetting(String memberAddress);
@@ -39,4 +39,7 @@ public interface SupportService {
 
     // 후원 댓글 삭제
     void deleteReply(String transactionHash);
+    
+    // 후원 도착 업데이트
+    void updateArrivedSupport(String transactionHash, Long supportUid);
 }
