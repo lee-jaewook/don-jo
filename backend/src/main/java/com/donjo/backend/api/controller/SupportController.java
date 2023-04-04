@@ -36,7 +36,7 @@ public class SupportController {
     private final MemberService memberService;
 
     @GetMapping(path="/api/auth/member/dashboard/earning")
-    @ApiOperation(value = "수익금 조회", notes = "example content")
+    @ApiOperation(value = "수익금 조회", notes = "수익금을 조건에 맞게 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -52,7 +52,7 @@ public class SupportController {
     }
 
     @PostMapping(path="/api/member/supports")
-    @ApiOperation(value = "후원내역 저장", notes = "example content")
+    @ApiOperation(value = "후원내역 저장", notes = "후원내역을 DB에 저장한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -83,7 +83,7 @@ public class SupportController {
     }
 
     @GetMapping(path="/api/member/dashboard/supports")
-    @ApiOperation(value = "서포트 조회", notes = "example content")
+    @ApiOperation(value = "서포트 리스트 조회", notes = "후원내역 리스트를 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(정보 없음)"),
@@ -97,8 +97,8 @@ public class SupportController {
         return ResponseEntity.status(200).body(supportService.getSupportList(memberAddress, type, pageNum,pageSize));
     }
 
-    @GetMapping(path="/api/member/supports")
-    @ApiOperation(value = "서포트 상세 조회", notes = "example content")
+    @GetMapping(path="/api/member/support")
+    @ApiOperation(value = "서포트 상세 조회", notes = "후원 상세내역을 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -106,11 +106,11 @@ public class SupportController {
             @ApiResponse(code = 500, message = "서버 오류")
 
     })
-    public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String toAddress, @RequestParam @NotNull Long supportUid) {
+    public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String transactionHash) {
         // Address와 supportUid로 SupportDetail을 조회합니다.
         try {
             logger.info("supportService.getSupportDetail 요청");
-            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(toAddress,supportUid);
+            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(transactionHash);
             return ResponseEntity.status(200).body(supportDetail);
         }
         catch (Exception e){
@@ -118,8 +118,8 @@ public class SupportController {
         }
     }
 
-    @GetMapping(path="/api/member/supporters/count")
-    @ApiOperation(value = "서포트 수 조회", notes = "example content")
+    @GetMapping(path="/api/auth/member/supports/count")
+    @ApiOperation(value = "서포트 수 조회", notes = "조건에 맞게 후원수를 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -135,7 +135,7 @@ public class SupportController {
     }
 
     @GetMapping(path="/api/auth/member/donation/setting")
-    @ApiOperation(value = "도네이션 설정 가져오기", notes = "example content")
+    @ApiOperation(value = "도네이션 설정 가져오기", notes = "개인 도네이션 설정을 가져온다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -151,7 +151,7 @@ public class SupportController {
     }
 
     @PutMapping(path="/api/auth/member/donation/setting")
-    @ApiOperation(value = "도네이션 수정하기", notes = "example content")
+    @ApiOperation(value = "도네이션 수정하기", notes = "개인 도네이션을 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -167,7 +167,7 @@ public class SupportController {
     }
 
     @GetMapping(path="/api/main/supports")
-    @ApiOperation(value = "최근 후원 내역 10개 가져오기(인트로페이지)", notes = "example content")
+    @ApiOperation(value = "최근 후원 내역 10개 가져오기(인트로페이지)", notes = "인트로페이지에 보여질 최근 후원 내역을 10개 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(조회 실패)"),
@@ -183,7 +183,7 @@ public class SupportController {
     }
 
     @PostMapping(path="/api/auth/support/reply")
-    @ApiOperation(value = "댓글 저장", notes = "example content")
+    @ApiOperation(value = "댓글 저장", notes = "후원에 댓글을 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(작성,수정 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(작성,수정 실패)"),
@@ -199,7 +199,7 @@ public class SupportController {
     }
 
     @PutMapping(path="/api/auth/support/reply")
-    @ApiOperation(value = "댓글 수정", notes = "example content")
+    @ApiOperation(value = "댓글 수정", notes = "후원에 작성한 댓글을 수정한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(작성,수정 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(작성,수정 실패)"),
@@ -216,7 +216,7 @@ public class SupportController {
 
 
     @DeleteMapping(path="/api/auth/support/reply")
-    @ApiOperation(value = "댓글 삭제", notes = "example content")
+    @ApiOperation(value = "댓글 삭제", notes = "후원에 작성했었던 댓글 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(삭제 실패)"),
