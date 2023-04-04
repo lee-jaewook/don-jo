@@ -38,7 +38,7 @@ const Header = () => {
       setIsLocalSrc(false);
       setProfileLinkTo("/dashboard/home");
     }
-  }, [location.pathname]);
+  }, [location.pathname, pageName]);
 
   return (
     <S.HeaderContainer isIntroPage={isIntroPage}>
