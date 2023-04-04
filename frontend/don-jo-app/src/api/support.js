@@ -36,7 +36,7 @@ export const supportApi = {
 
   // 서포트 상세 조회 API
   getSupportDetail: (transactionHash) =>
-    api.get(`/member/supports?transactionHash=${transactionHash}`),
+    api.get(`/member/support?transactionHash=${transactionHash}`),
 
   // 최근 후원 내역 10건 조회 API - intro page 전광판에서만 사용
   getSponsorshipList: () => api.get(`/main/supports`),
