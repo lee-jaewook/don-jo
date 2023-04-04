@@ -68,7 +68,7 @@ eth:
   address: '0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7'
   privateKey: '9c63b31a88c410c7d33265876407b31aea175c589ec82fff8d0bc4aa2baf150d'
   rpcUtil : 'https://polygon-mumbai.infura.io/v3/ac3a17c914fd47a29cb5ed54315f746a'
-  applicationAddress : '0x87F54beAa91600aF02284df366531904Dd3735D8'
+  applicationAddress : '0xb2FEf315bc74923F2970E9ca117ee9F1e9EBAB1b'
 
   # test
 #  applicationAddress : '0x0F053Be8C94F29324Bc6e1b2017a214C504d5F84'

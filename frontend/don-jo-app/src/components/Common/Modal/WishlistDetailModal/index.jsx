@@ -64,14 +64,14 @@ const WishlistDetailModal = ({
   useEffect(() => {
     handleGetWishlistItemDetail();
   }, []);
-
-  const BuyOrEdit = () => {
-    if (handleOnClickButton) {
-      console.log("여기로 오나?");
+  const handleLoading = () => {
+    setLoading((prev) => !prev);
+  };
+  const BuyOrEdit = async () => {
+    if (isDashboard) {
       handleOnClickButton();
       return;
     }
-
     const item = {
       price: price,
       id: uid,
@@ -79,7 +79,18 @@ const WishlistDetailModal = ({
       sendMsg: sendMsg,
     };
 
-    buyWishlistDonation(item);
+    setLoading(true);
+
+    buyWishlistDonation(item, handleLoading, handleOnClickButton);
+
+    // setLoading(false);
+    // try {
+    //   sendToastMessage("✨ Updated successfully.");
+    // } catch (error) {
+    //   console.log("error: ", error);
+    // } finally {
+    //   console.log("왜 여기안와?");
+    // }
   };
 
   // 후원 상태바 계산을 위한 함수
@@ -142,7 +153,7 @@ const WishlistDetailModal = ({
             </S.PriceInputWrapper>
             <BasicTitle text="Send a Message" />
             <BasicTextarea
-              handleOnChangeValue={setSendMsg}
+              handleOnChangeValue={(e) => setSendMsg(e.target.value)}
               placeholder="Express your appreciation to the seller!"
             />
           </div>
@@ -158,6 +169,7 @@ const WishlistDetailModal = ({
             color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={BuyOrEdit}
+            isDisabled={false}
           />
         </S.ButtonWrapper>
       </S.ContentWrapper>

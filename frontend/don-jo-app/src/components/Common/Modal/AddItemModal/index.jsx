@@ -15,7 +15,6 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import "react-toastify/dist/ReactToastify.css";
-import DashboardLoading from "../../../DashBoard/DashboardLoading";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수
@@ -28,9 +27,13 @@ const ITEM_TYPE = "item";
 const IMAGE_TYPE = "img/item";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
-const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
+const AddItemModal = ({
+  handleSetShowModal,
+  imageTitle,
+  isModify,
+  handleSetLoading,
+}) => {
   const currentItem = useSelector((state) => state.items.currentItem);
-  const [isLoading, setLoading] = useState(false);
   // 아이템 프로필 설정
   const [itemFile, setItemNamFile] = useState({
     previewImgUrl: "",
@@ -146,7 +149,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
       itemData = { ...itemData, filePath: createdItemFilePath };
     }
 
-    setLoading(true);
+    handleSetLoading(true);
 
     // API 호출
     if (isModify) {
@@ -160,7 +163,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
       } catch (error) {
         sendToastMessage("Save failed: Contact your administrator.", "error");
       } finally {
-        setLoading(false);
+        handleSetLoading(false);
       }
     } else {
       try {
@@ -172,7 +175,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
       } catch (error) {
         sendToastMessage("Save failed: Contact your administrator.", "error");
       } finally {
-        setLoading(false);
+        handleSetLoading(false);
       }
     }
   };
@@ -191,9 +194,7 @@ const AddItemModal = ({ handleSetShowModal, imageTitle, isModify }) => {
     }
   }, []);
 
-  return isLoading ? (
-    <DashboardLoading />
-  ) : (
+  return (
     <FullScreenModal handleSetShowModal={handleSetShowModal}>
       <S.Container>
         <S.ContentWrap>

@@ -28,6 +28,10 @@ export const CloseBtnContainer = styled.div`
   justify-content: flex-end;
 `;
 
+export const CloseBtnWrapper = styled.div`
+  cursor: pointer;
+`;
+
 export const ModalBody = styled.div`
   flex: 1; //헤더를 제외한 높이를 이 div의 높이로 설정
   display: flex;
