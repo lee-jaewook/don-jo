@@ -53,7 +53,6 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
           toAddress: pageMemberWalletAddress,
           transactionHash: data.hash,
         };
-      setPrice(0)
       console.log(donationDto)
       supportApi.saveSponsorshipDetail(donationDto)
       .then((res) => {
@@ -137,14 +136,16 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
 
   const handleOnClickDonate = async () => {
     const { data } = await priceApi.getItemDetail();
-    setPrice(data * donationAmount * 0.001)
+    setPrice((data * donationAmount * 0.001).toFixed(18))
+    
+    // setPrice(data * donationAmount * 0.001)
   };
   const palyContractWrite = async () => {
-    contractWrite.write()
+    await contractWrite.write()
+    setPrice(0)
   }
 
   useEffect(() => {
-    console.log(price)
     if (price !== 0) {
       palyContractWrite()
     }
