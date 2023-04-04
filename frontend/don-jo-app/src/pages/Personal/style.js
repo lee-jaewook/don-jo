@@ -142,6 +142,7 @@ export const IntroductionContainer = styled.div`
   padding: 1rem 0 1rem 1rem;
   border: 1px solid var(--color-text-secondary);
   border-radius: 1.25rem;
+  display: ${(props) => (props.isShow ? "none" : "block")};
 `;
 
 export const IntroductionEdit = styled.div`
