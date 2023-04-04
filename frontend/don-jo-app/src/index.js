@@ -29,7 +29,7 @@ const chains = [
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 
 const wagmiClient = createClient({
-  autoConnect: false,
+  autoConnect: true,
   connectors: w3mConnectors({ version: 1, chains, projectId }),
   provider,
 });
@@ -40,9 +40,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-    <WagmiConfig client={wagmiClient}>
+      <WagmiConfig client={wagmiClient}>
         <App />
-    </WagmiConfig>
+      </WagmiConfig>
     </PersistGate>
   </Provider>
 );
