@@ -4,7 +4,11 @@ import { supportApi } from "../../api/support";
 import { isMobile } from "react-device-detect";
 import sendToastMessage from "../sendToastMessage";
 
-export const buyWishlistDonation = (item) => {
+export const buyWishlistDonation = (
+  item,
+  handleLoading,
+  handleOnClickButton
+) => {
   // 모바일 여부 확인
   if (!isMobile) {
     // 메타마스크 설치 여부 확인
@@ -48,7 +52,7 @@ export const buyWishlistDonation = (item) => {
               })
               .then((txHash) => {
                 const donationDto = {
-                  amountEth: item.price,
+                  amountEth: parseFloat(item.price),
                   fromAddress: accounts[0],
                   sendMsg: item.sendMsg,
                   supportType: "wishlist",
@@ -76,17 +80,24 @@ export const buyWishlistDonation = (item) => {
                 );
                 if (logs.length > 0) {
                   const log = logs[0];
-                  console.log("log: ", log);
                   const id = web3.eth.abi.decodeParameters(
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  updateDondationInfo(id, txHash);
+                  updateDondationInfo(parseInt(id), txHash);
+                  handleLoading(false);
+                  sendToastMessage("✨ Updated successfully.");
+                  handleOnClickButton();
+                  return true;
                 } else {
                   sendToastMessage("Failed to register support record.");
+                  handleLoading(false);
                 }
               })
-              .catch((err) => console.log(err));
+              .then((res) => {})
+              .catch((err) => {
+                handleLoading(false);
+              });
           });
         });
     } else {
@@ -102,24 +113,16 @@ export const buyWishlistDonation = (item) => {
   }
 };
 
-const saveDonation = async (donationDto) => {
+const saveDonation = (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {
-      console.log("저장 성공!");
-    })
-    .catch((error) => {
-      console.log("저장 실패");
-    });
+    .then((res) => {})
+    .catch((error) => {});
 };
 
-const updateDondationInfo = async (supportUid, transactionHash) => {
+const updateDondationInfo = (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      console.log("update 성공!");
-    })
-    .catch((error) => {
-      console.log("update 실패!");
-    });
+    .then((res) => {})
+    .catch((error) => {});
 };

@@ -122,6 +122,7 @@ const PersonalWishlist = ({ isOwner }) => {
         {isShowWishlistDetailModal && (
           <WishlistDetailModal
             handleSetShowModal={setIsShowWishlistDetailModal}
+            handleOnClickButton={() => setIsShowWishlistDetailModal(false)}
             uid={thisItemUID}
             isDashboard={false}
           />
