@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import defaultProfile from "../../assets/img/common/defaultProfile.svg";
+import defaultProfile from "../../assets/img/common/default-profile.svg";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 

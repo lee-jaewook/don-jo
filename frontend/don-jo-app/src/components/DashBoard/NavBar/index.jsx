@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut.js";
 import { memberApi } from "../../../api/member";
 import { setLogOut } from "../../../stores/member";
-import Logo from "../../../assets/img/common/defaultProfile.svg";
+import Logo from "../../../assets/img/common/default-profile.svg";
 import sendToastMessage from "../../../utils/sendToastMessage";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
