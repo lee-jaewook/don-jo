@@ -86,7 +86,7 @@ const PersonalWishlist = ({ isOwner }) => {
                     setThisItemUId(wishlistItem.id);
                     setIsShowWishlistDetailModal(true);
                   }}
-                  isDashboard={isOwner}
+                  isOwner={isOwner}
                 />
               </S.WishlistItemWrapper>
             );
