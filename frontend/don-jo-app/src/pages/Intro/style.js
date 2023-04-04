@@ -6,10 +6,9 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: #f7f7f7;
-  padding: 2rem 2.5rem;
-
+  padding: 2rem 2.5rem 8rem 2.5rem;
   @media (max-width: 768px) {
-    padding: 1rem 1.25rem;
+    padding: 1rem 1.25rem 4rem 1.25rem;
   }
 `;
 
@@ -29,6 +28,10 @@ export const Background = styled.div`
   border-radius: 1.25rem;
   background: #222222;
   background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+
+  @media (max-width: 767px) {
+    height: 400px;
+  }
 
   .circles {
     position: absolute;
@@ -157,15 +160,12 @@ export const InputWrapper = styled.div`
   line-height: 2.9375rem;
   padding: 0 2.25rem;
   @media (max-width: 769px) {
-    height: 2.5rem;
-    font-size: 0.875rem;
+    width: calc(100% - 20px);
+    max-width: 29rem;
+    height: 2.625rem;
+    font-size: 14px;
     line-height: 2.5rem;
     padding: 0 1rem;
-  }
-  @media (max-width: 382px) {
-    width: 100%;
-    height: 2.5rem;
-    font-size: 0.5rem;
   }
 `;
 
@@ -181,10 +181,7 @@ export const Input = styled.input`
   @media (max-width: 769px) {
     font-size: 0.875rem;
     height: 100%;
-  }
-
-  @media (max-width: 382px) {
-    font-size: 0.625rem;
+    margin-left: 0rem;
   }
 `;
 
@@ -193,34 +190,4 @@ export const ArrowIcon = styled(FiArrowRight)`
   @media (max-width: 769px) {
     font-size: 1rem;
   }
-`;
-
-export const ContentTitle = styled.h1`
-  font-family: "RobotoBold";
-  font-size: 2.5rem;
-  line-height: 1.5rem;
-  margin-top: 5.875rem;
-  margin-bottom: 2rem;
-  @media (max-width: 769px) {
-    font-size: 1.25rem;
-  }
-`;
-
-export const ContentDescription = styled.p`
-  font-family: "RobotoRegular";
-  font-size: 1.5rem;
-  @media (max-width: 769px) {
-    font-size: 0.875rem;
-    height: 100%;
-  }
-`;
-
-export const ContentWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: calc(100vh - 10rem);
-  background-color: transparent;
-  margin-top: 2rem;
-  border-radius: 1.25rem;
-  justify-content: center;
 `;
