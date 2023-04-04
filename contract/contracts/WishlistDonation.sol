@@ -31,6 +31,9 @@ contract WishlistDonation is SupportHistory, BasicDonation {
 
         uint64 supportId = _transfer(_to, _value, SupportType.Wishlist, _owner);
         wishlists[_wishlistId].collectedAmount += _value;
+        if(wishlists[_wishlistId].collectedAmount >= wishlists[_wishlistId].targetAmount){
+            wishlists[_wishlistId].isClosed = true;
+        }
         // require(!purchasedItems[msg.sender][_wishlistId], "This address is not the item's seller.");
         // emit ItemPurchased(msg.sender, item.seller, _itemId);
         return supportId;
