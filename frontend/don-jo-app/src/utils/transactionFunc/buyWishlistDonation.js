@@ -48,7 +48,7 @@ export const buyWishlistDonation = (item) => {
               })
               .then((txHash) => {
                 const donationDto = {
-                  amountEth: item.price,
+                  amountEth: parseFloat(item.price),
                   fromAddress: accounts[0],
                   sendMsg: item.sendMsg,
                   supportType: "wishlist",

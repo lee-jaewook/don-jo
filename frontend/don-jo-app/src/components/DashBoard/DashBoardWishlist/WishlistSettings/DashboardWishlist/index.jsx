@@ -25,10 +25,6 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
     setUid(id);
   };
 
-  const handleSetShowModal = () => {
-    setShowWishlistModal(false);
-  };
-
   const handleOnClickButton = () => {
     setShowWishlistModal(false);
     setIsShowWishListModifyModal((prev) => !prev);
