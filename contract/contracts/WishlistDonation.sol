@@ -30,9 +30,10 @@ contract WishlistDonation is SupportHistory, BasicDonation {
         require(!wishlist.isClosed, "This fundraising campaign for the wishlist has closed.");
 
         uint64 supportId = _transfer(_to, _value, SupportType.Wishlist, _owner);
-        
-        // require(!purchasedItems[msg.sender][_wishlistId], "This address is not the item's seller.");
-        // emit ItemPurchased(msg.sender, item.seller, _itemId);
+        wishlists[_wishlistId].collectedAmount += _value;
+        if(wishlists[_wishlistId].collectedAmount >= wishlists[_wishlistId].targetAmount){
+            wishlists[_wishlistId].isClosed = true;
+        }
         return supportId;
     }
 
