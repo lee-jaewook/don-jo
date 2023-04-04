@@ -57,6 +57,15 @@ public class SupportRepositorySupport {
         return new PageImpl<>(supportList, pageable, totalCount);
     }
 
+    public boolean checkFistSupport(String fromAddress, String toAddress){
+        long count = jpaQueryFactory.selectFrom(qSupport)
+                .where(qSupport.fromAddress.eq(fromAddress),
+                        qSupport.toAddress.eq(toAddress))
+                .fetch().size();
+        return count == 1;
+
+    }
+
     private BooleanExpression supportTypeEq(String supportType) {
         if(supportType.equals("all") || supportType.equals(("")) || supportType == null) return null;
         return qSupport.supportType.eq(supportType);
