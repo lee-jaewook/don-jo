@@ -7,10 +7,14 @@ export const ItemWrapper = styled.div`
   width: 100%;
   max-width: 27.5rem;
   padding: 1.25rem;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) =>
+    !props.isDashboard
+      ? "var(--color-modal)"
+      : props.isClosed
+      ? "rgba(0,0,0,0.1)"
+      : "white"};
   border-radius: 1.25rem;
   cursor: default;
-  opacity: ${(props) => props.isClosed && 0.7};
 `;
 
 export const ItemContent = styled.div`
@@ -112,7 +116,7 @@ export const ProgressState = styled.div`
 export const AmountWrapper = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   justify-content: space-between;
 `;
 export const ProgressAmount = styled.label`

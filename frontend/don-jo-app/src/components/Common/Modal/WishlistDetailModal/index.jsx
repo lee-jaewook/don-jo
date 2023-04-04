@@ -82,15 +82,6 @@ const WishlistDetailModal = ({
     setLoading(true);
 
     buyWishlistDonation(item, handleLoading, handleOnClickButton);
-
-    // setLoading(false);
-    // try {
-    //   sendToastMessage("✨ Updated successfully.");
-    // } catch (error) {
-    //   console.log("error: ", error);
-    // } finally {
-    //   console.log("왜 여기안와?");
-    // }
   };
 
   // 후원 상태바 계산을 위한 함수
@@ -127,13 +118,14 @@ const WishlistDetailModal = ({
         <S.ProgressBarWrapper isDashboard={isDashboard}>
           <S.ProgressBar>
             <S.ProgressState
-              currentState={result === {} ? 0 : handleCalcProgressState()}
+              // currentState={result === {} ? 0 : handleCalcProgressState()}
+              currentState={20}
             />
           </S.ProgressBar>
           <S.AmountWrapper>
             <S.ProgressAmount>{result.collectedAmount}</S.ProgressAmount>
             <S.ProgressAmount isAllAmount={true}>
-              /{result.targetAmount} <S.Eth>eth</S.Eth>
+              /{result.targetAmount} <S.Eth>MATIC</S.Eth>
             </S.ProgressAmount>
           </S.AmountWrapper>
         </S.ProgressBarWrapper>

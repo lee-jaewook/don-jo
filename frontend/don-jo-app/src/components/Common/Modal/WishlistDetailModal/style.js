@@ -91,30 +91,30 @@ export const ProgressBarWrapper = styled.div`
 
 export const ProgressBar = styled.div`
   width: 100%;
-  height: 0.5rem;
-  border-radius: 0.25rem;
+  height: 1rem;
+  border-radius: 1rem;
   background-color: ${(props) =>
     props.isDashboard ? "var(--color-modal)" : "white"};
 `;
 
 export const ProgressState = styled.div`
   width: ${(props) => `${props.currentState}%` || "0%"};
-  height: 0.5rem;
-  border-radius: 0.25rem;
+  height: 1rem;
+  border-radius: 1rem;
   background-color: var(--color-primary);
 `;
 
 export const AmountWrapper = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   justify-content: space-between;
 `;
 
 export const ProgressAmount = styled.label`
   font-family: ${(props) =>
     props.isAllAmount ? "RobotoRegular" : "RobotoMedium"};
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1rem;
 `;
 
