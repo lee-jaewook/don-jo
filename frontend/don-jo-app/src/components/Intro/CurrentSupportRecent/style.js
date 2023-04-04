@@ -79,5 +79,6 @@ export const Separator = styled.span`
   margin: auto 0.75rem;
   @media (max-width: 769px) {
     width: 2rem;
+    height: 0.0938rem;
   }
 `;

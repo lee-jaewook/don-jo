@@ -14,14 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
 import { setProfileImg } from "../../stores/member";
 import { colorSet } from "../../data/dashboard";
-import { useAccount } from "wagmi";
 
 const PROFILE_TYPE = "img/profile";
 const BACKGROUND_TYPE = "img/background";
 
 const Personal = () => {
-  //현재 월렛커넥트와 연결되어있는 지갑 주소
-  const { address, isConnected } = useAccount();
   const { pageName, itemId } = useParams();
   const navigate = useNavigate();
 
