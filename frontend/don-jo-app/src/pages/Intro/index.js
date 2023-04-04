@@ -32,7 +32,7 @@ const Intro = () => {
           <S.ArrowIcon />
         </S.InputWrapper>
       </S.Background>
-      {/* 컨텐츠 소개1 */}
+
       <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
       <S.ContentDescription>
         DonJo provides an image button that can be attached to my site or blog.

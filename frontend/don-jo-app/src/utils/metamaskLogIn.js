@@ -1,10 +1,9 @@
 import Web3 from "web3";
-import { setWeb3 } from "../stores/web3";
 import { memberApi } from "../api/member";
 import { setLogIn } from "../stores/member";
 import { setWallet } from "../stores/member";
 import { isMobile } from "react-device-detect";
-import { useSelector } from "react-redux";
+import sendToastMessage from "./sendToastMessage";
 
 /**
  * 로그인 함수
@@ -21,7 +20,6 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((accounts) => {
-          console.log("Account: ", accounts);
           const web3 = new Web3(window.ethereum);
           web3.eth.net.getId().then((chainId) => {
             const infuraWeb3 = new Web3(
@@ -38,8 +36,7 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
               .then(async ({ status }) => {
                 if (status === 200) {
                   // 서명 데이터 만들기...
-                  console.log(web3.eth);
-                  console.log(typeof accounts[0]);
+                  console.log("[checkMemberAddress] web3.eth : ", web3.eth);
 
                   window.ethereum
                     .request({
@@ -75,23 +72,26 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
                           );
                         })
                         .catch((error) => {
-                          alert("LogIn Failed");
+                          sendToastMessage("Login Failed", "error");
+                          console.log("[metamaskLogIn] failed : ", error);
                         });
                     })
                     .catch((error) => {
-                      alert("LogIn Failed");
+                      sendToastMessage("Login Failed", "error");
+                      console.log("[metamaskLogIn] failed : ", error);
                     });
                 } else if (status === 204) {
                   handleModalOpen();
                 }
               })
               .catch((error) => {
-                alert("LogIn Failed");
+                sendToastMessage("Login Failed", "error");
+                console.log("[metamaskLogIn] failed : ", error);
               });
           });
         })
         .catch((error) => {
-          alert("MetaMask is not logged in.");
+          sendToastMessage("MetaMask is not logged in.", "error");
         });
     } else {
       // Metamask를 설치할 수 있도록 코드 추가...
@@ -104,6 +104,6 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
       }
     }
   } else {
-    alert("We do not support Mobile devices");
+    sendToastMessage("We do not support Mobile devices.", "error");
   }
 };
