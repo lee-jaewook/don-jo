@@ -66,8 +66,7 @@ const WishlistDetailModal = ({
   }, []);
 
   const BuyOrEdit = () => {
-    if (handleOnClickButton) {
-      console.log("여기로 오나?");
+    if (isDashboard) {
       handleOnClickButton();
       return;
     }
