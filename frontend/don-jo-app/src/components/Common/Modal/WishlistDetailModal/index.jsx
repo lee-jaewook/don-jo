@@ -66,7 +66,9 @@ const WishlistDetailModal = ({
   }, []);
 
   const BuyOrEdit = () => {
+    console.log("click");
     if (isDashboard) {
+      console.log("흠");
       handleOnClickButton();
       return;
     }
@@ -77,7 +79,7 @@ const WishlistDetailModal = ({
       seller: pageMemberAddress,
       sendMsg: sendMsg,
     };
-
+    console.log("item: ", item);
     buyWishlistDonation(item);
   };
 
@@ -141,7 +143,7 @@ const WishlistDetailModal = ({
             </S.PriceInputWrapper>
             <BasicTitle text="Send a Message" />
             <BasicTextarea
-              handleOnChangeValue={setSendMsg}
+              handleOnChangeValue={(e) => setSendMsg(e.target.value)}
               placeholder="Express your appreciation to the seller!"
             />
           </div>
@@ -157,6 +159,7 @@ const WishlistDetailModal = ({
             color="var(--color-primary)"
             isBackground={true}
             handleOnClickButton={BuyOrEdit}
+            isDisabled={false}
           />
         </S.ButtonWrapper>
       </S.ContentWrapper>
