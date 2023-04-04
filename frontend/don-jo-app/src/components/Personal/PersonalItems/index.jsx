@@ -128,10 +128,11 @@ const PersonalItems = ({ isOwner, itemId }) => {
 
         {isOpenAddItemModal && (
           <AddItemModal
+            handleSetLoading={setIsLoading}
             handleSetShowModal={() => {
               setIsOpenAddItemModal(false);
               getItemList(true);
-              document.body.style.overflow = "unset";
+              document.body.style.overflow = "auto";
             }}
           />
         )}
