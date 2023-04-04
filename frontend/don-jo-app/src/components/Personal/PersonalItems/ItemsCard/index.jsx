@@ -132,7 +132,7 @@ const ItemCard = ({ item, isOwner }) => {
         <S.Description>{item.description}</S.Description>
         <S.PriceBtnContainer>
           <S.PriceWrapper>
-            <S.Price>{calculateEth(item.price)}</S.Price>
+            <S.Price>{item.price.toFixed(3)}</S.Price>
             <S.Unit>matic</S.Unit>
           </S.PriceWrapper>
           {!isOwnerItems && (
