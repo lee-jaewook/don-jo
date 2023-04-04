@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Don-jo Guide",
+  title: "Don Jo Guide",
   tagline: "Here is a basic guide to get started with Don-jo.",
   favicon: "img/favicon.ico",
 
