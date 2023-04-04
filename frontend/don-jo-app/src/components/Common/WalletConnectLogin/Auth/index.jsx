@@ -92,30 +92,35 @@ const Auth = () => {
     memberApi.checkMemberAddress(address).then(({ status }) => {
       console.log("wallet connect 주소:", address);
       if (status === 200) {
-        dispatch(setIsMember(true))
+        dispatch(setIsMember(true));
       } else if (status === 204) {
-        dispatch(setIsMember(false))
+        dispatch(setIsMember(false));
       }
     });
-  }
+  };
 
   useEffect(() => {
     if (isConnected) {
-      MemberCheck()
+      MemberCheck();
     }
   }, [isConnected]);
 
   const handleSign = () => {
     signMessage({ message: "don jo log in test" });
-  }
+  };
 
   const handleModalOpen = () => {
     setIsShowSignUp(true);
-  }
+  };
 
   return (
     <>
-      {isConnected && (isMember ? <S.Startbtn onClick={handleSign}>로그인</S.Startbtn> : <S.Startbtn onClick={handleModalOpen}>회원가입</S.Startbtn>)}
+      {isConnected &&
+        (isMember ? (
+          <S.Startbtn onClick={handleSign}>로그인</S.Startbtn>
+        ) : (
+          <S.Startbtn onClick={handleModalOpen}>회원가입</S.Startbtn>
+        ))}
       {isShowSignUp && (
         <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
       )}
