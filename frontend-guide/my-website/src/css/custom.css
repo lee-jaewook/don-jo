@@ -4,6 +4,20 @@
  * work well for content-centric websites.
  */
 
+.navbar__brand {
+  margin-right: -0rem !important;
+}
+
+.navbar__logo {
+  /* display: flex !important;
+  justify-content: center !important;
+  align-items: center !important; */
+  margin-right: -0rem !important;
+  /* margin-left: 1rem !important; */
+  /* border: 1px solid red; */
+  width: 70%;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #303846;
