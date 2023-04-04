@@ -34,12 +34,7 @@ const IntroductionEdit = ({ handleSetShowModal, getPageInfo }) => {
 
   return (
     <S.Container>
-      <MDEditor
-        height={600}
-        value={md}
-        onChange={setMd}
-        data-color-mode="light"
-      />
+      <MDEditor height={600} value={md} onChange={setMd} />
       <S.BasicButtonWrapper>
         <BasicButton
           text="Submit"
