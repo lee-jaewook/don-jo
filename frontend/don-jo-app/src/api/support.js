@@ -20,7 +20,6 @@ export const supportApi = {
 
   // 후원내역 저장 API
   saveSponsorshipDetail: (supportRequestDto) => {
-    console.log("supportRequestDto", supportRequestDto);
     return api.post(`/member/supports`, supportRequestDto);
   },
 
