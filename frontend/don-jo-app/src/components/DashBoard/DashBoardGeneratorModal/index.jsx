@@ -8,7 +8,7 @@ import CustomSelect from "../DashBoardCustomSelect";
 import EmojiPicker from "emoji-picker-react";
 import { FiCopy } from "@react-icons/all-files/fi/FiCopy.js";
 import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown.js";
-import { generatorColorSet, fontDataSet } from "../../../data/dashboard";
+import { colorSet, fontDataSet } from "../../../data/dashboard";
 import { toPng, toBlob } from "html-to-image";
 import { fileApi } from "../../../api/file";
 import { useSelector } from "react-redux";
@@ -148,7 +148,7 @@ const DashBoardGeneratorModal = ({
 
   return (
     <BasicModal
-      width={isMobile ? 1 : 33}
+      width={isMobile ? 1 : 26.25}
       handleSetShowModal={setShowPlugInModal}
     >
       <S.PreViewWrap>
@@ -200,9 +200,9 @@ const DashBoardGeneratorModal = ({
       <S.ContentWrap>
         <BasicTitle text="Color" />
         <S.ColorPalette>
-          {generatorColorSet &&
-            generatorColorSet.length > 0 &&
-            generatorColorSet.map((color, index) => (
+          {colorSet &&
+            colorSet.length > 0 &&
+            colorSet.map((color, index) => (
               <S.Color
                 type="radio"
                 name="color"
