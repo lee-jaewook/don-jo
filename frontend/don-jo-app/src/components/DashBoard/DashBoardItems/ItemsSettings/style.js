@@ -26,8 +26,18 @@ export const AddIcon = styled.div`
   width: 3.75rem;
   height: 3.75rem;
   border-radius: 50%;
-  background-color: var(--color-text);
+  background-color: var(--color-primary);
   margin: 0 auto;
   align-items: center;
   justify-content: center;
+`;
+
+export const Message = styled.p`
+  width: 100%;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  justify-items: center;
+  background-color: transparent;
+  text-align: center;
+  line-height: 6.25rem;
 `;

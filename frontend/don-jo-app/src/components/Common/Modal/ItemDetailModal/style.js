@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
+  position: relative;
+  width: calc(100vw - 5.5rem);
   max-width: 33.0625rem;
   display: flex;
   flex-direction: column;
@@ -11,7 +13,7 @@ export const ContentImg = styled.img`
   max-height: 22.5rem;
   border-radius: 1.25rem;
   margin-bottom: 2rem;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export const Title = styled.h1`
@@ -44,4 +46,20 @@ export const ButtonWrapper = styled.div`
   width: 100%;
   max-width: 17.5rem;
   margin: 2.5rem auto 0rem auto;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  bottom: 0rem;
+  left: 0rem;
+  color: var(--color-text-secondary);
+  @media (max-width: 768px) {
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`;
+
+export const DownloadLink = styled.a`
+  display: none;
 `;

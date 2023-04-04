@@ -21,7 +21,10 @@ export const ItemImg = styled.div`
   min-width: 10rem;
   height: 7.5rem;
   border-radius: 0.5rem;
-  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #efefef;
   margin-right: 0.75rem;
   @media (max-width: 768px) {
     width: 100%;
@@ -35,6 +38,7 @@ export const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 28.75rem;
+  flex: 1;
 `;
 
 export const Title = styled.h1`
@@ -48,20 +52,27 @@ export const Description = styled.label`
   color: var(--color-text-secondary);
 `;
 
-export const generateButton = styled.button`
+export const GenerateButton = styled.button`
   font-family: "RobotoMedium";
   width: 7.5rem;
   height: 3rem;
   border-radius: 1.5rem;
-  border: 0.125rem solid black;
+  border: 0.125rem solid var(--color-primary);
   font-size: 1rem;
   line-height: 1.1875rem;
   text-align: center;
   margin-left: 1.25rem;
+  color: var(--color-primary);
   padding: 0 1.6875rem;
   @media (max-width: 768px) {
     width: 100%;
     margin-top: 0.75rem;
     margin-left: 0rem;
+  }
+
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: var(--color-primary);
   }
 `;

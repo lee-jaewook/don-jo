@@ -1,6 +1,9 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import * as S from "./style";
+import { calculateEth } from "../../../utils/calculateEth";
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 const WishlistItem = ({
   isDashboard = false,
   handleSetShowModal,
@@ -10,12 +13,8 @@ const WishlistItem = ({
   description,
   collectedAmount,
   totalAmount,
+  isClosed,
 }) => {
-  // wishlist item 수정 모달 관리를 위한 함수
-  const handleOpenEditModal = useCallback((e) => {
-    e.stopPropagation(); // event bubbling 방지
-  }, []);
-
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
     if (Number(collectedAmount) >= Number(totalAmount)) {
@@ -28,11 +27,11 @@ const WishlistItem = ({
     <S.ItemWrapper
       id={uid}
       isDashboard={isDashboard}
-      onClick={isDashboard ? handleSetShowModal : undefined}
+      bgColor={isClosed ? "#EFEFEF" : "white"}
+      onClick={isDashboard ? () => handleSetShowModal(uid) : undefined}
     >
-      {/* {isDashboard && <S.EditButton onClick={handleOpenEditModal} />} */}
       <S.ItemContent>
-        <S.ItemImg src={imgPath} />
+        <S.ItemImg src={`${S3URL}${imgPath}`} />
         <S.ItemInformation>
           <S.Title>{title}</S.Title>
           <S.Description>
@@ -52,9 +51,9 @@ const WishlistItem = ({
           <S.ProgressState currentState={handleCalcProgressState()} />
         </S.ProgressBar>
         <S.AmountWrapper>
-          <S.ProgressAmount>{collectedAmount}</S.ProgressAmount>
+          <S.ProgressAmount>{calculateEth(collectedAmount)}</S.ProgressAmount>
           <S.ProgressAmount isAllAmount={true}>
-            /{totalAmount} <S.Eth>eth</S.Eth>
+            /{calculateEth(totalAmount)} <S.Eth>MATIC</S.Eth>
           </S.ProgressAmount>
         </S.AmountWrapper>
       </S.ProgressBarWrapper>

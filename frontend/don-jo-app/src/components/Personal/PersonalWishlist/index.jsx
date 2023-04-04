@@ -1,69 +1,153 @@
 import * as S from "./style";
 import WishlistItem from "../../Common/WishlistItem";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useEffect, useState } from "react";
-import { wishlist } from "./dummyData";
+import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
+import { wishlistAPI } from "../../../api/wishlist";
+import PropTypes from "prop-types";
+import AddWishlistModal from "../../Common/Modal/AddWishlistModal";
+import { PulseLoader } from "react-spinners";
+import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
 
-//현재 로그인한 유저 더미 데이터
-const loginUser = {
-  memberAddress: "memberaddress",
-  nickname: "taehyun",
-};
+const PersonalWishlist = ({ isOwner }) => {
+  //현재 페이지의 멤버 지갑주소 정보
+  const pageMemberAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  ).toLowerCase();
 
-//해당 페이지 사람 더미 데이터
-const pageOwner = {
-  memberAddress: "memberaddress",
-  profileImgPath:
-    "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-  backgroundImgPath:
-    "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
-  nickname: "Robert Downey Jr.",
-  introduction:
-    "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
-  numSupporters: 16000,
-  socialList: [
-    "https://www.youtube.com/@SamsungKorea",
-    "https://velog.io/@taebong1012",
-    "https://github.com/taebong1012",
-  ],
-};
+  const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
+    useState(false);
+  const [isShowWishlistAddModal, setIsShowWishlistAddModal] = useState(false);
+  const [thisItemUID, setThisItemUId] = useState(0);
 
-const PersonalWishlist = () => {
-  //로그인 유저가 페이지 주인인지 확인
-  const [isOwner, setIsOwner] = useState(false);
+  const [pageNum, setPageNum] = useState(0);
+  const PAGE_SIZE = 6;
+  const [wishlist, setWishlist] = useState([]);
+  const [hasMore, setIsEnd] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getWishList = async () => {
+    try {
+      const { data } = await wishlistAPI.getWishList(
+        pageMemberAddress,
+        pageNum,
+        PAGE_SIZE
+      );
+      setPageNum((prev) => prev + 1);
+      setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+      setIsEnd(data.hasMore);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
   useEffect(() => {
-    setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
+    getWishList();
   }, []);
 
-  return (
-    <S.Container>
-      <S.Title>Support My Wishlist</S.Title>
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+    getWishList();
+  };
+
+  const doDonateWishlist = () => {
+    console.log("위시리스트 후원하기");
+  };
+
+  const OwnerOrHasWishList = () => {
+    return (
       <S.CardContainer>
         {isOwner && (
-          <S.AddCard>
+          <S.AddCard
+            onClick={() => {
+              setIsShowWishlistAddModal(true);
+            }}
+          >
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
             </S.IconWrapper>
           </S.AddCard>
         )}
         {wishlist.map((wishlistItem) => {
-          return (
-            <S.WishlistItemWrapper key={wishlistItem.uid}>
-              <WishlistItem
-                uid={wishlistItem.uid}
-                title={wishlistItem.title}
-                imgPath={wishlistItem.imgPath}
-                description={wishlistItem.description}
-                collectedAmount={wishlistItem.collectedAmount.toFixed(3)}
-                totalAmount={wishlistItem.totalAmount.toFixed(3)}
-                thankMsg={wishlistItem.thankMsg}
-              />
-            </S.WishlistItemWrapper>
-          );
+          if (!wishlistItem.closed) {
+            return (
+              <S.WishlistItemWrapper key={wishlistItem.id} disabled={isOwner}>
+                <WishlistItem
+                  uid={wishlistItem.id}
+                  title={wishlistItem.title}
+                  imgPath={wishlistItem.imgPath}
+                  description={wishlistItem.description}
+                  collectedAmount={wishlistItem.collectedAmount.toString()}
+                  totalAmount={wishlistItem.targetAmount.toString()}
+                  thankMsg={wishlistItem.thankMsg}
+                  handleSetShowModal={() => {
+                    setThisItemUId(wishlistItem.id);
+                    setIsShowWishlistDetailModal(true);
+                  }}
+                  isDashboard={isOwner}
+                />
+              </S.WishlistItemWrapper>
+            );
+          } else {
+            return null;
+          }
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no wishlists 🥲</S.Nothing>;
+  };
+
+  const Contents = () => {
+    return (
+      <>
+        {isOwner || wishlist.length !== 0 ? (
+          <OwnerOrHasWishList />
+        ) : (
+          <Nothing />
+        )}
+
+        {hasMore && (
+          <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+        )}
+
+        {isShowWishlistAddModal && (
+          <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
+        )}
+
+        {isShowWishlistDetailModal && (
+          <WishlistDetailModal
+            handleSetShowModal={setIsShowWishlistDetailModal}
+            uid={thisItemUID}
+            isDashboard={false}
+          />
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.LoadingContainer>
+        <PulseLoader color="var(--color-primary)" />
+      </S.LoadingContainer>
+    );
+  };
+
+  return (
+    <S.Container>
+      <S.Title>Support My Wishlist</S.Title>
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };
 
 export default PersonalWishlist;
+
+PersonalWishlist.propTypes = {
+  isOwner: PropTypes.bool,
+};

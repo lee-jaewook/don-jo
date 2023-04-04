@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import LogoImg from "../../../assets/img/common/app-logo.svg";
 
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 4rem;
-  background-color: var(--color-background);
+  background-color: ${(props) =>
+    props.isIntroPage ? "var(--color-modal)" : "var(--color-background)"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,17 +21,19 @@ export const Header = styled.div`
   width: 80rem;
 `;
 
-export const Logo = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-size: cover;
-  background-image: url(${LogoImg});
+export const Logo = styled.img`
+  height: 1.5rem;
+  object-fit: contain;
   cursor: pointer;
 `;
 
-export const GuideSelect = styled.button`
+export const Guide = styled.button`
   margin-left: auto;
   font-size: 1rem;
+  font-family: "RobotoMedium";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ProfileImgContainer = styled.div`

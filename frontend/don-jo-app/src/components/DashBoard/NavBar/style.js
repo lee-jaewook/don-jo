@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 export const NavBar = styled.div`
   position: sticky;
-  top: 0rem;
   display: flex;
-  flex-direction: column;
+  top: 0rem;
   width: 17.5rem;
-  margin-right: 3.75rem;
   height: 100%;
+  flex-direction: column;
   background-color: transparent;
   margin-left: 2.5rem;
+  margin-right: 3.75rem;
   @media (max-width: 1280px) {
     position: absolute;
     top: unset;
@@ -34,6 +34,13 @@ export const UserWrapper = styled.div`
   align-items: center;
   margin-top: 2.5rem;
   background-color: transparent;
+  justify-content: space-around;
+`;
+
+export const User = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
 `;
 
 export const Line = styled.hr`
@@ -46,12 +53,13 @@ export const UserImg = styled.img`
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background-color: #ddd;
+  background-color: white;
   border: 0.063rem solid #f1f1f1;
   box-shadow: 0rem 0.625rem 0.938rem 0.063rem rgba(0, 0, 0, 0.05);
-  /* margin-left: 2.5rem; */
   margin-right: 0.75rem;
   background-color: #f1f1f1;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 export const UseName = styled.h2`
@@ -63,9 +71,9 @@ export const UseName = styled.h2`
 export const MenuWrapper = styled.ul`
   max-width: 17.5rem;
   list-style: none;
-  margin-top: 2.25rem;
-  background-color: #fff;
-  /* margin-left: 2.5rem; */
+  margin-top: 1.875rem;
+  background-color: white;
+  margin-bottom: 2.25rem;
   @media (max-width: 1280px) {
     width: 11.25rem;
     margin: 0.75rem;
@@ -75,7 +83,8 @@ export const MenuItem = styled.li`
   width: 100%;
   height: 3.25rem;
   display: block;
-  background-color: ${(props) => (props.current ? "black" : "transparent")};
+  background-color: ${(props) =>
+    props.current ? "var(--color-primary)" : "transparent"};
   border-radius: 1.875rem;
   line-height: 3.25rem;
 `;
@@ -93,4 +102,13 @@ export const MenuLabel = styled(Link)`
 
 export const MenuIcon = styled.span`
   margin-right: 0.75rem;
+`;
+
+export const LogoutButton = styled.button`
+  width: 100%;
+  height: 3.25rem;
+  background-color: transparent;
+  font-size: 1rem;
+  margin-top: 32px;
+  font-family: "RobotoMedium";
 `;

@@ -1,15 +1,19 @@
 import React from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import { FiUser, FiCreditCard } from "react-icons/fi";
+import { FiUser } from "@react-icons/all-files/fi/FiUser.js";
+import { FiCreditCard } from "@react-icons/all-files/fi/FiCreditCard.js";
 import { useMediaQuery } from "react-responsive";
+
+const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const ListItem = ({
   uid,
   setUid,
   imgPath,
   title,
-  collectedAmount,
+  price,
+  deleted,
   totalAmount,
   supportCount,
   handleShowItemDetailModal,
@@ -18,18 +22,19 @@ const ListItem = ({
 
   return (
     <S.ItemWrapper
+      deleted={deleted}
       onClick={() => {
         setUid(uid);
         handleShowItemDetailModal(true);
       }}
     >
       <S.ItemInfoWrapper>
-        <S.ItemImg src={imgPath} alt="item-img" />
+        <S.ItemImg src={`${S3URL}${imgPath}`} alt="item-img" />
         <S.ItemInfo>
           <S.InfoText size="0.875rem">{title}</S.InfoText>
           <S.InfoText>
-            {collectedAmount}
-            <S.Unit>eth</S.Unit>
+            {price}
+            <S.Unit>MATIC</S.Unit>
           </S.InfoText>
         </S.ItemInfo>
       </S.ItemInfoWrapper>
@@ -47,7 +52,7 @@ const ListItem = ({
               style={{ marginRight: "2px" }}
             />
             {totalAmount}
-            <S.Unit>eth</S.Unit>
+            <S.Unit>MATIC</S.Unit>
           </S.Count>
         </>
       )}
@@ -62,7 +67,7 @@ ListItem.propTypes = {
   setUid: PropTypes.func.isRequired,
   imgPath: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  collectedAmount: PropTypes.string.isRequired,
+  deleted: PropTypes.bool.isRequired,
   totalAmount: PropTypes.string.isRequired,
   supportCount: PropTypes.number,
   handleShowItemDetailModal: PropTypes.func.isRequired,

@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 export const donationSlice = createSlice({
   name: "donation",
-  initialState: {},
-  reducers: {},
+  initialState: {
+    settings: {},
+  },
+  reducers: {
+    setDonationSettings(state, action) {
+      state.settings = action.payload;
+    },
+  },
 });
 
-export const {} = donationSlice.actions;
+export const { setDonationSettings } = donationSlice.actions;
 export default donationSlice.reducer;

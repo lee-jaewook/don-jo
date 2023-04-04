@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
 import PluginGenerator from "../../DashBoardGeneratorModal";
+import QRCodeModal from "../../DashboardQRModal";
+import { useMediaQuery } from "react-responsive";
 /**
  * GeneratorItem 컴포넌트
  * @param {Object} props - 컴포넌트에 전달되는 props
@@ -11,30 +13,53 @@ import PluginGenerator from "../../DashBoardGeneratorModal";
  * @returns
  */
 
-const GeneratorItem = ({ title, description, isItemsRequired }) => {
-  const [isPlugInGenModalOpen, setIsPlugInGenModalOpen] = useState(false);
+const GeneratorItem = ({
+  id,
+  title,
+  description,
+  isItemsRequired,
+  previewSrc,
+}) => {
+  const [isShowPlugInModal, setShowPlugInModal] = useState(false);
+  const [isOpenQRCodeModal, setOpenQRCodeModal] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handlePlugInGenModalChange = () => {
-    setIsPlugInGenModalOpen((prev) => !prev);
+    if (id === "generator-item2") {
+      setOpenQRCodeModal(true);
+      return;
+    }
+
+    setShowPlugInModal((prev) => !prev);
   };
 
   return (
     <>
       <S.ItemWrapper>
-        <S.ItemImg />
+        <S.ItemImg>
+          <img
+            src={previewSrc}
+            alt="preview-img"
+            width="auto"
+            height={isMobile ? "180px" : "100px"}
+          />
+        </S.ItemImg>
         <S.ItemInfo>
           <S.Title>{title}</S.Title>
           <S.Description>{description}</S.Description>
         </S.ItemInfo>
-        <S.generateButton onClick={handlePlugInGenModalChange}>
+        <S.GenerateButton onClick={handlePlugInGenModalChange}>
           Generate
-        </S.generateButton>
+        </S.GenerateButton>
       </S.ItemWrapper>
-      {isPlugInGenModalOpen && (
+      {isShowPlugInModal && (
         <PluginGenerator
-          isModalOpen={handlePlugInGenModalChange}
+          setShowPlugInModal={setShowPlugInModal}
           isItemsRequired={isItemsRequired}
         />
+      )}
+      {isOpenQRCodeModal && (
+        <QRCodeModal handleSetShowModal={setOpenQRCodeModal} />
       )}
     </>
   );
@@ -43,6 +68,7 @@ const GeneratorItem = ({ title, description, isItemsRequired }) => {
 export default GeneratorItem;
 
 GeneratorItem.protoTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 };

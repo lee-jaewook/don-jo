@@ -1,24 +1,38 @@
 import React, { useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import BasicTitle from "../../../Common/BasicTitle";
-import Wishlist from "../../../Common/Wishlist";
+import DashboardWishlist from "./DashboardWishlist";
 import * as S from "./style";
-const WishlistSettings = () => {
-  const [isShowWishlistModal, setShowWishlistModal] = useState(false);
+import AddWishlistModal from "../../../Common/Modal/AddWishlistModal";
 
+const WishlistSettings = () => {
+  const [isWishListRegisterModal, setIsWishListRegisterModal] = useState(false);
+  const [callApi, setCallApi] = useState(false);
+
+  const handleAddWishListModalOpen = () => {
+    setIsWishListRegisterModal((prev) => !prev);
+  };
+
+  const handleCallApiChange = () => {
+    setCallApi(false);
+  };
   return (
     <S.SettingWrapper>
-      <S.AddButton>
+      <S.AddButton onClick={handleAddWishListModalOpen}>
         <S.AddIcon>
           <FiPlus size="32px" color="white" />
         </S.AddIcon>
       </S.AddButton>
       <BasicTitle text="Wishlist" />
-      <Wishlist
-        isDashboard={true}
-        isShowWishlistModal={isShowWishlistModal}
-        handleSetShowModal={setShowWishlistModal}
-      />
+      <DashboardWishlist callApi={callApi} setCallApi={handleCallApiChange} />
+      {isWishListRegisterModal && (
+        <AddWishlistModal
+          handleSetShowModal={() => {
+            setIsWishListRegisterModal(false);
+            setCallApi(true);
+          }}
+        />
+      )}
     </S.SettingWrapper>
   );
 };

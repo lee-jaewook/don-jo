@@ -1,65 +1,91 @@
 import * as S from "./style";
 import ProfileImg from "../ProfileImg";
-import SelectBox from "./SelectBox";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../../assets/img/common/home.png";
 import { useEffect, useState } from "react";
-import FullScreenModal from "../Modal/FullScreenModal";
+import { useSelector } from "react-redux";
+import LogoImg from "../../../assets/img/common/app-logo.svg";
+import { FiExternalLink } from "@react-icons/all-files/fi/FiExternalLink";
+import SelectBox from "./SelectBox";
+import WalletConnectLogin from "../WalletConnectLogin";
 
 const Header = () => {
-  //로그인 유저 더미데이터
-  const loginUser = {
-    profileImgPath:
-      "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-    memberAddress: "taehyun",
-  };
+  const pageName = useSelector((state) => state.member.pageName);
+  const profileImagePath = useSelector(
+    (state) => state.member.profileImagePath
+  );
 
+  const isLogin = useSelector((state) => state.member.isLogIn);
   const location = useLocation();
   const [profileImgSrc, setProfileImgSrc] = useState("");
   const [profileLinkTo, setProfileLinkTo] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
-  const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+  const [isLocalSrc, setIsLocalSrc] = useState(false);
+  const [isIntroPage, setIsIntroPage] = useState(false);
 
   useEffect(() => {
+    setProfileImgSrc(profileImagePath);
+  }, [profileImagePath]);
+
+  useEffect(() => {
+    if (location.pathname === "/") setIsIntroPage(true);
+    else setIsIntroPage(false);
+
     if (location.pathname.includes("/dashboard/")) {
       setProfileImgSrc(homeIcon);
-      setProfileLinkTo(`/${loginUser.memberAddress}`);
+      setIsLocalSrc(true);
+      setProfileLinkTo(`/${pageName}`);
     } else {
-      setProfileImgSrc(loginUser.profileImgPath);
+      setProfileImgSrc(profileImagePath);
+      setIsLocalSrc(false);
       setProfileLinkTo("/dashboard/home");
     }
   }, [location.pathname]);
 
+  /**
+   * handleMetamaskLogInClick - 메타마스크 LogIn 함수
+   * 설명:
+   * Start 버튼 클릭에 대한 이벤트 함수.
+   * 회원일 경우, 로그인 처리
+   * 비회원일 경우, 회원가입 모달 띄우기
+   */
+
   return (
-    <S.HeaderContainer>
+    <S.HeaderContainer isIntroPage={isIntroPage}>
       <S.Header>
         <Link to="/">
-          <S.Logo />
+          <S.Logo src={LogoImg} />
         </Link>
-        <S.GuideSelect>
-          <SelectBox />
-        </S.GuideSelect>
+        <S.Guide
+          onClick={() => {
+            window.open("https://j8a209.p.ssafy.io/guides/");
+          }}
+        >
+          <FiExternalLink size="14" color="var(--color-text)" />
+          &nbsp;Guide
+        </S.Guide>
         <S.ProfileImgContainer>
           {isLogin ? (
-            <ProfileImg width={2.5} src={profileImgSrc} to={profileLinkTo} />
+            <ProfileImg
+              width={2.5}
+              src={profileImgSrc}
+              to={profileLinkTo}
+              isLocalSrc={isLocalSrc}
+            />
           ) : (
-            <S.Startbtn
-              onClick={() => {
-                setIsShowLoginModal(true);
-              }}
-            >
-              Start
-            </S.Startbtn>
+            <div style={{ display: "flex" }}>
+              {/* <SelectBox
+                metamaskLogin={handleMetamaskLogInClick}
+                walletConnectLogin={() => {
+                  console.log("여기 함수에 월렛커넥트 로그인 처리 함수 넣기");
+                }}
+              >
+                Start
+              </SelectBox> */}
+              <WalletConnectLogin />
+            </div>
           )}
         </S.ProfileImgContainer>
       </S.Header>
-
-      {/* 임시로 FullScreen 모달 띄우기 -> 로그인 모달로 바뀔 예정 */}
-      {isShowLoginModal && (
-        <FullScreenModal handleSetShowModal={setIsShowLoginModal}>
-          <div></div>
-        </FullScreenModal>
-      )}
     </S.HeaderContainer>
   );
 };

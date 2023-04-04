@@ -32,9 +32,8 @@ export const HamburgerMenu = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: black;
+  background-color: var(--color-primary);
   filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
-  z-index: 10;
   * {
     margin: 0;
     padding: 0;

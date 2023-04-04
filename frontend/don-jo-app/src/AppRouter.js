@@ -4,59 +4,65 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import React, { useEffect } from "react";
-import Intro from "./pages/Intro";
-import Guide from "./pages/Guide";
-import GuideDetail from "./pages/GuideDetail";
-import Personal from "./pages/Personal";
-import DashBoard from "./pages/DashBoard";
-import Error from "./pages/Error";
+import React, { useEffect, Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Header from "./components/Common/Header";
-import { connectWallet } from "./utils/connectWallet";
+import { handleWalletChange } from "./utils/handleWalletChange";
+import { isMobile } from "react-device-detect";
+
+const Header = lazy(() => import("./components/Common/Header"));
+const Footer = lazy(() => import("./components/Common/Footer"));
+const Intro = lazy(() => import("./pages/Intro"));
+const Personal = lazy(() => import("./pages/Personal"));
+const DashBoard = lazy(() => import("./pages/DashBoard"));
+const Error = lazy(() => import("./pages/Error"));
+
+const PrivateRoutes = ({ isLogin, component }) => {
+  if (!isLogin) {
+    return <Navigate to="/" replace />;
+  }
+  return component;
+};
 
 const AppRouter = () => {
-  const member = useSelector((state) => state.member);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    connectWallet(dispatch);
+    if (!isMobile && window.ethereum) {
+      window.ethereum.on("accountsChanged", (newAccounts) => {
+        handleWalletChange(newAccounts, dispatch);
+      });
+    }
   }, []);
 
-  // 로그인 여부 체크
-  let isLogin = true;
-
-  if (!isLogin) {
-    return (
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Intro />} />
-          <Route path="/guide" element={<Guide />} />
-          <Route path="/guide/:title" element={<GuideDetail />} />
-          <Route path="/dashboard" element={<Error />} />
-          <Route path="/:pageName" element={<Personal />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </Router>
-    );
-  }
+  const isLogin = useSelector((state) => state.member.isLogIn);
 
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Intro />} />
-        <Route path="/guide" element={<Guide />} />
-        <Route path="/guide/:title" element={<GuideDetail />} />
-        <Route
-          path="/dashboard"
-          element={<Navigate replace to="/dashboard/home" />}
-        />
-        <Route path="/dashboard/:category" element={<DashBoard />} />
-        <Route path="/:pageName" element={<Personal />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/:pageName" element={<Personal />} />
+          <Route path="/:pageName/items/:itemId" element={<Personal />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoutes
+                isLogin={isLogin}
+                component={<Navigate replace to="/dashboard/home" />}
+              />
+            }
+          />
+          <Route
+            path="/dashboard/:category"
+            element={
+              <PrivateRoutes isLogin={isLogin} component={<DashBoard />} />
+            }
+          />
+          <Route path="*" element={<Error />} />
+        </Routes>
+        <Footer />
+      </Suspense>
     </Router>
   );
 };

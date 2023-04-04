@@ -8,35 +8,40 @@ import PropTypes from "prop-types";
  * @param {Array} props.data - Option에 들어갈 데이터 배열
  * @param {string} props.fontStyle - SelectBox에 적용될 fontStyle
  * @param {boolean} props.isBefore - CSS의 가상 요소 중 하나인 ::before 사용 여부
+ * @param {string} props.selectValue - Select한 값
+ * @param {func} props.handleOptionChange - Select값 변경시 호출할 함수
  * @returns {JSX.Element}
  */
 
-const datum = [
-  { name: "About Tesla" },
-  { name: "About Samsung" },
-  { name: "About Apple" },
-  { name: "About Google" },
-  { name: "About Lotte" },
-];
-
 const CustomSelect = ({
-  data = datum,
-  fontStyle = "RobotoRegular",
-  isBefore = true,
-  isItemsRequired = true,
+  data,
+  fontStyle,
+  selectValue,
+  isBefore,
+  handleOptionChange,
 }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
+  const handleDropDownChange = () => {
+    setIsDropdown((prev) => !prev);
+  };
   return (
     <S.SelectBox
-      onClick={() => setIsDropdown((prev) => !prev)}
+      onClick={handleDropDownChange}
       isDropdown={isDropdown}
       isBefore={isBefore}
     >
-      <S.Label fontStyle={fontStyle}>About</S.Label>
+      <S.Label fontStyle={fontStyle}>{selectValue}</S.Label>
       <S.SelectOptions show={isDropdown}>
-        {data.map((datum, index) => (
-          <S.Option key={index}>{datum.name}</S.Option>
+        {data.map((item) => (
+          <S.Option
+            key={item.id}
+            id={item.id}
+            value={item.title}
+            onClick={handleOptionChange}
+          >
+            {item.title}
+          </S.Option>
         ))}
       </S.SelectOptions>
     </S.SelectBox>
@@ -45,9 +50,12 @@ const CustomSelect = ({
 
 export default CustomSelect;
 
-// data에 담겨있는 객체에 대한 propType 지정 필요
 CustomSelect.propTypes = {
   data: PropTypes.array,
   fontStyle: PropTypes.string,
   isBefore: PropTypes.bool,
+};
+
+CustomSelect.defaultProps = {
+  isBefore: true,
 };

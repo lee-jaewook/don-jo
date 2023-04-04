@@ -1,48 +1,91 @@
-import React, { useState } from "react";
-import { useInput } from "../../../../hooks/useInput";
+import React, { useEffect, useState } from "react";
+import * as S from "./style";
 import BasicTitle from "../../../Common/BasicTitle";
 import EmojiPicker from "emoji-picker-react";
-import { FiChevronDown } from "react-icons/fi";
-import * as S from "./style";
+import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown.js";
 import BasicInput from "../../../Common/BasicInput";
 import BasicButton from "../../../Common/BasicButton";
 import BasicTextarea from "../../../Common/BasicTextarea";
+import { supportApi } from "../../../../api/support";
+import sendToastMessage from "../../../../utils/sendToastMessage";
 
 const DonationForm = () => {
   const PricePerData = [1, 2, 3, 4, 5];
-  const [selectedEmoji, setSelectedEmoji] = useState("💕"); // user별 default emoji 설정
-  const [emojiName, onChangeEmojiName] = useInput("Heart"); // user별 default emoji 이름 설정
-  const [currentPrice, onChangeCurrentPrice] = useInput(1); //// user별 default 가격 설정
-  const [thankMessage, onChangeThankMessage] = useInput(""); // user별 default emoji 이름 설정
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [result, setResult] = useState({});
+  const { donationEmoji, donationName, pricePerDonation, thankMsg } = result;
+
   const handleSetShowEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
+  const handleOnChangeInput = (e) => {
+    const { id, value } = e.target;
+    setResult({
+      ...result,
+      [id]: value,
+    });
+  };
+
+  const handleOnChangeCurrentPrice = (e) => {
+    const { value } = e.target;
+    setResult({ ...result, pricePerDonation: Number(value) });
+  };
+
   const handleOnClickEmoji = (item) => {
-    console.log(item);
-    setSelectedEmoji(item.emoji);
-    onChangeEmojiName(item.names[0]);
+    setResult({
+      ...result,
+      donationEmoji: item.emoji,
+      donationName: item.names[0],
+    });
+
     setShowEmojiPicker(false);
   };
 
-  const handleOnClickButton = () => {
-    console.log("save donation settings");
+  const handleOnClickButton = async () => {
+    if (!donationEmoji || !donationName || !thankMsg) {
+      sendToastMessage("Please enter all settings.", "error");
+      return;
+    }
+
+    try {
+      await supportApi.updateDonationSettings(result);
+      sendToastMessage("✨ Saved successfully.");
+    } catch (error) {
+      sendToastMessage("[Save failed]: Contact your administrator.", "error");
+    }
   };
+
+  const getDonationSettingsData = async () => {
+    try {
+      const { data } = await supportApi.getDonationSettings();
+      setResult(data);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getDonationSettingsData();
+  }, []);
 
   return (
     <S.FormWrapper>
-      <BasicTitle text="Choose your Emoji" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Choose your Emoji" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
-        Replace "{emojiName}" with anything you like.
+        Replace "{donationName}" with anything you like.
       </S.FormDescription>
       <S.EmojiSettingWrapper>
         <S.EmojiButton onClick={handleSetShowEmojiPicker}>
-          {selectedEmoji}
+          {donationEmoji}
           <FiChevronDown size="16px" />
         </S.EmojiButton>
         <BasicInput
+          id="donationName"
           type="text"
-          value={emojiName}
-          handleOnChangeValue={onChangeEmojiName}
+          value={donationName || ""}
+          handleOnChangeValue={handleOnChangeInput}
         />
         {isShowEmojiPicker && (
           <S.EmojiPickerModal>
@@ -51,9 +94,13 @@ const DonationForm = () => {
         )}
       </S.EmojiSettingWrapper>
 
-      <BasicTitle text="Price per Donation" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Price per Donation" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
-        Change the default price of a coffee to an amount of your choice.
+        Change the default price of a "{donationName}" to an amount of your
+        choice.
       </S.FormDescription>
 
       <S.RadioGroup>
@@ -65,28 +112,34 @@ const DonationForm = () => {
                 type="radio"
                 name="price"
                 value={item}
-                onChange={onChangeCurrentPrice}
-                defaultChecked={item === currentPrice}
+                onChange={handleOnChangeCurrentPrice}
+                checked={item === pricePerDonation}
               />
               <S.RadioLabel htmlFor={`dollar${item}`}>${item}</S.RadioLabel>
             </S.RadioWrapper>
           ))}
       </S.RadioGroup>
-      <BasicTitle text="Thank you message" />
+      <S.RequiredInputWrapper>
+        <BasicTitle text="Thank you message" />
+        <S.RequiredIcon>*</S.RequiredIcon>
+      </S.RequiredInputWrapper>
       <S.FormDescription>
         This will be visible after the payment and in the receipt email. Write a
         personable thank you message, and include any rewards if you like.
       </S.FormDescription>
+
       <BasicTextarea
+        id="thankMsg"
         placeholder="Send message"
-        handleOnChangeValue={onChangeThankMessage}
+        handleOnChangeValue={handleOnChangeInput}
+        value={thankMsg}
       />
 
       <S.ButtonWrapper>
         <BasicButton
           text="Save"
           handleOnClickButton={handleOnClickButton}
-          color="black"
+          color="var(--color-primary)"
         />
       </S.ButtonWrapper>
     </S.FormWrapper>

@@ -1,4 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import BlackHanSans from "../assets/fonts/BlackHanSans.ttf";
+import DoHyeon from "../assets/fonts/DoHyeon.ttf";
+import Jua from "../assets/fonts/Jua.ttf";
+import SunFlower from "../assets/fonts/Sunflower.ttf";
 import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
@@ -62,15 +66,46 @@ const GlobalStyle = createGlobalStyle`
     src: url(https://fonts.gstatic.com/s/redhatdisplay/v14/8vIf7wUr0m80wwYf0QCXZzYzUoTK8RZQvRd-D1NYbouRQk8z-A.woff2) format('woff2');
   }   
 
+
+ /** 버튼 생성시 사용되는 스타일 폰트  **/
+  @font-face {
+        font-family: 'Black Han Sans';
+        src: local('BlackHanSans'), local('BlackHanSans');
+        font-style: normal;
+        src: url(${BlackHanSans}) format('truetype');
+  }
+
+  @font-face {
+        font-family: 'DoHyeon';
+        src: local('DoHyeon'), local('DoHyeon');
+        font-style: normal;
+        src: url(${DoHyeon}) format('truetype');
+  }
+
+  @font-face {
+        font-family: 'Jua';
+        src: local('Jua'), local('Jua');
+        font-style: normal;
+        src: url(${Jua}) format('truetype');
+  }
+
+  @font-face {
+        font-family: 'SunFlower';
+        src: local('SunFlower'), local('SunFlower');
+        font-style: normal;
+        src: url(${SunFlower}) format('truetype');
+  }
+
   html {
   --color-text: #222222;
   --color-text-secondary: #666666;
   --color-text-third: #999999;
-  --color-primary: #222222;
+  --color-primary: #000000;
   --color-background: #FFFFFF;
   --color-background-secondary: #EAEAEA;
   --color-modal: #F7F7F7;
   --color-placeholder: #BBBBBB;
+  --color-disabled : #DDDDDD;
 
   font-size: 1rem;
 }
@@ -86,7 +121,7 @@ body {
 
 a{
   text-decoration: none;
-  color: inherit;
+  color: var(--color-text);
 }
 
 *{

@@ -11,6 +11,18 @@ export const Textarea = styled.textarea`
   font-size: 1rem;
 
   &:hover {
-    border: 0.0625rem solid black;
+    border: 0.0625rem solid var(--color-primary);
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+
+    ::placeholder {
+      color: #BBBBBB;
+    }
+  `}
 `;

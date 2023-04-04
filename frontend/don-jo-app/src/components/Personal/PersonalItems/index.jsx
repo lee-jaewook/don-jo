@@ -1,58 +1,153 @@
 import * as S from "./style";
 import ItemCard from "./ItemsCard";
-import { itemList } from "./dummyData";
 import { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
+import AddItemModal from "../../Common/Modal/AddItemModal";
+import { useSelector } from "react-redux";
+import ShowMoreButton from "../../Common/ShowMoreButton";
+import { itemApi } from "../../../api/items";
+import PropTypes from "prop-types";
+import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
+import { useNavigate, useParams } from "react-router";
+import { PulseLoader } from "react-spinners";
 
-//현재 로그인한 유저 더미 데이터
-const loginUser = {
-  memberAddress: "memberaddress",
-  nickname: "taehyun",
-};
+const PersonalItems = ({ isOwner, itemId }) => {
+  const navigate = useNavigate();
+  const { pageName } = useParams();
+  const [isShowDetailModal, setIsShowDetailModal] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-//해당 페이지 사람 더미 데이터
-const pageOwner = {
-  memberAddress: "memberaddress",
-  profileImgPath:
-    "https://img.insight.co.kr/static/2023/01/06/700/img_20230106141320_ai905341.webp",
-  backgroundImgPath:
-    "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/Q5WX26BXPG3CB5COPKO6AU2P54.png",
-  nickname: "Robert Downey Jr.",
-  introduction:
-    "This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. This is Example introduction. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
-  numSupporters: 16000,
-  socialList: [
-    "https://www.youtube.com/@SamsungKorea",
-    "https://velog.io/@taebong1012",
-    "https://github.com/taebong1012",
-  ],
-};
-
-const PersonalItems = () => {
-  //로그인 유저가 페이지 주인인지 확인
-  const [isOwner, setIsOwner] = useState(false);
   useEffect(() => {
-    setIsOwner(loginUser.memberAddress === pageOwner.memberAddress);
-  }, []);
+    if (!isShowDetailModal) {
+      navigate(`/${pageName}`);
+    }
+  }, [isShowDetailModal]);
 
-  return (
-    <S.Container>
-      <S.Title>This is my Items</S.Title>
+  const ItemIdParamsExist = () => {
+    if (itemId) {
+      return (
+        <ItemDetailModal
+          uid={itemId}
+          handleSetShowModal={setIsShowDetailModal}
+          handleOnClickButton={() => {
+            console.log("흠좀무");
+          }}
+        />
+      );
+    }
+  };
+
+  //현재 페이지의 멤버 지갑주소 정보
+  const pageMemberAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  ).toLowerCase();
+
+  const [pageNum, setPageNum] = useState(0);
+  const PAGE_SIZE = 6;
+  const [itemList, setItemList] = useState([]);
+  const [hasMore, setIsEnd] = useState(false);
+  const [isOpenAddItemModal, setIsOpenAddItemModal] = useState(false);
+
+  const getItemList = async () => {
+    try {
+      if (pageMemberAddress !== "") {
+        const { data } = await itemApi.getItemList(
+          pageMemberAddress,
+          pageNum,
+          PAGE_SIZE
+        );
+        setPageNum((prev) => prev + 1);
+        setItemList((prev) => [...prev, ...(data.itemList || [])]);
+        setIsEnd(data.hasMore);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getItemList();
+  }, [pageMemberAddress]);
+
+  const handleOnClickShowMoreButton = () => {
+    console.log("Show More");
+    getItemList();
+  };
+
+  const OwnerOrHasItemList = () => {
+    return (
       <S.CardContainer>
+        <ItemIdParamsExist />
         {isOwner && (
-          <S.AddCard onClick={() => {}}>
+          <S.AddCard
+            onClick={() => {
+              setIsOpenAddItemModal(true);
+            }}
+          >
             <S.IconWrapper>
               <FiPlus color="white" size={30} />
             </S.IconWrapper>
           </S.AddCard>
         )}
 
-        {itemList.map((item, i) => {
-          return <ItemCard key={i} item={item} isOwner={isOwner} />;
+        {itemList.map((item) => {
+          if (!item.closed) {
+            return <ItemCard key={item.id} item={item} isOwner={isOwner} />;
+          } else {
+            return null;
+          }
         })}
       </S.CardContainer>
+    );
+  };
+
+  const Nothing = () => {
+    return <S.Nothing>There's no items 🥲</S.Nothing>;
+  };
+
+  const Contents = () => {
+    return (
+      <>
+        {isOwner || itemList.length !== 0 ? (
+          <OwnerOrHasItemList />
+        ) : (
+          <Nothing />
+        )}
+
+        {hasMore && (
+          <ShowMoreButton handleOnClickButton={handleOnClickShowMoreButton} />
+        )}
+
+        {isOpenAddItemModal && (
+          <AddItemModal
+            handleSetShowModal={setIsOpenAddItemModal}
+            whichApiChoose={true}
+          />
+        )}
+      </>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <S.LoadingContainer>
+        <PulseLoader color="var(--color-primary)" />
+      </S.LoadingContainer>
+    );
+  };
+
+  return (
+    <S.Container>
+      <S.Title>This is my Items</S.Title>
+
+      {isLoading ? <Loading /> : <Contents />}
     </S.Container>
   );
 };
 
 export default PersonalItems;
+
+PersonalItems.propTypes = {
+  isOwner: PropTypes.bool,
+};

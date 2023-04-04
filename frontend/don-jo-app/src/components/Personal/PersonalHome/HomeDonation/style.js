@@ -51,8 +51,17 @@ export const CountInput = styled.input`
   font-size: 1rem;
 
   &:hover {
-    border: 1px solid black;
+    border: 1px solid var(--color-primary);
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #BBBBBB;
+  `}
 
   @media screen and (max-width: 48rem) {
     max-width: unset;
@@ -68,9 +77,18 @@ export const RoundBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.color || "var(--color-primary)"};
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border: 2px solid var(--color-primary);
   margin-left: 0.25rem;
+
+  ${(props) =>
+    props.disabled &&
+    `
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+    border-color: var(--color-disabled);
+  `}
 `;
 
 export const RoundBtnWrapper = styled.div`

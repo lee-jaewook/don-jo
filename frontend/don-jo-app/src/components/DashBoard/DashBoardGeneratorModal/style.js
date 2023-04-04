@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 export const PreViewWrap = styled.div`
+  position: relative;
+  display: flex;
   width: 100%;
+  min-height: 12.5rem;
   margin-bottom: 2rem;
-  height: 7.5rem;
   background-color: black;
   border-radius: 1.25rem;
-  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ContentWrap = styled.div`
@@ -14,14 +18,19 @@ export const ContentWrap = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const PreView = styled.div`
-  position: absolute;
-  left: 5rem;
-  top: 2.25rem;
-  background-color: white;
-  border-radius: 1.5rem;
+export const PreView = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  width: 13.5625rem;
   height: 3rem;
-  width: calc(100% - 156px);
+  background-color: ${(props) => props.color || "#F02C7E"};
+  border-radius: 1.5rem;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const GridBox = styled.div`
@@ -96,4 +105,50 @@ export const ButtonContent = styled.div`
   width: 100%;
   height: 100%;
   max-width: 17.5rem;
+`;
+
+export const EmojiLabel = styled.label`
+  font-size: 1.5rem;
+  margin-right: 0.125rem;
+`;
+
+export const ButtonLabel = styled.label`
+  font-family: ${(props) => props.font || "RobotoMedium"};
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: white;
+`;
+
+export const CopyButton = styled.button`
+  display: flex;
+  width: 100%;
+  font-weight: 500;
+  color: var(--color-text-third);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+  label {
+    margin-left: 0.5rem;
+  }
+`;
+
+export const CodeBox = styled.textarea`
+  font-family: "RobotoRegular";
+  width: calc(100% - 2.5rem);
+  margin: 1.25rem;
+  border-radius: 1.25rem;
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  background-color: #333333;
+  padding: 1rem;
+  border: none;
+  overflow: auto;
+  /* resize: none; */
 `;

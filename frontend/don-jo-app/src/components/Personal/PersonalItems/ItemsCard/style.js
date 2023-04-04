@@ -19,7 +19,9 @@ export const ItemImg = styled.div`
   background-image: ${(props) => {
     return props.imgPath === ""
       ? "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTJtcqqYSIbVJbT4MV6mWW50ICsYn3azyn0w&usqp=CAU)"
-      : "url(" + props.imgPath + ")";
+      : "url(https://don-jo.s3.ap-northeast-2.amazonaws.com/" +
+          props.imgPath +
+          ")";
   }};
   width: 100%;
   height: 11.25rem;
@@ -78,12 +80,15 @@ export const BuyBtn = styled.button`
   color: white;
   border: 0.0625rem solid;
 
-  border-color: ${(props) => (props.color ? props.color : "2px solid black")};
-  background-color: ${(props) => (props.color ? props.color : "black")};
+  border-color: ${(props) =>
+    props.color ? props.color : "2px solid var(--color-primary)"};
+  background-color: ${(props) =>
+    props.color ? props.color : "var(--color-primary)"};
 
   &:hover {
-    border-color: ${(props) => (props.color ? props.color : "black")};
-    color: ${(props) => (props.color ? props.color : "black")};
+    border-color: ${(props) =>
+      props.color ? props.color : "var(--color-primary)"};
+    color: ${(props) => (props.color ? props.color : "var(--color-primary)")};
     background-color: white;
   }
 

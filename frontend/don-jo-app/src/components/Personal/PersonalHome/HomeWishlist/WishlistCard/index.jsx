@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
+import { calculateEth } from "../../../../../utils/calculateEth";
 
 const WishlistCard = ({ content }) => {
   // 진행 퍼센티지 계산
@@ -9,10 +10,12 @@ const WishlistCard = ({ content }) => {
     setPercentage((content.collectedAmount / content.totalAmount) * 100);
   }, []);
 
+  const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
   return (
     <S.Container>
       <S.TitleContainer>
-        <S.Img imgPath={content.imgPath} />
+        <S.Img imgPath={S3URL + content.imgPath} />
         <S.TitleText>{content.title}</S.TitleText>
       </S.TitleContainer>
       <S.GaugeBarContainer>
@@ -21,10 +24,10 @@ const WishlistCard = ({ content }) => {
       </S.GaugeBarContainer>
       <S.AmountContainer>
         <S.CollectedAmount>
-          {content.collectedAmount.toFixed(3)}
+          {calculateEth(content.collectedAmount)}
         </S.CollectedAmount>
         <S.TotalAmount>/{content.totalAmount.toFixed(3)}</S.TotalAmount>
-        <S.Unit>eth</S.Unit>
+        <S.Unit>matic</S.Unit>
       </S.AmountContainer>
     </S.Container>
   );

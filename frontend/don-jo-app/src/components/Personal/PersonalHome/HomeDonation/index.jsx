@@ -2,27 +2,34 @@ import { useEffect, useState } from "react";
 import * as S from "./style";
 import BasicTextarea from "../../../Common/BasicTextarea";
 import BasicButton from "../../../Common/BasicButton";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { FiMinus } from "@react-icons/all-files/fi/FiMinus.js";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
+import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { donation } from "../../../../utils/transactionFunc/donation";
+import { priceApi } from "../../../../api/price";
 
-//해당 페이지의 후원 세팅
-const donationSetting = {
-  pricePerDonation: 3,
-  donationEmoji: "🍪",
-  donationName: "MyCookie",
-  thankMsg: "Thanks for ur donation~",
-};
-
-const HomeDonation = () => {
+const HomeDonation = ({ donationSettingData, isOwner }) => {
   const [count, setCount] = useState(1);
   const [msg, setMsg] = useState("");
   const [btnText, setBtnText] = useState("");
   const [donationAmount, setDonationAmount] = useState(0);
 
+  //현재 페이지의 멤버 닉네임
+  const pageMemberNickname = useSelector((state) => state.memberInfo.nickname);
+  //현재 페이지의 멤버 지갑 주소
+  const pageMemberWalletAddress = useSelector(
+    (state) => state.memberInfo.memberAddress
+  );
+
   const DecreaseBtn = () => {
     return (
       <div style={{ margin: "0 auto" }}>
-        <S.RoundBtn onClick={decreaseCount}>
-          <FiMinus color="white" size={22} />
+        <S.RoundBtn onClick={decreaseCount} disabled={isOwner}>
+          <FiMinus
+            color={isOwner ? "white" : "var(--color-primary)"}
+            size={22}
+          />
         </S.RoundBtn>
       </div>
     );
@@ -30,8 +37,8 @@ const HomeDonation = () => {
 
   const IncreaseBtn = () => {
     return (
-      <S.RoundBtn onClick={increaseCount}>
-        <FiPlus color="white" size={22} />
+      <S.RoundBtn onClick={increaseCount} disabled={isOwner}>
+        <FiPlus color={isOwner ? "white" : "var(--color-primary)"} size={22} />
       </S.RoundBtn>
     );
   };
@@ -53,27 +60,37 @@ const HomeDonation = () => {
     setMsg(e.target.value);
   };
 
-  const handleOnClickDonate = () => {};
+  const handleOnClickDonate = async () => {
+    const { data } = await priceApi.getItemDetail();
+    //후원하는 api
+    const item = {
+      price: donationAmount * data,
+      seller: pageMemberWalletAddress,
+      sendMsg: msg,
+    };
+    donation(item);
+  };
 
   useEffect(() => {
-    const donationAmount = donationSetting.pricePerDonation * count;
+    const donationAmount = donationSettingData.pricePerDonation * count;
     setDonationAmount(donationAmount);
     setBtnText("Donate $" + String(donationAmount));
-  }, [count, donationSetting.pricePerDonation]);
+  }, [count, donationSettingData.pricePerDonation]);
 
   return (
     <S.Container>
-      <S.Title>Buy Robert Downy Jr.</S.Title>
+      <S.Title>Buy {pageMemberNickname}</S.Title>
       <S.Card>
         <S.ImojiContainer>
-          <S.Imoji>{donationSetting.donationEmoji}</S.Imoji>
-          <S.ImojiTitle>{donationSetting.donationName}</S.ImojiTitle>
+          <S.Imoji>{donationSettingData.donationEmoji}</S.Imoji>
+          <S.ImojiTitle>{donationSettingData.donationName}</S.ImojiTitle>
         </S.ImojiContainer>
         <S.CounterContainer>
           <S.CountInput
             type="number"
             value={count}
             onChange={handleOnChangeCount}
+            disabled={isOwner}
           ></S.CountInput>
           <S.RoundBtnWrapper>
             <DecreaseBtn />
@@ -83,6 +100,8 @@ const HomeDonation = () => {
         <BasicTextarea
           handleOnChangeValue={handleOnChangeMsg}
           placeholder="Send a message"
+          value={msg}
+          disabled={isOwner}
         />
         <S.BasicButtonWrapper>
           <BasicButton
@@ -90,6 +109,7 @@ const HomeDonation = () => {
             color="var(--color-primary)"
             handleOnClickButton={handleOnClickDonate}
             isBackground={true}
+            isDisabled={isOwner}
           />
         </S.BasicButtonWrapper>
       </S.Card>
@@ -98,3 +118,13 @@ const HomeDonation = () => {
 };
 
 export default HomeDonation;
+
+HomeDonation.propTypes = {
+  donationSettingData: PropTypes.shape({
+    donationEmoji: PropTypes.string.isRequired,
+    donationName: PropTypes.string.isRequired,
+    pricePerDonation: PropTypes.number,
+    thankMsg: PropTypes.string.isRequired,
+  }).isRequired,
+  isOwner: PropTypes.bool,
+};

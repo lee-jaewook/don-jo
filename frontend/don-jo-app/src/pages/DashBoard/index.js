@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
+import * as S from "./style";
 import { useMediaQuery } from "react-responsive";
 import { useLocation } from "react-router-dom";
 import { Desktop } from "../../components/Common/Template";
 import DashBoardContent from "../../components/DashBoard/DashBoardContent";
 import NavBar from "../../components/DashBoard/NavBar";
-import * as S from "./style";
+import { colorSet } from "../../data/dashboard";
+import { useSelector } from "react-redux";
+
 const DashBoard = () => {
   const location = useLocation();
+  const themeColor = useSelector((state) => state.member.themeColor);
   const isTablet = useMediaQuery({ maxWidth: 1280 });
   const [isToggleStatus, setToggleClassName] = useState(false);
 
@@ -23,6 +27,11 @@ const DashBoard = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     document.body.style.overflow = "unset";
   }, [location.pathname]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--color-primary", colorSet[themeColor]);
+  });
 
   return (
     <S.Container>

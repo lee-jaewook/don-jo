@@ -1,24 +1,22 @@
 import * as S from "./style";
-import PropTypes from "prop-types";
-import { IoIosLink } from "react-icons/io";
-import {
-  IoLogoBehance,
-  IoLogoCodepen,
-  IoLogoDropbox,
-  IoLogoFacebook,
-  IoLogoGithub,
-  IoLogoGitlab,
-  IoLogoInstagram,
-  IoLogoLinkedin,
-  IoLogoPinterest,
-  IoLogoTiktok,
-  IoLogoTumblr,
-  IoLogoTwitter,
-  IoLogoYoutube,
-} from "react-icons/io5";
+import { IoIosLink } from "@react-icons/all-files/io/IoIosLink.js";
+import { IoLogoBehance } from "@react-icons/all-files/io5/IoLogoBehance.js";
+import { IoLogoCodepen } from "@react-icons/all-files/io5/IoLogoCodepen";
+import { IoLogoDropbox } from "@react-icons/all-files/io5/IoLogoDropbox";
+import { IoLogoFacebook } from "@react-icons/all-files/io5/IoLogoFacebook";
+import { IoLogoGithub } from "@react-icons/all-files/io5/IoLogoGithub";
+import { IoLogoGitlab } from "@react-icons/all-files/io5/IoLogoGitlab";
+import { IoLogoInstagram } from "@react-icons/all-files/io5/IoLogoInstagram";
+import { IoLogoLinkedin } from "@react-icons/all-files/io5/IoLogoLinkedin";
+import { IoLogoPinterest } from "@react-icons/all-files/io5/IoLogoPinterest";
+import { IoLogoTiktok } from "@react-icons/all-files/io5/IoLogoTiktok";
+import { IoLogoTumblr } from "@react-icons/all-files/io5/IoLogoTumblr";
+import { IoLogoTwitter } from "@react-icons/all-files/io5/IoLogoTwitter";
+import { IoLogoYoutube } from "@react-icons/all-files/io5/IoLogoYoutube";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const ExternalLink = ({ socialList }) => {
+const ExternalLink = () => {
   const website = [
     {
       name: "behance",
@@ -79,22 +77,30 @@ const ExternalLink = ({ socialList }) => {
   ];
 
   const [iconList, setIconList] = useState([]);
+  const socialList = useSelector((state) => state.memberInfo.socialList);
 
   //해당 사이트에 맞는 로고 저장
   const matchLogo = () => {
+    const tmp = [];
+
     for (let socialListIndex in socialList) {
-      for (let websiteIndex in website) {
-        if (socialList[socialListIndex].includes(website[websiteIndex].name)) {
-          setIconList((prev) => [...prev, website[websiteIndex].logo]);
-          break;
+      if (socialList[socialListIndex] !== "") {
+        for (let websiteIndex in website) {
+          if (
+            socialList[socialListIndex].includes(website[websiteIndex].name)
+          ) {
+            tmp.push(website[websiteIndex].logo);
+            break;
+          }
         }
       }
     }
+    setIconList(tmp);
   };
 
   useEffect(() => {
     matchLogo();
-  }, []);
+  }, [socialList]);
 
   const handleOpenNewTab = (url) => {
     window.open(url);
@@ -102,7 +108,7 @@ const ExternalLink = ({ socialList }) => {
 
   return (
     <div>
-      {socialList.length !== 0 && (
+      {iconList.length !== 0 ? (
         <S.Container>
           {iconList.map((icon, i) => {
             return (
@@ -117,13 +123,9 @@ const ExternalLink = ({ socialList }) => {
             );
           })}
         </S.Container>
-      )}
+      ) : null}
     </div>
   );
 };
 
 export default ExternalLink;
-
-ExternalLink.propTypes = {
-  socialList: PropTypes.array.isRequired,
-};
