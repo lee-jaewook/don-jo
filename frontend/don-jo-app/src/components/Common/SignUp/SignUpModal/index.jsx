@@ -28,7 +28,7 @@ export const SignUpModal = ({
   profileImgPath,
   setProfileImgPath,
 }) => {
-  const { nickName, pageName } = userInfo;
+  const { nickname, pageName } = userInfo;
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -87,15 +87,15 @@ export const SignUpModal = ({
 
       <S.ContentWrap>
         <S.RequiredInputWrapper>
-          <BasicTitle text="Nickname" />
+          <BasicTitle text="NickName" />
           <S.RequiredIcon>*</S.RequiredIcon>
         </S.RequiredInputWrapper>
         <BasicInput
-          id="nickName"
+          id="nickname"
           type="text"
-          value={nickName}
+          value={nickname}
           handleOnChangeValue={handleInputChange}
-          placeholder="Nickname"
+          placeholder="NickName"
           required
         />
       </S.ContentWrap>
