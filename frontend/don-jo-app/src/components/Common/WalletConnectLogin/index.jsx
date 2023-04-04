@@ -11,14 +11,14 @@ import {
   // polygon,
   // sepolia,
 } from "wagmi/chains";
-import Auth from "./Auth"
+import Auth from "./Auth";
 
 const projectId = "bff442f05c60a67faf40efa21f494f0d";
 
 // 2. Configure wagmi client
 const chains = [
   //mainnet,
-  polygonMumbai
+  polygonMumbai,
   // polygon,
 ];
 
@@ -35,10 +35,9 @@ const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 // 4. Wrap your app with WagmiProvider and add <Web3Modal /> compoennt
 const WalletConnectLogin = () => {
-
   return (
     <>
-      <Auth/>
+      <Auth />
       <Web3Button icon={"hide"} label={"Wallet Connect"} />
 
       <Web3Modal
