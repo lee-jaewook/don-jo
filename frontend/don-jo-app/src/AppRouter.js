@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import React, { useEffect, Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +24,15 @@ const PrivateRoutes = ({ isLogin, component }) => {
   return component;
 };
 
+const Layout = () => {
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
+};
+
 const AppRouter = () => {
   const dispatch = useDispatch();
 
@@ -39,26 +49,27 @@ const AppRouter = () => {
   return (
     <Router>
       <Suspense fallback={null}>
-        <Header />
         <Routes>
-          <Route path="/" element={<Intro />} />
-          <Route path="/:pageName" element={<Personal />} />
-          <Route path="/:pageName/items/:itemId" element={<Personal />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoutes
-                isLogin={isLogin}
-                component={<Navigate replace to="/dashboard/home" />}
-              />
-            }
-          />
-          <Route
-            path="/dashboard/:category"
-            element={
-              <PrivateRoutes isLogin={isLogin} component={<DashBoard />} />
-            }
-          />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Intro />} />
+            <Route path="/:pageName" element={<Personal />} />
+            <Route path="/:pageName/items/:itemId" element={<Personal />} />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoutes
+                  isLogin={isLogin}
+                  component={<Navigate replace to="/dashboard/home" />}
+                />
+              }
+            />
+            <Route
+              path="/dashboard/:category"
+              element={
+                <PrivateRoutes isLogin={isLogin} component={<DashBoard />} />
+              }
+            />
+          </Route>
           <Route path="*" element={<Error />} />
         </Routes>
         <Footer />

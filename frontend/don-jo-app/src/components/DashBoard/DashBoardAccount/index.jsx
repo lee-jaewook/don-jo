@@ -8,7 +8,7 @@ import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
 import { memberApi } from "../../../api/member";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfileImg, setThemeColor } from "../../../stores/member";
+import { setMemberAccount } from "../../../stores/member";
 import sendToastMessage from "../../../utils/sendToastMessage";
 
 const PROFILE_TYPE = "img/profile";
@@ -149,8 +149,14 @@ const DashBoardAccount = () => {
       const { status } = await memberApi.updateUserInfo(myAccount);
       if (status === 200) {
         sendToastMessage("✨ Saved successfully.");
-        dispatch(setProfileImg({ profileImagePath: myAccount.profileImgPath }));
-        dispatch(setThemeColor({ themeColor: themeColor }));
+        dispatch(
+          setMemberAccount({
+            pageName: myAccount.pageName,
+            nickName: myAccount.nickname,
+            themeColor: themeColor,
+            profileImagePath: myAccount.profileImgPath,
+          })
+        );
       }
     } catch (error) {
       console.log("error: ", error);

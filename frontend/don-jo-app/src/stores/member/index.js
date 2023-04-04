@@ -36,15 +36,19 @@ export const memberSlice = createSlice({
       state.walletAddress = "";
     },
     setIsMember(state, action) {
-      console.log(action)
-      state.isMember = action.payload
+      console.log(action);
+      state.isMember = action.payload;
     },
+
     setProfileImg(state, action) {
       state.profileImagePath = action.payload.profileImagePath;
     },
 
-    setThemeColor(state, action) {
+    setMemberAccount(state, action) {
+      state.pageName = action.payload.pageName;
+      state.nickName = action.payload.nickName;
       state.themeColor = action.payload.themeColor;
+      state.profileImagePath = action.payload.profileImagePath;
     },
   },
 });
@@ -57,7 +61,7 @@ export const {
   setLoading,
   setConnected,
   setProfileImg,
-  setThemeColor,
+  setMemberAccount,
 } = memberSlice.actions;
 
 export default memberSlice.reducer;

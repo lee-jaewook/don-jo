@@ -14,7 +14,6 @@ import { checkItemValidation } from "../../../../utils/validation/checkItemValid
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
-import "react-toastify/dist/ReactToastify.css";
 /**
  * 아이템 추가/수정 모달
  * @param {function} handleSetShowModal - Modal을 닫는 함수

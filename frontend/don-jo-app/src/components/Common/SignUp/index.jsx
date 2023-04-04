@@ -14,7 +14,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const dispatch = useDispatch();
   const IMAGE_TYPE = "img/item";
 
-  const { address, isConnected } = useAccount();
+  const address = useAccount()[0];
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(isShowSignUp);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
 
@@ -145,7 +145,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
 export default SignUp;
 
 SignUp.propTypes = {
-  isShowSignUp: PropTypes.func.isRequired,
+  isShowSignUp: PropTypes.bool.isRequired,
   setIsShowSignUp: PropTypes.func.isRequired,
   pageName: PropTypes.string,
 };

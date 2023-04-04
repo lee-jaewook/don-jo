@@ -206,7 +206,7 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
-            <S.UnitWrap>eth</S.UnitWrap>
+            <S.UnitWrap>MATIC</S.UnitWrap>
           </S.SeparationContainer>
         </S.ContentWrap>
 

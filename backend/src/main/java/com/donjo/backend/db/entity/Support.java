@@ -54,6 +54,6 @@ public class Support {
     @Column
     private LocalDateTime arriveTimeStamp;
     // 후원 금액
-    @Column(precision = 10, scale = 3)
+    @Column(precision = 13, scale = 6)
     private Double amount; // ether
 }

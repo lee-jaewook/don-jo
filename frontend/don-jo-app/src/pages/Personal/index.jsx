@@ -28,6 +28,8 @@ const Personal = () => {
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
 
+  const isLogin = useSelector((state) => state.member.isLogIn);
+
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
   const loginUserAddress = useSelector(
@@ -59,15 +61,18 @@ const Personal = () => {
 
   //로그인 유저가 페이지 주인인지 확인
   useEffect(() => {
-    setIsOwner(
-      memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
-    );
+    if (loginUserAddress !== "") {
+      setIsOwner(
+        memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
+      );
+    }
+
     const root = document.documentElement;
     root.style.setProperty(
       "--color-primary",
       colorSet[memberInfoItemData.themeColor]
     );
-  }, [memberInfoItemData]);
+  }, [memberInfoItemData, isLogin]);
 
   useEffect(() => {
     getPageInfo();
@@ -112,6 +117,10 @@ const Personal = () => {
       console.log("[Personal Page] uploadProfileImg()...  ", error);
     }
   };
+
+  useEffect(() => {
+    console.log("isOwner: ", isOwner);
+  }, [isOwner]);
 
   return (
     <S.Container>
@@ -172,7 +181,9 @@ const Personal = () => {
           </S.SupporterContainer>
           <ExternalLink socialList={memberInfoItemData.socialList} />
           <Desktop>
-            <S.IntroductionContainer>
+            <S.IntroductionContainer
+              isShow={isOwner || memberInfoItemData.introduction ? true : false}
+            >
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
               {isOwner && (
                 <S.IntroductionEdit

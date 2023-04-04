@@ -135,15 +135,17 @@ const WishlistDetailModal = ({
           </S.Content>
         </S.WishlistContent>
         <S.ProgressBarWrapper isDashboard={isDashboard}>
+          <BasicTitle text="Collected Amount" />
           <S.ProgressBar>
             <S.ProgressState
-              currentState={result === {} ? 0 : handleCalcProgressState()}
+              // currentState={result === {} ? 0 : handleCalcProgressState()}
+              currentState={20}
             />
           </S.ProgressBar>
           <S.AmountWrapper>
             <S.ProgressAmount>{result.collectedAmount}</S.ProgressAmount>
             <S.ProgressAmount isAllAmount={true}>
-              /{result.targetAmount} <S.Eth>eth</S.Eth>
+              /{result.targetAmount} <S.Eth>MATIC</S.Eth>
             </S.ProgressAmount>
           </S.AmountWrapper>
         </S.ProgressBarWrapper>

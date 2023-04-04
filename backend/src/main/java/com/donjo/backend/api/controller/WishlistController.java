@@ -98,6 +98,7 @@ public class WishlistController {
     })
     public ResponseEntity<?> updateMemberWishlist(HttpServletRequest request, @RequestBody @Valid UpdateWishlistCond cond){
         // 헤더에 있는 토큰값으로 memberAddress 조회한 후 wishList Update
+        log.info("위시리스트 업데이트 호출");
         wishlistService.updateWishlist(memberService.getMemberAddress(request), cond);
         return ResponseEntity.status(200).build();
     }

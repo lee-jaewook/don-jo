@@ -3,6 +3,7 @@ import AppRouter from "./AppRouter";
 import { ToastContainer } from "react-toastify";
 import { projectId, ethereumClient } from "./api/wagmi/walletConnectSetting";
 import { Web3Modal } from "@web3modal/react";
+import "react-toastify/dist/ReactToastify.css";
 
 // 모바일 웹에서 올바른 영역을 잡기 위한 작업
 let vh = window.innerHeight * 0.01;

@@ -24,7 +24,6 @@ public class AddSupportCond {
     private String supportType;
 
     // TypeUid
-    @NotNull
     private Long supportTypeUid;
 
     // transaction Uid값
@@ -43,6 +42,7 @@ public class AddSupportCond {
     private String sendMsg;
 
     // 보낸 금액
+    @NotNull
     private Double amountEth;
 
     //
