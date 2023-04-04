@@ -34,6 +34,8 @@ public class FindSupportDetailPayload {
     private LocalDateTime arriveTimeStamp ;
     // 보내는 메세지
     private String sendMsg;
+    // 댓글
+    private String replyMsg;
 
     // 입력 받아 Dto에 저장
     public static FindSupportDetailPayload fromSupport(Support support, MemberItem fromMember, MemberItem toMember){
@@ -48,6 +50,7 @@ public class FindSupportDetailPayload {
                 .supportTypeUid(support.getSupportTypeUid())
                 .sendMsg(support.getSendMsg())
                 .arriveTimeStamp(support.getArriveTimeStamp())
+                .replyMsg(support.getReplyMsg())
                 .build();
         return findSupportDetailPayload;
     }

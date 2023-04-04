@@ -97,7 +97,7 @@ public class SupportController {
         return ResponseEntity.status(200).body(supportService.getSupportList(memberAddress, type, pageNum,pageSize));
     }
 
-    @GetMapping(path="/api/member/supports")
+    @GetMapping(path="/api/member/support")
     @ApiOperation(value = "서포트 상세 조회", notes = "후원 상세내역을 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
