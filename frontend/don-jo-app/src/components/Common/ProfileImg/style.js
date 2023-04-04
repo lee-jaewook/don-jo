@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import defaultProfile from "../../../assets/img/common/defaultProfile.png";
+import defaultProfile from "../../../assets/img/common/defaultProfile.svg";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
