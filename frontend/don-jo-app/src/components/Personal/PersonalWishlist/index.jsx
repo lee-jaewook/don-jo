@@ -27,15 +27,21 @@ const PersonalWishlist = ({ isOwner }) => {
   const [hasMore, setIsEnd] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getWishList = async () => {
+  const getWishList = async (isUpdated = false) => {
     try {
       const { data } = await wishlistAPI.getWishList(
         pageMemberAddress,
-        pageNum,
+        isUpdated ? 0 : pageNum,
         PAGE_SIZE
       );
-      setPageNum((prev) => prev + 1);
-      setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+
+      if (isUpdated) {
+        setWishlist(data.wishlists || []);
+        setPageNum(1);
+      } else {
+        setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+        setPageNum((prev) => prev + 1);
+      }
       setIsEnd(data.hasMore);
       setIsLoading(false);
     } catch (error) {
@@ -116,13 +122,20 @@ const PersonalWishlist = ({ isOwner }) => {
         )}
 
         {isShowWishlistAddModal && (
-          <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
+          <AddWishlistModal
+            handleSetLoading={setIsLoading}
+            handleSetShowModal={() => {
+              setIsShowWishlistAddModal(false);
+              getWishList(true);
+              document.body.style.overflow = "auto";
+            }}
+          />
         )}
 
         {isShowWishlistDetailModal && (
           <WishlistDetailModal
             handleSetShowModal={setIsShowWishlistDetailModal}
-            handleOnClickButton={() => setIsShowWishlistDetailModal(false)}
+            handleOnClickButton={setIsShowWishlistDetailModal(false)}
             uid={thisItemUID}
             isDashboard={false}
           />
