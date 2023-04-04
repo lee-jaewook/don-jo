@@ -15,7 +15,6 @@ import {
 import ApplicationHandler from "../../../../contracts/ApplicationHandler.json";
 import Web3 from "web3";
 import { supportApi } from "../../../../api/support";
-import { useAccount } from "wagmi";
 
 const ItemCard = ({ item, isOwner }) => {
   //현재 월렛커넥트와 연결되어있는 지갑 주소
@@ -68,10 +67,10 @@ const ItemCard = ({ item, isOwner }) => {
     args: [item.seller, item.id],
     overrides: {
       gasLimit: 8000000,
-      value: web3.utils.toWei(item.price.toString(), "ether")
-    }
-  })
-  const contractWrite = useContractWrite(({
+      value: web3.utils.toWei(item.price.toString(), "ether"),
+    },
+  });
+  const contractWrite = useContractWrite({
     ...config,
     onSuccess(data) {
       const donationDto = {
@@ -84,15 +83,16 @@ const ItemCard = ({ item, isOwner }) => {
         toAddress: item.seller,
         transactionHash: data.hash,
       };
-      supportApi.saveSponsorshipDetail(donationDto)
-      .then((res) => {
-        console.log("저장 성공!");
-      })
-      .catch((error) => {
-        console.log("저장 실패");
-      });
-    }
-  }))
+      supportApi
+        .saveSponsorshipDetail(donationDto)
+        .then((res) => {
+          console.log("저장 성공!");
+        })
+        .catch((error) => {
+          console.log("저장 실패");
+        });
+    },
+  });
 
   const waitForTransaction = useWaitForTransaction({
     hash: contractWrite.data?.hash,
@@ -106,11 +106,8 @@ const ItemCard = ({ item, isOwner }) => {
       );
       if (logs.length > 0) {
         const log = logs[0];
-        const id = web3.eth.abi.decodeParameters(
-          ["uint64"],
-          log.topics[1]
-        )[0];
-        console.log(data, id)
+        const id = web3.eth.abi.decodeParameters(["uint64"], log.topics[1])[0];
+        console.log(data, id);
         supportApi
           .updateSponsorshipArrived(id, data.transactionHash)
           .then((res) => {
@@ -119,7 +116,6 @@ const ItemCard = ({ item, isOwner }) => {
           .catch((error) => {
             console.log("update 실패!");
           });
-
       }
     },
   });
