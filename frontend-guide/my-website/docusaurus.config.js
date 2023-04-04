@@ -6,9 +6,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Don-jo Guide",
+  title: "Don Jo Guide",
   tagline: "Here is a basic guide to get started with Don-jo.",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon2.ico",
 
   // Set the production url of your site here
   url: "https://j8a209.p.ssafy.io",
@@ -62,6 +62,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
+      colorMode: {
+        defaultMode: "light",
+        disableSwitch: true,
+      },
+
       image: "img/docusaurus-social-card.jpg",
       navbar: {
         title: "",
