@@ -123,8 +123,8 @@ const ContractInfo = ({ transactionHash }) => {
         <S.Wrapper>
           <S.Type>Amount</S.Type>
           <div>
-            <S.Amount>{calculateEth(contractDetail.amount)}</S.Amount>
-            <S.Unit>eth</S.Unit>
+            <S.Amount>{contractDetail.amount}</S.Amount>
+            <S.Unit>matic</S.Unit>
           </div>
         </S.Wrapper>
         <S.Wrapper>
