@@ -116,6 +116,7 @@ const WishlistDetailModal = ({
           </S.Content>
         </S.WishlistContent>
         <S.ProgressBarWrapper isDashboard={isDashboard}>
+          <BasicTitle text="Collected Amount" />
           <S.ProgressBar>
             <S.ProgressState
               // currentState={result === {} ? 0 : handleCalcProgressState()}

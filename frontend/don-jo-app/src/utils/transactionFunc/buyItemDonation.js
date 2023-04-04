@@ -27,7 +27,7 @@ export const buyItemDonation = (item) => {
             console.log("valueInWei: ", valueInWei);
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
+              "0xb4787A11745AfC48D76c2E603164118502447EC6" // contract 주소
             );
 
             const tx = myContract.methods.buyItemDonation(item.seller, item.id);
@@ -38,7 +38,7 @@ export const buyItemDonation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
+                    to: "0xb4787A11745AfC48D76c2E603164118502447EC6",
                     value: valueInWei,
                     data: tx.encodeABI(),
                   },
