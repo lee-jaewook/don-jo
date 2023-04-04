@@ -5,14 +5,18 @@ import { useNavigate } from "react-router-dom";
 import CurrentSupportList from "../../components/Intro/CurrentSupportRecent";
 import DonJoTitleSvg from "../../components/Intro/DonJoTitleSvg";
 import { introContents } from "../../data/intro";
+import { useAccount } from "wagmi";
 import IntroContent from "../../components/Intro/IntroContent";
 import SignUp from "../../components/Common/SignUp";
+import sendToastMessage from "../../utils/sendToastMessage";
 const Intro = () => {
   const navigate = useNavigate();
+  const isConnected = useAccount()[1];
   const _pageName = useSelector((state) => state.member.pageName);
   const [pageName, setPageName] = useState("");
   const [isReadOnly, setReadOnly] = useState(false);
   const [isShowSignUp, setIsShowSignUp] = useState(false);
+
   const handleOnChangePageName = (e) => {
     const { value } = e.target;
     setPageName(value);
@@ -21,6 +25,8 @@ const Intro = () => {
   const handleOnClickArrowButton = () => {
     if (_pageName !== "") {
       navigate(`/${_pageName}`);
+    } else if (!isConnected) {
+      sendToastMessage("🙏 Please connect your wallet.");
     } else if (pageName !== "") {
       // 회원가입 모달
       setIsShowSignUp(true);

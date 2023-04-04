@@ -25,12 +25,12 @@ export const buyWishlistDonation = (
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            const priceInMatic = parseFloat(item.price) * 10 ** 18;
+            const priceInMatic = parseFloat(item.price) * 10 ** 15;
             const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
+              "0xb4787A11745AfC48D76c2E603164118502447EC6" // contract 주소
             );
 
             const tx = myContract.methods.buyWishlistDonation(
@@ -44,7 +44,7 @@ export const buyWishlistDonation = (
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
+                    to: "0xb4787A11745AfC48D76c2E603164118502447EC6",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
