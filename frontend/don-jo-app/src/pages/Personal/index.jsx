@@ -197,7 +197,6 @@ const Personal = () => {
               <S.Introduction>
                 <MDEditor.Markdown
                   source={memberInfoItemData.introduction}
-                  data-color-mode="light"
                 ></MDEditor.Markdown>
               </S.Introduction>
             </S.IntroductionContainer>
