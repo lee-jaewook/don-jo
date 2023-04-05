@@ -122,7 +122,6 @@ const PersonalWishlist = ({ isOwner }) => {
             handleSetShowModal={() => {
               setIsShowWishlistAddModal(false);
               getWishList(true);
-              document.body.style.overflow = "auto";
             }}
           />
         )}
