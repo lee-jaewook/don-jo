@@ -81,8 +81,8 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
             title={item.title}
             isClosed={item.closed}
             description={item.description}
-            collectedAmount={item.collectedAmount.toString()}
-            totalAmount={item.targetAmount.toString()}
+            collectedAmount={item.collectedAmount}
+            totalAmount={item.targetAmount}
             handleSetShowModal={handleOpenModal}
           />
         ))
