@@ -17,32 +17,28 @@ const WalletConnectLogin = () => {
   const memberCheck = () => {
     memberApi.checkMemberAddress(address).then(({ status }) => {
       if (status === 200) {
-        setIsShowLogin(true)
+        setIsShowLogin(true);
       } else if (status === 204) {
-        setIsShowSignUp(true)
+        setIsShowSignUp(true);
       }
     });
-  }
+  };
 
   const startClick = () => {
     if (isConnected) {
       memberCheck();
-      return
+      return;
     }
     open();
     setStartButtonStatus(true);
-  }
-
-  const isModalOpen = () => {
-    setIsShowLogin(false)
-  }
+  };
 
   useEffect(() => {
     if (isConnected && startButtonStatus) {
       memberCheck();
       setStartButtonStatus(false);
     }
-  }, [isConnected])
+  }, [isConnected]);
   return (
     <>
       <S.Startbtn onClick={startClick}>Start</S.Startbtn>
@@ -50,7 +46,7 @@ const WalletConnectLogin = () => {
         <SignUp isShowSignUp={isShowSignUp} setIsShowSignUp={setIsShowSignUp} />
       )}
       {isShowLogIn && (
-        <LogIn MemberAddress={address} isModalOpen={isModalOpen} />
+        <LogIn memberAddress={address} setIsShowLogin={setIsShowLogin} />
       )}
     </>
   );

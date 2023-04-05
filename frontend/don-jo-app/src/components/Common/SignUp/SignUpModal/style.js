@@ -77,12 +77,3 @@ export const RequiredIcon = styled.span`
   padding-bottom: 0.75rem;
   margin-left: 0.25rem;
 `;
-
-export const CancleButton = styled(Button)`
-  width: 30%;
-`;
-
-export const SignUpButton = styled(Button)`
- width: 30%;
- float: right;
-`;
