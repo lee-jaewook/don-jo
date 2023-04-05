@@ -80,8 +80,8 @@ const PersonalWishlist = ({ isOwner }) => {
                   title={wishlistItem.title}
                   imgPath={wishlistItem.imgPath}
                   description={wishlistItem.description}
-                  collectedAmount={wishlistItem.collectedAmount.toString()}
-                  totalAmount={wishlistItem.targetAmount.toString()}
+                  collectedAmount={wishlistItem.collectedAmount}
+                  totalAmount={wishlistItem.targetAmount}
                   thankMsg={wishlistItem.thankMsg}
                   handleSetShowModal={() => {
                     setThisItemUId(wishlistItem.id);
