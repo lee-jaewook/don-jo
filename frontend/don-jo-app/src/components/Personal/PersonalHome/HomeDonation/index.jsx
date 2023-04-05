@@ -7,7 +7,7 @@ import { FiPlus } from "@react-icons/all-files/fi/FiPlus.js";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { priceApi } from "../../../../api/price";
-import { useAccount } from "wagmi";
+import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { donate } from "../../../../api/wagmi/donate";
 
@@ -24,6 +24,10 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
   const pageMemberWalletAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   );
+  const network = useSwitchNetwork({
+    chainId: 80001,
+  })
+  const { chain } = useNetwork()
   
   const DecreaseBtn = () => {
     return (
@@ -64,14 +68,17 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
   };
 
   const handleOnClickDonate = async () => {
-    if (isConnected) {
+    if (!isConnected) {
+      open()
+      return
+    }
+
+    if (chain.id === 80001) {
       const { data } = await priceApi.getItemDetail();
       donate(pageMemberWalletAddress, (data * donationAmount * 0.001).toFixed(18), donationSettingData.thankMsg, msg)
     } else {
-      open()
+      network.switchNetwork()
     }
-    
-    // setPrice(data * donationAmount * 0.001)
   };
 
   useEffect(() => {

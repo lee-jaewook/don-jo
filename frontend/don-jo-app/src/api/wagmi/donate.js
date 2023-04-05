@@ -18,6 +18,7 @@ export const donate = async (pageMemberWalletAddress, price, thankmsg, message) 
       gasLimit: 8000000,
       value: web3.utils.toWei(price, "ether"),
     },
+    chainId: 80001
   });
 
   const { hash } = await writeContract(config).catch((error) => {
@@ -29,43 +30,16 @@ export const donate = async (pageMemberWalletAddress, price, thankmsg, message) 
     amountEth: parseFloat(price),
     fromAddress: account.address,
     sendMsg: message,
-    supportType: "donate",
+    supportType: "donation",
     supportTypeUid: "",
     toAddress: pageMemberWalletAddress,
     transactionHash: hash,
   };
 
-  saveDonation(donationDto)
+  await saveDonation(donationDto)
 
-  const receipt = await waitForTransaction({
-    hash,
-  }).catch((error) => {
-    sendToastMessage("Donate Fail")
-    return
-  })
-
-  const logs = receipt.logs.filter(
-    (log) =>
-      log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
-  );
-  if (logs.length > 0) {
-    const log = logs[0];
-    const id = web3.eth.abi.decodeParameters(
-      ["uint64"],
-      log.topics[1]
-    )[0];
-
-    updateDondationInfo(id, hash);
-    
-    if (thankmsg !== "") {
-      sendToastMessage(thankmsg)
-    }
-
-    return true;
-
-  } else {
-    sendToastMessage("Failed to register support record.");
-    // handleLoading(false);
+  if (thankmsg !== "") {
+    sendToastMessage(thankmsg)
   }
 }
 
@@ -74,15 +48,4 @@ const saveDonation = (donationDto) => {
     .saveSponsorshipDetail(donationDto)
     .then((res) => {})
     .catch((error) => {});
-};
-
-const updateDondationInfo = (supportUid, transactionHash) => {
-  supportApi
-    .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      sendToastMessage("✨ Success to register support record");
-    })
-    .catch((error) => {
-      sendToastMessage("Failed to register support record.");
-    });
 };

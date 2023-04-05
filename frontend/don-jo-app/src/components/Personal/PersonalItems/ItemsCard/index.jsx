@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import { itemApi } from "../../../../api/items";
 import { useSelector } from "react-redux";
-import { useAccount } from "wagmi";
+import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { buyItem } from "../../../../api/wagmi/buyItem";
 
@@ -19,6 +19,10 @@ const ItemCard = ({ item, isOwner }) => {
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   );
+  const network = useSwitchNetwork({
+    chainId: 80001,
+  })
+  const { chain } = useNetwork()
 
   useEffect(() => {
     if (isConnected) {
@@ -50,11 +54,17 @@ const ItemCard = ({ item, isOwner }) => {
   }, []);
 
   const doBuy = () => {
-    if (isConnected) {
+    if (!isConnected) {
+      open()
+      return
+    }
+
+    if (chain.id === 80001) {
       buyItem(item)
     } else {
-      open()
+      network.switchNetwork()
     }
+
   };
 
   return (

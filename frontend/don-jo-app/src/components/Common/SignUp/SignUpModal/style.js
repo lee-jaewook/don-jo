@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "../../BasicButton/style";
 
 export const ContentWrap = styled.div`
   width: 100%;
@@ -75,4 +76,13 @@ export const RequiredIcon = styled.span`
   line-height: 1.465rem;
   padding-bottom: 0.75rem;
   margin-left: 0.25rem;
+`;
+
+export const CancleButton = styled(Button)`
+  width: 30%;
+`;
+
+export const SignUpButton = styled(Button)`
+ width: 30%;
+ float: right;
 `;

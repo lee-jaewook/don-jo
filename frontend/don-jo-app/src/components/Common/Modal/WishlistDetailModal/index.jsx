@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import DashboardLoading from "../../../DashBoard/DashboardLoading";
 import { donateWishlist } from "../../../../api/wagmi/donateWishlist";
-import { useAccount } from "wagmi";
+import { useAccount, useConnect, useSwitchNetwork, useNetwork } from 'wagmi'
 import { useWeb3Modal } from "@web3modal/react";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
@@ -30,8 +30,13 @@ const WishlistDetailModal = ({
   const [price, setPrice] = useState(0);
   const [sendMsg, setSendMsg] = useState(""); // 확인 메세지
   const [isLoading, setLoading] = useState(false);
-  const { isConnected } = useAccount();
-  const { open } = useWeb3Modal();
+  const { isConnected } = useAccount()
+  const { open } = useWeb3Modal()
+  const network = useSwitchNetwork({
+    chainId: 80001,
+  })
+  const { chain } = useNetwork()
+  //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
@@ -69,22 +74,28 @@ const WishlistDetailModal = ({
   }, []);
 
   const BuyOrEdit = async () => {
-    const item = {
+    const wishlist = {
       price: price,
       id: uid,
       seller: pageMemberAddress,
-      sendMsg: sendMsg,
+      sendMsg: result.message,
     };
 
     if (isDashboard) {
       handleOnClickButton();
       return;
     }
-    if (isConnected) {
-      donateWishlist(item);
-    } else {
-      open();
+    if (!isConnected) {
+      open()
+      return
     }
+    
+    if (chain.id === 80001) {
+      donateWishlist(wishlist, sendMsg)
+    } else {
+      network.switchNetwork()
+    }
+
   };
 
   // 후원 상태바 계산을 위한 함수
