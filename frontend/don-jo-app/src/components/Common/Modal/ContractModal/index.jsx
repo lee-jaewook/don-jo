@@ -56,6 +56,55 @@ const ContractInfo = ({ transactionHash }) => {
     getSupportContent();
   };
 
+  const [formattedSendTimeStamp, setFormattedSendTimeStamp] = useState(
+    "2023-01-01T00:00:00"
+  );
+  const [formattedArrivedTimeStamp, setFormattedArrivedTimeStamp] =
+    useState("Proceeding...");
+
+  useEffect(() => {
+    //보낸 시간
+    const sendTimeStamp = new Date(contractDetail.sendTimeStamp);
+    setFormattedSendTimeStamp(
+      `${sendTimeStamp.getFullYear()}-${(sendTimeStamp.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${sendTimeStamp
+        .getDate()
+        .toString()
+        .padStart(2, "0")} ${sendTimeStamp
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${sendTimeStamp
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}:${sendTimeStamp
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}` + " UTC"
+    );
+
+    if (contractDetail.sendTimeStamp) {
+      const arriveTimeStamp = new Date(contractDetail.arriveTimeStamp);
+      setFormattedArrivedTimeStamp(
+        `${arriveTimeStamp.getFullYear()}-${(arriveTimeStamp.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${arriveTimeStamp
+          .getDate()
+          .toString()
+          .padStart(2, "0")} ${arriveTimeStamp
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${arriveTimeStamp
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}:${arriveTimeStamp
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}` + " UTC"
+      );
+    }
+  }, [contractDetail]);
+
   useEffect(() => {
     refresh();
   }, []);
@@ -150,13 +199,13 @@ const ContractInfo = ({ transactionHash }) => {
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Send:
               </label>
-              <S.TimeText>{contractDetail.sendTimeStamp}</S.TimeText>
+              <S.TimeText>{formattedSendTimeStamp}</S.TimeText>
             </S.TimeContainer>
             <S.TimeContainer>
               <label style={{ color: "var(--color-text-secondary)" }}>
                 Arrived:
               </label>
-              <S.TimeText>{contractDetail.arriveTimeStamp}</S.TimeText>
+              <S.TimeText>{formattedArrivedTimeStamp}</S.TimeText>
             </S.TimeContainer>
           </S.TextContainer>
         </S.Wrapper>
