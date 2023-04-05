@@ -30,7 +30,10 @@ const ItemDetailModal = ({
       setResult(data);
       dispatch(setCurrentItem(data));
     } catch (error) {
-      console.log("error: ", error);
+      console.log(
+        'An error occurred in ItemDetailModal. the function name is "handleGetItemDetaile".',
+        error
+      );
     } finally {
       setLoading(false);
     }
@@ -44,6 +47,9 @@ const ItemDetailModal = ({
       handleSetShowModal();
     } catch (error) {
       sendToastMessage("Delete Failed", "error");
+      console.log(
+        'An error occurred in ItemDetailModal. the function name is "handleDeleteItem".'
+      );
       console.log("[Items] Delete Error: ", error);
     } finally {
       setLoading(false);
