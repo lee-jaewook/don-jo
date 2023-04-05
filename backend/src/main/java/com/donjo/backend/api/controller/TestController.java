@@ -1,5 +1,6 @@
 package com.donjo.backend.api.controller;
 
+import com.donjo.backend.api.service.support.SupportService;
 import com.donjo.backend.config.jwt.TokenProvider;
 import com.donjo.backend.db.entity.Authority;
 import com.donjo.backend.db.entity.Member;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Api(value = "테스트 컨트롤러 (차후 삭제)")
 public class TestController {
     private final TokenProvider tokenProvider;
+    private final SupportService supportService;
 
     @Value("${eth.address}")
     String address;

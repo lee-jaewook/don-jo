@@ -6,6 +6,7 @@ import com.donjo.backend.api.dto.support.request.DonationSettingCond;
 import com.donjo.backend.api.dto.support.response.FindSupportDetailPayload;
 import com.donjo.backend.api.dto.support.response.FindSupportListPayload;
 import com.donjo.backend.api.dto.support.response.FindTop10Payload;
+import com.donjo.backend.db.entity.Support;
 
 import java.util.List;
 
@@ -41,5 +42,5 @@ public interface SupportService {
     void deleteReply(String transactionHash);
     
     // 후원 도착 업데이트
-    void updateArrivedSupport(String transactionHash, Long supportUid);
+    void updateArrivedSupport(String transactionHash, Long supportUid, Support support);
 }

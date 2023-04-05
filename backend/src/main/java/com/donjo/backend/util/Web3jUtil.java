@@ -37,14 +37,19 @@ public class Web3jUtil {
     int chainId;
 
     private ApplicationHandler applicationHandler;
+    private Web3j web3j;
 
     @PostConstruct
     public void init() {
-        applicationHandler = createContractApi();
+        web3j = createWeb3jApi();
+        applicationHandler = createContractApi(web3j);
     }
 
-    private ApplicationHandler createContractApi() {
-        Web3j web3j = Web3j.build(new HttpService(url));
+    private Web3j createWeb3jApi(){
+        return Web3j.build(new HttpService(url));
+    }
+
+    private ApplicationHandler createContractApi(Web3j web3j) {
         Credentials credentials = Credentials.create(masterPrivateKey);
 
         // 스마트 컨트랙트 주소와 가스 제공자를 설정합니다.
@@ -63,6 +68,10 @@ public class Web3jUtil {
 
     public ApplicationHandler getContractApi() {
         return applicationHandler;
+    }
+
+    public Web3j getWeb3jApi(){
+        return web3j;
     }
 
     public StaticGasProvider getGasEstimate(Web3j web3j) throws Exception{
