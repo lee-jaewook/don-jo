@@ -6,6 +6,7 @@ import BasicTitle from "../../BasicTitle";
 import BasicInput from "../../BasicInput";
 import BasicModal from "../../Modal/BasicModal";
 import { fileSizeValidator } from "../../../../utils/validation/validator";
+import BasicButton from "../../BasicButton";
 
 /**
  * 회원가입 1단계 - 프로필 등록, nickName, pageName 설정
@@ -32,7 +33,7 @@ export const SignUpModal = ({
   const handleCancleButtonClick = (e) => {
     document.body.style.overflow = "auto";
     isModelOpen(false);
-  }
+  };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -119,14 +120,11 @@ export const SignUpModal = ({
         />
       </S.ContentWrap>
 
-      <S.CancleButton
+      <BasicButton
+        text="Continue"
         color="var(--color-primary)"
-        onClick={handleCancleButtonClick}
-      >Cancle</S.CancleButton>
-      <S.SignUpButton
-        color="var(--color-primary)"
-        onClick={handleContinueButtonClick}
-      >SignUp</S.SignUpButton>
+        handleOnClickButton={handleContinueButtonClick}
+      />
     </BasicModal>
   );
 };
