@@ -73,7 +73,7 @@ public class SupportRepositorySupport {
 
     public List<Support> findEarning(String address, String type, int period) {
         // StringBuilder는 문자열을 효율적으로 다룰 수 있게 하는 클래스 JPQL을 담을 변수
-        StringBuilder jpqlBuilder = new StringBuilder("SELECT s FROM Support s WHERE s.toAddress = :address");
+        StringBuilder jpqlBuilder = new StringBuilder("SELECT s FROM Support s WHERE s.toAddress = :address AND s.arriveTimeStamp IS NOT NULL");
         // HashMap으로 변수값을 넣어줌
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("address", address);
@@ -101,7 +101,7 @@ public class SupportRepositorySupport {
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
-
+        System.out.println(jpqlBuilder.toString());
         return query.getResultList();
     }
 
