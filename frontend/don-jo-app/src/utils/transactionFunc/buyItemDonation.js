@@ -21,10 +21,7 @@ export const buyItemDonation = (item) => {
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            const priceInMatic = parseFloat(item.price) * 10 ** 18;
-            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
-            console.log("typeof valueInWei: ", typeof valueInWei);
-            console.log("valueInWei: ", valueInWei);
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
               "0xb4787A11745AfC48D76c2E603164118502447EC6" // contract 주소
@@ -55,7 +52,6 @@ export const buyItemDonation = (item) => {
                   transactionHash: txHash,
                 };
 
-                console.log("donationDto", donationDto);
                 saveDonation(donationDto);
 
                 const receiptPromise = new Promise(function (resolve, reject) {
@@ -77,18 +73,18 @@ export const buyItemDonation = (item) => {
                 );
                 if (logs.length > 0) {
                   const log = logs[0];
-                  console.log("log: ", log);
                   const id = web3.eth.abi.decodeParameters(
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  console.log("type id: ", typeof id);
                   updateDondationInfo(id, txHash);
                 } else {
                   sendToastMessage("Failed to register support record.");
                 }
               })
-              .catch((err) => console.log(err));
+              .catch((error) =>
+                console.log("An error occured in buyItemDonation. :", error)
+              );
           });
         });
     } else {
@@ -107,21 +103,23 @@ export const buyItemDonation = (item) => {
 const saveDonation = async (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {
-      console.log("저장 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("저장 실패");
+      console.log(
+        "An error occured in buyItemDonation's saveDonation func.: ",
+        error
+      );
     });
 };
 
 const updateDondationInfo = async (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      console.log("update 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("update 실패!");
+      console.log(
+        "An error occured in buyItemDonation's updateDonationInfo.: ",
+        error
+      );
     });
 };
