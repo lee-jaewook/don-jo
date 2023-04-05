@@ -23,17 +23,13 @@ const DashBoardListItem = ({
   const location = useLocation();
   const [isClickedSupportItem, setClickedSupportItem] = useState(false);
 
-  const handleSetShowItemTransactionModal = () =>
-    setClickedSupportItem((prev) => !prev);
-  return (
-    <S.ItemWrapper onClick={handleSetShowItemTransactionModal}>
-      {isClickedSupportItem && (
-        <ContractModal
-          handleSetShowModal={handleSetShowItemTransactionModal}
-          transactionHash={transactionHash}
-        />
-      )}
-
+  return isClickedSupportItem ? (
+    <ContractModal
+      handleSetShowModal={setClickedSupportItem}
+      transactionHash={transactionHash}
+    />
+  ) : (
+    <S.ItemWrapper onClick={() => setClickedSupportItem(true)}>
       {location.pathname === "/dashboard/home" && (
         <S.Icon aria-label="icon" role="img">
           {type[supportType]}
