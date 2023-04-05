@@ -33,7 +33,7 @@ public class SupportRepositorySupport {
     QSupport qSupport = QSupport.support;
 
     public Page<Support> findAllOrderByArriveTime(String supportType, String toAddress, Pageable pageable){
-        OrderSpecifier<?> orderByArriveTimeDesc = qSupport.arriveTimeStamp.desc();
+        OrderSpecifier<?> orderBySendTimeDesc = qSupport.sendTimeStamp.desc();
 
         List<Support> supportList = jpaQueryFactory
                                     .selectFrom(qSupport)
@@ -42,7 +42,7 @@ public class SupportRepositorySupport {
                                             qSupport.toAddress.eq(toAddress)
                                     )
                                     .offset(pageable.getOffset())
-                                    .orderBy(orderByArriveTimeDesc)
+                                    .orderBy(orderBySendTimeDesc)
                                     .limit(pageable.getPageSize())
                                     .fetch();
 
