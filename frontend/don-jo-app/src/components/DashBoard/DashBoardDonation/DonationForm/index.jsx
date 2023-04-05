@@ -42,7 +42,7 @@ const DonationForm = () => {
 
   const handleOnClickButton = async () => {
     if (!donationEmoji || !donationName || !thankMsg) {
-      sendToastMessage("Please enter all settings.", "error");
+      sendToastMessage("🚫 Please enter all settings.");
       return;
     }
 
@@ -59,7 +59,7 @@ const DonationForm = () => {
       const { data } = await supportApi.getDonationSettings();
       setResult(data);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] getDonationSettingsData()... ", error);
     }
   };
 

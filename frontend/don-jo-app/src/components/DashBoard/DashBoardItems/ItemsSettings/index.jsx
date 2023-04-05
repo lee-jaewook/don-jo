@@ -24,21 +24,26 @@ const ItemsSettings = () => {
   const [isClickedEdit, setClickedEdit] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const handleGetMyItemList = async (type) => {
-    const {
-      data: { itemList, hasMore },
-    } = await itemApi.getItemList(
-      memberAddress,
-      type === "update" ? 0 : pageNum,
-      PAGE_SIZE
-    );
-    setPageNum((prev) => prev + 1);
-    if (type === "update") {
-      setResult(itemList);
-      setPageNum(1);
-    } else {
-      setResult((prev) => [...prev, ...(itemList || [])]);
+    try {
+      const {
+        data: { itemList, hasMore },
+      } = await itemApi.getItemList(
+        memberAddress,
+        type === "update" ? 0 : pageNum,
+        PAGE_SIZE
+      );
+      setPageNum((prev) => prev + 1);
+
+      if (type === "update") {
+        setResult(itemList);
+        setPageNum(1);
+      } else {
+        setResult((prev) => [...prev, ...(itemList || [])]);
+      }
+      setIsEnd(hasMore);
+    } catch (error) {
+      console.log("[Dashboard] handleGetMyItemList()... ", error);
     }
-    setIsEnd(hasMore);
   };
 
   const handleAddItemModalOpen = () => {
