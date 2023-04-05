@@ -1,7 +1,7 @@
 import * as S from "./style";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import ExternalLink from "../../components/Personal/ExternalLink";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
@@ -42,6 +42,16 @@ const Personal = () => {
     pricePerDonation: 0,
     thankMsg: "",
   });
+  const memoizedPersonalContent = useMemo(() => {
+    return (
+      <PersonalContent
+        donationSettingData={donationSettingData}
+        wishListData={wishListData}
+        isOwner={isOwner}
+        itemId={itemId}
+      />
+    );
+  }, [donationSettingData, wishListData, isOwner, itemId]);
 
   const getPageInfo = async () => {
     try {
@@ -198,12 +208,13 @@ const Personal = () => {
             </S.IntroductionContainer>
           </Desktop>
         </S.UserInfo>
-        <PersonalContent
+        {/* <PersonalContent
           donationSettingData={donationSettingData}
           wishListData={wishListData}
           isOwner={isOwner}
           itemId={itemId}
-        />
+        /> */}
+        {memoizedPersonalContent}
       </S.ContentsContainer>
 
       {isShowIntroductionEdit && (
