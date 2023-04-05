@@ -73,7 +73,7 @@ public class SupportSolidity {
             // 보낸시간 LocalDateTime으로 감싸주기
             result = ConvertUtil.convertToLocalDateTime(response);
         } catch (Exception e) {
-            throw new BadRequestException(e.getMessage());
+            throw new BadRequestException("도착 정보를 알 수 없습니다.");
         }
         return Optional.ofNullable(result);
     }
