@@ -107,17 +107,33 @@ const ContractInfo = ({ transactionHash }) => {
       </S.ProgressContainer>
       <S.InfoContainer>
         <S.Wrapper>
+          <S.Type style={{ display: "flex", flexDirection: "column" }}>
+            <label>Transaction</label>
+            <label>Hash</label>
+          </S.Type>
+          <S.TextContainer>
+            <S.Label>
+              <S.TransactionHash
+                href={`https://mumbai.polygonscan.com/tx/${contractDetail.transactionHash}`}
+                target="_blank"
+              >
+                {contractDetail.transactionHash}
+              </S.TransactionHash>
+            </S.Label>
+          </S.TextContainer>
+        </S.Wrapper>
+        <S.Wrapper>
           <S.Type>Supporter</S.Type>
           <S.TextContainer>
             <label>{contractDetail.fromMember.memberNickname}</label>
-            <label>{contractDetail.fromMember.memberAddress}</label>
+            <S.Label>{contractDetail.fromMember.memberAddress}</S.Label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
           <S.Type>Creator</S.Type>
           <S.TextContainer>
             <label>{contractDetail.toMember.memberNickname}</label>
-            <label>{contractDetail.toMember.memberAddress}</label>
+            <S.Label>{contractDetail.toMember.memberAddress}</S.Label>
           </S.TextContainer>
         </S.Wrapper>
         <S.Wrapper>
