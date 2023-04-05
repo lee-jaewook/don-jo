@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import DashboardLoading from "../../../DashBoard/DashboardLoading";
 import { donateWishlist } from "../../../../api/wagmi/donateWishlist";
-import { useAccount } from 'wagmi'
+import { useAccount } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
@@ -30,9 +30,8 @@ const WishlistDetailModal = ({
   const [price, setPrice] = useState(0);
   const [sendMsg, setSendMsg] = useState(""); // 확인 메세지
   const [isLoading, setLoading] = useState(false);
-  const { isConnected } = useAccount()
-  const { open } = useWeb3Modal()
-  //현재 페이지의 멤버 지갑주소 정보
+  const { isConnected } = useAccount();
+  const { open } = useWeb3Modal();
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
@@ -45,7 +44,7 @@ const WishlistDetailModal = ({
       const { data } = await wishlistAPI.getWishlistItemDetail(uid);
       setResult(data);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("An error occurred in WishlistDetailModal : ", error);
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,7 @@ const WishlistDetailModal = ({
       handleSetShowModal();
     } catch (error) {
       sendToastMessage("Delete Failed", "error");
-      console.log("[Wishlists] Delete Error:", error);
+      console.log("An error occurred in WishlistDetailModal : ", error);
     } finally {
       setLoading(false);
     }
@@ -78,41 +77,28 @@ const WishlistDetailModal = ({
       seller: pageMemberAddress,
       sendMsg: sendMsg,
     };
-    
+
     if (isDashboard) {
       handleOnClickButton();
       return;
     }
     if (isConnected) {
-      donateWishlist(item)
+      donateWishlist(item);
     } else {
-      open()
+      open();
     }
-
-    // setLoading(true);
-
-    // buyWishlistDonation(item, handleLoading, handleOnClickButton);
-
-    // setLoading(false);
-    // try {
-    //   sendToastMessage("✨ Updated successfully.");
-    // } catch (error) {
-    //   console.log("error: ", error);
-    // } finally {
-    //   console.log("왜 여기안와?");
-    // }
   };
 
   // 후원 상태바 계산을 위한 함수
-  const handleCalcProgressState = () => {
-    // 초기값 처리
-    if (result.targetAmount === "0") return 0;
+  // const handleCalcProgressState = () => {
+  //   // 초기값 처리
+  //   if (result.targetAmount === "0") return 0;
 
-    if (Number(result.collectedAmount) >= Number(result.targetAmount)) {
-      return 100;
-    }
-    return (Number(result.collectedAmount) / Number(result.targetAmount)) * 100;
-  };
+  //   if (Number(result.collectedAmount) >= Number(result.targetAmount)) {
+  //     return 100;
+  //   }
+  //   return (Number(result.collectedAmount) / Number(result.targetAmount)) * 100;
+  // };
 
   const handleMakeModalContent = () => {
     return isLoading ? (
