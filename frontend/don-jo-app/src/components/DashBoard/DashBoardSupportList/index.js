@@ -56,7 +56,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
         {result && result.length > 0 ? (
           result.map((item, index) => (
             <DashBoardListItem
-              key={item.uid + index}
+              key={item.uid}
               uid={item.uid}
               supportType={item.supportType}
               amount={calculateEth(item.amount)}
