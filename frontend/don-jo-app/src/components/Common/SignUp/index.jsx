@@ -9,6 +9,7 @@ import SignUpModal from "./SignUpModal";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import PropTypes from "prop-types";
+import sendToastMessage from "../../../utils/sendToastMessage";
 
 const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const dispatch = useDispatch();
@@ -56,6 +57,11 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const handleContinueButtonClick = async () => {
     console.log("userInfo: ", userInfo);
     if (!checkSignUpValidation(userInfo.nickname, userInfo.pageName)) return;
+    const page = userInfo.pageName.toLowerCase();
+    if (page === "dashboard" || page === "guide") {
+      sendToastMessage("🚫 This page name is not available");
+      return;
+    }
     await memberApi
       .checkPageName(userInfo.pageName)
       .then(() => {
