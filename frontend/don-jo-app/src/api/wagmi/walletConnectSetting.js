@@ -22,7 +22,7 @@ const chains = [
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 
 const wagmiClient = createClient({
-  autoConnect: false,
+  autoConnect: true,
   connectors: w3mConnectors({ version: 1, chains, projectId }),
   provider,
 });
@@ -30,4 +30,4 @@ const wagmiClient = createClient({
 // 3. Configure modal ethereum client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
-export { projectId, ethereumClient, wagmiClient}
+export { projectId, ethereumClient, wagmiClient };
