@@ -118,10 +118,6 @@ const Personal = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("isOwner: ", isOwner);
-  }, [isOwner]);
-
   return (
     <S.Container>
       <S.FileInput
