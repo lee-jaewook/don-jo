@@ -76,7 +76,7 @@ WishlistItem.propTypes = {
   imgPath: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  collectedAmount: PropTypes.string.isRequired,
-  totalAmount: PropTypes.string.isRequired,
+  collectedAmount: PropTypes.number.isRequired,
+  totalAmount: PropTypes.number.isRequired,
   thankMsg: PropTypes.string,
 };

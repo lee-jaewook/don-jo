@@ -49,7 +49,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
           <S.EmojiList>
             <S.EmojiItem>🙏 Wishlist</S.EmojiItem>
             <S.EmojiItem>💰 Donation</S.EmojiItem>
-            <S.EmojiItem>📁 items</S.EmojiItem>
+            <S.EmojiItem>📁 Items</S.EmojiItem>
           </S.EmojiList>
         )}
       </S.SupportListHeader>

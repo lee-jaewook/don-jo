@@ -8,7 +8,7 @@ const DonationSupporter = () => {
   const [result, setResult] = useState([]);
 
   const handleGetEarning = async () => {
-    const donationEarnings = getEarningDataByType("donation");
+    const donationEarnings = await getEarningDataByType("donate");
     setResult(donationEarnings);
   };
 
@@ -20,7 +20,7 @@ const DonationSupporter = () => {
     <div>
       <DashBoardEarning text="Data" result={result} unit="" />
       <DashBoardSupportList
-        type="donation"
+        type="donate"
         pageNum={pageNum}
         pageSize="10"
         setPageNum={setPageNum}
