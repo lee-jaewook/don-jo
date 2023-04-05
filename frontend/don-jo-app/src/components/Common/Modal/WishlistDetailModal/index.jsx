@@ -90,15 +90,15 @@ const WishlistDetailModal = ({
   };
 
   // 후원 상태바 계산을 위한 함수
-  // const handleCalcProgressState = () => {
-  //   // 초기값 처리
-  //   if (result.targetAmount === "0") return 0;
+  const handleCalcProgressState = () => {
+    // 초기값 처리
+    if (result.targetAmount === "0") return 0;
 
-  //   if (Number(result.collectedAmount) >= Number(result.targetAmount)) {
-  //     return 100;
-  //   }
-  //   return (Number(result.collectedAmount) / Number(result.targetAmount)) * 100;
-  // };
+    if (Number(result.collectedAmount) >= Number(result.targetAmount)) {
+      return 100;
+    }
+    return (Number(result.collectedAmount) / Number(result.targetAmount)) * 100;
+  };
 
   const handleMakeModalContent = () => {
     return isLoading ? (
@@ -124,8 +124,7 @@ const WishlistDetailModal = ({
           <BasicTitle text="Collected Amount" />
           <S.ProgressBar>
             <S.ProgressState
-              // currentState={result === {} ? 0 : handleCalcProgressState()}
-              currentState={20}
+              currentState={result === {} ? 0 : handleCalcProgressState()}
             />
           </S.ProgressBar>
           <S.AmountWrapper>

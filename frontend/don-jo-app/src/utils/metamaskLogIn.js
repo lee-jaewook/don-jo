@@ -21,14 +21,10 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
             web3.setProvider(infuraWeb3.currentProvider);
             dispatch(setWallet({ walletAddress: accounts[0] }));
 
-            // 우리 회원인지 아닌지
             memberApi
               .checkMemberAddress(accounts[0])
               .then(async ({ status }) => {
                 if (status === 200) {
-                  // 서명 데이터 만들기...
-                  console.log("[checkMemberAddress] web3.eth : ", web3.eth);
-
                   window.ethereum
                     .request({
                       method: "personal_sign",
@@ -40,7 +36,6 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
                         signMessage: "don jo log in test",
                         memberSignature: signature,
                       };
-                      // 로그인
                       memberApi
                         .login(loginMemberCond)
                         .then((res) => {
@@ -64,7 +59,10 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
                         })
                         .catch((error) => {
                           sendToastMessage("Login Failed", "error");
-                          console.log("[metamaskLogIn] failed : ", error);
+                          console.log(
+                            "An error occurred during the logIn process: ",
+                            error
+                          );
                         });
                     })
                     .catch((error) => {

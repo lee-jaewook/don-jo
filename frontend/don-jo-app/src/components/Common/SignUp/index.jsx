@@ -5,10 +5,13 @@ import { checkSignUpValidation } from "../../../utils/validation/checkSignUpVali
 import PasswordSetModal from "../Modal/PasswordSetModal";
 import SignUpModal from "./SignUpModal";
 import { useAccount } from "wagmi";
+import { useDispatch } from "react-redux";
+import { setIsMember } from "../../../stores/member";
 import PropTypes from "prop-types";
 import sendToastMessage from "../../../utils/sendToastMessage";
 
 const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
+  const dispatch = useDispatch();
   const IMAGE_TYPE = "img/item";
 
   const { address } = useAccount();
@@ -91,7 +94,8 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
     memberApi
       .signUp(signUpMemberCond)
       .then((res) => {
-        // metamaskLogIn({ dispatch, handleModalOpen: isModalOpen });
+        console.log(res);
+        dispatch(setIsMember(true));
       })
       .catch((error) => {
         console.log("회원가입 실패");
