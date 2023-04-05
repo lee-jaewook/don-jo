@@ -47,7 +47,6 @@ export const titleValidator = (title) => {
 };
 
 /**
- *
  * 1. 소수점 아래 3자리까지
  * 2. 0으로 시작 가능
  */
