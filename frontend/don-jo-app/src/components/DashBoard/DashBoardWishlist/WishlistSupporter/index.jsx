@@ -7,7 +7,7 @@ const WishlistSupporter = () => {
   const [result, setResult] = useState([]);
 
   const handleGetEarning = async () => {
-    const wishlistEarnings = getEarningDataByType("wishlist");
+    const wishlistEarnings = await getEarningDataByType("wishlist");
     setResult(wishlistEarnings);
   };
 
