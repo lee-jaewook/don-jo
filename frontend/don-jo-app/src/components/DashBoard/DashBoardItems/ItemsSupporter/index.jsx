@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getEarningDataByType } from "../../../../utils/getEarningDataByType";
 import DashBoardEarning from "../../DashBoardEarning";
 import DashBoardSupportList from "../../DashBoardSupportList";
+
 const ItemsSupporter = () => {
   const [pageNum, setPageNum] = useState(0);
   const [result, setResult] = useState([]);

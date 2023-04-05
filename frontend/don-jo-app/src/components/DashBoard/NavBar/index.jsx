@@ -11,6 +11,7 @@ import Logo from "../../../assets/img/common/default-profile.svg";
 import sendToastMessage from "../../../utils/sendToastMessage";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
+
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const NavBar = () => {
         sendToastMessage("✨ logout");
       }
     } catch (error) {
-      console.log("Logout Failed:", error);
+      console.log("[Dashboard] handleOnClickLogout()... ", error);
     }
   };
 
