@@ -45,7 +45,7 @@ const PersonalWishlist = ({ isOwner }) => {
       setIsEnd(data.hasMore);
       setIsLoading(false);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("An error occurred in PersonalWishlist.: ", error);
     }
   };
 
@@ -54,12 +54,7 @@ const PersonalWishlist = ({ isOwner }) => {
   }, []);
 
   const handleOnClickShowMoreButton = () => {
-    console.log("Show More");
     getWishList();
-  };
-
-  const doDonateWishlist = () => {
-    console.log("위시리스트 후원하기");
   };
 
   const OwnerOrHasWishList = () => {

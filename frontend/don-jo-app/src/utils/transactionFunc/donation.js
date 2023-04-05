@@ -84,7 +84,9 @@ export const donation = (item) => {
                   sendToastMessage("Failed to register support record.");
                 }
               })
-              .catch((err) => console.log(err));
+              .catch((error) =>
+                console.log("An error occured in donation.: ", error)
+              );
           });
         });
     } else {
@@ -103,21 +105,20 @@ export const donation = (item) => {
 const saveDonation = async (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {
-      console.log("저장 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("저장 실패");
+      console.log("An error occured in donation's saveDonation. : ", error);
     });
 };
 
 const updateDondationInfo = async (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      console.log("update 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("update 실패!");
+      console.log(
+        "An error occured in donation's updateDonationInfo.: ",
+        error
+      );
     });
 };
