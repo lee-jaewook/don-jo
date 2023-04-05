@@ -72,7 +72,7 @@ public class SupportServiceImpl implements SupportService{
                 .mapToDouble(Support::getAmount)
                 .sum();
 
-        return totalAmountInWei;
+        return Double.parseDouble(String.format("%.3f", totalAmountInWei));
     }
 
     @Override
@@ -110,12 +110,9 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     @Transactional
-    public FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid){
+    public FindSupportDetailPayload getSupportDetail(String transactionHash){
 
-        SupportSol supportSol =  supportSolidity.getSupportDetail(toAddress, supportUid)
-                .orElseThrow(()-> new NoContentException());
-
-        Support support = supportRepository.findByToAddressAndSupportUid(toAddress,supportUid)
+        Support support = supportRepository.findById(transactionHash)
                 .orElseThrow(()-> new NoContentException());
 
 
@@ -123,12 +120,12 @@ public class SupportServiceImpl implements SupportService{
         Member fromMember = memberRepository.findById(support.getFromAddress())
                 .orElse(Member.builder().address(support.getFromAddress()).build());
         // 회원 (받은 사람)
-        Member toMember = memberRepository.findById(toAddress)
-                .orElse(Member.builder().address(toAddress).build());
+        Member toMember = memberRepository.findById(support.getToAddress())
+                .orElse(Member.builder().address(support.getToAddress()).build());
 
 
         return FindSupportDetailPayload
-                .fromSupport(supportSol,support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
+                .fromSupport(support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
     }
     @Override
     public int getSupportCount(String type, String memberAddress){
@@ -204,6 +201,13 @@ public class SupportServiceImpl implements SupportService{
                 .orElseThrow(()->new RuntimeException("블록체인에 후원 정보가 없습니다."));
         support.setSupportUid(supportUid);
         support.setArriveTimeStamp(arriveTimeStamp);
+
+        // toAddress -> fromAddress : 최초의 후원인 경우
+        if(supportRepositorySupport.checkFistSupport(support.getFromAddress(), support.getToAddress())){
+            Optional<Member> member = memberRepository.findById(support.getToAddress());
+            if(member.isEmpty()) return;
+            member.get().setNumSupporters(member.get().getNumSupporters()+1);
+        }
     }
 
     @Transactional

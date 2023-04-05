@@ -23,7 +23,7 @@ public interface SupportService {
     FindSupportListPayload getSupportList(String memberAddress, String Type, int pageNum, int pageSize);
 
     // 서포트 Detail 조회
-    FindSupportDetailPayload getSupportDetail(String toAddress, Long supportUid);
+    FindSupportDetailPayload getSupportDetail(String transactionHash);
 
     // 도네이션 정보 가져오기
     DonationSettingCond getDonationSetting(String memberAddress);

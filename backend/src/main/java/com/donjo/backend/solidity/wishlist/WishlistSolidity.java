@@ -84,15 +84,19 @@ public class WishlistSolidity {
         try {
             // id로 위시리스트 가져오기
             String seller = contract.getMemberWishListDetail(BigInteger.valueOf(wishlistSol.getId())).send().seller;
+            log.info("위시리스트 seller : {}", seller);
             if(!seller.equalsIgnoreCase(wishlistSol.getSeller())) throw new UnAuthorizationException("판매자가 아닙니다.");
-            System.out.println("컨트랙트 호출 !");
+
             // 위시리스트 업데이트
             contract.updateMemberWishlist(wishlistSol.toSol()).send();
+            log.info("위시리스트 블록체인 수정 완료");
         }
         catch (UnAuthorizationException e1){
+            log.info("판매자가 아닙니다.");
             throw new UnAuthorizationException(e1.getMessage());
         }
         catch (Exception e) {
+            log.info("위시리스트 블록체인 수정 실패");
             throw new BadRequestException(e.getMessage());
         }
     }
