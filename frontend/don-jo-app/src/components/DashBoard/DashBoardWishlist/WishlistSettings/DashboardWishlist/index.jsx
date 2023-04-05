@@ -38,7 +38,6 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
         type === "update" ? 0 : pageNum,
         PAGE_SIZE
       );
-      console.log("data?", wishlists);
       setPageNum((prev) => prev + 1);
       if (type === "update") {
         setResult(wishlists);

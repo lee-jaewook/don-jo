@@ -54,7 +54,7 @@ const DashBoardListItem = ({
         <S.DateWrapper>
           <S.Date>
             {arriveTimeStamp === null
-              ? "Now"
+              ? "Processing"
               : new Date(arriveTimeStamp).toDateString()}
           </S.Date>
         </S.DateWrapper>
