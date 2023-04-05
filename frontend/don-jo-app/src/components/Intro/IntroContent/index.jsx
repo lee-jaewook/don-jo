@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 
 const IntroContent = ({ title, description, imageSrc }) => (
   <S.Content>
@@ -11,3 +12,9 @@ const IntroContent = ({ title, description, imageSrc }) => (
   </S.Content>
 );
 export default IntroContent;
+
+IntroContent.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  imageSrc: PropTypes.string.isRequired,
+};

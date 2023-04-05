@@ -11,7 +11,7 @@ import sendToastMessage from "../../../utils/sendToastMessage";
 const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const IMAGE_TYPE = "img/item";
 
-  const address = useAccount()[0];
+  const { address } = useAccount();
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(isShowSignUp);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
 
@@ -25,6 +25,12 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
     file: {},
   });
 
+  /**
+   * isModalOpen - Signup 모달 함수
+   * 설명:
+   * SignUp 모달에서 닫기 버튼 클릭 시
+   * state 초기화 및 모달 닫기 함수 실행
+   */
   const isModalOpen = () => {
     setUserInfo({
       nickname: "",
@@ -41,6 +47,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   };
 
   const handleContinueButtonClick = async () => {
+    console.log("userInfo: ", userInfo);
     if (!checkSignUpValidation(userInfo.nickname, userInfo.pageName)) return;
     const page = userInfo.pageName.toLowerCase();
     if (page === "dashboard" || page === "guide") {
@@ -55,7 +62,8 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
       })
       .catch(({ response: { status } }) => {
         if (status === 409) {
-          sendToastMessage("🚫 The nickname is already taken.");
+          // sendToastMessage("🚫 Please enter a message");
+          alert("중복된 닉네임입니다.");
         }
       });
   };
@@ -67,7 +75,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
       password: inputPassword,
       profileImgPath: "",
     };
-
+    // 아이템 이미지 업로드 확인
     if (profileImgPath.previewImgUrl !== "") {
       let createdItemPath = await handleUploadFile(
         profileImgPath.file,
@@ -78,12 +86,15 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
         profileImgPath: createdItemPath,
       };
     }
-
+    console.log("signUpMemberCond: ", signUpMemberCond);
+    //회원가입하는 함수
     memberApi
       .signUp(signUpMemberCond)
-      .then((res) => {})
+      .then((res) => {
+        // metamaskLogIn({ dispatch, handleModalOpen: isModalOpen });
+      })
       .catch((error) => {
-        console.log("🚫 Failed to sign up.");
+        console.log("회원가입 실패");
       });
   };
 
@@ -102,10 +113,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log(
-        "An error occurred in SignUp. the function name is 'handleUploadFile'.",
-        error
-      );
+      console.log("error: ", error);
     }
   };
 

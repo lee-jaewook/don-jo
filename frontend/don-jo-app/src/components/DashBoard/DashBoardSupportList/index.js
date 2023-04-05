@@ -26,13 +26,14 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
         pageSize,
         type
       );
+
       if (status === 200) {
         setResult(supportList);
         setHasMore(hasMore);
         setPageNum((prev) => prev + 1);
       }
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleGetSupportList()... ", error);
     }
   };
 
@@ -54,14 +55,12 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
       </S.SupportListHeader>
       <S.SupportList length={result.length}>
         {result && result.length > 0 ? (
-          result.map((item, index) => (
+          result.map((item) => (
             <DashBoardListItem
               key={item.uid}
-              uid={item.uid}
               supportType={item.supportType}
               amount={calculateEth(item.amount)}
               from={item.fromMember}
-              toMemberAddress={item.toMember.toMemberAddress}
               arriveTimeStamp={item.arriveTimeStamp}
               transactionHash={item.transactionHash}
             />

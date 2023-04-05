@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import ContractModal from "../../Common/Modal/ContractModal";
 import DefaultImg from "../../../assets/img/common/default-profile.svg";
+
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const type = {
@@ -13,12 +14,10 @@ const type = {
 };
 
 const DashBoardListItem = ({
-  uid,
   supportType,
   from,
   amount,
   arriveTimeStamp,
-  toMemberAddress,
   transactionHash,
 }) => {
   const location = useLocation();
@@ -72,9 +71,9 @@ const DashBoardListItem = ({
 export default DashBoardListItem;
 
 DashBoardListItem.propTypes = {
-  uid: PropTypes.number.isRequired,
   supportType: PropTypes.string,
   from: PropTypes.object.isRequired,
   amount: PropTypes.string,
   arrivedDate: PropTypes.string,
+  transactionHash: PropTypes.string,
 };

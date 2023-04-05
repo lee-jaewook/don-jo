@@ -18,7 +18,7 @@ const DashBoardHome = () => {
       homeEarnings.push(dataOf30);
       homeEarnings.push(dataOf90);
     } catch (error) {
-      console.log("[home] Get Earning: ", error);
+      console.log("[Dashboard - Home] handleGetEarning()... ", error);
     }
 
     setResult(homeEarnings);
