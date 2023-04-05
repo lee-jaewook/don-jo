@@ -7,7 +7,7 @@ const sendToastMessage = (text = "", type = "default") => {
       position: "top-right",
       closeOnClick: true,
       pauseOnHover: true,
-      draggable: true,
+      draggable: false,
       progress: undefined,
       theme: "light",
     });
@@ -19,7 +19,7 @@ const sendToastMessage = (text = "", type = "default") => {
     position: "top-right",
     closeOnClick: true,
     pauseOnHover: true,
-    draggable: true,
+    draggable: false,
     progress: undefined,
     theme: "light",
   });
