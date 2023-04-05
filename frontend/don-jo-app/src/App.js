@@ -1,6 +1,8 @@
 import GlobalStyle from "./styles/GlobalStyles";
 import AppRouter from "./AppRouter";
 import { ToastContainer } from "react-toastify";
+import { projectId, ethereumClient } from "./api/wagmi/walletConnectSetting";
+import { Web3Modal } from "@web3modal/react";
 import "react-toastify/dist/ReactToastify.css";
 
 // 모바일 웹에서 올바른 영역을 잡기 위한 작업
@@ -19,6 +21,15 @@ const App = () => {
       <ToastContainer autoClose={false} />
       <GlobalStyle />
       <AppRouter />
+      <Web3Modal
+        projectId={projectId}
+        ethereumClient={ethereumClient}
+        themeVariables={{
+          "--w3m-font-family": "Roboto, sans-serif",
+          "--w3m-accent-color": "black",
+          "--w3m-background-color": "black",
+        }}
+      />
     </div>
   );
 };

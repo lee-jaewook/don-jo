@@ -9,9 +9,11 @@ import { useMediaQuery } from "react-responsive";
 import FullScreenModal from "../FullScreenModal";
 import { wishlistAPI } from "../../../../api/wishlist";
 import { useSelector } from "react-redux";
-import { buyWishlistDonation } from "../../../../utils/transactionFunc/buyWishlistDonation";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import DashboardLoading from "../../../DashBoard/DashboardLoading";
+import { donateWishlist } from "../../../../api/wagmi/donateWishlist";
+import { useAccount } from 'wagmi'
+import { useWeb3Modal } from "@web3modal/react";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
@@ -28,6 +30,8 @@ const WishlistDetailModal = ({
   const [price, setPrice] = useState(0);
   const [sendMsg, setSendMsg] = useState(""); // 확인 메세지
   const [isLoading, setLoading] = useState(false);
+  const { isConnected } = useAccount()
+  const { open } = useWeb3Modal()
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
@@ -68,20 +72,35 @@ const WishlistDetailModal = ({
     setLoading((prev) => !prev);
   };
   const BuyOrEdit = async () => {
-    if (isDashboard) {
-      handleOnClickButton();
-      return;
-    }
     const item = {
       price: price,
       id: uid,
       seller: pageMemberAddress,
       sendMsg: sendMsg,
     };
+    
+    if (isDashboard) {
+      handleOnClickButton();
+      return;
+    }
+    if (isConnected) {
+      donateWishlist(item)
+    } else {
+      open()
+    }
 
-    setLoading(true);
+    // setLoading(true);
 
-    buyWishlistDonation(item, handleLoading, handleOnClickButton);
+    // buyWishlistDonation(item, handleLoading, handleOnClickButton);
+
+    // setLoading(false);
+    // try {
+    //   sendToastMessage("✨ Updated successfully.");
+    // } catch (error) {
+    //   console.log("error: ", error);
+    // } finally {
+    //   console.log("왜 여기안와?");
+    // }
   };
 
   // 후원 상태바 계산을 위한 함수
