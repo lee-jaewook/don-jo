@@ -1,22 +1,20 @@
 import * as S from "./style";
 import PropTypes from "prop-types";
 import React from "react";
-import BasicTitle from "../../BasicTitle";
+import BasicButton from "../../BasicButton";
 import BasicModal from "../../Modal/BasicModal";
 import { useSignMessage } from "wagmi";
 import { memberApi } from "../../../../api/member";
 import { useDispatch } from "react-redux";
 import { setLogIn } from "../../../../stores/member";
+import Logo from "../../../../assets/img/common/app-logo.svg";
 
-export const LogIn = ({
-  isModalOpen,
-  MemberAddress
-}) => {
+export const LogIn = ({ setIsShowLogin, memberAddress }) => {
   const dispatch = useDispatch();
   const { signMessage } = useSignMessage({
     onSuccess(data, variables) {
       const loginMemberCond = {
-        memberAddress: MemberAddress.toLowerCase(),
+        memberAddress: memberAddress.toLowerCase(),
         signMessage: variables.message,
         memberSignature: data,
       };
@@ -32,7 +30,7 @@ export const LogIn = ({
               nickName: res.data.nickName,
               themeColor: res.data.themeColor,
               profileImagePath: res.data.imagePath,
-              walletAddress: MemberAddress,
+              walletAddress: memberAddress,
             })
           );
         })
@@ -42,32 +40,43 @@ export const LogIn = ({
     },
   });
 
-  const handleCancleButtonClick = () => {
+  const handleCancelButtonClick = () => {
     document.body.style.overflow = "auto";
-    isModalOpen(false);
-  }
+    setIsShowLogin(false);
+  };
 
   const handleLoginButtonClick = async () => {
     await signMessage({ message: "don jo log in test" });
-    isModalOpen(false);
-  }
+    document.body.style.overflow = "auto";
+    setIsShowLogin(false);
+  };
 
   return (
-    <BasicModal handleSetShowModal={isModalOpen}>
-      <S.ContentWrap>
-        <S.RequiredInputWrapper>
-          <BasicTitle text="Welcome To DonJo" />
-        </S.RequiredInputWrapper>
-      </S.ContentWrap>
-
-      <S.CancleButton
-        color="var(--color-primary)"
-        onClick={handleCancleButtonClick}
-      >Cancle</S.CancleButton>
-      <S.LoginButton
-        color="var(--color-primary)"
-        onClick={handleLoginButtonClick}
-      >LogIn</S.LoginButton>
+    <BasicModal handleSetShowModal={setIsShowLogin} width={1}>
+      <S.Container>
+        <S.LogoImg src={Logo} />
+        <S.Title>Welcome To DonJo</S.Title>
+        <S.Description>
+          If you log in, you can use all the services on our site.
+        </S.Description>
+        <S.ButtonContainer>
+          <S.ButtonWrapper>
+            <BasicButton
+              text="Cancel"
+              color="black"
+              handleOnClickButton={handleCancelButtonClick}
+            />
+          </S.ButtonWrapper>
+          <S.ButtonWrapper>
+            <BasicButton
+              text="LogIn"
+              color="black"
+              isBackground={true}
+              handleOnClickButton={handleLoginButtonClick}
+            />
+          </S.ButtonWrapper>
+        </S.ButtonContainer>
+      </S.Container>
     </BasicModal>
   );
 };
@@ -75,6 +84,6 @@ export const LogIn = ({
 export default LogIn;
 
 LogIn.propTypes = {
-  isModalOpen: PropTypes.func.isRequired,
-  MemberAddress: PropTypes.string
+  setIsShowLogin: PropTypes.func.isRequired,
+  MemberAddress: PropTypes.string,
 };

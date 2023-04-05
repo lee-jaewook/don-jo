@@ -1,23 +1,37 @@
 import styled from "styled-components";
-import { Button } from "../../BasicButton/style";
 
-export const ContentWrap = styled.div`
-  width: 100%;
-  min-width: 17.5rem;
-  padding-bottom: 1rem;
-`;
-
-export const RequiredInputWrapper = styled.div`
+export const Container = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  background-color: transparent;
 `;
 
-export const CancleButton = styled(Button)`
-  width: 30%;
+export const LogoImg = styled.img`
+  width: 4.375rem;
+  height: 4.375rem;
+  margin-bottom: 0.625rem;
 `;
 
-export const LoginButton = styled(Button)`
-  width: 30%;
-  float: right;
+export const Title = styled.label`
+  font-family: "RobotoBold";
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+`;
+
+export const Description = styled.label`
+  margin-bottom: 2rem;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+
+export const ButtonWrapper = styled.div`
+  margin: 0 5px;
+  min-width: 6.75rem;
+  width: 50%;
+  max-width: 11.3125rem;
 `;
