@@ -19,19 +19,28 @@ import com.donjo.backend.db.repository.SupportRepositorySupport;
 import com.donjo.backend.exception.BadRequestException;
 import com.donjo.backend.exception.NoContentException;
 import com.donjo.backend.solidity.support.SupportSolidity;
+import com.donjo.backend.util.Web3jUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.donjo.backend.solidity.support.SupportSol;
+import org.web3j.applicationhandler.ApplicationHandler;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthTransaction;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.response.PollingTransactionReceiptProcessor;
+import org.web3j.tx.response.TransactionReceiptProcessor;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -41,12 +50,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 @Service("SupportService")
 @RequiredArgsConstructor
+@EnableScheduling
 public class SupportServiceImpl implements SupportService{
     // logger 선언
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
@@ -60,6 +72,7 @@ public class SupportServiceImpl implements SupportService{
     private final SupportRepository supportRepository;
     // SupportRepositorySupport 선언
     private final SupportRepositorySupport supportRepositorySupport;
+    private final Web3jUtil web3jUtil;
 
     public Double getEarning(String address,String type,int period){
         logger.info("supportRepositorySupport.findEarning 요청");
@@ -113,9 +126,23 @@ public class SupportServiceImpl implements SupportService{
     public FindSupportDetailPayload getSupportDetail(String transactionHash){
 
         Support support = supportRepository.findById(transactionHash)
-                .orElseThrow(()-> new NoContentException());
+                .orElseThrow(()-> new NoContentException("트랜잭션 정보가 DB에 없습니다."));
 
+        // 만약 도착하지 않은 후원이라면
 
+        if(support.getSupportUid() == null){
+            logger.info("후원 UID가 null 입니다.");
+            // 트랜잭션 정보를 체크 합니다.
+            Long supportId = checkTransactionStatus(transactionHash); // -2 = 취소된 status, -1 : 아직 도착하지 않음, 1 이상 : 도착함
+            logger.info("supportUid : {}", supportId);
+            if(supportId == -2) {
+                supportRepository.deleteById(transactionHash);
+                throw new NoContentException("취소된 후원 내역입니다.");
+            }
+            else if(supportId > 0){
+                updateArrivedSupport(transactionHash, supportId, support);
+            }
+        }
         // 회원 (보낸 사람)
         Member fromMember = memberRepository.findById(support.getFromAddress())
                 .orElse(Member.builder().address(support.getFromAddress()).build());
@@ -127,6 +154,37 @@ public class SupportServiceImpl implements SupportService{
         return FindSupportDetailPayload
                 .fromSupport(support, MemberItem.fromMember(fromMember), MemberItem.fromMember(toMember));
     }
+
+    private Long checkTransactionStatus(String transactionHash) {
+        try {
+            TransactionReceiptProcessor receiptProcessor = new PollingTransactionReceiptProcessor(web3jUtil.getWeb3jApi(), 0, 2);
+            TransactionReceipt receipt = receiptProcessor.waitForTransactionReceipt(transactionHash);
+
+            if (receipt == null) {
+                return -1L; // 트랜잭션 처리 안된 경우
+            }
+
+            if (!receipt.isStatusOK()) {
+                return -2L; // 취소된 트랜잭션
+            }
+
+            // 여기에서 솔리디티 이벤트 로그에서 ID 값을 추출합니다.
+            // 예를 들어, 스마트 컨트랙트의 이벤트가 `event MyEvent(uint256 indexed id);`와 같이 정의되었다고 가정합니다.
+            // 그런 경우, 다음과 같이 이벤트 로그에서 ID 값을 추출할 수 있습니다.
+            List<ApplicationHandler.SupportIdEventEventResponse> myEventResponses = web3jUtil.getContractApi().getSupportIdEventEvents(receipt);
+
+            if (myEventResponses.isEmpty()) {
+                return -2L; // 취소된 트랜잭션
+            }
+
+            BigInteger id = myEventResponses.get(0).id;
+            return id.longValue(); // 완료된 트랜잭션의 ID 값
+
+        } catch (IOException | TransactionException e) {
+            return -1L; // 트랜잭션 처리 안된 경우
+        }
+    }
+
     @Override
     public int getSupportCount(String type, String memberAddress){
         // 조건에 맞는 SupportList 가져오기
@@ -194,9 +252,8 @@ public class SupportServiceImpl implements SupportService{
 
     @Override
     @Transactional
-    public void updateArrivedSupport(String transactionHash, Long supportUid) {
-        Support support = supportRepository.findById(transactionHash)
-                .orElseThrow(()-> new BadRequestException("잘못된 트랜잭션 HX 값입니다."));
+    public void updateArrivedSupport(String transactionHash, Long supportUid, Support support) {
+        logger.info("후원 수신 주소 : {}", support.getToAddress());
         LocalDateTime arriveTimeStamp = supportSolidity.getArriveTimeStamp(support.getToAddress(), supportUid)
                 .orElseThrow(()->new RuntimeException("블록체인에 후원 정보가 없습니다."));
         support.setSupportUid(supportUid);
@@ -204,6 +261,7 @@ public class SupportServiceImpl implements SupportService{
 
         // toAddress -> fromAddress : 최초의 후원인 경우
         if(supportRepositorySupport.checkFistSupport(support.getFromAddress(), support.getToAddress())){
+            logger.info("{}님이 {} 에게 처음으로 후원하였습니다.",support.getFromAddress(), support.getToAddress());
             Optional<Member> member = memberRepository.findById(support.getToAddress());
             if(member.isEmpty()) return;
             member.get().setNumSupporters(member.get().getNumSupporters()+1);

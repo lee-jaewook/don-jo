@@ -64,23 +64,24 @@ public class SupportController {
         logger.info("supportService.createSupports 요청");
         // 후원 저장
         supportService.createSupports(addSupportCond);
+
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping(path="/api/member/support/arrive")
-    @ApiOperation(value = "후원 도착 업데이트", notes = "<strong>후원 트랜잭션 해시와 uid</strong>를 입력받아 후원이 도착했음을 업데이트합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(수정 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
-            @ApiResponse(code=404, message = "NOT FOUND(정보 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-
-    })
-    public ResponseEntity<?> updateArrivedSupport(@RequestParam String transactionHash, @RequestParam Long supportUid) {
-        logger.info("후원 도착 업데이트 요청");
-        supportService.updateArrivedSupport(transactionHash, supportUid);
-        return ResponseEntity.status(200).build();
-    }
+//    @PutMapping(path="/api/member/support/arrive")
+//    @ApiOperation(value = "후원 도착 업데이트", notes = "<strong>후원 트랜잭션 해시와 uid</strong>를 입력받아 후원이 도착했음을 업데이트합니다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+//            @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
+//            @ApiResponse(code=404, message = "NOT FOUND(정보 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//
+//    })
+//    public ResponseEntity<?> updateArrivedSupport(@RequestParam String transactionHash, @RequestParam Long supportUid) {
+//        logger.info("후원 도착 업데이트 요청");
+//        supportService.updateArrivedSupport(transactionHash, supportUid);
+//        return ResponseEntity.status(200).build();
+//    }
 
     @GetMapping(path="/api/member/dashboard/supports")
     @ApiOperation(value = "서포트 리스트 조회", notes = "후원내역 리스트를 조회한다")
@@ -108,14 +109,8 @@ public class SupportController {
     })
     public ResponseEntity<?> getSupportDetail(@RequestParam @NotNull String transactionHash) {
         // Address와 supportUid로 SupportDetail을 조회합니다.
-        try {
-            logger.info("supportService.getSupportDetail 요청");
-            FindSupportDetailPayload supportDetail = supportService.getSupportDetail(transactionHash);
-            return ResponseEntity.status(200).body(supportDetail);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(404).body("정보 없음");
-        }
+        logger.info("supportService.getSupportDetail 요청");
+        return ResponseEntity.status(200).body(supportService.getSupportDetail(transactionHash));
     }
 
     @GetMapping(path="/api/auth/member/supports/count")
