@@ -84,7 +84,13 @@ export const buyWishlistDonation = (
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  updateDondationInfo(parseInt(id), txHash);
+                  updateDondationInfo(parseInt(id), txHash)
+                    .then((res) => {
+                      console.log("하하");
+                    })
+                    .catch((err) => {
+                      console.log("err: ", err);
+                    });
                   handleLoading(false);
                   sendToastMessage("✨ Updated successfully.");
                   handleOnClickButton();
