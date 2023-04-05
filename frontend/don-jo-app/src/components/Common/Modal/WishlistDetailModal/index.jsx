@@ -67,9 +67,7 @@ const WishlistDetailModal = ({
   useEffect(() => {
     handleGetWishlistItemDetail();
   }, []);
-  const handleLoading = () => {
-    setLoading((prev) => !prev);
-  };
+
   const BuyOrEdit = async () => {
     const item = {
       price: price,

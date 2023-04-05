@@ -14,9 +14,6 @@ const DashBoardHome = () => {
       const { data: allData } = await supportApi.getAllEarnings(0, "all");
       const { data: dataOf30 } = await supportApi.getAllEarnings(30, "all");
       const { data: dataOf90 } = await supportApi.getAllEarnings(90, "all");
-      console.log("addData? ", allData);
-      console.log("addData? ", dataOf30);
-      console.log("addData? ", dataOf90);
       homeEarnings.push(allData);
       homeEarnings.push(dataOf30);
       homeEarnings.push(dataOf90);

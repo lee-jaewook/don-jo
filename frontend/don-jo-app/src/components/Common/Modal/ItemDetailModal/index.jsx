@@ -31,7 +31,7 @@ const ItemDetailModal = ({
       dispatch(setCurrentItem(data));
     } catch (error) {
       console.log(
-        'An error occurred in ItemDetailModal. the function name is "handleGetItemDetaile".',
+        'An error occurred in ItemDetailModal. the function name is "handleGetItemDetail".',
         error
       );
     } finally {
