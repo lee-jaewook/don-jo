@@ -32,8 +32,8 @@ export const BasicInput = styled.input`
 `;
 
 export const SeparationContainer = styled.div`
-  /* width: 16.75rem; */
-  width: ${(props) => `${props.width}rem`};
+  width: 100%;
+  max-width: ${(props) => `${props.width}rem`};
   display: flex;
   justify-content: space-between;
   align-items: center;
