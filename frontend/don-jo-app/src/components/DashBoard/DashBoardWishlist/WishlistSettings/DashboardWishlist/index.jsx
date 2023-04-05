@@ -38,7 +38,6 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
         type === "update" ? 0 : pageNum,
         PAGE_SIZE
       );
-      console.log("data?", wishlists);
       setPageNum((prev) => prev + 1);
       if (type === "update") {
         setResult(wishlists);
@@ -81,8 +80,8 @@ const DashboardWishlist = ({ callApi, setCallApi }) => {
             title={item.title}
             isClosed={item.closed}
             description={item.description}
-            collectedAmount={item.collectedAmount.toString()}
-            totalAmount={item.targetAmount.toString()}
+            collectedAmount={item.collectedAmount}
+            totalAmount={item.targetAmount}
             handleSetShowModal={handleOpenModal}
           />
         ))

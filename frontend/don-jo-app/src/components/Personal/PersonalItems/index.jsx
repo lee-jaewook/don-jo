@@ -32,7 +32,7 @@ const PersonalItems = ({ isOwner, itemId }) => {
           uid={itemId}
           handleSetShowModal={setIsShowDetailModal}
           handleOnClickButton={() => {
-            console.log("흠좀무");
+            // 클릭했을 시 buy 되게끔
           }}
         />
       );

@@ -104,13 +104,17 @@ const DashBoardAccount = () => {
   const handleSaveAccount = async () => {
     // 필수 입력 확인
     if (!nickname || !pageName) {
-      alert("필수값 확인 안내");
+      sendToastMessage("🚫 Please enter both your nickname and page name.");
+      return;
+    }
+
+    if (pageName === "guides" || pageName === "dashboard") {
+      setMessage("🚫 The page name is not available.");
       return;
     }
 
     // 페이지 이름 중복 여부 확인
     if (!handleCheckPageName()) {
-      alert("Duplicate page name.");
       return;
     }
 
@@ -159,7 +163,8 @@ const DashBoardAccount = () => {
         );
       }
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("Update Failed.", "error");
+      console.log("[Dashboard] updateUserInfo()... ", error);
     }
   };
 
@@ -167,13 +172,12 @@ const DashBoardAccount = () => {
   const handleUploadFile = async (file, type) => {
     const formData = new FormData();
     formData.append("multipartFile", file);
-    console.log("file: ", file);
 
     try {
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleUploadFile()... ", error);
     }
   };
 
@@ -191,7 +195,7 @@ const DashBoardAccount = () => {
       }
       setSocial(socialData);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleGetAccountInfo()... ", error);
     }
   };
 
@@ -200,6 +204,7 @@ const DashBoardAccount = () => {
     if (userPageName !== pageName) {
       try {
         await memberApi.checkPageName(pageName);
+        setMessage("");
         return true;
       } catch (error) {
         if (error.response.status === 409) {

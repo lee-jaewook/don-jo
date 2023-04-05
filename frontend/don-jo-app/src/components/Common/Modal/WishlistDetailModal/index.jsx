@@ -49,7 +49,7 @@ const WishlistDetailModal = ({
       const { data } = await wishlistAPI.getWishlistItemDetail(uid);
       setResult(data);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("An error occurred in WishlistDetailModal : ", error);
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ const WishlistDetailModal = ({
       handleSetShowModal();
     } catch (error) {
       sendToastMessage("Delete Failed", "error");
-      console.log("[Wishlists] Delete Error:", error);
+      console.log("An error occurred in WishlistDetailModal : ", error);
     } finally {
       setLoading(false);
     }
@@ -72,9 +72,7 @@ const WishlistDetailModal = ({
   useEffect(() => {
     handleGetWishlistItemDetail();
   }, []);
-  const handleLoading = () => {
-    setLoading((prev) => !prev);
-  };
+
   const BuyOrEdit = async () => {
     const wishlist = {
       price: price,
@@ -82,7 +80,7 @@ const WishlistDetailModal = ({
       seller: pageMemberAddress,
       sendMsg: result.message,
     };
-    
+
     if (isDashboard) {
       handleOnClickButton();
       return;
@@ -135,8 +133,7 @@ const WishlistDetailModal = ({
           <BasicTitle text="Collected Amount" />
           <S.ProgressBar>
             <S.ProgressState
-              // currentState={result === {} ? 0 : handleCalcProgressState()}
-              currentState={20}
+              currentState={result === {} ? 0 : handleCalcProgressState()}
             />
           </S.ProgressBar>
           <S.AmountWrapper>

@@ -10,8 +10,7 @@ const CurrentSupportList = () => {
       const { data } = await supportApi.getSponsorshipList();
       setResult(data);
     } catch (error) {
-      // 사용자 제공 x
-      console.log("[Intro] Recent supportList Error", error);
+      console.log("[Intro] handleGetRecentSupportList()... ", error);
     }
   };
 

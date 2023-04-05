@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { supportApi } from "../../../api/support";
 import DashBoardEarning from "../DashBoardEarning";
 import DashBoardSupportList from "../DashBoardSupportList";
-const earningData = [0, 30, 90];
 
 const DashBoardHome = () => {
   const [pageNum, setPageNum] = useState(0);
@@ -11,15 +10,16 @@ const DashBoardHome = () => {
   const handleGetEarning = useCallback(async () => {
     const homeEarnings = [];
 
-    earningData.map(async (earning) => {
-      try {
-        const { data } = await supportApi.getAllEarnings(earning, "all");
-        homeEarnings.push(data);
-      } catch (error) {
-        console.log("[home] Get Earning: ", error);
-      }
-    });
-
+    try {
+      const { data: allData } = await supportApi.getAllEarnings(0, "all");
+      const { data: dataOf30 } = await supportApi.getAllEarnings(30, "all");
+      const { data: dataOf90 } = await supportApi.getAllEarnings(90, "all");
+      homeEarnings.push(allData);
+      homeEarnings.push(dataOf30);
+      homeEarnings.push(dataOf90);
+    } catch (error) {
+      console.log("[Dashboard - Home] handleGetEarning()... ", error);
+    }
     setResult(homeEarnings);
   }, []);
 

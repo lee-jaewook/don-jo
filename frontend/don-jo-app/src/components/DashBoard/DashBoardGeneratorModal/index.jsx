@@ -38,7 +38,7 @@ const DashBoardGeneratorModal = ({
   const [code, setCode] = useState("");
   const [searchItem, setSearchItem] = useState({
     id: -1,
-    title: "",
+    title: "No Item",
   });
   const { emoji, buttonName } = generatorValue;
 
@@ -73,7 +73,7 @@ const DashBoardGeneratorModal = ({
       const { data } = await fileApi.uploadFile(formData, type);
 
       let code;
-      if (isItemsRequired) {
+      if (isItemsRequired && searchItem.id !== -1) {
         code = `<a href="https://j8a209.p.ssafy.io/${pageName}/items/${searchItem.id}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`;
       } else {
         code = `<a href="https://j8a209.p.ssafy.io/${pageName}" target="_blank"><img src="${S3URL}${data}" alt="dong-jo" /></a>`;
@@ -81,7 +81,7 @@ const DashBoardGeneratorModal = ({
       setCode(code);
       handleDownloadButtonImg();
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleUploadFile()... ", error);
     }
   };
 
@@ -106,8 +106,8 @@ const DashBoardGeneratorModal = ({
         link.href = dataUrl;
         link.click();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log("[Dashboard] handleDownloadButtonImg()... ", error);
       });
   };
 
@@ -129,11 +129,12 @@ const DashBoardGeneratorModal = ({
     try {
       const { data } = await itemApi.getAllItems(memberAddress);
       setItemList(data);
+
       if (data.length > 0) {
         setSearchItem(data[0]);
       }
     } catch (error) {
-      console.log("error:", error);
+      console.log("[Dashboard] handleGetMyItems()...", error);
     }
   };
 

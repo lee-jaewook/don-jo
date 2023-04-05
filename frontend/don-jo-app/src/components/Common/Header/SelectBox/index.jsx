@@ -1,7 +1,6 @@
 import { useState } from "react";
 import * as S from "./style";
 import PropTypes from "prop-types";
-import WalletConnectLogin from "../../WalletConnectLogin";
 
 const SelectBox = ({ metamaskLogin, walletConnectLogin }) => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -12,7 +11,6 @@ const SelectBox = ({ metamaskLogin, walletConnectLogin }) => {
       {isDropdown && (
         <S.SelectOptions>
           <S.Option onClick={metamaskLogin}>Metamask</S.Option>
-          {/* <S.Option onClick={walletConnectLogin}>Wallet Connect</S.Option> */}
         </S.SelectOptions>
       )}
     </S.SelectBox>

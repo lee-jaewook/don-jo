@@ -118,10 +118,6 @@ const Personal = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("isOwner: ", isOwner);
-  }, [isOwner]);
-
   return (
     <S.Container>
       <S.FileInput
@@ -197,7 +193,6 @@ const Personal = () => {
               <S.Introduction>
                 <MDEditor.Markdown
                   source={memberInfoItemData.introduction}
-                  data-color-mode="light"
                 ></MDEditor.Markdown>
               </S.Introduction>
             </S.IntroductionContainer>

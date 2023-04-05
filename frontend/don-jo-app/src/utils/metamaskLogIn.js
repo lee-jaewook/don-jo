@@ -5,18 +5,9 @@ import { setWallet } from "../stores/member";
 import { isMobile } from "react-device-detect";
 import sendToastMessage from "./sendToastMessage";
 
-/**
- * 로그인 함수
- * 메타마스크 설치 여부 + 지갑 연결 체크 + 회원 체크
- * 회원이면, 로그인
- * 회원이 아니면, 회원가입 모달
- */
-
 export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
-  // 메타마스크 설치 여부 확인
   if (!isMobile) {
     if (typeof window.ethereum !== "undefined") {
-      // 메타마스크 설치되어 있으면, 로그인 요청
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((accounts) => {
@@ -30,14 +21,10 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
             web3.setProvider(infuraWeb3.currentProvider);
             dispatch(setWallet({ walletAddress: accounts[0] }));
 
-            // 우리 회원인지 아닌지
             memberApi
               .checkMemberAddress(accounts[0])
               .then(async ({ status }) => {
                 if (status === 200) {
-                  // 서명 데이터 만들기...
-                  console.log("[checkMemberAddress] web3.eth : ", web3.eth);
-
                   window.ethereum
                     .request({
                       method: "personal_sign",
@@ -49,7 +36,6 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
                         signMessage: "don jo log in test",
                         memberSignature: signature,
                       };
-                      // 로그인
                       memberApi
                         .login(loginMemberCond)
                         .then((res) => {
@@ -73,7 +59,10 @@ export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
                         })
                         .catch((error) => {
                           sendToastMessage("Login Failed", "error");
-                          console.log("[metamaskLogIn] failed : ", error);
+                          console.log(
+                            "An error occurred during the logIn process: ",
+                            error
+                          );
                         });
                     })
                     .catch((error) => {

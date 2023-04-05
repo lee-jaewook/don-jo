@@ -3,38 +3,33 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import ContractModal from "../../Common/Modal/ContractModal";
-import DefaultImg from "../../../assets/img/common/app-logo.svg";
+import DefaultImg from "../../../assets/img/common/default-profile.svg";
+
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const type = {
   wishlist: "🙏",
-  donation: "💰",
+  donate: "💰",
   item: "📁",
 };
 
 const DashBoardListItem = ({
-  uid,
   supportType,
   from,
   amount,
   arriveTimeStamp,
-  toMemberAddress,
   transactionHash,
 }) => {
   const location = useLocation();
   const [isClickedSupportItem, setClickedSupportItem] = useState(false);
 
-  const handleSetShowItemTransactionModal = () =>
-    setClickedSupportItem((prev) => !prev);
-  return (
-    <S.ItemWrapper onClick={handleSetShowItemTransactionModal}>
-      {isClickedSupportItem && (
-        <ContractModal
-          handleSetShowModal={handleSetShowItemTransactionModal}
-          transactionHash={transactionHash}
-        />
-      )}
-
+  return isClickedSupportItem ? (
+    <ContractModal
+      handleSetShowModal={setClickedSupportItem}
+      transactionHash={transactionHash}
+    />
+  ) : (
+    <S.ItemWrapper onClick={() => setClickedSupportItem(true)}>
       {location.pathname === "/dashboard/home" && (
         <S.Icon aria-label="icon" role="img">
           {type[supportType]}
@@ -59,7 +54,7 @@ const DashBoardListItem = ({
         <S.DateWrapper>
           <S.Date>
             {arriveTimeStamp === null
-              ? "Now"
+              ? "Processing"
               : new Date(arriveTimeStamp).toDateString()}
           </S.Date>
         </S.DateWrapper>
@@ -72,9 +67,9 @@ const DashBoardListItem = ({
 export default DashBoardListItem;
 
 DashBoardListItem.propTypes = {
-  uid: PropTypes.number.isRequired,
   supportType: PropTypes.string,
   from: PropTypes.object.isRequired,
   amount: PropTypes.string,
   arrivedDate: PropTypes.string,
+  transactionHash: PropTypes.string,
 };
