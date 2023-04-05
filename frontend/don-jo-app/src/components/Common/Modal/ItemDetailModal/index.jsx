@@ -48,9 +48,9 @@ const ItemDetailModal = ({
     } catch (error) {
       sendToastMessage("Delete Failed", "error");
       console.log(
-        'An error occurred in ItemDetailModal. the function name is "handleDeleteItem".'
+        'An error occurred in ItemDetailModal. the function name is "handleDeleteItem".',
+        error
       );
-      console.log("[Items] Delete Error: ", error);
     } finally {
       setLoading(false);
     }

@@ -5,18 +5,9 @@ import { setWallet } from "../stores/member";
 import { isMobile } from "react-device-detect";
 import sendToastMessage from "./sendToastMessage";
 
-/**
- * 로그인 함수
- * 메타마스크 설치 여부 + 지갑 연결 체크 + 회원 체크
- * 회원이면, 로그인
- * 회원이 아니면, 회원가입 모달
- */
-
 export const metamaskLogIn = async ({ dispatch, handleModalOpen }) => {
-  // 메타마스크 설치 여부 확인
   if (!isMobile) {
     if (typeof window.ethereum !== "undefined") {
-      // 메타마스크 설치되어 있으면, 로그인 요청
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((accounts) => {
