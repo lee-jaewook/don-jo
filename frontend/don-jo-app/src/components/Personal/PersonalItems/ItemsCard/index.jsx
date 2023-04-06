@@ -25,7 +25,7 @@ const ItemCard = ({ item, isOwner }) => {
     (state) => state.items.itemStatus
   );
   const network = useSwitchNetwork({
-    chainId: 80001,
+    chainId: 137,
   })
   const { chain } = useNetwork()
 
@@ -52,17 +52,7 @@ const ItemCard = ({ item, isOwner }) => {
     }
   };
 
-  const doBuy = () => {
-    if (!isConnected) {
-      open()
-      return
-    }
-
-    if (chain.id === 80001) {
-      buyItem(item)
-    } else {
-      network.switchNetwork()
-    }
+  const emptyFunction = () => {
   };
 
   useEffect(() => {
@@ -72,7 +62,6 @@ const ItemCard = ({ item, isOwner }) => {
   }, []);
 
   useEffect(() => {
-    console.log("isShowItemDetailModal 닫힘", isShowItemDetailModal, itemStatus)
     if (!isShowItemDetailModal && itemStatus) {
       dispatch(setItemStatus(false));
       dispatch(setRefreshItemStatus(true));
@@ -106,7 +95,7 @@ const ItemCard = ({ item, isOwner }) => {
         <ItemDetailModal
           uid={item.id}
           handleSetShowModal={setIsShowItemDetailModal}
-          handleOnClickButton={doBuy}
+          handleOnClickButton={emptyFunction}
           isAlreadyBought={isAlreadyBought}
         />
       )}

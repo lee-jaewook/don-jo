@@ -31,20 +31,20 @@ const ItemDetailModal = ({
   const web3 = new Web3(provider);
   const { open } = useWeb3Modal();
   const network = useSwitchNetwork({
-    chainId: 80001,
+    chainId: 137,
   });
   const { chain } = useNetwork();
   // const [isAlreadyBought, setIsAlreadyBought] = useState(false);
   const contract = useContractWrite({
     abi: ApplicationHandler.abi,
-    address: '0xb4787A11745AfC48D76c2E603164118502447EC6',
+    address: '0xA07bD0a21C0589a8f102CE1D762E5B3550b8cE10',
     functionName: 'buyItemDonation',
     args: [result?.seller, result?.id],
     overrides: {
       gasLimit: 8000000,
       value: web3.utils.toWei((result?.price || 0).toString(), "ether"),
     },
-    chainId: 80001,
+    chainId: 137,
     onSuccess(data) {
       const donationDto = {
         amountEth: parseFloat(result.price),
@@ -66,7 +66,7 @@ const ItemDetailModal = ({
   })
 
   const waitForTransaction = useWaitForTransaction({
-    chainId: 80001,
+    chainId: 137,
     hash: contract.data?.hash,
     onSuccess() {
       supportApi.getSupportDetail(contract.data?.hash);
@@ -100,7 +100,7 @@ const ItemDetailModal = ({
       return
     }
 
-    if (chain.id === 80001) {
+    if (chain.id === 137) {
       contract.write()
     } else {
       network.switchNetwork()
