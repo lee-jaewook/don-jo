@@ -3,17 +3,21 @@ import RecentSupportBlock from "./RecentSupportBlock";
 import ShowMoreButton from "../../../Common/ShowMoreButton";
 import { useState, useEffect } from "react";
 import { supportApi } from "../../../../api/support";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { PulseLoader } from "react-spinners";
+import { setDonationStatus } from "../../../../stores/donation";
 
 const HomeRecentSupport = ({ isOwner }) => {
+  const dispatch = useDispatch();
   const [pageNum, setPageNum] = useState(0);
   const PAGE_SIZE = 5;
   const TYPE = "all";
   const [supportList, setSupportList] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const donationStatus = useSelector((state) => state.donation.donationStatus);
 
   //현재 페이지의 멤버 지갑주소 정보
   const pageMemberAddress = useSelector(
@@ -42,6 +46,25 @@ const HomeRecentSupport = ({ isOwner }) => {
       setIsLoading(false);
     }
   };
+
+  const refreshSupportList = async () => {
+    const { data } = await supportApi.getSupportList(
+      pageMemberAddress,
+      0,
+      PAGE_SIZE * pageNum + 1,
+      TYPE
+    );
+    setSupportList(data.supportList);
+    dispatch(setDonationStatus(false));
+  }
+
+  useEffect(() => {
+    if (donationStatus) {
+      setTimeout(() => {
+        refreshSupportList()
+      }, 0);
+    }
+  }, [donationStatus])
 
   useEffect(() => {
     if (!!pageMemberAddress) getSupportList();
