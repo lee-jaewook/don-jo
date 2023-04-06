@@ -7,7 +7,7 @@ import FullScreenModal from "../FullScreenModal";
 import { useMediaQuery } from "react-responsive";
 import { itemApi } from "../../../../api/items";
 import { useDispatch } from "react-redux";
-import { setCurrentItem } from "../../../../stores/items";
+import { setCurrentItem, setItemStatus } from "../../../../stores/items";
 import DashboardLoading from "../../../DashBoard/DashboardLoading";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import { useAccount, useProvider, useSwitchNetwork, useNetwork, useContractWrite, useWaitForTransaction  } from 'wagmi'
@@ -70,7 +70,8 @@ const ItemDetailModal = ({
     hash: contract.data?.hash,
     onSuccess() {
       supportApi.getSupportDetail(contract.data?.hash);
-      setIsAlreadyBought(true)
+      setIsAlreadyBought(true);
+      dispatch(setItemStatus(true));
     }
   })
 

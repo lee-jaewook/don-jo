@@ -3,17 +3,19 @@ import ItemCard from "./ItemsCard";
 import { useEffect, useState } from "react";
 import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import AddItemModal from "../../Common/Modal/AddItemModal";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ShowMoreButton from "../../Common/ShowMoreButton";
 import { itemApi } from "../../../api/items";
 import PropTypes from "prop-types";
 import ItemDetailModal from "../../Common/Modal/ItemDetailModal";
 import { useNavigate, useParams } from "react-router";
 import { PulseLoader } from "react-spinners";
+import { setRefreshItemStatus } from "../../../stores/items";
 
 const PAGE_SIZE = 6;
 
 const PersonalItems = ({ isOwner, itemId }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pageName } = useParams();
   const [isShowDetailModal, setIsShowDetailModal] = useState(true);
@@ -44,6 +46,9 @@ const PersonalItems = ({ isOwner, itemId }) => {
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
 
+  const refreshItemStatus = useSelector(
+    (state) => state.items.refreshItemStatus
+  );
   const [pageNum, setPageNum] = useState(0);
   const [itemList, setItemList] = useState([]);
   const [hasMore, setIsEnd] = useState(false);
@@ -73,6 +78,23 @@ const PersonalItems = ({ isOwner, itemId }) => {
       console.log("error: ", error);
     }
   };
+
+  const refreshItemtList = async () => {
+    const { data } = await itemApi.getItemList(
+      pageMemberAddress,
+      0,
+      PAGE_SIZE * pageNum
+    );
+    setItemList(data.itemList)
+  }
+
+  useEffect(() => {
+    console.log(refreshItemStatus, "리프레쉬 스테이터스쪽 작동?")
+    if (refreshItemStatus) {
+      refreshItemtList()
+      dispatch(setRefreshItemStatus(false))
+    }
+  }, [refreshItemStatus])
 
   useEffect(() => {
     getItemList();
