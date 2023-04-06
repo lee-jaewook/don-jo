@@ -36,7 +36,6 @@ export const memberSlice = createSlice({
       state.walletAddress = "";
     },
     setIsMember(state, action) {
-      console.log(action);
       state.isMember = action.payload;
     },
 

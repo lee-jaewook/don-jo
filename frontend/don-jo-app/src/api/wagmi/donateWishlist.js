@@ -6,19 +6,19 @@ import sendToastMessage from '../../utils/sendToastMessage';
 import { supportApi } from '../support';
 
 export const donateWishlist = async (wishlist, donatorMessage) => {
-  const account = getAccount()
+  const account = getAccount();
   const provider = getProvider()
   const web3 = new Web3(provider);
   const config = await prepareWriteContract({
     abi: ApplicationHandler.abi,
-    address: '0xb4787A11745AfC48D76c2E603164118502447EC6',
+    address: '0xA07bD0a21C0589a8f102CE1D762E5B3550b8cE10',
     functionName: 'buyWishlistDonation',
     args: [wishlist.seller, wishlist.id],
     overrides: {
       gasLimit: 8000000,
       value: web3.utils.toWei(wishlist.price.toString(), "ether"),
     },
-    chainId: 80001
+    chainId: 137
   });
 
   const { hash } = await writeContract(config).catch((error) => {
@@ -41,6 +41,19 @@ export const donateWishlist = async (wishlist, donatorMessage) => {
   if (wishlist.sendMsg !== "") {
     sendToastMessage(wishlist.sendMsg)
   }
+
+  return hash
+}
+
+export const waitDonateWishlist = async (hash) => {
+  const data = await waitForTransaction({
+    hash,
+  })
+
+  if (data) {
+    return true;
+  }
+  return false;
 }
 
 const saveDonation = (donationDto) => {

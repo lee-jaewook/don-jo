@@ -6,6 +6,7 @@ import items from "./items/index.js";
 import web3 from "./web3/index.js";
 import donation from "./donation";
 import memberInfo from "./memberInfo/index.js";
+import wishlist from "./wishlist/index.js";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   web3,
   donation,
   memberInfo,
+  wishlist
 });
 
 export default persistReducer(persistConfig, reducers);
