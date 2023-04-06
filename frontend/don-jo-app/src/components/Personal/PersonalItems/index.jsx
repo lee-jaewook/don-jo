@@ -89,7 +89,6 @@ const PersonalItems = ({ isOwner, itemId }) => {
   }
 
   useEffect(() => {
-    console.log(refreshItemStatus, "리프레쉬 스테이터스쪽 작동?")
     if (refreshItemStatus) {
       refreshItemtList()
       dispatch(setRefreshItemStatus(false))
