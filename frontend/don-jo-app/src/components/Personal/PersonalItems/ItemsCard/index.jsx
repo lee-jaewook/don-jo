@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import { itemApi } from "../../../../api/items";
-import { useSelector } from "react-redux";
 import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { buyItem } from "../../../../api/wagmi/buyItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setRefreshItemStatus, setItemStatus } from "../../../../stores/items";
 
 const ItemCard = ({ item, isOwner }) => {
+  const dispatch = useDispatch();
   //현재 월렛커넥트와 연결되어있는 지갑 주소
   const { address, isConnected } = useAccount();
   const [isOwnerItems, setIsOwnerItems] = useState(isOwner);
@@ -19,8 +21,11 @@ const ItemCard = ({ item, isOwner }) => {
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   );
+  const itemStatus = useSelector(
+    (state) => state.items.itemStatus
+  );
   const network = useSwitchNetwork({
-    chainId: 80001,
+    chainId: 137,
   })
   const { chain } = useNetwork()
 
@@ -47,25 +52,21 @@ const ItemCard = ({ item, isOwner }) => {
     }
   };
 
+  const emptyFunction = () => {
+  };
+
   useEffect(() => {
     if (!isOwnerItems) {
       getIsPurchased();
     }
   }, []);
 
-  const doBuy = () => {
-    if (!isConnected) {
-      open()
-      return
+  useEffect(() => {
+    if (!isShowItemDetailModal && itemStatus) {
+      dispatch(setItemStatus(false));
+      dispatch(setRefreshItemStatus(true));
     }
-
-    if (chain.id === 80001) {
-      buyItem(item)
-    } else {
-      network.switchNetwork()
-    }
-
-  };
+  }, [isShowItemDetailModal])
 
   return (
     <S.Container>
@@ -94,7 +95,7 @@ const ItemCard = ({ item, isOwner }) => {
         <ItemDetailModal
           uid={item.id}
           handleSetShowModal={setIsShowItemDetailModal}
-          handleOnClickButton={doBuy}
+          handleOnClickButton={emptyFunction}
           isAlreadyBought={isAlreadyBought}
         />
       )}

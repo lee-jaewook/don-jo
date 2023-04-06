@@ -11,14 +11,14 @@ export const buyItem = async (item) => {
   const web3 = new Web3(provider);
   const config = await prepareWriteContract({
     abi: ApplicationHandler.abi,
-    address: '0xb4787A11745AfC48D76c2E603164118502447EC6',
+    address: '0xA07bD0a21C0589a8f102CE1D762E5B3550b8cE10',
     functionName: 'buyItemDonation',
     args: [item.seller, item.id],
     overrides: {
       gasLimit: 8000000,
       value: web3.utils.toWei(item.price.toString(), "ether"),
     },
-    chainId: 80001
+    chainId: 137
   });
 
   const { hash } = await writeContract(config).catch((error) => {

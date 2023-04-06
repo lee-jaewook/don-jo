@@ -10,8 +10,11 @@ import { priceApi } from "../../../../api/price";
 import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { donate } from "../../../../api/wagmi/donate";
+import { useDispatch } from "react-redux";
+import { setDonationStatus } from "../../../../stores/donation";
 
 const HomeDonation = ({ donationSettingData, isOwner }) => {
+  const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const [msg, setMsg] = useState("");
   const [btnText, setBtnText] = useState("");
@@ -25,7 +28,7 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
     (state) => state.memberInfo.memberAddress
   );
   const network = useSwitchNetwork({
-    chainId: 80001,
+    chainId: 137,
   })
   const { chain } = useNetwork()
   
@@ -73,9 +76,10 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
       return
     }
 
-    if (chain.id === 80001) {
+    if (chain.id === 137) {
       const { data } = await priceApi.getItemDetail();
-      donate(pageMemberWalletAddress, (data * donationAmount * 0.001).toFixed(18), donationSettingData.thankMsg, msg)
+      await donate(pageMemberWalletAddress, (data * donationAmount * 0.001).toFixed(18), donationSettingData.thankMsg, msg)
+      dispatch(setDonationStatus(true));
     } else {
       network.switchNetwork()
     }
