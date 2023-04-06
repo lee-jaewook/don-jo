@@ -27,19 +27,25 @@ const PersonalWishlist = ({ isOwner }) => {
   const [hasMore, setIsEnd] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getWishList = async () => {
+  const getWishList = async (isUpdated = false) => {
     try {
       const { data } = await wishlistAPI.getWishList(
         pageMemberAddress,
-        pageNum,
+        isUpdated ? 0 : pageNum,
         PAGE_SIZE
       );
-      setPageNum((prev) => prev + 1);
-      setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+
+      if (isUpdated) {
+        setWishlist(data.wishlists || []);
+        setPageNum(1);
+      } else {
+        setWishlist((prev) => [...prev, ...(data.wishlists || [])]);
+        setPageNum((prev) => prev + 1);
+      }
       setIsEnd(data.hasMore);
       setIsLoading(false);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("An error occurred in PersonalWishlist.: ", error);
     }
   };
 
@@ -48,12 +54,7 @@ const PersonalWishlist = ({ isOwner }) => {
   }, []);
 
   const handleOnClickShowMoreButton = () => {
-    console.log("Show More");
     getWishList();
-  };
-
-  const doDonateWishlist = () => {
-    console.log("위시리스트 후원하기");
   };
 
   const OwnerOrHasWishList = () => {
@@ -79,14 +80,14 @@ const PersonalWishlist = ({ isOwner }) => {
                   title={wishlistItem.title}
                   imgPath={wishlistItem.imgPath}
                   description={wishlistItem.description}
-                  collectedAmount={wishlistItem.collectedAmount.toString()}
-                  totalAmount={wishlistItem.targetAmount.toString()}
+                  collectedAmount={wishlistItem.collectedAmount}
+                  totalAmount={wishlistItem.targetAmount}
                   thankMsg={wishlistItem.thankMsg}
                   handleSetShowModal={() => {
                     setThisItemUId(wishlistItem.id);
                     setIsShowWishlistDetailModal(true);
                   }}
-                  isDashboard={isOwner}
+                  isOwner={isOwner}
                 />
               </S.WishlistItemWrapper>
             );
@@ -116,13 +117,19 @@ const PersonalWishlist = ({ isOwner }) => {
         )}
 
         {isShowWishlistAddModal && (
-          <AddWishlistModal handleSetShowModal={setIsShowWishlistAddModal} />
+          <AddWishlistModal
+            handleSetLoading={setIsLoading}
+            handleSetShowModal={() => {
+              setIsShowWishlistAddModal(false);
+              getWishList(true);
+            }}
+          />
         )}
 
         {isShowWishlistDetailModal && (
           <WishlistDetailModal
             handleSetShowModal={setIsShowWishlistDetailModal}
-            handleOnClickButton={() => setIsShowWishlistDetailModal(false)}
+            handleOnClickButton={setIsShowWishlistDetailModal}
             uid={thisItemUID}
             isDashboard={false}
           />

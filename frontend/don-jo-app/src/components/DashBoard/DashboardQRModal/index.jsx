@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import * as S from "./style";
+import PropTypes from "prop-types";
 import BasicModal from "../../Common/Modal/BasicModal";
 import { QRCode } from "react-qrcode-logo";
 import BasicButton from "../../Common/BasicButton";
 import { toPng } from "html-to-image";
 import Logo from "../../../assets/img/dashboard/qr-logo.svg";
 import { useSelector } from "react-redux";
+
 const QRCodeModal = ({ handleSetShowModal }) => {
   const ref = useRef(null);
   const pageName = useSelector((state) => state.member.pageName);
@@ -22,8 +24,11 @@ const QRCodeModal = ({ handleSetShowModal }) => {
         link.href = dataUrl;
         link.click();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(
+          "[Dashboard - QR Modal] handleOnClickDownloadButton()...",
+          error
+        );
       });
   };
 
@@ -59,3 +64,7 @@ const QRCodeModal = ({ handleSetShowModal }) => {
 };
 
 export default QRCodeModal;
+
+QRCodeModal.propTypes = {
+  handleSetShowModal: PropTypes.func.isRequired,
+};

@@ -1,13 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import * as S from "./style";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import CurrentSupportList from "../../components/Intro/CurrentSupportRecent";
 import DonJoTitleSvg from "../../components/Intro/DonJoTitleSvg";
-import UndrawEther from "../../assets/img/intro/undraw_ether.svg";
-import UndrawTransaction from "../../assets/img/intro/undraw_transaction.svg";
-import UndrawTransferMoney from "../../assets/img/intro/undraw_transfer_money.svg";
-import * as S from "./style";
-
+import { introContents } from "../../data/intro";
+import { useAccount } from "wagmi";
+import IntroContent from "../../components/Intro/IntroContent";
+import SignUp from "../../components/Common/SignUp";
+import sendToastMessage from "../../utils/sendToastMessage";
 const Intro = () => {
-  return (
+  const navigate = useNavigate();
+  const isConnected = useAccount()[1];
+  const _pageName = useSelector((state) => state.member.pageName);
+  const [pageName, setPageName] = useState("");
+  const [isReadOnly, setReadOnly] = useState(false);
+  const [isShowSignUp, setIsShowSignUp] = useState(false);
+
+  const handleOnChangePageName = (e) => {
+    const { value } = e.target;
+    setPageName(value);
+  };
+
+  const handleOnClickArrowButton = () => {
+    if (_pageName !== "") {
+      navigate(`/${_pageName}`);
+    } else if (!isConnected) {
+      sendToastMessage("🙏 Please connect your wallet.");
+    } else if (pageName !== "") {
+      // 회원가입 모달
+      setIsShowSignUp(true);
+    }
+  };
+
+  const handleKeyDownEvent = (e) => {
+    if (e.keyCode === 13) {
+      setIsShowSignUp(true);
+    }
+  };
+
+  useEffect(() => {
+    if (_pageName !== "") {
+      setPageName(_pageName);
+      setReadOnly(true);
+    }
+  }, [_pageName]);
+
+  return isShowSignUp ? (
+    <SignUp
+      isShowSignUp={isShowSignUp}
+      setIsShowSignUp={setIsShowSignUp}
+      pageName={pageName}
+    />
+  ) : (
     <S.Container>
       <S.DonJoTitle>
         <DonJoTitleSvg />
@@ -28,34 +73,26 @@ const Intro = () => {
         </ul>
         <S.InputWrapper>
           don-jo.co/
-          <S.Input placeholder="Your Page Name" />
-          <S.ArrowIcon />
+          <S.Input
+            value={pageName}
+            placeholder="Your Page Name"
+            onChange={handleOnChangePageName}
+            onKeyDown={handleKeyDownEvent}
+            readOnly={isReadOnly}
+          />
+          <S.ArrowIcon onClick={handleOnClickArrowButton} />
         </S.InputWrapper>
       </S.Background>
-      {/* 컨텐츠 소개1 */}
-      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
-      <S.ContentDescription>
-        DonJo provides an image button that can be attached to my site or blog.
-      </S.ContentDescription>
-      <S.ContentWrapper>
-        <img src={UndrawTransferMoney} alt="undrawEther" width={300} />
-      </S.ContentWrapper>
-
-      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
-      <S.ContentDescription>
-        DonJo provides an image button that can be attached to my site or blog.
-      </S.ContentDescription>
-      <S.ContentWrapper>
-        <img src={UndrawEther} alt="undrawEther" width={300} />
-      </S.ContentWrapper>
-
-      <S.ContentTitle>Go to my own sponsorship page!</S.ContentTitle>
-      <S.ContentDescription>
-        DonJo provides an image button that can be attached to my site or blog.
-      </S.ContentDescription>
-      <S.ContentWrapper>
-        <img src={UndrawTransaction} alt="undrawEther" width={300} />
-      </S.ContentWrapper>
+      {introContents &&
+        introContents.length > 0 &&
+        introContents.map((item, index) => (
+          <IntroContent
+            key={index}
+            title={item.title}
+            description={item.description}
+            imageSrc={item.img}
+          />
+        ))}
     </S.Container>
   );
 };

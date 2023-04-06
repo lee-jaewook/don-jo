@@ -1,4 +1,6 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
+
+export const Container = styled.div``;
 
 export const Title = styled.h1`
   font-family: "RobotoBold";
@@ -15,12 +17,23 @@ export const ProgressContainer = styled.div`
   padding: 0.75rem;
 `;
 
+export const TransactionHash = styled.a`
+  text-decoration: underline;
+  line-height: 1.25rem;
+`;
+
 export const RefreshContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 0.875rem;
   color: var(--color-text-secondary);
+`;
+
+export const Label = styled.label`
+  width: max-content;
+  max-width: 300px;
+  word-break: break-all;
 `;
 
 export const RefreshIconWrapper = styled.button`

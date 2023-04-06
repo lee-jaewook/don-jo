@@ -26,13 +26,14 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
         pageSize,
         type
       );
+
       if (status === 200) {
         setResult(supportList);
         setHasMore(hasMore);
         setPageNum((prev) => prev + 1);
       }
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleGetSupportList()... ", error);
     }
   };
 
@@ -48,7 +49,7 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
           <S.EmojiList>
             <S.EmojiItem>🙏 Wishlist</S.EmojiItem>
             <S.EmojiItem>💰 Donation</S.EmojiItem>
-            <S.EmojiItem>📁 items</S.EmojiItem>
+            <S.EmojiItem>📁 Items</S.EmojiItem>
           </S.EmojiList>
         )}
       </S.SupportListHeader>
@@ -56,12 +57,10 @@ const DashBoardSupportList = ({ type, pageNum, pageSize, setPageNum }) => {
         {result && result.length > 0 ? (
           result.map((item, index) => (
             <DashBoardListItem
-              key={item.uid + index}
-              uid={item.uid}
+              key={index}
               supportType={item.supportType}
               amount={calculateEth(item.amount)}
               from={item.fromMember}
-              toMemberAddress={item.toMember.toMemberAddress}
               arriveTimeStamp={item.arriveTimeStamp}
               transactionHash={item.transactionHash}
             />

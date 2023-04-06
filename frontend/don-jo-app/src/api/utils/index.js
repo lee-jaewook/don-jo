@@ -47,11 +47,11 @@ instance.interceptors.response.use(
             },
           }
         );
-        console.log("data: ", data);
+
         const accesstoken = data.headers.accesstoken;
         await localStorage.setItem("accesstoken", accesstoken);
 
-        originalRequest.headers.accesstoken = `Bearer ${accesstoken}`;
+        originalRequest.headers.accesstoken = `${accesstoken}`;
         return axios(originalRequest);
       }
     }

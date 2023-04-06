@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { setWeb3 } from "../stores/web3";
-import { setLogOut } from "../stores/member";
+import sendToastMessage from "./sendToastMessage";
 /**
  * 지갑연결 함수
  * 메타마스크 설치 여부 + 지갑 연결 체크
@@ -27,14 +27,14 @@ export const connectWallet = (dispatch) => {
         console.log("MetaMask is connected");
       })
       .catch((error) => {
-        console.log("error: ", error);
-        alert("MetaMask에 로그인하지 않았습니다.");
+        console.log("[connectWallet] failed : ", error);
+        sendToastMessage("You are not logged in to MetaMask.");
       });
   } else {
     // Metamask를 설치할 수 있도록 코드 추가...
     const downloadLink = "https://metamask.io/download.html";
     const message =
-      "MetaMask 확장 프로그램이 설치되어 있지 않습니다. 다운로드 페이지로 이동하시겠습니까?";
+      "MetaMask extension is not installed. Are you sure you want to go to the download page?";
 
     if (window.confirm(message)) {
       window.open(downloadLink, "_blank");

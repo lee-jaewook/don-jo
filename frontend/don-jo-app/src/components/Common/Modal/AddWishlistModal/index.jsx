@@ -24,7 +24,12 @@ import sendToastMessage from "../../../../utils/sendToastMessage";
 
 const IMAGE_TYPE = "img/item";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
-const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
+const AddWishlistModal = ({
+  handleSetShowModal,
+  callOldData,
+  wishlistUid,
+  handleSetLoading,
+}) => {
   const [isLoading, setLoading] = useState(false);
   const [itemImageFile, setItemImageFile] = useState({
     previewImgUrl: "",
@@ -135,6 +140,8 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
         sendToastMessage("Save failed: Contact your administrator.", "error");
       }
     } else {
+      document.body.style.overflow = "auto";
+      if (handleSetLoading) handleSetLoading(true);
       try {
         const { status } = await wishlistAPI.registerWishlistItem(cond);
         if (status === 200) {
@@ -206,7 +213,7 @@ const AddWishlistModal = ({ handleSetShowModal, callOldData, wishlistUid }) => {
               placeholder="1000.000"
               onChange={handleOnChangeInput}
             />
-            <S.UnitWrap>eth</S.UnitWrap>
+            <S.UnitWrap>MATIC</S.UnitWrap>
           </S.SeparationContainer>
         </S.ContentWrap>
 

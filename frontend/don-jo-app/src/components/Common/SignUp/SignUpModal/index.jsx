@@ -4,9 +4,9 @@ import React from "react";
 import { FiUpload } from "@react-icons/all-files/fi/FiUpload";
 import BasicTitle from "../../BasicTitle";
 import BasicInput from "../../BasicInput";
-import BasicButton from "../../BasicButton";
 import BasicModal from "../../Modal/BasicModal";
 import { fileSizeValidator } from "../../../../utils/validation/validator";
+import BasicButton from "../../BasicButton";
 
 /**
  * 회원가입 1단계 - 프로필 등록, nickName, pageName 설정
@@ -28,7 +28,12 @@ export const SignUpModal = ({
   profileImgPath,
   setProfileImgPath,
 }) => {
-  const { nickName, pageName } = userInfo;
+  const { nickname, pageName } = userInfo;
+
+  const handleCancleButtonClick = (e) => {
+    document.body.style.overflow = "auto";
+    isModelOpen(false);
+  };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -87,15 +92,15 @@ export const SignUpModal = ({
 
       <S.ContentWrap>
         <S.RequiredInputWrapper>
-          <BasicTitle text="Nickname" />
+          <BasicTitle text="NickName" />
           <S.RequiredIcon>*</S.RequiredIcon>
         </S.RequiredInputWrapper>
         <BasicInput
-          id="nickName"
+          id="nickname"
           type="text"
-          value={nickName}
+          value={nickname}
           handleOnChangeValue={handleInputChange}
-          placeholder="Nickname"
+          placeholder="NickName"
           required
         />
       </S.ContentWrap>

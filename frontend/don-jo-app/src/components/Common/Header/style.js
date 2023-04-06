@@ -34,6 +34,7 @@ export const Guide = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-text);
 `;
 
 export const ProfileImgContainer = styled.div`

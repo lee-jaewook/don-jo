@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "../../BasicButton/style";
 
 export const ContentWrap = styled.div`
   width: 100%;

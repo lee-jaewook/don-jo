@@ -222,7 +222,7 @@ export default RecentSupportBlock;
 
 RecentSupportBlock.propTypes = {
   supportContent: PropTypes.shape({
-    uid: PropTypes.number.isRequired,
+    uid: PropTypes.number,
     supportType: PropTypes.string.isRequired,
     fromMember: PropTypes.shape({
       memberAddress: PropTypes.string.isRequired,
