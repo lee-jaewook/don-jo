@@ -24,6 +24,7 @@ const PersonalItems = ({ isOwner, itemId }) => {
   useEffect(() => {
     if (!isShowDetailModal) {
       navigate(`/${pageName}`);
+      document.body.style.overflow = "auto";
     }
   }, [isShowDetailModal]);
 
@@ -85,15 +86,15 @@ const PersonalItems = ({ isOwner, itemId }) => {
       0,
       PAGE_SIZE * pageNum
     );
-    setItemList(data.itemList)
-  }
+    setItemList(data.itemList);
+  };
 
   useEffect(() => {
     if (refreshItemStatus) {
-      refreshItemtList()
-      dispatch(setRefreshItemStatus(false))
+      refreshItemtList();
+      dispatch(setRefreshItemStatus(false));
     }
-  }, [refreshItemStatus])
+  }, [refreshItemStatus]);
 
   useEffect(() => {
     getItemList();
