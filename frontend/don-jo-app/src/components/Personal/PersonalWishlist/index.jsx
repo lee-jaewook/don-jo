@@ -9,12 +9,16 @@ import PropTypes from "prop-types";
 import AddWishlistModal from "../../Common/Modal/AddWishlistModal";
 import { PulseLoader } from "react-spinners";
 import WishlistDetailModal from "../../Common/Modal/WishlistDetailModal";
+import { useDispatch } from "react-redux";
+import { setRefreshWishlistStatus } from "../../../stores/wishlist";
 
 const PersonalWishlist = ({ isOwner }) => {
   //현재 페이지의 멤버 지갑주소 정보
+  const dispatch = useDispatch();
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   ).toLowerCase();
+  const refreshWishlistStatus = useSelector((state) => state.wishlist.refreshWishlistStatus)
 
   const [isShowWishlistDetailModal, setIsShowWishlistDetailModal] =
     useState(false);
@@ -49,9 +53,25 @@ const PersonalWishlist = ({ isOwner }) => {
     }
   };
 
+  const refreshWishlist = async () => {
+    const { data } = await wishlistAPI.getWishList(
+      pageMemberAddress,
+      0,
+      pageNum * PAGE_SIZE
+    )
+    setWishlist(data.wishlists || []);
+    dispatch(setRefreshWishlistStatus(false));
+  }
+
   useEffect(() => {
     getWishList();
   }, []);
+
+  useEffect(() => {
+    if (refreshWishlistStatus && !isShowWishlistDetailModal) {
+      refreshWishlist()
+    }
+  }, [isShowWishlistDetailModal])
 
   const handleOnClickShowMoreButton = () => {
     getWishList();
