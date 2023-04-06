@@ -10,6 +10,7 @@ const RecentSupportBlock = ({
   isOwner,
   num,
   supportListLength,
+  setChangedSupportTransactionHash,
 }) => {
   const [supportText, setSupportText] = useState("");
   const [emoji, setEmoji] = useState("");
@@ -52,6 +53,7 @@ const RecentSupportBlock = ({
       supportContent.transactionHash
     );
     setSupportContent(data);
+    setChangedSupportTransactionHash(data.transactionHash);
   };
 
   //댓글 등록
@@ -238,4 +240,5 @@ RecentSupportBlock.propTypes = {
     sendMsg: PropTypes.string,
   }).isRequired,
   isOwner: PropTypes.bool,
+  setChangedSupportTransactionHash: PropTypes.func,
 };
