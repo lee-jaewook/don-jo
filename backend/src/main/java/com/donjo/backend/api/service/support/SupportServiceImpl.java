@@ -100,8 +100,6 @@ public class SupportServiceImpl implements SupportService{
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         Page<Support> list = supportRepositorySupport.findAllOrderByArriveTime(type,memberAddress,pageable);
-        logger.info("Support Item SIZE : {}", list.getTotalElements());
-        logger.info("Support Item SIZE : {}", list.getSize());
 
         // Dto 리스트배열 생성
         List<FindSupportItem> findSupportItemList = list.stream().map(support -> {
@@ -115,7 +113,7 @@ public class SupportServiceImpl implements SupportService{
                                                         MemberItem.fromMember(toMember));
         }).collect(Collectors.toList());
 
-        logger.info("Support Item SIZE : {}", findSupportItemList.size());
+        logger.info("RESULT Support Item SIZE : {}, HasNext : {}", findSupportItemList.size(), list.hasNext());
 
         // supportList와 next페이지가 있는지 hashMore 던져줌
         return FindSupportListPayload.getSupportList(list.hasNext(), findSupportItemList);
