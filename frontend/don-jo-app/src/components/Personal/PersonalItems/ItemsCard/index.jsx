@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
 import { itemApi } from "../../../../api/items";
-import { useSelector } from "react-redux";
 import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import { buyItem } from "../../../../api/wagmi/buyItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setRefreshItemStatus, setItemStatus } from "../../../../stores/items";
 
 const ItemCard = ({ item, isOwner }) => {
+  const dispatch = useDispatch();
   //현재 월렛커넥트와 연결되어있는 지갑 주소
   const { address, isConnected } = useAccount();
   const [isOwnerItems, setIsOwnerItems] = useState(isOwner);
@@ -18,6 +20,9 @@ const ItemCard = ({ item, isOwner }) => {
   const { open } = useWeb3Modal()
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
+  );
+  const itemStatus = useSelector(
+    (state) => state.items.itemStatus
   );
   const network = useSwitchNetwork({
     chainId: 80001,
@@ -47,12 +52,6 @@ const ItemCard = ({ item, isOwner }) => {
     }
   };
 
-  useEffect(() => {
-    if (!isOwnerItems) {
-      getIsPurchased();
-    }
-  }, []);
-
   const doBuy = () => {
     if (!isConnected) {
       open()
@@ -64,8 +63,21 @@ const ItemCard = ({ item, isOwner }) => {
     } else {
       network.switchNetwork()
     }
-
   };
+
+  useEffect(() => {
+    if (!isOwnerItems) {
+      getIsPurchased();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("isShowItemDetailModal 닫힘", isShowItemDetailModal, itemStatus)
+    if (!isShowItemDetailModal && itemStatus) {
+      dispatch(setItemStatus(false));
+      dispatch(setRefreshItemStatus(true));
+    }
+  }, [isShowItemDetailModal])
 
   return (
     <S.Container>
