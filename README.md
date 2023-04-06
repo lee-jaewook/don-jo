@@ -57,14 +57,29 @@
 **Backend - Spring**
 
 - IntelliJ IDE
-- Springboot 2
-- Spring Data JPA
-- Spring Security
-- Spring Validation
-- Spring Web
-- QueryDSL
-- Redis
-- Swagger
+- Java 11.0.14
+- Springboot 2.7.7
+- Spring Data JPA 2.7.7
+- Spring Security 2.7.7
+- Spring Validation 2.7.7
+- Spring Web 2.7.7
+- QueryDSL 5.0.0
+- Spring Cloud 2.2.1
+- Swagger2 3.0.0
+- jjwt 0.11.5
+- caffeine 2.9.3
+- bucket4j 4.10.0
+- gson 2.10.1
+
+**Smart Contract**
+
+- Solidity 0.8.18
+- web3j 4.9.4
+- web3js 1.8.2
+- truffle 4.6.17
+- ganache 2.7.0
+- geth 1.11.3
+- golang 1.20.2
 
 **CI/CD**
 
