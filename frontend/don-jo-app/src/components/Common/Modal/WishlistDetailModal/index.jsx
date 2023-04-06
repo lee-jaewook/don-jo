@@ -11,9 +11,11 @@ import { wishlistAPI } from "../../../../api/wishlist";
 import { useSelector } from "react-redux";
 import sendToastMessage from "../../../../utils/sendToastMessage";
 import DashboardLoading from "../../../DashBoard/DashboardLoading";
-import { donateWishlist } from "../../../../api/wagmi/donateWishlist";
-import { useAccount, useConnect, useSwitchNetwork, useNetwork } from 'wagmi'
+import { donateWishlist, waitDonateWishlist } from "../../../../api/wagmi/donateWishlist";
+import { useAccount, useSwitchNetwork, useNetwork } from 'wagmi'
 import { useWeb3Modal } from "@web3modal/react";
+import { useDispatch } from "react-redux";
+import { setRefreshWishlistStatus } from "../../../../stores/wishlist";
 
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
@@ -23,6 +25,7 @@ const WishlistDetailModal = ({
   handleSetShowModal,
   handleOnClickButton,
 }) => {
+  const dispatch = useDispatch(); 
   const [result, setResult] = useState({
     targetAmount: "0",
     collectedAmount: "0",
@@ -91,7 +94,13 @@ const WishlistDetailModal = ({
     }
     
     if (chain.id === 80001) {
-      donateWishlist(wishlist, sendMsg)
+      const hash = await donateWishlist(wishlist, sendMsg);
+      const status = await waitDonateWishlist(hash)
+      if (status) {
+        const { data } = await wishlistAPI.getWishlistItemDetail(uid);
+        setResult(data);
+      }
+      dispatch(setRefreshWishlistStatus(status));
     } else {
       network.switchNetwork()
     }

@@ -6,7 +6,7 @@ import sendToastMessage from '../../utils/sendToastMessage';
 import { supportApi } from '../support';
 
 export const donateWishlist = async (wishlist, donatorMessage) => {
-  const account = getAccount()
+  const account = getAccount();
   const provider = getProvider()
   const web3 = new Web3(provider);
   const config = await prepareWriteContract({
@@ -26,6 +26,8 @@ export const donateWishlist = async (wishlist, donatorMessage) => {
     return
   })
 
+  console.log(123)
+
   const donationDto = {
     amountEth: parseFloat(wishlist.price),
     fromAddress: account.address,
@@ -41,6 +43,19 @@ export const donateWishlist = async (wishlist, donatorMessage) => {
   if (wishlist.sendMsg !== "") {
     sendToastMessage(wishlist.sendMsg)
   }
+
+  return hash
+}
+
+export const waitDonateWishlist = async (hash) => {
+  const data = await waitForTransaction({
+    hash,
+  })
+
+  if (data) {
+    return true;
+  }
+  return false;
 }
 
 const saveDonation = (donationDto) => {
