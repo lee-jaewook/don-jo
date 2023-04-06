@@ -6,7 +6,7 @@ export const PreViewWrap = styled.div`
   width: 100%;
   min-height: 12.5rem;
   margin-bottom: 2rem;
-  background-color: black;
+  background-color: #333333;
   border-radius: 1.25rem;
   flex-direction: column;
   align-items: center;
@@ -42,7 +42,7 @@ export const GridBox = styled.div`
 
 export const ColorPalette = styled.div`
   display: flex;
-  width: 16.75rem;
+  width: 18.75rem;
   height: 2.75rem;
   justify-content: space-between;
   align-items: center;
@@ -50,8 +50,8 @@ export const ColorPalette = styled.div`
 
 export const Color = styled.input`
   appearance: none;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   background-color: ${(props) => props.value || "#d9d9d9"};
   display: flex;

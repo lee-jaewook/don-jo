@@ -5,7 +5,6 @@ import { calculateEth } from "../../../utils/calculateEth";
 const S3URL = "https://don-jo.s3.ap-northeast-2.amazonaws.com/";
 
 const WishlistItem = ({
-  isDashboard = false,
   handleSetShowModal,
   uid,
   imgPath,
@@ -13,7 +12,10 @@ const WishlistItem = ({
   description,
   collectedAmount,
   totalAmount,
-  isClosed,
+  bgColor,
+  isDashboard = false,
+  isClosed = false,
+  isOwner = false,
 }) => {
   // 후원 상태바 계산을 위한 함수
   const handleCalcProgressState = () => {
@@ -27,8 +29,11 @@ const WishlistItem = ({
     <S.ItemWrapper
       id={uid}
       isDashboard={isDashboard}
-      bgColor={isClosed ? "#EFEFEF" : "white"}
-      onClick={isDashboard ? () => handleSetShowModal(uid) : undefined}
+      isClosed={isClosed}
+      bgColor={bgColor}
+      onClick={
+        isDashboard && !isClosed ? () => handleSetShowModal(uid) : undefined
+      }
     >
       <S.ItemContent>
         <S.ItemImg src={`${S3URL}${imgPath}`} />
@@ -39,15 +44,16 @@ const WishlistItem = ({
               ? `${description.substr(0, 41)}...`
               : description}
           </S.Description>
-          {!isDashboard && (
-            <S.SupportButton onClick={handleSetShowModal}>
-              Support
-            </S.SupportButton>
-          )}
+          {isDashboard ||
+            (!isOwner && (
+              <S.SupportButton onClick={handleSetShowModal}>
+                Support
+              </S.SupportButton>
+            ))}
         </S.ItemInformation>
       </S.ItemContent>
       <S.ProgressBarWrapper>
-        <S.ProgressBar isDashboard={isDashboard}>
+        <S.ProgressBar isDashboard={isDashboard} isOwner={isOwner}>
           <S.ProgressState currentState={handleCalcProgressState()} />
         </S.ProgressBar>
         <S.AmountWrapper>
@@ -70,7 +76,7 @@ WishlistItem.propTypes = {
   imgPath: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  collectedAmount: PropTypes.string.isRequired,
-  totalAmount: PropTypes.string.isRequired,
+  collectedAmount: PropTypes.number.isRequired,
+  totalAmount: PropTypes.number.isRequired,
   thankMsg: PropTypes.string,
 };

@@ -47,13 +47,12 @@ export const titleValidator = (title) => {
 };
 
 /**
- *
  * 1. 소수점 아래 3자리까지
  * 2. 0으로 시작 가능
  */
 
 export const priceValidator = (price) => {
-  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,9})?$/;
+  const priceRegex = /^(\$)?(\d{1,3})(,\d{3})*(\.\d{1,3})?$/;
   if (priceRegex.test(price)) {
     return true;
   }

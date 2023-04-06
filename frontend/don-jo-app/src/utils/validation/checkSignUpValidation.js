@@ -1,7 +1,7 @@
 import { nicknameValidator, pageNameValidator } from "./validator";
 
-export const checkSignUpValidation = (nickName, pageName) => {
-  if (!nicknameValidator(nickName)) {
+export const checkSignUpValidation = (nickname, pageName) => {
+  if (!nicknameValidator(nickname)) {
     alert("NickName is not the correct format.");
     return false;
   }

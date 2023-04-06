@@ -1,29 +1,26 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { memberApi } from "../../../api/member";
-import { metamaskLogIn } from "../../../utils/metamaskLogIn";
 import { fileApi } from "../../../api/file";
 import { checkSignUpValidation } from "../../../utils/validation/checkSignUpValidation";
 import PasswordSetModal from "../Modal/PasswordSetModal";
 import SignUpModal from "./SignUpModal";
-import { useEffect } from "react";
 import { useAccount } from "wagmi";
+import { useDispatch } from "react-redux";
+import { setIsMember } from "../../../stores/member";
+import PropTypes from "prop-types";
+import sendToastMessage from "../../../utils/sendToastMessage";
 
-const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
+const SignUp = ({ isShowSignUp, setIsShowSignUp, pageName }) => {
   const dispatch = useDispatch();
   const IMAGE_TYPE = "img/item";
 
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const [isShowSignUpModal, setIsShowSignUpModal] = useState(isShowSignUp);
   const [isShowPasswordSetModal, setIsShowPasswordSetModal] = useState(false);
 
-  useEffect(() => {
-    console.log("현재 회원가입하려는 사람의 지갑 주소: ", address);
-  }, [address]);
-
   const [userInfo, setUserInfo] = useState({
-    nickName: "",
-    pageName: "",
+    nickname: "",
+    pageName: pageName,
     password: "",
   });
   const [profileImgPath, setProfileImgPath] = useState({
@@ -39,7 +36,7 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
    */
   const isModalOpen = () => {
     setUserInfo({
-      nickName: "",
+      nickname: "",
       pageName: "",
       password: "",
     });
@@ -53,7 +50,13 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   };
 
   const handleContinueButtonClick = async () => {
-    if (!checkSignUpValidation(userInfo.nickName, userInfo.pageName)) return;
+    console.log("userInfo: ", userInfo);
+    if (!checkSignUpValidation(userInfo.nickname, userInfo.pageName)) return;
+    const page = userInfo.pageName.toLowerCase();
+    if (page === "dashboard" || page === "guide") {
+      sendToastMessage("🚫 This page name is not available");
+      return;
+    }
     await memberApi
       .checkPageName(userInfo.pageName)
       .then(() => {
@@ -71,7 +74,6 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
   const doSignUp = async (inputPassword) => {
     let signUpMemberCond = {
       ...userInfo,
-      nickname: userInfo.nickName,
       address: address,
       password: inputPassword,
       profileImgPath: "",
@@ -92,7 +94,8 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
     memberApi
       .signUp(signUpMemberCond)
       .then((res) => {
-        // metamaskLogIn({ dispatch, handleModalOpen: isModalOpen });
+        console.log(res);
+        dispatch(setIsMember(true));
       })
       .catch((error) => {
         console.log("회원가입 실패");
@@ -142,3 +145,13 @@ const SignUp = ({ isShowSignUp, setIsShowSignUp }) => {
 };
 
 export default SignUp;
+
+SignUp.propTypes = {
+  isShowSignUp: PropTypes.bool.isRequired,
+  setIsShowSignUp: PropTypes.func.isRequired,
+  pageName: PropTypes.string,
+};
+
+SignUp.defaultProps = {
+  pageName: "",
+};

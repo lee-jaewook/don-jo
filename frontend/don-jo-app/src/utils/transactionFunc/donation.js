@@ -27,7 +27,7 @@ export const donation = (item) => {
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
+              "0xb4787A11745AfC48D76c2E603164118502447EC6" // contract 주소
             );
 
             const tx = myContract.methods.callBasicDonation(item.seller);
@@ -38,7 +38,7 @@ export const donation = (item) => {
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
+                    to: "0xb4787A11745AfC48D76c2E603164118502447EC6",
                     value: valueInWei,
                     gas: "20000",
                     data: tx.encodeABI(),
@@ -84,7 +84,9 @@ export const donation = (item) => {
                   sendToastMessage("Failed to register support record.");
                 }
               })
-              .catch((err) => console.log(err));
+              .catch((error) =>
+                console.log("An error occured in donation.: ", error)
+              );
           });
         });
     } else {
@@ -103,21 +105,20 @@ export const donation = (item) => {
 const saveDonation = async (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {
-      console.log("저장 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("저장 실패");
+      console.log("An error occured in donation's saveDonation. : ", error);
     });
 };
 
 const updateDondationInfo = async (supportUid, transactionHash) => {
   supportApi
     .updateSponsorshipArrived(supportUid, transactionHash)
-    .then((res) => {
-      console.log("update 성공!");
-    })
+    .then((res) => {})
     .catch((error) => {
-      console.log("update 실패!");
+      console.log(
+        "An error occured in donation's updateDonationInfo.: ",
+        error
+      );
     });
 };

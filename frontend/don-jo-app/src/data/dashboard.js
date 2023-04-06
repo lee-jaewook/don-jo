@@ -66,14 +66,6 @@ export const colorSet = [
   "#9042DD",
 ];
 
-export const generatorColorSet = [
-  "#F02C7E",
-  "#F96D1F",
-  "#14A985",
-  "#2966DD",
-  "#9042DD",
-];
-
 export const fontDataSet = [
   { id: 1, title: "NotoSansKR" },
   { id: 2, title: "Black Han Sans" },

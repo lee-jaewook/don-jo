@@ -22,7 +22,6 @@ const HomeRecentSupport = ({ isOwner }) => {
 
   const getSupportList = async (init) => {
     setIsLoading(true);
-    console.log("pageNum", pageNum);
     try {
       const { data } = await supportApi.getSupportList(
         pageMemberAddress,
@@ -46,7 +45,6 @@ const HomeRecentSupport = ({ isOwner }) => {
 
   useEffect(() => {
     if (!!pageMemberAddress) getSupportList();
-    console.log(pageMemberAddress);
   }, [pageMemberAddress]);
 
   const handleOnClickShowMoreButton = () => {

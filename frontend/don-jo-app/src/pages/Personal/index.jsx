@@ -1,7 +1,7 @@
 import * as S from "./style";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import ExternalLink from "../../components/Personal/ExternalLink";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import PersonalContent from "../../components/Personal/PersonalContent";
 import FullScreenModal from "../../components/Common/Modal/FullScreenModal";
 import IntroductionEdit from "../../components/Personal/IntroductionEdit";
@@ -14,14 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberInfo } from "../../stores/memberInfo";
 import { setProfileImg } from "../../stores/member";
 import { colorSet } from "../../data/dashboard";
-import { useAccount } from "wagmi";
 
 const PROFILE_TYPE = "img/profile";
 const BACKGROUND_TYPE = "img/background";
 
 const Personal = () => {
-  //현재 월렛커넥트와 연결되어있는 지갑 주소
-  const { address, isConnected } = useAccount();
   const { pageName, itemId } = useParams();
   const navigate = useNavigate();
 
@@ -30,6 +27,8 @@ const Personal = () => {
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [isBackgroundHover, setIsBackgroundHover] = useState(false);
   const [isShowIntroductionEdit, setIsShowIntroductionEdit] = useState(false);
+
+  const isLogin = useSelector((state) => state.member.isLogIn);
 
   const dispatch = useDispatch();
   const memberInfoItemData = useSelector((state) => state.memberInfo);
@@ -43,6 +42,16 @@ const Personal = () => {
     pricePerDonation: 0,
     thankMsg: "",
   });
+  const memoizedPersonalContent = useMemo(() => {
+    return (
+      <PersonalContent
+        donationSettingData={donationSettingData}
+        wishListData={wishListData}
+        isOwner={isOwner}
+        itemId={itemId}
+      />
+    );
+  }, [donationSettingData, wishListData, isOwner, itemId]);
 
   const getPageInfo = async () => {
     try {
@@ -62,15 +71,18 @@ const Personal = () => {
 
   //로그인 유저가 페이지 주인인지 확인
   useEffect(() => {
-    setIsOwner(
-      memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
-    );
+    if (loginUserAddress !== "") {
+      setIsOwner(
+        memberInfoItemData.memberAddress.toLowerCase() === loginUserAddress
+      );
+    }
+
     const root = document.documentElement;
     root.style.setProperty(
       "--color-primary",
       colorSet[memberInfoItemData.themeColor]
     );
-  }, [memberInfoItemData]);
+  }, [memberInfoItemData, isLogin]);
 
   useEffect(() => {
     getPageInfo();
@@ -175,7 +187,9 @@ const Personal = () => {
           </S.SupporterContainer>
           <ExternalLink socialList={memberInfoItemData.socialList} />
           <Desktop>
-            <S.IntroductionContainer>
+            <S.IntroductionContainer
+              isShow={isOwner || memberInfoItemData.introduction ? true : false}
+            >
               {/* 로그인한 유저와 페이지 주인이 같다면 edit 버튼 표시 */}
               {isOwner && (
                 <S.IntroductionEdit
@@ -189,18 +203,18 @@ const Personal = () => {
               <S.Introduction>
                 <MDEditor.Markdown
                   source={memberInfoItemData.introduction}
-                  data-color-mode="light"
                 ></MDEditor.Markdown>
               </S.Introduction>
             </S.IntroductionContainer>
           </Desktop>
         </S.UserInfo>
-        <PersonalContent
+        {/* <PersonalContent
           donationSettingData={donationSettingData}
           wishListData={wishListData}
           isOwner={isOwner}
           itemId={itemId}
-        />
+        /> */}
+        {memoizedPersonalContent}
       </S.ContentsContainer>
 
       {isShowIntroductionEdit && (

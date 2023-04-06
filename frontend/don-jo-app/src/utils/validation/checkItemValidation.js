@@ -8,7 +8,9 @@ export const checkItemValidation = ({ name, price }) => {
   }
 
   if (!priceValidator(price)) {
-    sendToastMessage("🚫 Price is not the correct format.");
+    sendToastMessage(
+      "🚫 The price can only be entered up to the third decimal place."
+    );
     return false;
   }
 

@@ -2,19 +2,11 @@ import * as S from "./style";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import ItemDetailModal from "../../../Common/Modal/ItemDetailModal";
-import { calculateEth } from "../../../../utils/calculateEth";
 import { itemApi } from "../../../../api/items";
 import { useSelector } from "react-redux";
-import {
-  useWaitForTransaction,
-  useProvider,
-  usePrepareContractWrite,
-  useContractWrite,
-  useAccount,
-} from "wagmi";
-import ApplicationHandler from "../../../../contracts/ApplicationHandler.json";
-import Web3 from "web3";
-import { supportApi } from "../../../../api/support";
+import { useAccount, useSwitchNetwork, useNetwork } from "wagmi";
+import { useWeb3Modal } from "@web3modal/react";
+import { buyItem } from "../../../../api/wagmi/buyItem";
 
 const ItemCard = ({ item, isOwner }) => {
   //현재 월렛커넥트와 연결되어있는 지갑 주소
@@ -23,10 +15,14 @@ const ItemCard = ({ item, isOwner }) => {
   const [isShowItemDetailModal, setIsShowItemDetailModal] = useState(false);
   const [isAlreadyBought, setIsAlreadyBought] = useState(false);
   const [btnText, setBtnText] = useState("");
-
+  const { open } = useWeb3Modal()
   const pageMemberAddress = useSelector(
     (state) => state.memberInfo.memberAddress
   );
+  const network = useSwitchNetwork({
+    chainId: 80001,
+  })
+  const { chain } = useNetwork()
 
   useEffect(() => {
     if (isConnected) {
@@ -57,71 +53,18 @@ const ItemCard = ({ item, isOwner }) => {
     }
   }, []);
 
-  const provider = useProvider();
-  const web3 = new Web3(provider);
+  const doBuy = () => {
+    if (!isConnected) {
+      open()
+      return
+    }
 
-  const { config } = usePrepareContractWrite({
-    abi: ApplicationHandler.abi,
-    address: "0x87F54beAa91600aF02284df366531904Dd3735D8",
-    functionName: "buyItemDonation",
-    args: [item.seller, item.id],
-    overrides: {
-      gasLimit: 8000000,
-      value: web3.utils.toWei(item.price.toString(), "ether"),
-    },
-  });
-  const contractWrite = useContractWrite({
-    ...config,
-    onSuccess(data) {
-      const donationDto = {
-        amountEth: item.price,
-        fromAddress: address,
-        sendMsg: "",
-        supportType: "item",
-        supportTypeUid: item.id,
-        supportUid: "",
-        toAddress: item.seller,
-        transactionHash: data.hash,
-      };
-      supportApi
-        .saveSponsorshipDetail(donationDto)
-        .then((res) => {
-          console.log("저장 성공!");
-        })
-        .catch((error) => {
-          console.log("저장 실패");
-        });
-    },
-  });
+    if (chain.id === 80001) {
+      buyItem(item)
+    } else {
+      network.switchNetwork()
+    }
 
-  const waitForTransaction = useWaitForTransaction({
-    hash: contractWrite.data?.hash,
-    onError(error) {
-      alert("구입 실패");
-    },
-    onSuccess(data) {
-      alert("구입 성공");
-      const logs = data.logs.filter(
-        (log) => log.topics[0] === web3.utils.sha3("SupportIdEvent(uint64)")
-      );
-      if (logs.length > 0) {
-        const log = logs[0];
-        const id = web3.eth.abi.decodeParameters(["uint64"], log.topics[1])[0];
-        console.log(data, id);
-        supportApi
-          .updateSponsorshipArrived(id, data.transactionHash)
-          .then((res) => {
-            console.log("update 성공!");
-          })
-          .catch((error) => {
-            console.log("update 실패!");
-          });
-      }
-    },
-  });
-
-  const doBuy = async () => {
-    contractWrite.write();
   };
 
   return (
@@ -132,7 +75,7 @@ const ItemCard = ({ item, isOwner }) => {
         <S.Description>{item.description}</S.Description>
         <S.PriceBtnContainer>
           <S.PriceWrapper>
-            <S.Price>{calculateEth(item.price)}</S.Price>
+            <S.Price>{item.price.toFixed(3)}</S.Price>
             <S.Unit>matic</S.Unit>
           </S.PriceWrapper>
           {!isOwnerItems && (

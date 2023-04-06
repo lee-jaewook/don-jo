@@ -8,7 +8,7 @@ import { colorSet } from "../../../data/dashboard";
 import { fileApi } from "../../../api/file";
 import { memberApi } from "../../../api/member";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfileImg, setThemeColor } from "../../../stores/member";
+import { setMemberAccount } from "../../../stores/member";
 import sendToastMessage from "../../../utils/sendToastMessage";
 
 const PROFILE_TYPE = "img/profile";
@@ -104,13 +104,17 @@ const DashBoardAccount = () => {
   const handleSaveAccount = async () => {
     // 필수 입력 확인
     if (!nickname || !pageName) {
-      alert("필수값 확인 안내");
+      sendToastMessage("🚫 Please enter both your nickname and page name.");
+      return;
+    }
+
+    if (pageName === "guides" || pageName === "dashboard") {
+      setMessage("🚫 The page name is not available.");
       return;
     }
 
     // 페이지 이름 중복 여부 확인
     if (!handleCheckPageName()) {
-      alert("Duplicate page name.");
       return;
     }
 
@@ -149,11 +153,18 @@ const DashBoardAccount = () => {
       const { status } = await memberApi.updateUserInfo(myAccount);
       if (status === 200) {
         sendToastMessage("✨ Saved successfully.");
-        dispatch(setProfileImg({ profileImagePath: myAccount.profileImgPath }));
-        dispatch(setThemeColor({ themeColor: themeColor }));
+        dispatch(
+          setMemberAccount({
+            pageName: myAccount.pageName,
+            nickName: myAccount.nickname,
+            themeColor: themeColor,
+            profileImagePath: myAccount.profileImgPath,
+          })
+        );
       }
     } catch (error) {
-      console.log("error: ", error);
+      sendToastMessage("Update Failed.", "error");
+      console.log("[Dashboard] updateUserInfo()... ", error);
     }
   };
 
@@ -161,13 +172,12 @@ const DashBoardAccount = () => {
   const handleUploadFile = async (file, type) => {
     const formData = new FormData();
     formData.append("multipartFile", file);
-    console.log("file: ", file);
 
     try {
       const { data } = await fileApi.uploadFile(formData, type);
       return data;
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleUploadFile()... ", error);
     }
   };
 
@@ -185,7 +195,7 @@ const DashBoardAccount = () => {
       }
       setSocial(socialData);
     } catch (error) {
-      console.log("error: ", error);
+      console.log("[Dashboard] handleGetAccountInfo()... ", error);
     }
   };
 
@@ -194,6 +204,7 @@ const DashBoardAccount = () => {
     if (userPageName !== pageName) {
       try {
         await memberApi.checkPageName(pageName);
+        setMessage("");
         return true;
       } catch (error) {
         if (error.response.status === 409) {

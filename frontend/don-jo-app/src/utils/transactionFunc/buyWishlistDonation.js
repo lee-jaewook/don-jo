@@ -25,12 +25,11 @@ export const buyWishlistDonation = (
               )
             );
             web3.setProvider(infuraWeb3.currentProvider);
-            const priceInMatic = parseFloat(item.price) * 10 ** 18;
-            const valueInWei = web3.utils.toWei(priceInMatic.toString(), "wei");
+            const valueInWei = web3.utils.toWei(item.price.toString(), "ether");
 
             const myContract = new web3.eth.Contract(
               ApplicationHandler.abi, // abi 설정
-              "0x87F54beAa91600aF02284df366531904Dd3735D8" // contract 주소
+              "0xb4787A11745AfC48D76c2E603164118502447EC6" // contract 주소
             );
 
             const tx = myContract.methods.buyWishlistDonation(
@@ -44,7 +43,7 @@ export const buyWishlistDonation = (
                 params: [
                   {
                     from: accounts[0],
-                    to: "0x87F54beAa91600aF02284df366531904Dd3735D8",
+                    to: "0xb4787A11745AfC48D76c2E603164118502447EC6",
                     value: valueInWei.toString(),
                     data: tx.encodeABI(),
                   },
@@ -84,10 +83,19 @@ export const buyWishlistDonation = (
                     ["uint64"],
                     log.topics[1]
                   )[0];
-                  updateDondationInfo(parseInt(id), txHash);
-                  handleLoading(false);
-                  sendToastMessage("✨ Updated successfully.");
-                  handleOnClickButton();
+                  supportApi
+                    .updateSponsorshipArrived(parseInt(id), txHash)
+                    .then((res) => {
+                      handleLoading(false);
+                      sendToastMessage("✨ Updated successfully.");
+                      handleOnClickButton();
+                    })
+                    .catch((error) => {
+                      console.log(
+                        "An error occurred in buyWishlistDonation's updateSponsorshipArrived func",
+                        error
+                      );
+                    });
                   return true;
                 } else {
                   sendToastMessage("Failed to register support record.");
@@ -116,13 +124,6 @@ export const buyWishlistDonation = (
 const saveDonation = (donationDto) => {
   supportApi
     .saveSponsorshipDetail(donationDto)
-    .then((res) => {})
-    .catch((error) => {});
-};
-
-const updateDondationInfo = (supportUid, transactionHash) => {
-  supportApi
-    .updateSponsorshipArrived(supportUid, transactionHash)
     .then((res) => {})
     .catch((error) => {});
 };
