@@ -26,8 +26,8 @@ const App = () => {
         ethereumClient={ethereumClient}
         themeVariables={{
           "--w3m-font-family": "Roboto, sans-serif",
-          "--w3m-accent-color": "black",
-          "--w3m-background-color": "black",
+          "--w3m-accent-color": "var(--color-primary)",
+          "--w3m-background-color": "var(--color-primary)",
         }}
       />
     </div>
