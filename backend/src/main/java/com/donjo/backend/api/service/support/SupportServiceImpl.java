@@ -100,8 +100,6 @@ public class SupportServiceImpl implements SupportService{
 
         //type과 memberAddress와 pageable 값을 넘겨서 조건에 맞는 Support 엔티티 배열 반환
         Page<Support> list = supportRepositorySupport.findAllOrderByArriveTime(type,memberAddress,pageable);
-        logger.info("Support Item SIZE : {}", list.getTotalElements());
-        logger.info("Support Item SIZE : {}", list.getSize());
 
         // Dto 리스트배열 생성
         List<FindSupportItem> findSupportItemList = list.stream().map(support -> {
