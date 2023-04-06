@@ -133,6 +133,6 @@ ItemDetailModal.propTypes = {
   uid: PropTypes.number.isRequired,
   idDashboard: PropTypes.bool,
   handleSetShowModal: PropTypes.func.isRequired,
-  handleOnClickButton: PropTypes.func.isRequired,
+  handleOnClickButton: PropTypes.func,
   isAlreadyBought: PropTypes.bool,
 };
