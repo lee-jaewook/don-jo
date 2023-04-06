@@ -56,15 +56,15 @@ const HomeRecentSupport = ({ isOwner }) => {
     );
     setSupportList(data.supportList);
     dispatch(setDonationStatus(false));
-  }
+  };
 
   useEffect(() => {
     if (donationStatus) {
       setTimeout(() => {
-        refreshSupportList()
+        refreshSupportList();
       }, 0);
     }
-  }, [donationStatus])
+  }, [donationStatus]);
 
   useEffect(() => {
     if (!!pageMemberAddress) getSupportList();
@@ -73,6 +73,29 @@ const HomeRecentSupport = ({ isOwner }) => {
   const handleOnClickShowMoreButton = () => {
     getSupportList();
   };
+
+  //댓글 달린 블럭 교체하기
+  const handleReflectReply = async (supportTransactionHash) => {
+    const { data } = await supportApi.getSupportDetail(supportTransactionHash);
+    const updatedSupportList = supportList.filter((support) => {
+      if (support.transactionHash === supportTransactionHash) {
+        support = data;
+      }
+      return support;
+    });
+    setSupportList(updatedSupportList);
+  };
+
+  const [changedSupportTransactionHash, setChangedSupportTransactionHash] =
+    useState("");
+
+  useEffect(() => {
+    if (changedSupportTransactionHash !== "") {
+      const supportTransactionHash = changedSupportTransactionHash;
+      setChangedSupportTransactionHash("");
+      handleReflectReply(supportTransactionHash);
+    }
+  }, [changedSupportTransactionHash]);
 
   const Contents = () => {
     return (
@@ -87,6 +110,9 @@ const HomeRecentSupport = ({ isOwner }) => {
                   isOwner={isOwner}
                   supportListLength={supportList.length}
                   num={i}
+                  setChangedSupportTransactionHash={
+                    setChangedSupportTransactionHash
+                  }
                 />
               );
             })}
