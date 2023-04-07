@@ -25,7 +25,7 @@ const ItemCard = ({ item, isOwner }) => {
     (state) => state.items.itemStatus
   );
   const network = useSwitchNetwork({
-    chainId: 137,
+    chainId: 80001,
   })
   const { chain } = useNetwork()
 
