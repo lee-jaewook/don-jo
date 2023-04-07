@@ -19,17 +19,17 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Authority {
-
+   // 권한 설정
    @Id
    @Column(name = "authority_name", length = 50)
    private String authorityName;
-
+   //  "ROLE_USER" 권한 이름을 가진 Authority 객체를 생성하여 반환
    public static Authority user(){
       return Authority.builder()
               .authorityName("ROLE_USER")
               .build();
    }
-
+   //  //  "ROLE_AUTH" 권한 이름을 가진 Authority 객체를 생성하여 반환
    public static Authority auth(){
       return Authority.builder()
               .authorityName("ROLE_AUTH")

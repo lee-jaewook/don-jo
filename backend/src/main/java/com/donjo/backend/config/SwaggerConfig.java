@@ -29,13 +29,17 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.jejuinn.backend"))
+                // Swagger가 문서화 할 대상 API 컨트롤러를 지정 여기서는 com.donjo.backend 패키지의 컨트롤러를 대상으로 설정
+                .apis(RequestHandlerSelectors.basePackage("com.donjo.backend"))
+                // 모든 API 엔드포인트를 문서화하도록 지정합니다.
                 .paths(PathSelectors.any())
                 .build()
+                // 보안 컨텍스트를 추가
                 .securityContexts(newArrayList(securityContext()))
+                // API 키 인증 방식을 사용
                 .securitySchemes(newArrayList(apiKey()));
     }
-
+    // 첫번째 인자는 스키마의 이름  두번째 인자는 토큰 값을 헤더에 실어 보낼 때 사용할 이름 세번째 인자는 헤더의 이름
     private ApiKey apiKey() {
         return new ApiKey(SECURITY_SCHEMA_NAME, "accessToken", "header");
     }
@@ -50,6 +54,7 @@ public class SwaggerConfig {
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
+                // 안 스키마를 참조하도록 지정, defaultAuth() 메서드는 API 문서에 표시할 보안 요구사항
                 .securityReferences(defaultAuth())
                 .build();
     }
@@ -58,13 +63,16 @@ public class SwaggerConfig {
     public static final String AUTHORIZATION_SCOPE_GLOBAL = "global";
     public static final String AUTHORIZATION_SCOPE_GLOBAL_DESC = "accessEverything";
 
+    //  API 인증정보 설정
     private List<SecurityReference> defaultAuth() {
+        // SECURITY_SCHEMA_NAME과 authorizationScopes 값을 사용하여 인증 정보를 생성하여 반환
         AuthorizationScope authorizationScope = new AuthorizationScope(AUTHORIZATION_SCOPE_GLOBAL, AUTHORIZATION_SCOPE_GLOBAL_DESC);
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return newArrayList(new SecurityReference(SECURITY_SCHEMA_NAME, authorizationScopes));
     }
 
+    //  Swagger-UI에서 사용되는 UI Configuration을 정의
     @Bean
     UiConfiguration uiConfig() {
         return UiConfigurationBuilder.builder()
