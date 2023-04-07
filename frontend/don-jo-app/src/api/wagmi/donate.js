@@ -11,14 +11,14 @@ export const donate = async (pageMemberWalletAddress, price, thankmsg, message) 
   const web3 = new Web3(provider);
   const config = await prepareWriteContract({
     abi: ApplicationHandler.abi,
-    address: '0xA07bD0a21C0589a8f102CE1D762E5B3550b8cE10',
+    address: '0xb4787A11745AfC48D76c2E603164118502447EC6',
     functionName: 'callBasicDonation',
     args: [pageMemberWalletAddress],
     overrides: {
       gasLimit: 8000000,
       value: web3.utils.toWei(price, "ether"),
     },
-    chainId: 137
+    chainId: 80001
   });
 
   const { hash } = await writeContract(config).catch((error) => {
