@@ -28,7 +28,7 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
     (state) => state.memberInfo.memberAddress
   );
   const network = useSwitchNetwork({
-    chainId: 137,
+    chainId: 80001,
   })
   const { chain } = useNetwork()
   
@@ -76,9 +76,9 @@ const HomeDonation = ({ donationSettingData, isOwner }) => {
       return
     }
 
-    if (chain.id === 137) {
+    if (chain.id === 80001) {
       const { data } = await priceApi.getItemDetail();
-      await donate(pageMemberWalletAddress, (data * donationAmount).toFixed(18), donationSettingData.thankMsg, msg)
+      await donate(pageMemberWalletAddress, (data * donationAmount * 0.01).toFixed(18), donationSettingData.thankMsg, msg)
       dispatch(setDonationStatus(true));
     } else {
       network.switchNetwork()

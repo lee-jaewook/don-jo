@@ -36,7 +36,7 @@ const WishlistDetailModal = ({
   const { isConnected } = useAccount()
   const { open } = useWeb3Modal()
   const network = useSwitchNetwork({
-    chainId: 137,
+    chainId: 80001,
   })
   const { chain } = useNetwork()
   //현재 페이지의 멤버 지갑주소 정보
@@ -93,7 +93,7 @@ const WishlistDetailModal = ({
       return
     }
     
-    if (chain.id === 137) {
+    if (chain.id === 80001) {
       const hash = await donateWishlist(wishlist, sendMsg);
       const status = await waitDonateWishlist(hash)
       if (status) {
