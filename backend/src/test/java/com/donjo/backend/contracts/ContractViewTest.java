@@ -39,7 +39,7 @@ class ContractViewTest {
     @Test
     public void contractConnectionTest() throws Exception {
         ApplicationHandler contract = web3jUtil.getContractApi();
-        String memberAddress = "0x288fB136C9291a4b62f1620bEE5901BEB2B0ffD7";
+        String memberAddress = "0x0964fB71FB405f75fd95bAe71825Cc2d697E4eE9";
         BigInteger value = contract.supportCount(memberAddress).send();
         System.out.println(value.longValue());
     }
