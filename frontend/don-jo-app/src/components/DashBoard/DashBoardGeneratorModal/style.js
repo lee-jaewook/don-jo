@@ -26,7 +26,7 @@ export const PreView = styled.a`
   display: flex;
   width: 13.5625rem;
   height: 3rem;
-  background-color: ${(props) => props.color || "#F02C7E"};
+  background-color: ${(props) => props.color || "#000000"};
   border-radius: 1.5rem;
   text-decoration: none;
   justify-content: center;
