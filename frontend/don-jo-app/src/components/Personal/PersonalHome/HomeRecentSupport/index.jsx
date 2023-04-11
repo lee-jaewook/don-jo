@@ -62,7 +62,7 @@ const HomeRecentSupport = ({ isOwner }) => {
     if (donationStatus) {
       setTimeout(() => {
         refreshSupportList();
-      }, 0);
+      }, 300);
     }
   }, [donationStatus]);
 
