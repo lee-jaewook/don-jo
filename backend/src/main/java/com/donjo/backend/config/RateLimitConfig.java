@@ -1,5 +1,6 @@
 package com.donjo.backend.config;
 
+import com.donjo.backend.api.service.member.MemberService;
 import com.donjo.backend.config.bucket.RateLimitFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -10,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 public class RateLimitConfig {
 
     @Bean
-    public FilterRegistrationBean<RateLimitFilter> rateLimitFilter() {
+    public FilterRegistrationBean<RateLimitFilter> rateLimitFilter(MemberService memberService) {
         FilterRegistrationBean<RateLimitFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RateLimitFilter());
+        registrationBean.setFilter(new RateLimitFilter(memberService));
         // "/*" 패턴으로 모든 URL에 대해 RateLimitFilter를 적용
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
