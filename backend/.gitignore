@@ -19,6 +19,8 @@ src/main/generated
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+src/main/resources/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
